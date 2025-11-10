@@ -1,0 +1,129 @@
+Movement upgrade:
+ ☐ Boost to ship ( sprint, decelerator )
+ ☐ Hop boost ( jump, kinda? )0
+ ☐ Reverse hop boost ( like emergency brake )
+ ☐ Sideways movement:pressing a modifier makes the ship run in "headless" mode --> global up down left right
+   for example, parking/docking
+
+Bases:
+ ☐ Make a base to attack
+   ✔ Create Base display and body @done (24-04-04 15:14)
+   ☐ Decide on and implement base movement trajectory
+   ☐ Add health to base
+     ☐ Make it decrease upon shooting it 
+     ☐ Make it game over if base is destroyed
+   ☐ Add a turret to base
+ ☐ Make a traveling base attacking the stationary base
+
+
+Battle update:
+ ✔ Better AI control with new control scheme @done (24-04-04 13:55)
+ ☐ Differentiate between ship laser hit and physics hit
+ ☐ periodic position and angle correction for ships
+ ☐ Make any non-controlled ship have AI control after the recorder runs out of moves for it, and there's still time
+   ☐ The later should also record new moves
+ ☐ Make destroyable asteroids
+ ☐ Make asteroid fields
+ ☐ Investigate physical damage
+   ☐ Ramming into other ships
+   ☐ Damaging shields
+
+Weapons update:
+ ☐ Nerf AI laser: make it miss sometimes
+ ☐ Make turrets shooting the ship
+   ☐ Either from base or planet
+ ☐ Multiple types of weapons
+ ☐ Missiles!
+ ☐ Make lasers only shoot when ship is facing targets way
+ ☐ Overheat System for lasers
+
+Abilities update:
+ ☐ Make mines
+ ☐ Make multiple abilities bar, to decide which one can be equipped
+ ☐ Clean up radar to free up control
+
+Display updates:
+ ☐ Planet in parallax
+ ☐ Parallax asteroids
+ ☐ start in far away parallax
+ ☐ nebula in background parallax
+ ☐ Procedural generated planets
+ ☐ Shake screen when hit
+ ☐ Ship colors through glow or shield
+
+Misc/bugs:
+ ☐ Reset internal force when respawning
+ ☐ Make AI slow down when approaching target
+ ☐ Make debug label rotation independent
+ ☐ Send stop signal to replay threads when replay is pushed
+ ☐ Document key bindings and available abilities
+ ☐ Make ships not available on radar after they are dead
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ refactor script, rename misleading names @done (24-03-28 21:06) @project(IN_PROGRESS)
+ ✔ Re-implement movement based on forces @done (24-03-28 21:06) @project(IN_PROGRESS)
+ ✔ Make parameters for acceleration and deceleration values @done (24-03-28 16:31) @project(IN_PROGRESS)
+ ✔ Make character control based on force, intent to only modify @done (24-03-28 15:24) @project(IN_PROGRESS)
+ ✔ Add force vector @done (24-03-28 15:24) @project(IN_PROGRESS)
+ ✔ make sonar movable with mouse @done (24-03-26 15:55) @project(IN_PROGRESS)
+ ✔ Add radar to find ships @done (24-03-26 15:55) @project(IN_PROGRESS)
+ ✔ change sonar speed @done (24-03-26 15:39) @project(IN_PROGRESS)
+ ✔ make radar displayed only optionally @done (24-03-26 15:05) @project(IN_PROGRESS)
+ ✔ radial sonar sytle @done (24-03-26 14:25) @project(IN_PROGRESS)
+ ✔ Target assist for player @done (24-03-22 15:10) @project(IN_PROGRESS)
+ ✔ Send highlighted ship through action @done (24-03-22 15:10) @project(IN_PROGRESS)
+ ✔ Make only one ship being highligthed @done (24-03-22 08:49) @project(IN_PROGRESS)
+ ✔ Highlight ship @done (24-03-22 08:49) @project(IN_PROGRESS)
+ ✔ Highlight targeted ships by cursor proximity @done (24-03-21 15:45) @project(IN_PROGRESS)
+ ✔ Add target assist collision area @done (24-03-21 15:45) @project(IN_PROGRESS)
+ ✔ make enemy ships to combat current ships @done (24-03-20 09:45) @project(IN_PROGRESS)
+ ✔ Make simple rule as to who is the winner in prototype @done (24-03-20 09:45) @project(IN_PROGRESS)
+ ✔ Create a ship controlled by an AI @done (24-03-20 09:45) @project(IN_PROGRESS)
+ ✔ nerf enemy aiming @done (24-03-20 09:44) @project(IN_PROGRESS)
+ ✔ Announce winner if a team has no ships left @done (24-03-20 09:44) @project(IN_PROGRESS)
+ ✔ Eliminate ships when health is low @done (24-03-20 09:31) @project(IN_PROGRESS)
+ ✔ Add health to ships @done (24-03-20 09:04) @project(IN_PROGRESS)
+ ✔ proper playback of enemy recorded moves @done (24-03-19 15:54) @project(IN_PROGRESS)
+ ✔ Update ships so that enemies spawn much like player @done (24-03-19 15:54) @project(IN_PROGRESS)
+  except for the controllable2D it should be controlled by AI
+ ✔ Position ships correctly @done (24-03-19 15:51) @project(IN_PROGRESS)
+ ✔ Move modulate colors to team @done (24-03-19 15:50) @project(IN_PROGRESS)
+ ✔ Spawn a new ship every time replay is initiated @done (24-03-19 14:09) @project(IN_PROGRESS)
+ ✔ Handle that the recorded moves are played back as they were @done (24-03-19 13:20) @project(IN_PROGRESS)
+ ✔ Create an AI control node @done (24-03-19 13:20) @project(IN_PROGRESS)
+ ✔ Create another team Entity @done (24-03-18 16:19) @project(IN_PROGRESS)
+ ✔ make ai control recorded @done (24-03-18 16:17) @project(IN_PROGRESS)
+ ✔ Create control strategy @done (24-03-18 15:58) @project(IN_PROGRESS)
+ ✔ Create aiming strategy @done (24-03-18 15:58) @project(IN_PROGRESS)
+ ✔ Add simple ai control @done (24-03-18 15:58) @project(IN_PROGRESS)
+ ✔ Create movement strategy @done (24-03-18 15:51) @project(IN_PROGRESS)
+ ✔ reach combatants from nodes @done (24-03-18 15:01) @project(IN_PROGRESS)
+ ✔ query team of every combatant @done (24-03-18 15:01) @project(IN_PROGRESS)
+ ✔ compare intent direction of AI and human @done (24-03-18 15:01) @project(IN_PROGRESS)
+ ✔ Create fair control limitations @done (24-03-18 15:01) @project(IN_PROGRESS)
+ ✔ query first combatant @done (24-03-13 15:52) @project(IN_PROGRESS)
+ ✔ create and document action structure @done (24-03-13 14:53) @project(IN_PROGRESS)
+ ✔ Map input events from key/mouse into internal format so AI can also control @done (24-03-13 14:53) @project(IN_PROGRESS)
+ ✔ use input processor in move recorder @done (24-03-13 14:20) @project(IN_PROGRESS)
+ ✔ Use input processor in laser_beam @done (24-03-13 14:20) @project(IN_PROGRESS)
+ ✔ Use input processor in Character @done (24-03-13 14:20) @project(IN_PROGRESS)
+ ✔ Store mouse position @done (24-03-13 14:20) @project(IN_PROGRESS)
+ ✔ Store intent and pewpew @done (24-03-13 14:20) @project(IN_PROGRESS)
+ ✔ Create input processor to map input events to intent, cursor and pewpew @done (24-03-13 14:20) @project(IN_PROGRESS)
+ ✔ make ship shoot stuff @done (24-03-11 13:17) @project(IN_PROGRESS)
+ ✔ make laser have an effect @done (24-03-11 13:17) @project(IN_PROGRESS)
+ ✔ create laser in ship @done (24-03-11 13:17) @project(IN_PROGRESS)
+ ✔ Add cursor relative position to recordable @done (24-03-11 13:17) @project(IN_PROGRESS)
+ ✔ Enable laser from mouse input @done (24-03-11 12:19) @project(IN_PROGRESS)
+ ✔ store the mouse pointer position next to the inputevent @done (24-03-11 11:44) @project(IN_PROGRESS)
+ ✔ Make laser follow mouse to a certain degree @done (24-03-11 11:44) @project(IN_PROGRESS)
+ ✔ restructure scripts @done (24-03-05 16:10) @project(BACKLOG)
+ ✔ show laser when activated by key @done (24-03-05 15:55) @project(IN_PROGRESS)
+ ✔ print out when a target was hit by the laser @done (24-03-05 15:54) @project(IN_PROGRESS)
+ ✔ flash laser when shoot key is pressed @done (24-03-05 15:51) @project(IN_PROGRESS)
+ ✔ rework input system so that events are processed by the character @done (24-03-04 15:11) @project(IN_PROGRESS)
+ ✔ formula for ship spawn_positions @done (24-03-04 11:01) @project(IN_PROGRESS)
+ ✔ Handle multiple replays @done (24-03-04 11:01) @project(IN_PROGRESS)
+ ✔ unique id for each ship in one team @done (24-03-01 13:41) @project(IN_PROGRESS)
+ ✔ Store team spawn position @done (24-03-01 13:41) @project(IN_PROGRESS)
+ ✔ Handle succession of ships ( instance new script component ) @done (24-03-01 13:41) @project(IN_PROGRESS)

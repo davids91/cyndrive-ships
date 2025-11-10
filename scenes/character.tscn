@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3 uid="uid://bxvkgl6pp7mn0"]
+
+[ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/controllable2d.gd" id="1_4dcfn"]
+[ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/character.gd" id="1_gqnfm"]
+[ext_resource type="Texture2D" uid="uid://d0f8xjfheasif" path="res://assets/ship-2.png" id="2_yux4c"]
+[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/team.gd" id="3_j5io8"]
+[ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://laser_beam_ray.gd" id="4_2t4uj"]
+[ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/BattleInputMap.gd" id="6_pscbx"]
+[ext_resource type="Script" uid="uid://3np7r4qj40n6" path="res://scripts/health.gd" id="7_1bsqs"]
+[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://assets/target.png" id="8_pt8yu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k8udw"]
+
+[node name="character" type="CharacterBody2D"]
+script = ExtResource("1_gqnfm")
+
+[node name="collision_shape" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_k8udw")
+
+[node name="controller" type="Node2D" parent="."]
+script = ExtResource("1_4dcfn")
+top_speed = 20.0
+start_resistance = 2
+stop_resistance = 4
+
+[node name="skin" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("2_yux4c")
+region_rect = Rect2(0, 0, 6000, 3000)
+
+[node name="team" type="Node2D" parent="."]
+script = ExtResource("3_j5io8")
+
+[node name="laser_beam" type="RayCast2D" parent="."]
+target_position = Vector2(5000, 0)
+script = ExtResource("4_2t4uj")
+
+[node name="beam_line" type="Line2D" parent="laser_beam"]
+points = PackedVector2Array(2, 0, 12, 0)
+width = 0.0
+default_color = Color(0.878431, 0, 0, 1)
+
+[node name="input_processor" type="Node2D" parent="."]
+script = ExtResource("6_pscbx")
+
+[node name="debug_label" type="Label" parent="."]
+offset_left = -15.0
+offset_top = -54.0
+offset_right = 156.0
+offset_bottom = -30.0
+text = "DEBUG"
+
+[node name="health" type="Node2D" parent="."]
+script = ExtResource("7_1bsqs")
+
+[node name="target_arrow" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_pt8yu")

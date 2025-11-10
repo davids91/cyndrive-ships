@@ -1,0 +1,11 @@
+
+ ✔ Document different combat Entities: @done (24-01-26 14:35)
+   Player
+   Ship
+   Weapon
+ ☐ Use PanOrbit camera; Maybe it is added from another plugin?
+ ☐ Implement Parallax
+ ☐ [[0]]Expand on planetary disasters
+ ☐ [[1]]Expand on Base components
+ ☐ [[2]]Expand on UI components
+   e.g. Date chooser

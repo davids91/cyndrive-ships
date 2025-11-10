@@ -6,6 +6,7 @@
 .import/
 export.cfg
 export_credentials.cfg
+*.tmp
 
 # Imported translations (automatically generated from CSV files)
 *.translation
@@ -14,3 +15,6 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+#addons
+addons/*
