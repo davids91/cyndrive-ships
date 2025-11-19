@@ -61,6 +61,8 @@ func respawn():
 func unalive_me():
 	set_collision_layer_value(32, false)
 	set_visible(false)
+	if has_node("ai_control"):
+		$ai_control.enabled = false
 
 func _unhandled_input(inev: InputEvent) -> void:
 	if(accept_keyboard_inputs):

@@ -68,7 +68,9 @@ rotation_speed = 0.05
 position = Vector2(573, 324)
 rotation = 2.35619
 team_id = 1
+spawn_position = Vector2(0, 0)
 color = Color(1, 1, 1, 1)
+starting_health = 10.0
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="character"]
 remote_path = NodePath("../../sonar_sensor")
@@ -96,6 +98,7 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = 10.0
 
 [node name="ai_control" type="Node2D" parent="enemy"]
 rotation = 3.14159

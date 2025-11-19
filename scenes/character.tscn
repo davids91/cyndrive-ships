@@ -15,6 +15,10 @@ height = 102.00004
 
 [node name="character" type="CharacterBody2D"]
 script = ExtResource("1_gqnfm")
+team_id = null
+spawn_position = null
+color = null
+starting_health = null
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 rotation = 1.5708
