@@ -1,0 +1,17 @@
+[remap]
+
+importer="VoxelVoxSceneImporter"
+type="PackedScene"
+uid="uid://cjjacftit844y"
+path="res://.godot/imported/battle_ship.vox-86bd01222e532b58dc0eae495b3ce831.tscn"
+
+[deps]
+
+source_file="res://models/battle_ship.vox"
+dest_files=["res://.godot/imported/battle_ship.vox-86bd01222e532b58dc0eae495b3ce831.tscn"]
+
+[params]
+
+store_colors_in_texture=false
+scale=1.0
+enable_baked_lighting=true

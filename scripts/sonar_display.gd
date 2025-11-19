@@ -18,7 +18,7 @@ func add_display_object(relative_pos, modulate_color):
 	var screen_center = get_viewport_rect().size / 2.
 	var direction = relative_pos.normalized();
 	var sprite = Sprite2D.new()
-	sprite.texture = preload("res://assets/arrow.png")
+	sprite.texture = preload("res://textures/arrow.png")
 	sprite.set_position(screen_center + direction * radius)
 	sprite.set_rotation(direction.angle() + PI/2.)
 	sprite.modulate = modulate_color

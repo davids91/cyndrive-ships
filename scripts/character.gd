@@ -62,7 +62,7 @@ func unalive_me():
 	set_collision_layer_value(32, false)
 	set_visible(false)
 
-func _unhandled_input(inev):
+func _unhandled_input(inev: InputEvent) -> void:
 	if(accept_keyboard_inputs):
 		var action = BattleInputMap.get_action(get_viewport(), get_global_position(), inev)
 		var target_assist = get_parent().get_node("target_assist")

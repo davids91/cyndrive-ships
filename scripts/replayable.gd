@@ -1,6 +1,6 @@
 extends Node2D
 
-#region Variables to be set for the recorder before calling ready
+#region init_before_ready: Variables to be set for the recorder before calling ready
 var start_time_usec # in microseconds, from Time.get_ticks_usec()
 var correction_interval_sec
 var actions: Dictionary # key is in usec
@@ -27,7 +27,19 @@ func reset() -> void:
 	start_time_msec = Time.get_ticks_msec()
 	last_corrected = start_time_msec
 
+func start_replay() -> void:
+	if !replay_enabled:
+		replay_enabled = true
+	start_time_usec = Time.get_ticks_usec()
+	start_time_msec = Time.get_ticks_msec()
+	last_corrected = Time.get_ticks_msec()
+
+func stop_replay() -> void:
+	replay_enabled = false
+
 func _process(delta: float) -> void:
+	if not replay_enabled:
+		return
 	# Estimate time until the next physics step
 	time_since_last_physics_step_sec += delta
 	if time_since_last_physics_step_sec >= physics_interval_sec:

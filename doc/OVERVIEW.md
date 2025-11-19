@@ -1,27 +1,42 @@
-# Overview
-Ship battles intertwined through time; IN SPACE!! Woo
+## Vision
+- Genre: 
+	- Action/Shoot 'Em Up/Multidirectional shooters
+- Main Mechanics:
+	- Spaceships
+	- Space Base building
+	- Time travel
+- Theme: Fun/Futuristic
+- MWHAT DO YOU WANT???
+	- pew pew pew
 
-## Story
-It's the year 0xBEEF! (we use hexadecimals now)
-Humanity is finally exploring the wast universe with the help of the invention of Dr. Ann Stephanie: 
-The Cyndrive engine! A giant spaceship mobilizer that doubles as a time-traveling device.
-It is able to move its surroundings in time, both short and long term with the use of the rare mineral, Laupeerium.
-The engine is also able to generate a paradox suppression field, which makes it possible to intertwine timelines
-to make smaller fighter ships be present multiple times at the same time.
+## Design Pillars
+- Defeating enemies
+	- Strategy
+	- PEWPEW
+	- BOOM
+- Traveling back in time
+	- to fix mistakes
+	- "The loop" : something fun over and over
 
-As it turns out proper self-driving capabilities could not be delivered to battleships before time travel was invented.
-*sad elon noises*
-In other, depressing news time travel is now used to make armies from a single induvidual,
-instead of talking to dinosaurs or some shi(*cuts away*)
-Now I could invent a baddie at this point,
-but it is pointless because humanity will always find a reason to break stuff in a cool way
-and explode ships, polluting the environment. Except this time instead of the ocean we pollute the universe.
-Because that is surely big enough for us to not care.
+## Combat
+A battle is inside an arena-like scene where the surrounding environment(planet, moons, space debris),
+attacking and defending carrier ship is shown.
+The combat lasts until either one of the bases are destroyed.
+Upon destruction a carrier can decide to turn back time to the beginning of the combat
+IF it has enough resources.
+This reverts the arena to its starting state in an unstable time-bubble. 
 
-So there are multiple companies fighting for the exclusive use of Laupeerium, so your goal is to not care about that
-and blow up shi(*cuts away*).
-The blown up enemies may drop technologies you can use to upgrade your fleet. That basically means different weapons.
+The Cyndrive ships are duplicated, each move they have made in the previous turn are stored and played back,
+while the new set of ships are now controlled by the player(s or bot(s)).
+Paradox destruction effect is suppressed until a victor emerges,
+but continued contact of a ship with its previous self weakens the paradox supression field and can make the ship implode.
 
-## Documentation structure
-The two slices of the game are called Bases and Battles. Despite the two being intertwined,
-the games they represent are valid on their own.
+Since the time-bubble is unstable ships destroyed in previous turns disappear, unless they are destroyed sooner.
+In case a ship is destroyed within a battle it may survive it,
+because of the unstable nature of the time-bubble the battle takes place.
+The more turns a ship is destroyed, the more likely its destruction will transcend the time-bubble.
+Stationary Bases are orbiting around their target planet, while traveling bases can move freely.
+However attacking can only occur in a brief window of time, when the bases trajectory meet.
+
+Both the player and the enemy base can restart the match, using up a time travel resource
+The battle continues until either the base is destroyed, or the player can not restart the battle after death.

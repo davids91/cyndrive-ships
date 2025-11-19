@@ -14,6 +14,8 @@ var stored_transforms : Dictionary # key is in msec
 func start_recording():
 	if !recording:
 		recording = true
+	stored_actions = Dictionary()
+	stored_transforms = Dictionary()
 	start_time_usec = Time.get_ticks_usec()
 	start_time_msec = Time.get_ticks_msec()
 	last_triggered = Time.get_ticks_msec()

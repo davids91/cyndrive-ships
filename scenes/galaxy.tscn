@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://wt4f85n5mn7s" path="res://scripts/galaxy_main.gd" id="1_m3hme"]
 [ext_resource type="Shader" uid="uid://beksqhxqmaqvw" path="res://shaders/galaxy.gdshader" id="2_i4jmc"]
-[ext_resource type="Texture2D" uid="uid://cgjeow13rx32e" path="res://assets/star-4.png" id="3_3adoa"]
+[ext_resource type="Texture2D" uid="uid://cgjeow13rx32e" path="res://textures/star-4.png" id="3_3adoa"]
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="4_x6ffi"]
 [ext_resource type="Script" uid="uid://dip5gwb4jbv3o" path="res://scripts/planet_marker.gd" id="5_hnxgu"]
 [ext_resource type="Shader" uid="uid://do6odlxf3wcdl" path="res://shaders/planet_marker.gdshader" id="6_mb3ho"]

@@ -7,9 +7,9 @@
 [ext_resource type="Script" uid="uid://bib83etyoggcu" path="res://scripts/sonar_display.gd" id="3_m8v8v"]
 [ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/sonar_sensor.gd" id="4_3fx1x"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/ai_control.gd" id="5_3g8p0"]
-[ext_resource type="Texture2D" uid="uid://bs1tb484wprlw" path="res://assets/asteroid.png" id="5_7e0bu"]
+[ext_resource type="Texture2D" uid="uid://bs1tb484wprlw" path="res://textures/asteroid.png" id="5_7e0bu"]
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/target_assist.gd" id="6_cj32i"]
-[ext_resource type="Texture2D" uid="uid://4vj0r5txy10y" path="res://assets/BASE.png" id="10_66ngm"]
+[ext_resource type="Texture2D" uid="uid://4vj0r5txy10y" path="res://textures/BASE.png" id="10_66ngm"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/team.gd" id="11_hwhwn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gqr64"]
