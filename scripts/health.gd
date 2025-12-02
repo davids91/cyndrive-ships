@@ -6,7 +6,8 @@ var health = starting_health
 var is_alive = true
 
 func accept_damage(strength):
-	get_parent().get_node("debug_label").set_text(str(health))
+	if get_parent().has_node("debug_label"):
+		get_parent().get_node("debug_label").set_text(str(health))
 	health -= strength
 	is_alive = 0 < health
 

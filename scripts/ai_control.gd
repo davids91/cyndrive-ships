@@ -4,13 +4,12 @@ extends Node2D
 @export var max_distance_from_target = 10.
 @export var laser_aim = 1.815
 @export var laser_haste = 0.03
-
 @export var difficuilty_laser_frequency_sec = 1.3
 @export var difficuilty_aim_response = 0.5
 
 @onready var character = get_parent()
-var chosen_target : CharacterBody2D
-var laser_direction : Vector2
+var chosen_target: CharacterBody2D
+var laser_direction: Vector2
 var enabled = true
 var time_since_laser = 0.
 
@@ -35,7 +34,7 @@ func _process(delta):
 
 	time_since_laser += delta
 
-	var combatants = character.get_parent().combatants
+	var combatants = character.get_parent()
 	var to_target : Vector2
 
 	# If chosen target is not alive anymore..
@@ -43,20 +42,19 @@ func _process(delta):
 		chosen_target = null
 
 	# decide new target
-	if not combatants.is_empty(): # only if there are enemies
-		var random_target = combatants.pick_random()
-		var tries = 0
-		while !random_target.is_alive() and tries < 50:
-			random_target = combatants.pick_random()
-			tries += 1
-		if random_target.get_node("team").is_enemy(character.get_node("team")) \
-			and ( \
-				chosen_target == null or \
-				((random_target.global_position + character.global_position).length() \
-				< (chosen_target.global_position + character.global_position).length()) \
-			) \
-		:
-			chosen_target = random_target
+	var random_target = combatants.get_children().pick_random()
+	var tries = 0
+	while tries < 50 and ("is_alive" not in random_target or !random_target.is_alive()):
+		random_target = combatants.get_children().pick_random()
+		tries += 1
+	if random_target.get_node("team").is_enemy(character.get_node("team")) \
+		and ( \
+			chosen_target == null or \
+			((random_target.global_position + character.global_position).length() \
+			< (chosen_target.global_position + character.global_position).length()) \
+		) \
+	:
+		chosen_target = random_target
 
 	if chosen_target != null:
 		var target_direction = Vector2( \

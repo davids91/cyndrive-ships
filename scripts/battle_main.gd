@@ -2,26 +2,27 @@ extends Node2D
 
 @onready var character_template = preload("res://scenes/character.tscn")
 
-var combatants = [] # Every object taking part of the battle
-var ships = [] # Not including control characters
-var ship_moves = []
-
 var sonar_visible = false
 var sonar_speed = 0.
 var sonar_slow_speed = 0.
 var init_countdown = 2.
 
 func _ready():
-	$character.init_control_character()
-	$enemy.init_control_character()
-	combatants.push_back($character)
-	combatants.push_back($enemy)
-	$character/controller.move_to_spawn_pos()
-	$enemy/controller.move_to_spawn_pos()
-	$character.accepts_input(false)
+	$combatants/character.init_control_character()
+	$combatants/enemy.init_control_character()
+	$combatants/character.accepts_input(false)
 	sonar_speed = $sonar_sensor.rotation_speed
 	sonar_slow_speed = $sonar_sensor.rotation_speed / 4.
-	$enemy/ai_control.stop()
+	$combatants/enemy/ai_control.stop()
+	
+	for combatant in $combatants.get_children():
+		combatant.move_to_spawn_position()
+		$timeline.connect("round_reset", combatant.respawn)
+		$timeline.connect("rewind_started", combatant.pause_control)
+		$timeline.connect("rewind_stopped", combatant.resume_control)
+
+	for debris in $debris.get_children():
+		$timeline.connect("round_reset", debris.respawn)
 	
 var reverse_hold_time = 0.
 var reverse_being_held = false
@@ -29,9 +30,17 @@ var reverse_initiated = false
 const short_reverse_hold_time_sec = 0.15 # How long to hold down the reverse action to start reversing time, instead of restarting the round
 
 var debug_lines = []
+func display_line(from: Vector2, to: Vector2, color: Color) -> void:
+	debug_lines.push_back({"from": from, "to": to, "color": color})
+	var erasure_tween = create_tween()
+	erasure_tween.tween_interval(0.8)
+	erasure_tween.tween_callback(func() : debug_lines.pop_front())
+	erasure_tween.chain()
+	queue_redraw()
+	
 func _draw() -> void:
 	for line in debug_lines:
-		draw_line(line.from.get_origin(), line.to.get_origin(), line.color, 3.0)
+		draw_line(line.from, line.to, line.color, 3.0)
 
 func _process(delta):
 	# Countdown to battle start
@@ -39,50 +48,48 @@ func _process(delta):
 		init_countdown = max(init_countdown - delta, 0)
 		$GUI/score.set_text("%0.3f" % init_countdown)
 		if 0 >= init_countdown:
-			$character.accepts_input(true)
-			BattleTimeline.instance.reset()
-			$character/move_recorder.start_recording()
-			$enemy/move_recorder.start_recording()
-			$enemy/ai_control.resume()
+			$combatants/character.accepts_input(true)
+			$timeline.reset()
+			$combatants/enemy/ai_control.resume()
 		return
 	
 	# Team size label update
 	var counts = Dictionary()
 	counts[1] = 0
 	counts[2] = 0
-	for c in combatants:
-		if c.is_alive():
+	for c in $combatants.get_children():
+		if "is_alive" in c and c.is_alive():
 			counts[c.get_node("team").team_id] += 1
 	$GUI/score.set_text(str(counts[1], " vs ", counts[2]))
 	$target_assist.set_position(get_global_mouse_position())
 	$GUI/sonar_display.set_display_visibility(sonar_visible)
 	if $sonar_sensor.direct_control:
-		var direction = (get_global_mouse_position() - $character.get_global_position()).normalized()
+		var direction = (get_global_mouse_position() - $combatants/character.get_global_position()).normalized()
 		$sonar_sensor.set_manual_rotation(direction.angle())
 	
 	# Handling Timeline reverse
 	if reverse_being_held:
 		reverse_hold_time += delta
 		if reverse_hold_time > short_reverse_hold_time_sec:
-			BattleTimeline.instance.reverse(delta)
+			$timeline.reverse(delta)
 	if reverse_initiated:
 		if not reverse_being_held:
 			# Short rewind press: assign the recorded moves to puppets and reset the battleground
 			if reverse_hold_time <= short_reverse_hold_time_sec:
-				$character/controller.stop()
-				$enemy/controller.stop()
-				create_new_puppet($character)
-				create_new_puppet($enemy)
-				BattleTimeline.instance.reset()
+				$combatants/character/controller.stop()
+				$combatants/enemy/controller.stop()
+				create_new_puppet($combatants/character)
+				create_new_puppet($combatants/enemy)
+				$timeline.reset()
 				debug_lines.clear()
 				queue_redraw()
 			else: 
-				BattleTimeline.instance.finish_reverse()
+				$timeline.finish_reverse()
 			reverse_hold_time = 0.
 			reverse_initiated = false
 
 func create_new_puppet(predecessor):
-	var records = predecessor.get_node("move_recorder").stop_recording()
+	var records = predecessor.get_node("temporal_recorder").stop_recording()
 	var puppet = character_template.instantiate();
 	var replayer = Node2D.new()
 	puppet.init_clone(predecessor)
@@ -90,19 +97,16 @@ func create_new_puppet(predecessor):
 	replayer.name = "replayer"
 	replayer.actions = records["actions"]
 	replayer.motion = records["motion"]
-	BattleTimeline.instance.connect("round_reset", puppet.respawn)
-	BattleTimeline.instance.connect("rewind_started", puppet.pause_control)
-	BattleTimeline.instance.connect("rewind_stopped", puppet.resume_control)
-	BattleTimeline.instance.connect("round_reset", replayer.reset)
-	BattleTimeline.instance.connect("round_reset", replayer.start_replay)
+	$timeline.connect("round_reset", puppet.respawn)
+	$timeline.connect("rewind_started", puppet.pause_control)
+	$timeline.connect("rewind_stopped", puppet.resume_control)
+	$timeline.connect("round_reset", replayer.reset)
+	$timeline.connect("round_reset", replayer.start_replay)
 	replayer.reset()
 	puppet.add_child(replayer, true)
 	
-	add_child(puppet)
-	ships.push_back(puppet)
-	combatants.push_back(puppet)
-	ship_moves.push_back(records) 
-	predecessor.get_node("move_recorder").start_recording()
+	$combatants.add_child(puppet)
+	predecessor.get_node("temporal_recorder").start_recording()
 
 func _unhandled_input(event):
 	var just_pressed = event.is_pressed() and not event.is_echo()

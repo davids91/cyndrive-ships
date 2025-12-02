@@ -13,7 +13,7 @@ config_version=5
 config/name="Cyndrive Ships"
 run/main_scene="uid://b3trh6sc7bkeq"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://textures/icon_i_guess.png"
+config/icon="uid://dhi7cyliyf7lw"
 config/size/mode=0
 
 [display]
@@ -81,6 +81,11 @@ boost={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[layer_names]
+
+2d_physics/layer_1="characters"
+2d_physics/layer_2="environment"
 
 [physics]
 

@@ -8,11 +8,11 @@ func set_manual_rotation(rad):
 	direct_control = true
 	set_rotation(rad)
 
-func _process(delta):
+func _process(_delta):
 	if !direct_control: set_rotation(get_rotation() + rotation_speed)
 	$"../GUI/sonar_display".set_display_rotation(get_rotation())
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	force_raycast_update()
 	if is_colliding():
 		var coll_pos = get_collision_point() - get_global_position()

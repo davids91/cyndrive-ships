@@ -107,7 +107,7 @@ func _process(delta: float) -> void:
 					motion.keys()[current_motion_key + index_delta_for_motion_interpolation] \
 					- (BattleTimeline.instance.time_msec() + time_to_next_physics_step_ms) \
 				)
-				motion_to_set = BattleCharacter.lerp_motion( \
+				motion_to_set = BattleTimeline.lerp_motion( \
 					motion[motion.keys()[current_motion_key]], \
 					motion[motion.keys()[current_motion_key + index_delta_for_motion_interpolation]], \
 					previous_motion_distance / (previous_motion_distance + abs(delta_to_current_motion))

@@ -38,3 +38,24 @@ Replay prioritizes input actions. If an input action is within the current estim
 the replayer will pause the `_process` function, and then apply the input.
 Should there be no input corrections within the current frame, replay checks if the next stored position
 is "close enough" to the next `_physics_process`, and if that's the case, a position correction is also applied.  
+
+# Temporal checklist - Battle Presence
+In order to introduce a new entity into the temporal records the following steps are to be followed:
+- Add either a `CharacterBody2D` or `RigidBody2D` to the scene with the `battle_character.gd` or `battle_debris.gd` script attached respectively
+- Insert a Node(2D) as a child with the name `temporal_recorder`, with the `temporal_recroder.gd` script attached
+- (Optional) For `BattleDebris` objects, place the nodes under the `debris` node within the battle.
+	- This will take care of points (A), (B) and (C) automatically
+- (Optional) For `BattleCharacter` objects, place the nodes under the `combatants` node within the battle.
+	- This will take care of points (A), (B) and (C) automatically
+- (A)Ensure that the `start_recording` function is called at the start of the battle for the object
+- (B)Ensure that the `reset` function of the `temporal_recorder` is being called at the end of the objects timeline
+- (C)Ensure that the `respawn` function of the node is being called at the start of the objects timeline
+
+# Temporal checklist - Persistent Presence
+To introduce a character which replays a given set of recorded presence, the following steps need to be followed.
+(The function `create_new_puppet` does the below steps)
+- Add either a `CharacterBody2D` or `RigidBody2D` to the scene with the `battle_character.gd` or `battle_debris.gd` script attached respectively
+- Insert a Node(2D) as a child with the name `replayer`, with the `temporal_recroder.gd` script attached
+- Initialize the `replayer` with the stored moves
+- Ensure the node functions `respawn`, `pause_control`, `resume_control` are called appropriately to battle `reset` and `rewind_started`, `rewind_stopped` signals
+- Ensure the `replayer` functions `reset` and `start_replay` are called appropriately to battle timeline

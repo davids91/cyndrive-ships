@@ -6,11 +6,6 @@ var intent_direction = Vector2()
 var intent_force = Vector2()
 var internal_force = Vector2()
 
-func move_to_spawn_pos():
-	character.set_position(team.get_spawn_position())
-	character.set_velocity(Vector2())
-	character.move_and_slide()
-
 """
 Run curve based on https://www.youtube.com/watch?v=yorTG9at90g
 	--> Run curve is based on speed x time

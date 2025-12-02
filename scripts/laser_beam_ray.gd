@@ -11,7 +11,7 @@ func process_input_action(action):
 		pewpew = true
 		pewpew_ready = false
 
-func _process(delta):
+func _process(_delta):
 	if pewpew_ready:
 		var tween = create_tween()
 		$beam_line.points[1] = pewpew_point
@@ -20,7 +20,7 @@ func _process(delta):
 		tween.tween_property($beam_line, "width", 0, 0.1)
 		pewpew_ready = false
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if pewpew:		
 		force_raycast_update()
 		if is_colliding():

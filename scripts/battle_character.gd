@@ -13,15 +13,6 @@ func _ready() -> void:
 	if target_assist_shape:
 		target_assist_original_size = target_assist_shape.shape.radius
 
-static func lerp_motion(a: Dictionary, b: Dictionary, weight: float) -> Dictionary:
-	return { \
-		"transform" : lerp(a["transform"], b["transform"], weight), \
-		"velocity" : lerp(a["velocity"], b["velocity"], weight), \
-	}
-
-func get_motion() -> Dictionary:
-	return {"transform": transform, "velocity": velocity}
-
 var motion_update_started = false
 var motion_overwrite_time_msec: float = 0.
 var motion_to_set : Dictionary
@@ -30,8 +21,7 @@ func correct_motion_course(motion: Dictionary, over_time_msec: float) -> void:
 	motion_to_set = motion
 	motion_overwrite_time_msec = abs(over_time_msec)
 	# DEBUG FOR MOTION CORRECTION
-	get_parent().debug_lines.append({"from": transform, "to": motion_to_set["transform"], "color": debug_color})
-	get_parent().queue_redraw()
+	get_parent().get_parent().display_line(transform.get_origin(), motion_to_set["transform"].get_origin(), debug_color)
 	motion_update_started = true
 	
 func _physics_process(delta: float) -> void:
@@ -40,7 +30,10 @@ func _physics_process(delta: float) -> void:
 		var weight_in_interpolation = this_frame_msec / motion_overwrite_time_msec
 		if motion_overwrite_time_msec < this_frame_msec:
 			weight_in_interpolation = 1.
-		var interpolated_motion = lerp_motion(get_motion(), motion_to_set, clamp(weight_in_interpolation * weight_in_interpolation, 0., 1.))
+		var interpolated_motion = BattleTimeline.lerp_motion( \
+			{"transform": transform, "velocity": velocity}, motion_to_set, \
+			clamp(weight_in_interpolation * weight_in_interpolation, 0., 1.) \
+		)
 		transform = interpolated_motion["transform"]
 		velocity = interpolated_motion["velocity"]
 		
@@ -62,7 +55,7 @@ func init_control_character():
 	$skin.self_modulate = $team.color
 
 func is_alive():
-	return $health.is_alive
+	return self.has_node("health") and $health.is_alive
 
 func set_highlight(yesno):
 	$target_arrow.set_visible(yesno)
@@ -83,8 +76,8 @@ func _process(_delta):
 func process_input_action(action):
 		$controller.process_input_action(action)
 		$laser_beam.process_input_action(action)
-		if has_node("move_recorder"):
-			$move_recorder.process_input_action(action)
+		if has_node("temporal_recorder"):
+			$temporal_recorder.process_input_action(action)
 		
 func accept_damage(strength):
 	$health.accept_damage(strength)
@@ -93,15 +86,21 @@ func accept_damage(strength):
 	else:
 		explosion_shake($cam)
 
+func move_to_spawn_position():
+	set_position($team.get_spawn_position())
+	move_and_slide()
+	
 func respawn():
-	$health.respawn()
-	$controller.move_to_spawn_pos()
-	if has_node("replayer"):
-		$replayer.reset()
-	$controller.stop()
+	move_to_spawn_position()
 	set_velocity(Vector2())
 	set_collision_layer_value(1, true)
 	set_visible(true)
+	$health.respawn()
+	$controller.stop()
+	if has_node("temporal_recorder"):
+		$temporal_recorder.start_recording()
+	if has_node("replayer"):
+		$replayer.reset()
 
 func unalive_me():
 	set_collision_layer_value(32, false)
@@ -129,12 +128,8 @@ func accepts_input(yesno):
 func _unhandled_input(inev: InputEvent) -> void:
 	if(accept_inputs):
 		var action = BattleInputMap.get_action(get_viewport(), get_global_position(), inev)
-		var target_assist = get_parent().get_node("target_assist")
-		if target_assist.is_target_locked():
-			var assisted_direction = ( \
-				target_assist.get_current_target_position() \
-				- get_global_position() \
-			).normalized()
+		if $"../../target_assist".is_target_locked():
+			var assisted_direction = ($"../../target_assist".get_current_target_position() - get_global_position()).normalized()
 			action["cursor"] = assisted_direction
 			
 		# move camera lightly on boost  
