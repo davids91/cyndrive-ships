@@ -1,7 +1,7 @@
 extends RayCast2D
 
 @export var rotation_speed = 0.005
-@export var radius = 250.
+@export var radius = 100.
 
 var direct_control = false
 
@@ -40,6 +40,6 @@ func _fire_sonar_ship_blip(collider: BattleCharacter):
 	$"../GUI/sonar_display".add_display_object(self, radius, collider, coll_color)
 	
 func _fire_sonar_generic_blip(collider: Node2D):
-	$"../GUI/sonar_display".add_display_object(self, radius, collider, Color.CHARTREUSE)
+	$"../GUI/sonar_display".add_display_object(self, radius, collider, Color.LIME)
 	
 		
