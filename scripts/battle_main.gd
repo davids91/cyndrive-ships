@@ -95,8 +95,8 @@ func create_new_puppet(predecessor):
 	puppet.init_clone(predecessor)
 	replayer.set_script(preload("res://scripts/temporal_replayer.gd"))
 	replayer.name = "replayer"
-	replayer.actions = records["actions"]
-	replayer.motion = records["motion"]
+	replayer.usec_records = records["actions"]
+	replayer.msec_records = records["motion"]
 	$timeline.connect("round_reset", puppet.respawn)
 	$timeline.connect("rewind_started", puppet.pause_control)
 	$timeline.connect("rewind_stopped", puppet.resume_control)

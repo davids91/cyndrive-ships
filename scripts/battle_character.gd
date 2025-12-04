@@ -13,38 +13,43 @@ func _ready() -> void:
 	if target_assist_shape:
 		target_assist_original_size = target_assist_shape.shape.radius
 
-var motion_update_started = false
-var motion_overwrite_time_msec: float = 0.
-var motion_to_set : Dictionary
+var temporal_update_started = false
+var temporal_overwrite_time_msec: float = 0.
+var snapshot_to_set : Dictionary
 var debug_color: Color = Color.from_hsv(randf() * 6., 1., 1., 1.)
-func correct_motion_course(motion: Dictionary, over_time_msec: float) -> void:
-	motion_to_set = motion
-	motion_overwrite_time_msec = abs(over_time_msec)
+func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void:
+	snapshot_to_set = snapshot
+	temporal_overwrite_time_msec = abs(over_time_msec)
 	# DEBUG FOR MOTION CORRECTION
-	get_parent().get_parent().display_line(transform.get_origin(), motion_to_set["transform"].get_origin(), debug_color)
-	motion_update_started = true
+	get_parent().get_parent().display_line(transform.get_origin(), snapshot_to_set["transform"].get_origin(), debug_color)
+	temporal_update_started = true
+	if "health" in snapshot_to_set:
+		var was_alive = $health.is_alive
+		$health.set_value(snapshot_to_set["health"])
+		if not was_alive and $health.is_alive:
+			resurrect_me()
 	
 func _physics_process(delta: float) -> void:
-	if 0 < motion_overwrite_time_msec:
+	if 0 < temporal_overwrite_time_msec:
 		var this_frame_msec = delta * 1000
-		var weight_in_interpolation = this_frame_msec / motion_overwrite_time_msec
-		if motion_overwrite_time_msec < this_frame_msec:
+		var weight_in_interpolation = this_frame_msec / temporal_overwrite_time_msec
+		if temporal_overwrite_time_msec < this_frame_msec:
 			weight_in_interpolation = 1.
 		var interpolated_motion = BattleTimeline.lerp_motion( \
-			{"transform": transform, "velocity": velocity}, motion_to_set, \
+			{"transform": transform, "velocity": velocity}, snapshot_to_set, \
 			clamp(weight_in_interpolation * weight_in_interpolation, 0., 1.) \
 		)
 		transform = interpolated_motion["transform"]
 		velocity = interpolated_motion["velocity"]
 		
-		if motion_update_started:
-			if "internal_force" in motion_to_set:
-				$controller.internal_force = motion_to_set["internal_force"]
-			if "intent_force" in motion_to_set:
-				$controller.intent_force = motion_to_set["intent_force"]
-		motion_overwrite_time_msec -= delta * 1000
+		if temporal_update_started:
+			if "internal_force" in snapshot_to_set:
+				$controller.internal_force = snapshot_to_set["internal_force"]
+			if "intent_force" in snapshot_to_set:
+				$controller.intent_force = snapshot_to_set["intent_force"]
+		temporal_overwrite_time_msec -= delta * 1000
 	else:
-		motion_update_started = false
+		temporal_update_started = false
 
 func init_clone(predecessor):
 	predecessor.get_node("team").init_succesor($team)
@@ -69,7 +74,6 @@ func _process(_delta):
 		$cam.zoom.y = zoom_value
 		if target_assist_shape:
 			target_assist_shape.shape.radius = target_assist_original_size * (0.5 / zoom_value)
-		
 	if !is_alive():
 		unalive_me()
 
@@ -103,10 +107,17 @@ func respawn():
 		$replayer.reset()
 
 func unalive_me():
-	set_collision_layer_value(32, false)
+	set_collision_layer_value(1, false)
 	set_visible(false)
 	if has_node("ai_control"):
 		$ai_control.enabled = false
+		
+func resurrect_me():
+	set_collision_layer_value(1, true)
+	set_visible(true)
+	if has_node("ai_control"):
+		$ai_control.enabled = true
+	
 
 var accepted_input_previously = false
 func pause_control() -> void:

@@ -25,8 +25,11 @@ The structure of a motion entry is as follows:
 Input data is stored of the monitored entitys `Transform2D`, in every `_physics_process` of the recorded, in millsecond resolution.
 
 ## Input data records -- recording
-One recording contains both the actions and the motion in a Dictionary. 
+One recording contains both the actions, motion and important characteristics in a Dictionary. 
 e.g. an empty record: `{ "actions" : {}, "motion" :  {} }`
+Actions are stored in microsecrond resolution, but sparsely, while other characteristics are stored in milliseconds resolution.
+The latter containts forces, velocities, health etc...
+While these are not neccesarily relevant to motion, they are kept in under the same key to hint on the frequency of storage.
 
 # Replaying records
 To initialize an entity to be replayed, it is to have a child node named `replayer`
