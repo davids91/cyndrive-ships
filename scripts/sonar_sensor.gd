@@ -4,6 +4,8 @@ extends RayCast2D
 
 var direct_control = false
 
+var last_collider_id = 0
+
 func set_manual_rotation(rad):
 	direct_control = true
 	set_rotation(rad)
@@ -15,8 +17,14 @@ func _process(_delta):
 func _physics_process(_delta):
 	force_raycast_update()
 	if is_colliding():
-		var coll_pos = get_collision_point() - get_global_position()
-		var coll_color = Color.AZURE
-		if get_collider().has_node("team"):
-			coll_color = get_collider().modulate
-		$"../GUI/sonar_display".add_display_object(coll_pos, coll_color)
+		var collider = get_collider()
+		#prevent re-firing on each tick while colliding remains true
+		if collider.get_instance_id() != last_collider_id:
+			last_collider_id = collider.get_instance_id() 
+			var coll_pos = get_collision_point() - get_global_position()
+			var coll_color = Color.AZURE
+			if collider.has_node("team"):
+				coll_color = collider.modulate
+			$"../GUI/sonar_display".add_display_object(coll_pos, coll_color)
+	else:
+		last_collider_id = 0
