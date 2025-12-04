@@ -34,7 +34,7 @@ func _process(delta: float) -> void:
     # currentAge = currentGlobalGameTime - spawnTimestamp
 
     # - for testing purposes: wobble a fixed time for now
-    currentAge = abs(sin(Time.get_unix_time_from_system())) * lifespan
+    currentAge = abs(sin(Time.get_unix_time_from_system()/lifespan)) * lifespan
     # print("explosion age:"+str(currentAge))
     
     var hideScale = Vector2(0,0)
@@ -61,14 +61,14 @@ func _process(delta: float) -> void:
     var fire3Percent = currentAge/lifespan
     var fire4Percent = currentAge/lifespan
     var fire5Percent = currentAge/lifespan
-    var smoke1Percent = currentAge/(lifespan / 2)
-    var shockwave1Percent = currentAge/(lifespan * 4)
-    var spikes1Percent = currentAge/(lifespan * 8)
-    var burst1Percent = currentAge/(lifespan * 10)
-    var debris1Percent = currentAge/(lifespan / 3)
-    var debris2Percent = currentAge/(lifespan / 3.33)
-    var debris3Percent = currentAge/(lifespan / 2.78)
-    var debris4Percent = currentAge/(lifespan / 3.14)
+    var smoke1Percent = currentAge*2/lifespan
+    var shockwave1Percent = currentAge*4/lifespan
+    var spikes1Percent = currentAge*6/lifespan
+    var burst1Percent = currentAge*8/lifespan
+    var debris1Percent = currentAge*3/lifespan
+    var debris2Percent = currentAge*3.33/lifespan
+    var debris3Percent = currentAge*2.78/lifespan
+    var debris4Percent = currentAge*3.14/lifespan
 
     # grow over time
     var unitScale = Vector2(1,1)
@@ -77,9 +77,9 @@ func _process(delta: float) -> void:
     fire3.scale = unitScale * fire3Percent * 0.11
     fire4.scale = unitScale * fire4Percent * 1.41
     fire5.scale = unitScale * fire5Percent * 1.04
-    smoke1.scale = unitScale * smoke1Percent * 2
+    smoke1.scale = unitScale * smoke1Percent * 4
     shockwave1.scale = unitScale * shockwave1Percent * 8
-    spikes1.scale = unitScale * spikes1Percent * 3
+    spikes1.scale = unitScale * spikes1Percent * 4
     burst1.scale = unitScale * burst1Percent * 6
     debris1.scale = unitScale
     debris2.scale = unitScale
@@ -87,15 +87,15 @@ func _process(delta: float) -> void:
     debris4.scale = unitScale
 
     # move over time
-    fire1.position = position + (Vector2(134,12)*fire1Percent) 
+    fire1.position = position + (Vector2(61,12)*fire1Percent) 
     fire2.position = position + (Vector2(-18,27)*fire2Percent) 
     fire3.position = position + (Vector2(17,18)*fire3Percent) 
     fire4.position = position + (Vector2(-20,-16)*fire4Percent) 
     fire5.position = position + (Vector2(0,-22)*fire5Percent) 
     smoke1.position = position + (Vector2(14,-33)*smoke1Percent) 
-    shockwave1.position = position + (Vector2(22,-22)*shockwave1Percent) 
-    spikes1.position = position + (Vector2(-19,20)*spikes1Percent) 
-    burst1.position = position + (Vector2(-16,-16)*burst1Percent) 
+    shockwave1.position = position # + (Vector2(22,-22)*shockwave1Percent) 
+    spikes1.position = position #  + (Vector2(-19,20)*spikes1Percent) 
+    burst1.position = position # + (Vector2(-16,-16)*burst1Percent) 
     debris1.position = position + (Vector2(-150,-150)*debris1Percent) 
     debris2.position = position + (Vector2(150,-150)*debris2Percent) 
     debris3.position = position + (Vector2(-150,150)*debris3Percent) 
@@ -132,20 +132,18 @@ func _process(delta: float) -> void:
     if (debris4Percent<=0): debris4.scale = hideScale
     
     # fade out with age
-    """
-    fire1.self_modulate.a = 1-max(1,fire1Percent)
-    fire2.self_modulate.a = 1-max(1,fire2Percent)
-    fire3.self_modulate.a = 1-max(1,fire3Percent)
-    fire4.self_modulate.a = 1-max(1,fire4Percent)
-    fire5.self_modulate.a = 1-max(1,fire5Percent)
-    smoke1.self_modulate.a = 1-max(1,smoke1Percent)
-    shockwave1.self_modulate.a = 1-max(1,shockwave1Percent)
-    spikes1.self_modulate.a = 1-max(1,spikes1Percent)
-    burst1.self_modulate.a = 1-max(1,burst1Percent)
-    debris1.self_modulate.a = 1-max(1,debris1Percent)
-    debris2.self_modulate.a = 1-max(1,debris2Percent)
-    debris3.self_modulate.a = 1-max(1,debris3Percent)
-    debris4.self_modulate.a = 1-max(1,debris4Percent)
-    """
+    fire1.self_modulate.a = max(0,min(1,1-fire1Percent))
+    fire2.self_modulate.a = max(0,min(1,1-fire2Percent))
+    fire3.self_modulate.a = max(0,min(1,1-fire3Percent))
+    fire4.self_modulate.a = max(0,min(1,1-fire4Percent))
+    fire5.self_modulate.a = max(0,min(1,1-fire5Percent))
+    smoke1.self_modulate.a = max(0,min(1,1-smoke1Percent))
+    shockwave1.self_modulate.a = max(0,min(1,1-shockwave1Percent))
+    spikes1.self_modulate.a = max(0,min(1,1-spikes1Percent))
+    burst1.self_modulate.a = max(0,min(1,1-burst1Percent))
+    debris1.self_modulate.a = 1 # 1-min(1,debris1Percent)
+    debris2.self_modulate.a = 1 # 1-min(1,debris2Percent)
+    debris3.self_modulate.a = 1 # 1-min(1,debris3Percent)
+    debris4.self_modulate.a = 1 # 1-min(1,debris4Percent)
     
     
