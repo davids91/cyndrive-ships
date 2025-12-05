@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b3trh6sc7bkeq"]
+[gd_scene load_steps=30 format=3 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle_main.gd" id="1_j7yva"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle_timeline.gd" id="2_ekamt"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bs1tb484wprlw" path="res://textures/asteroid.png" id="5_7e0bu"]
 [ext_resource type="Texture2D" uid="uid://b3l70a8ih0ytb" path="res://textures/stars_larger.png" id="5_vceff"]
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/target_assist.gd" id="6_cj32i"]
+[ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://scripts/rewind.gdshader" id="9_61i1y"]
 [ext_resource type="Texture2D" uid="uid://4vj0r5txy10y" path="res://textures/BASE.png" id="10_66ngm"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/team.gd" id="11_hwhwn"]
 [ext_resource type="Texture2D" uid="uid://brm4ixhsdwp84" path="res://textures/stars_small_background.png" id="12_03edq"]
@@ -31,6 +32,31 @@ shader_parameter/sonar_width_percent = 0.05
 
 [sub_resource type="LabelSettings" id="LabelSettings_vceff"]
 font_size = 50
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_61i1y"]
+noise_type = 0
+frequency = 0.0173
+offset = Vector3(2, -1.2, 0)
+fractal_type = 2
+fractal_octaves = 3
+fractal_lacunarity = 3.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_saiin"]
+noise = SubResource("FastNoiseLite_61i1y")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_saiin"]
+shader = ExtResource("9_61i1y")
+shader_parameter/screen_ratio_w_h = 1.7777778
+shader_parameter/noise = SubResource("NoiseTexture2D_saiin")
+shader_parameter/rewind_amount = 77.285
+shader_parameter/rewind_intensity = 1.0
+shader_parameter/circle_centers = PackedVector2Array(0.185, 0.165, 0.645, 0.235, 0.85, 0.46)
+shader_parameter/circle_radiuses = PackedFloat32Array(0.2, 0.605, 0.16)
+shader_parameter/max_rings = 10.0
+shader_parameter/ring_length_variation = 0.19600000931
+shader_parameter/pixellize_size = 200.0
+shader_parameter/color_1 = Color(0.16862746, 1, 0.98039216, 1)
+shader_parameter/color_2 = Color(0.17234308, 0.00012254089, 0.5416377, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_58h07"]
 radius = 150.0
@@ -140,6 +166,17 @@ offset_right = 54.0
 offset_bottom = 172.0
 text = "l<<"
 label_settings = SubResource("LabelSettings_vceff")
+
+[node name="rewind_effects" type="ColorRect" parent="GUI"]
+visible = false
+material = SubResource("ShaderMaterial_saiin")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="sonar_sensor" type="RayCast2D" parent="."]
 position = Vector2(576, 324)

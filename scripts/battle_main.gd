@@ -74,6 +74,7 @@ func _process(delta):
 		reverse_hold_time += delta
 		if reverse_hold_time > short_reverse_hold_time_sec:
 			$timeline.reverse(delta)
+			$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 	if reverse_initiated:
 		if not reverse_being_held:
 			# Short rewind press: assign the recorded moves to puppets and reset the battleground
@@ -116,9 +117,22 @@ func _unhandled_input(event):
 	if event.is_action_pressed("replay") and just_pressed:
 		reverse_being_held = true
 		$GUI/reverse_marker.visible = true
+		$GUI/rewind_effects.visible = true
+		$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec + short_reverse_hold_time_sec)
+		create_tween().tween_method(
+			func(value): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", value),
+			0.0, 1.0, short_reverse_hold_time_sec
+		)
 	if event.is_action_released("replay"):
 		reverse_being_held = false
 		$GUI/reverse_marker.visible = false
+		var rewind_over_tween = create_tween()
+		rewind_over_tween.tween_method(
+			func(value): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", value),
+			1.0, 0.0, short_reverse_hold_time_sec
+		)
+		rewind_over_tween.tween_callback(func () : $GUI/rewind_effects.visible = false)
+		rewind_over_tween.chain()
 	reverse_initiated = reverse_initiated or reverse_being_held
 
 	if event.is_action_pressed("radar") and just_pressed:
