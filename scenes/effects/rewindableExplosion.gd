@@ -2,6 +2,12 @@
 class_name ShipExplosion
 extends Node2D
 
+
+@export var explosion_damage: float = 40.
+@export var explosion_length: float = 1.2
+@export var explosion_strength: float = 10000.
+@export var explosion_range: float = 500.
+
 @onready var fire1: Sprite2D = $fire1
 @onready var fire2: Sprite2D = $fire2
 @onready var fire3: Sprite2D = $fire3
@@ -16,12 +22,28 @@ extends Node2D
 @onready var debris3: Sprite2D = $debris3
 @onready var debris4: Sprite2D = $debris4
 
-var spawnTimestampSec: float = 0 # game timestamp of when triggered
-var lifespanSec: float = 2 # seconds of life until faded out
-var currentAgeSec: float = 0 # can increase and decrease freely
+var spawnTimestampSec: float = 0. # game timestamp of when triggered
+var lifespanSec: float = 2. # seconds of life until faded out
+var currentAgeSec: float = 0. # can increase and decrease freely
 
 func reinit() -> void:
 	spawnTimestampSec = BattleTimeline.instance.time_msec() / 1000.
+
+func apply_shockwave(delta: float) -> void:
+	var root = get_tree().get_root()
+
+	for container_path in ["battle/combatants", "battle/debris"]:
+		for combatant in root.get_node(container_path).get_children():
+			var hit_normal = (combatant.get_global_position() - get_global_position())
+			var hit_distance = hit_normal.length()
+			if hit_distance > explosion_range or not combatant.has_method("apply_impulse") \
+				or not combatant.has_method("in_battle") or not combatant.in_battle():
+					continue
+			hit_normal = hit_normal.normalized()
+			combatant.apply_impulse(hit_normal * explosion_strength * delta)
+
+			if combatant.has_method("accept_damage"):
+				combatant.accept_damage(explosion_damage * delta)
 
 func _process(delta: float) -> void:
 
@@ -47,6 +69,9 @@ func _process(delta: float) -> void:
 		debris4.scale = hideScale
 		return
 		
+	if currentAgeSec < explosion_length:
+		apply_shockwave(delta)
+
 	# different lifespanSecs for varying speeds
 	var fire1Percent = currentAgeSec/lifespanSec
 	var fire2Percent = currentAgeSec/lifespanSec

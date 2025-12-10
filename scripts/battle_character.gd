@@ -69,6 +69,9 @@ func init_clone(predecessor: BattleCharacter) -> void:
 func is_alive() -> bool:
 	return self.has_node("health") and $health.is_alive
 
+func in_battle() -> bool:
+	return is_alive()
+
 func set_highlight(yesno: bool) -> void:
 	$target_arrow.set_visible(yesno)
 
