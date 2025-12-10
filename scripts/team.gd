@@ -18,12 +18,6 @@ func initialize(team_id__, position__, color__):
 	team_id = team_id__
 	ship_id = team_id__ * max_teammates
 	reassign_ship_id()
-
-func init_succesor(succ):
-	succ.team_id = team_id
-	succ.ship_id = reassign_ship_id()
-	succ.team_spawn_position = team_spawn_position
-	succ.color = color
 	
 func reassign_ship_id():
 	var previous_id = ship_id

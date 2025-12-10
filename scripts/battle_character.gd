@@ -9,9 +9,15 @@ const CHARACTER_APPROX_SIZE: float = 100.
 @export var target_assist_shape: CollisionShape2D
 @export var temporal_correction_distance_threshold: float = CHARACTER_APPROX_SIZE / 2.
 
+@onready var spawn_transform = get_transform()
+
 var target_assist_original_size: float = 150.
 func _ready() -> void:
 	$skin.material = $skin.material.duplicate() # To have different colors for each ship
+	$team.initialize(team_id, spawn_position, color)
+	$skin.material.set_shader_parameter("team_color", $team.color)
+	if has_node("ai_control"):
+		$ai_control.enabled = true
 	if target_assist_shape:
 		target_assist_original_size = target_assist_shape.shape.radius
 
@@ -51,15 +57,13 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 	$controller.start()
 
 
-func init_clone(predecessor):
-	predecessor.get_node("team").init_succesor($team)
+func init_clone(predecessor: BattleCharacter) -> void:
+	team_id = predecessor.team_id
+	spawn_transform = predecessor.spawn_transform
+	predecessor.spawn_transform = predecessor.transform
 	$skin.material.set_shader_parameter("team_color", $team.color)
 
-func init_control_character():
-	$team.initialize(team_id, spawn_position, color)
-	$skin.material.set_shader_parameter("team_color", $team.color)
-
-func is_alive():
+func is_alive() -> bool:
 	return self.has_node("health") and $health.is_alive
 
 func set_highlight(yesno: bool) -> void:
@@ -85,7 +89,7 @@ func accept_damage(strength):
 		explosion_shake($cam)
 
 func move_to_spawn_position():
-	set_position($team.get_spawn_position())
+	set_transform(spawn_transform)
 	move_and_slide()
 	
 func respawn():

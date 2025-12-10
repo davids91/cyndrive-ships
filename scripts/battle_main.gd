@@ -8,14 +8,10 @@ var sonar_slow_speed = 0.
 var init_countdown = 2.
 
 func _ready():
-	$combatants/character.init_control_character()
-	$combatants/enemy.init_control_character()
 	$combatants/character.accepts_user_input(true)
 	$combatants/character/controller.stop()
 	sonar_speed = $sonar_sensor.rotation_speed
 	sonar_slow_speed = $sonar_sensor.rotation_speed / 4.
-	$combatants/enemy/ai_control.stop()
-	$combatants/enemy/controller.stop()
 	
 	for combatant in $combatants.get_children():
 		combatant.move_to_spawn_position()
@@ -50,8 +46,8 @@ func _process(delta):
 		init_countdown = max(init_countdown - delta, 0)
 		$GUI/score.set_text("%0.3f" % init_countdown)
 		if 0 >= init_countdown:
-			$combatants/character.resume_control()
-			$combatants/enemy.resume_control()
+			for combatant in $combatants.get_children():
+				combatant.resume_control()
 			$timeline.reset()
 		return
 	
@@ -79,10 +75,7 @@ func _process(delta):
 		if not reverse_being_held:
 			# Short rewind press: assign the recorded moves to puppets and reset the battleground
 			if reverse_hold_time <= short_reverse_hold_time_sec:
-				$combatants/character/controller.stop()
-				$combatants/enemy/controller.stop()
 				create_new_puppet($combatants/character)
-				create_new_puppet($combatants/enemy)
 				$timeline.reset()
 				debug_lines.clear()
 				queue_redraw()

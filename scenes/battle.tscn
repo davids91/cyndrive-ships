@@ -179,7 +179,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="sonar_sensor" type="RayCast2D" parent="."]
-position = Vector2(576, 324)
+position = Vector2(1506, -1044.0001)
 rotation = -1.47131
 target_position = Vector2(5000, 0)
 script = ExtResource("4_3fx1x")
@@ -238,10 +238,100 @@ texture = ExtResource("5_7e0bu")
 [node name="temporal_recorder" type="Node2D" parent="debris/meteor"]
 script = ExtResource("2_kjq4e")
 
+[node name="meteor2" type="RigidBody2D" parent="debris"]
+position = Vector2(2269, -356)
+collision_layer = 2
+script = ExtResource("15_p0caf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor2"]
+rotation = 1.52542
+shape = SubResource("CapsuleShape2D_jscwi")
+
+[node name="Sprite2D" type="Sprite2D" parent="debris/meteor2"]
+texture = ExtResource("5_7e0bu")
+
+[node name="temporal_recorder" type="Node2D" parent="debris/meteor2"]
+script = ExtResource("2_kjq4e")
+
+[node name="meteor3" type="RigidBody2D" parent="debris"]
+position = Vector2(790, -582)
+collision_layer = 2
+script = ExtResource("15_p0caf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor3"]
+rotation = 1.52542
+shape = SubResource("CapsuleShape2D_jscwi")
+
+[node name="Sprite2D" type="Sprite2D" parent="debris/meteor3"]
+texture = ExtResource("5_7e0bu")
+
+[node name="temporal_recorder" type="Node2D" parent="debris/meteor3"]
+script = ExtResource("2_kjq4e")
+
+[node name="meteor5" type="RigidBody2D" parent="debris"]
+position = Vector2(545, 633)
+collision_layer = 2
+script = ExtResource("15_p0caf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor5"]
+rotation = 1.52542
+shape = SubResource("CapsuleShape2D_jscwi")
+
+[node name="Sprite2D" type="Sprite2D" parent="debris/meteor5"]
+texture = ExtResource("5_7e0bu")
+
+[node name="temporal_recorder" type="Node2D" parent="debris/meteor5"]
+script = ExtResource("2_kjq4e")
+
+[node name="meteor4" type="RigidBody2D" parent="debris"]
+position = Vector2(2720, -143)
+collision_layer = 2
+script = ExtResource("15_p0caf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor4"]
+rotation = 1.52542
+shape = SubResource("CapsuleShape2D_jscwi")
+
+[node name="Sprite2D" type="Sprite2D" parent="debris/meteor4"]
+texture = ExtResource("5_7e0bu")
+
+[node name="temporal_recorder" type="Node2D" parent="debris/meteor4"]
+script = ExtResource("2_kjq4e")
+
+[node name="meteor6" type="RigidBody2D" parent="debris"]
+position = Vector2(1540, 1109)
+collision_layer = 2
+script = ExtResource("15_p0caf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor6"]
+rotation = 1.52542
+shape = SubResource("CapsuleShape2D_jscwi")
+
+[node name="Sprite2D" type="Sprite2D" parent="debris/meteor6"]
+texture = ExtResource("5_7e0bu")
+
+[node name="temporal_recorder" type="Node2D" parent="debris/meteor6"]
+script = ExtResource("2_kjq4e")
+
+[node name="meteor7" type="RigidBody2D" parent="debris"]
+position = Vector2(3012, 770)
+collision_layer = 2
+script = ExtResource("15_p0caf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor7"]
+rotation = 1.52542
+shape = SubResource("CapsuleShape2D_jscwi")
+
+[node name="Sprite2D" type="Sprite2D" parent="debris/meteor7"]
+texture = ExtResource("5_7e0bu")
+
+[node name="temporal_recorder" type="Node2D" parent="debris/meteor7"]
+script = ExtResource("2_kjq4e")
+
 [node name="combatants" type="Node" parent="."]
 
 [node name="character" parent="combatants" node_paths=PackedStringArray("target_assist_shape") instance=ExtResource("2_sm623")]
-position = Vector2(576, 324)
+position = Vector2(1506, -1044.0001)
 rotation = 2.35619
 team_id = 1
 color = Color(1, 1, 1, 1)
@@ -270,6 +360,141 @@ rotation = 3.14159
 script = ExtResource("5_3g8p0")
 
 [node name="temporal_recorder" type="Node2D" parent="combatants/enemy"]
+script = ExtResource("2_kjq4e")
+triggers_per_second = 20
+
+[node name="enemy2" parent="combatants" instance=ExtResource("2_sm623")]
+position = Vector2(1205, 200)
+rotation = 3.14159
+team_id = 2
+spawn_position = Vector2(1000, 200)
+color = Color(1, 0, 0, 1)
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy2"]
+rotation = 3.14159
+script = ExtResource("5_3g8p0")
+
+[node name="temporal_recorder" type="Node2D" parent="combatants/enemy2"]
+script = ExtResource("2_kjq4e")
+triggers_per_second = 20
+
+[node name="enemy3" parent="combatants" instance=ExtResource("2_sm623")]
+position = Vector2(1382, 200)
+rotation = 3.14159
+team_id = 2
+spawn_position = Vector2(1000, 200)
+color = Color(1, 0, 0, 1)
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy3"]
+rotation = 3.14159
+script = ExtResource("5_3g8p0")
+
+[node name="temporal_recorder" type="Node2D" parent="combatants/enemy3"]
+script = ExtResource("2_kjq4e")
+triggers_per_second = 20
+
+[node name="enemy4" parent="combatants" instance=ExtResource("2_sm623")]
+position = Vector2(1599, 200)
+rotation = 3.14159
+team_id = 2
+spawn_position = Vector2(1000, 200)
+color = Color(1, 0, 0, 1)
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy4"]
+rotation = 3.14159
+script = ExtResource("5_3g8p0")
+
+[node name="temporal_recorder" type="Node2D" parent="combatants/enemy4"]
+script = ExtResource("2_kjq4e")
+triggers_per_second = 20
+
+[node name="enemy5" parent="combatants" instance=ExtResource("2_sm623")]
+position = Vector2(1796, 200)
+rotation = 3.14159
+team_id = 2
+spawn_position = Vector2(1000, 200)
+color = Color(1, 0, 0, 1)
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy5"]
+rotation = 3.14159
+script = ExtResource("5_3g8p0")
+
+[node name="temporal_recorder" type="Node2D" parent="combatants/enemy5"]
+script = ExtResource("2_kjq4e")
+triggers_per_second = 20
+
+[node name="enemy6" parent="combatants" instance=ExtResource("2_sm623")]
+position = Vector2(2007, 200)
+rotation = 3.14159
+team_id = 2
+spawn_position = Vector2(1000, 200)
+color = Color(1, 0, 0, 1)
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy6"]
+rotation = 3.14159
+script = ExtResource("5_3g8p0")
+
+[node name="temporal_recorder" type="Node2D" parent="combatants/enemy6"]
+script = ExtResource("2_kjq4e")
+triggers_per_second = 20
+
+[node name="enemy7" parent="combatants" instance=ExtResource("2_sm623")]
+position = Vector2(2213, 214)
+rotation = 3.14159
+team_id = 2
+spawn_position = Vector2(1000, 200)
+color = Color(1, 0, 0, 1)
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy7"]
+rotation = 3.14159
+script = ExtResource("5_3g8p0")
+
+[node name="temporal_recorder" type="Node2D" parent="combatants/enemy7"]
+script = ExtResource("2_kjq4e")
+triggers_per_second = 20
+
+[node name="enemy8" parent="combatants" instance=ExtResource("2_sm623")]
+position = Vector2(2398, 211)
+rotation = 3.14159
+team_id = 2
+spawn_position = Vector2(1000, 200)
+color = Color(1, 0, 0, 1)
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy8"]
+rotation = 3.14159
+script = ExtResource("5_3g8p0")
+
+[node name="temporal_recorder" type="Node2D" parent="combatants/enemy8"]
+script = ExtResource("2_kjq4e")
+triggers_per_second = 20
+
+[node name="enemy9" parent="combatants" instance=ExtResource("2_sm623")]
+position = Vector2(2572, 220)
+rotation = 3.14159
+team_id = 2
+spawn_position = Vector2(1000, 200)
+color = Color(1, 0, 0, 1)
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy9"]
+rotation = 3.14159
+script = ExtResource("5_3g8p0")
+
+[node name="temporal_recorder" type="Node2D" parent="combatants/enemy9"]
+script = ExtResource("2_kjq4e")
+triggers_per_second = 20
+
+[node name="enemy10" parent="combatants" instance=ExtResource("2_sm623")]
+position = Vector2(2767, 235)
+rotation = 3.14159
+team_id = 2
+spawn_position = Vector2(1000, 200)
+color = Color(1, 0, 0, 1)
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy10"]
+rotation = 3.14159
+script = ExtResource("5_3g8p0")
+
+[node name="temporal_recorder" type="Node2D" parent="combatants/enemy10"]
 script = ExtResource("2_kjq4e")
 triggers_per_second = 20
 
