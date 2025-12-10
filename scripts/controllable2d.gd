@@ -99,7 +99,7 @@ func process_input_action(action: Dictionary) -> void:
 	if action["boost"]:
 		internal_force = intent_direction * top_speed * booster_strength
 
-func _process(_delta):
+func _physics_process(_delta):
 	if not enabled or BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		return
 	
@@ -133,7 +133,6 @@ func _process(_delta):
 	internal_force += current_intent
 	intent_force = current_intent
 	character.set_velocity(internal_force)
-	character.move_and_slide()
 
 	"""Apply angle based on speed"""
 	if 0.05 < intent_force.length():

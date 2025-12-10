@@ -8,6 +8,7 @@ const CHARACTER_APPROX_SIZE: float = 100.
 @export var starting_health = 10.
 @export var target_assist_shape: CollisionShape2D
 @export var temporal_correction_distance_threshold: float = CHARACTER_APPROX_SIZE / 2.
+@export_range(0., 200.) var mass: float = 10.
 
 @onready var spawn_transform = get_transform()
 
@@ -70,6 +71,19 @@ func is_alive() -> bool:
 
 func set_highlight(yesno: bool) -> void:
 	$target_arrow.set_visible(yesno)
+
+func get_mass() -> float:
+	return mass
+
+func apply_impulse(impulse: Vector2) -> void:
+	$controller.internal_force += impulse
+
+func _physics_process(delta: float) -> void:
+	if control_enabled == true:
+		var collision = move_and_collide(get_velocity() * delta)
+		if collision != null and collision.get_collider().has_method("get_mass"):
+			var mass_ratio = get_mass() / collision.get_collider().get_mass()
+			collision.get_collider().apply_impulse($controller.internal_force * delta * mass_ratio * 0.9)
 
 @onready var was_alive = is_alive()
 var ship_explosion : ShipExplosion

@@ -41,6 +41,7 @@ func _draw() -> void:
 		draw_line(line.from, line.to, line.color, 3.0)
 
 func _process(delta):
+	$GUI/fps.set_text("%s fps" % str(Engine.get_frames_per_second()))
 	# Countdown to battle start
 	if 0 < init_countdown:
 		init_countdown = max(init_countdown - delta, 0)

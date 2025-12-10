@@ -35,7 +35,7 @@ func _handle_collision(collider):
 func _is_ship(collider) -> bool:
 	return collider.has_node("team")
 	
-func _fire_sonar_ship_blip(collider: BattleCharacter):
+func _fire_sonar_ship_blip(collider: PhysicsBody2D):
 	var coll_color = collider.get_node("team").color
 	$"../GUI/sonar_display".add_display_object(self, radius, collider, coll_color)
 	

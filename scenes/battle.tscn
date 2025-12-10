@@ -178,6 +178,11 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="fps" type="Label" parent="GUI"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "666 fps"
+
 [node name="sonar_sensor" type="RayCast2D" parent="."]
 position = Vector2(1506, -1044.0001)
 rotation = -1.47131
@@ -197,8 +202,8 @@ shape = SubResource("CircleShape2D_58h07")
 
 [node name="enemy_carrier_ship" type="RigidBody2D" parent="debris"]
 position = Vector2(1477, -387)
-collision_layer = 2
 collision_mask = 3
+mass = 100.0
 script = ExtResource("15_p0caf")
 
 [node name="Sprite2D" type="Sprite2D" parent="debris/enemy_carrier_ship"]
@@ -225,7 +230,7 @@ texture = ExtResource("19_p0caf")
 
 [node name="meteor" type="RigidBody2D" parent="debris"]
 position = Vector2(435, -218)
-collision_layer = 2
+mass = 50.0
 script = ExtResource("15_p0caf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor"]
@@ -240,7 +245,7 @@ script = ExtResource("2_kjq4e")
 
 [node name="meteor2" type="RigidBody2D" parent="debris"]
 position = Vector2(2269, -356)
-collision_layer = 2
+mass = 50.0
 script = ExtResource("15_p0caf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor2"]
@@ -255,7 +260,7 @@ script = ExtResource("2_kjq4e")
 
 [node name="meteor3" type="RigidBody2D" parent="debris"]
 position = Vector2(790, -582)
-collision_layer = 2
+mass = 50.0
 script = ExtResource("15_p0caf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor3"]
@@ -270,7 +275,7 @@ script = ExtResource("2_kjq4e")
 
 [node name="meteor5" type="RigidBody2D" parent="debris"]
 position = Vector2(545, 633)
-collision_layer = 2
+mass = 50.0
 script = ExtResource("15_p0caf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor5"]
@@ -285,7 +290,7 @@ script = ExtResource("2_kjq4e")
 
 [node name="meteor4" type="RigidBody2D" parent="debris"]
 position = Vector2(2720, -143)
-collision_layer = 2
+mass = 50.0
 script = ExtResource("15_p0caf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor4"]
@@ -300,7 +305,7 @@ script = ExtResource("2_kjq4e")
 
 [node name="meteor6" type="RigidBody2D" parent="debris"]
 position = Vector2(1540, 1109)
-collision_layer = 2
+mass = 50.0
 script = ExtResource("15_p0caf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor6"]
@@ -315,7 +320,7 @@ script = ExtResource("2_kjq4e")
 
 [node name="meteor7" type="RigidBody2D" parent="debris"]
 position = Vector2(3012, 770)
-collision_layer = 2
+mass = 50.0
 script = ExtResource("15_p0caf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor7"]
