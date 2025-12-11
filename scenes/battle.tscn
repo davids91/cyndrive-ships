@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/temporal_recorder.gd" id="2_kjq4e"]
 [ext_resource type="Shader" uid="uid://dvimhyltktrda" path="res://shaders/sonar.gdshader" id="2_qdfj8"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/character.tscn" id="2_sm623"]
+[ext_resource type="Texture2D" uid="uid://fh8yoymipqg2" path="res://textures/stars-seamless.png" id="3_61i1y"]
 [ext_resource type="Script" uid="uid://bib83etyoggcu" path="res://scripts/sonar_display.gd" id="3_m8v8v"]
 [ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/sonar_sensor.gd" id="4_3fx1x"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/ai_control.gd" id="5_3g8p0"]
@@ -14,7 +15,6 @@
 [ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="9_61i1y"]
 [ext_resource type="Texture2D" uid="uid://4vj0r5txy10y" path="res://textures/BASE.png" id="10_66ngm"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/team.gd" id="11_hwhwn"]
-[ext_resource type="Texture2D" uid="uid://brm4ixhsdwp84" path="res://textures/stars_small_background.png" id="12_03edq"]
 [ext_resource type="Texture2D" uid="uid://xwsqnqwtnq0y" path="res://textures/stars_medium.png" id="13_6ni85"]
 [ext_resource type="Texture2D" uid="uid://c17dww6b56361" path="res://textures/stars_large.png" id="14_vceff"]
 [ext_resource type="Script" uid="uid://bg8pweqwdny4o" path="res://scripts/battle_debris.gd" id="15_p0caf"]
@@ -94,7 +94,7 @@ motion_mirroring = Vector2(4096, 4096)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/background_layer"]
 texture_repeat = 3
-texture = ExtResource("12_03edq")
+texture = ExtResource("3_61i1y")
 region_enabled = true
 region_rect = Rect2(0, 0, 4096, 4096)
 
