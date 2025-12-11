@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://dtqjekkcmkdfh"]
+
+[ext_resource type="FontFile" uid="uid://3r5nr0xq2mix" path="res://textures/ui/Orbitron-ExtraBold.ttf" id="1_8buh7"]
+[ext_resource type="Script" uid="uid://1vtjp764wo3y" path="res://scripts/energy_bar_control.gd" id="1_cfvfj"]
+[ext_resource type="Texture2D" uid="uid://cn85jqllvp6tc" path="res://textures/ui/ui-progress-bar.png" id="1_qew8n"]
+[ext_resource type="Texture2D" uid="uid://bf6ffxuckl4ym" path="res://textures/ui/ui-progress-bar-pip-left-aligned.png" id="2_8buh7"]
+[ext_resource type="Shader" uid="uid://dmgh1ns8s7ex" path="res://shaders/ui_energy_bar_control_label.gdshader" id="2_75ail"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3r6eq"]
+shader = ExtResource("2_75ail")
+
+[node name="ui_energy_bar" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1245.0
+offset_bottom = -867.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cfvfj")
+
+[node name="label" type="RichTextLabel" parent="."]
+material = SubResource("ShaderMaterial_3r6eq")
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("1_8buh7")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "TEXT HERE"
+fit_content = true
+vertical_alignment = 2
+
+[node name="energy_bar" type="TextureRect" parent="."]
+self_modulate = Color(0, 0, 1, 0.5019608)
+layout_mode = 2
+texture = ExtResource("1_qew8n")
+
+[node name="energy_bar_pip" type="TextureRect" parent="energy_bar"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_8buh7")
