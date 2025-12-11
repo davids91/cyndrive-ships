@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=17 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/controllable2d.gd" id="1_4dcfn"]
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/battle_character.gd" id="1_gqnfm"]
@@ -44,6 +44,10 @@ shader_parameter/burn_threshold = 1.0
 shader_parameter/burn_flame_supression = 0.50000002375
 shader_parameter/pixel_scale = 2.0000000475
 shader_parameter/color_aberration = 0.150000007125
+
+[sub_resource type="Gradient" id="Gradient_0dpix"]
+offsets = PackedFloat32Array(0, 0.47215497, 0.8595642, 1)
+colors = PackedColorArray(1, 0.972549, 0, 1, 0.9203016, 0.25930175, 0, 1, 0, 0, 0, 0.8901961, 0, 0, 0, 0)
 
 [node name="character" type="CharacterBody2D"]
 script = ExtResource("1_gqnfm")
@@ -98,3 +102,18 @@ script = ExtResource("7_1bsqs")
 visible = false
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("8_pt8yu")
+
+[node name="thruster_fx" type="CPUParticles2D" parent="."]
+position = Vector2(-45, 0)
+rotation = -3.1415927
+amount = 100
+lifetime = 0.4
+emission_shape = 3
+emission_rect_extents = Vector2(6, 6)
+gravity = Vector2(0, 0)
+initial_velocity_min = 32.0
+initial_velocity_max = 64.0
+angle_max = 360.0
+scale_amount_min = 4.0
+scale_amount_max = 4.0
+color_ramp = SubResource("Gradient_0dpix")
