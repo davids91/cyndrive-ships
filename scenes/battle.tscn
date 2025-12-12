@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://b3trh6sc7bkeq"]
+[gd_scene load_steps=34 format=3 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle_main.gd" id="1_j7yva"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle_timeline.gd" id="2_ekamt"]
@@ -14,12 +14,15 @@
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/target_assist.gd" id="6_cj32i"]
 [ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="9_61i1y"]
 [ext_resource type="Texture2D" uid="uid://4vj0r5txy10y" path="res://textures/BASE.png" id="10_66ngm"]
+[ext_resource type="Script" uid="uid://ba0vnf5082iwk" path="res://scripts/status_container.gd" id="10_fpf3k"]
+[ext_resource type="PackedScene" uid="uid://dtqjekkcmkdfh" path="res://scenes/energy_bar_control.tscn" id="10_saiin"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/team.gd" id="11_hwhwn"]
 [ext_resource type="Texture2D" uid="uid://xwsqnqwtnq0y" path="res://textures/stars_medium.png" id="13_6ni85"]
 [ext_resource type="Texture2D" uid="uid://c17dww6b56361" path="res://textures/stars_large.png" id="14_vceff"]
 [ext_resource type="Script" uid="uid://bg8pweqwdny4o" path="res://scripts/battle_debris.gd" id="15_p0caf"]
 [ext_resource type="Script" uid="uid://3np7r4qj40n6" path="res://scripts/health.gd" id="18_h4dll"]
 [ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/target.png" id="19_p0caf"]
+[ext_resource type="Script" uid="uid://cdrsm7mlhnmnm" path="res://scripts/energy_systems.gd" id="21_dd63g"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gqr64"]
 font_size = 100
@@ -194,6 +197,32 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "666 fps"
 
+[node name="status_padding" type="MarginContainer" parent="GUI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -510.0
+offset_top = -83.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 10
+
+[node name="status_container" type="HBoxContainer" parent="GUI/status_padding"]
+layout_mode = 2
+theme_override_constants/separation = 40
+script = ExtResource("10_fpf3k")
+
+[node name="laser_energy" parent="GUI/status_padding/status_container" instance=ExtResource("10_saiin")]
+layout_mode = 2
+label_text = "LASER"
+
+[node name="boost_energy" parent="GUI/status_padding/status_container" instance=ExtResource("10_saiin")]
+layout_mode = 2
+label_text = "BOOST"
+
 [node name="target_assist" type="Area2D" parent="."]
 collision_layer = 3
 collision_mask = 3
@@ -358,6 +387,9 @@ target_position = Vector2(0, 0)
 script = ExtResource("4_3fx1x")
 rotation_speed = 0.05
 
+[node name="energy_systems" type="Node2D" parent="combatants/character"]
+script = ExtResource("21_dd63g")
+
 [node name="enemy" parent="combatants" instance=ExtResource("2_sm623")]
 position = Vector2(1000, 200)
 rotation = 3.14159
@@ -510,3 +542,5 @@ triggers_per_second = 20
 
 [connection signal="body_entered" from="target_assist" to="target_assist" method="_on_body_entered"]
 [connection signal="body_exited" from="target_assist" to="target_assist" method="_on_body_exited"]
+[connection signal="boost_energy_updated" from="combatants/character/energy_systems" to="GUI/status_padding/status_container" method="_on_energy_systems_boost_energy_updated"]
+[connection signal="laser_energy_updated" from="combatants/character/energy_systems" to="GUI/status_padding/status_container" method="_on_energy_systems_laser_energy_updated"]

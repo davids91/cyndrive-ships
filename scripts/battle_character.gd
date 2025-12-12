@@ -194,6 +194,8 @@ func process_input_action(action):
 		$laser_beam.process_input_action(action)
 		if has_node("temporal_recorder"):
 			$temporal_recorder.process_input_action(action)
+		if has_node("energy_systems"):
+			$energy_systems.process_input_action(action)
 
 func explosion_shake(target: Object, intensity: float = 30.0, duration: float = 0.5, frequency: int = 20):
 	var tween = create_tween()
