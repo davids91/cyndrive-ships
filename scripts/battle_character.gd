@@ -175,6 +175,10 @@ func _unhandled_input(inev: InputEvent) -> void:
 		return;
 	var action = BattleInputMap.get_action(get_viewport(), get_global_position(), inev)
 	if(control_enabled):
+		if (has_node("energy_systems")):	
+			action["boost"] = action["boost"] and $energy_systems.has_boost_energy()
+			action["pewpew"] = action["pewpew"] and $energy_systems.has_laser_energy()
+		
 		if $"../../target_assist".is_target_locked():
 			var assisted_direction = ($"../../target_assist".get_current_target_position() - get_global_position()).normalized()
 			action["cursor"] = assisted_direction
