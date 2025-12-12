@@ -16,6 +16,19 @@ var physics_interval_sec: float = 1. / Engine.physics_ticks_per_second
 var time_since_last_physics_step_sec: float = 0.
 var last_corrected: float = 0.
 
+func is_within_current_time() -> bool:
+	var current_time_msec = BattleTimeline.instance.time_msec()
+	var current_time_usec = BattleTimeline.instance.time_usec()
+	return (
+		(
+			not msec_records.is_empty()
+			and current_time_msec >= msec_records.keys()[0] and current_time_msec < msec_records.keys().back()
+		) or (
+			not usec_records.is_empty()
+			and current_time_usec >= usec_records.keys()[0] and current_time_usec < usec_records.keys().back()
+		)
+	)
+
 func reset() -> void:
 	current_action_key = 0
 	current_msec_records_key = 0

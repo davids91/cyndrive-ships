@@ -371,8 +371,12 @@ script = ExtResource("2_kjq4e")
 [node name="character" parent="combatants" node_paths=PackedStringArray("target_assist_shape") instance=ExtResource("2_sm623")]
 position = Vector2(1563.9999, -784.99994)
 team_id = 1
+spawn_position = null
 color = Color(1, 1, 1, 1)
+starting_health = null
 target_assist_shape = NodePath("../../target_assist/collsion_shape")
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="cam" type="Camera2D" parent="combatants/character"]
 zoom = Vector2(0.5, 0.5)
@@ -396,6 +400,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy"]
 rotation = 3.14159
@@ -411,6 +418,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy2"]
 rotation = 3.14159
@@ -426,6 +436,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy3"]
 rotation = 3.14159
@@ -441,6 +454,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy4"]
 rotation = 3.14159
@@ -456,6 +472,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy5"]
 rotation = 3.14159
@@ -471,6 +490,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy6"]
 rotation = 3.14159
@@ -486,6 +508,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy7"]
 rotation = 3.14159
@@ -501,6 +526,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy8"]
 rotation = 3.14159
@@ -516,6 +544,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy9"]
 rotation = 3.14159
@@ -531,6 +562,9 @@ rotation = 3.14159
 team_id = 2
 spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 1)
+starting_health = null
+temporal_correction_distance_threshold = null
+mass = null
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy10"]
 rotation = 3.14159

@@ -66,7 +66,7 @@ func _process(delta):
 	# decide potential new target
 	var random_target = combatants.get_children().pick_random()
 	var tries = 0
-	while tries < 50 and ("is_alive" not in random_target or !random_target.is_alive()):
+	while tries < 5 and ("in_battle" not in random_target or !random_target.in_battle()):
 		random_target = combatants.get_children().pick_random()
 		tries += 1
 	if random_target != null and random_target.has_node("team") and random_target.get_node("team").is_enemy(character.get_node("team")):

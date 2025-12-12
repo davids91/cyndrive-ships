@@ -69,7 +69,7 @@ func is_alive() -> bool:
 	return self.has_node("health") and $health.is_alive
 
 func in_battle() -> bool:
-	return is_alive()
+	return is_alive() and (not has_node("replayer") or $replayer.is_within_current_time())
 
 func set_highlight(yesno: bool) -> void:
 	$target_arrow.set_visible(yesno)
@@ -88,10 +88,12 @@ func _physics_process(delta: float) -> void:
 			collision.get_collider().apply_impulse($controller.internal_force * delta * mass_ratio * 0.9)
 
 @onready var was_alive = is_alive()
+@onready var was_in_battle = in_battle()
 var ship_explosion : ShipExplosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 var zoom_value = 0.4
 func _process(_delta):
+	# Handle dynamic zoom for camera
 	if has_node("cam"):
 		var next_zoom_value = clamp($controller.top_speed / get_velocity().length() * 10., 0.25, 0.5)
 		zoom_value = lerpf(zoom_value, next_zoom_value, 0.01)
@@ -99,6 +101,26 @@ func _process(_delta):
 		$cam.zoom.y = zoom_value
 		if target_assist_shape:
 			target_assist_shape.shape.radius = target_assist_original_size * (0.5 / zoom_value)
+
+	# Sync state for being alive and in battle 
+	if is_alive() != was_alive:
+		was_in_battle = in_battle()
+
+	# Handle when player timeline gets different from characters timeline
+	if not in_battle() and was_in_battle:
+		create_tween().tween_method(
+			func(value): $skin.material.set_shader_parameter("burn_percentage", value),
+			0.0, 1.0, 0.5
+		)
+		was_in_battle = false
+	elif in_battle() and not was_in_battle:
+		create_tween().tween_method(
+			func(value): $skin.material.set_shader_parameter("burn_percentage", value),
+			1.0, 0.0, 0.5
+		)
+		was_in_battle = true
+
+	# Handle explosion when ship is destroyed
 	if !is_alive():
 		unalive_me()
 		if was_alive:
