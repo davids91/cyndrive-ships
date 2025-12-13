@@ -14,6 +14,7 @@ func process_input_action(action):
 func _process(_delta):
 	if pewpew_ready:
 		var tween = create_tween()
+		$sound.play()
 		$beam_line.points[1] = pewpew_point
 		pewpew = false
 		tween.tween_property($beam_line, "width", 20, 0.05)

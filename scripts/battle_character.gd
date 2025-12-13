@@ -93,6 +93,19 @@ var ship_explosion : ShipExplosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 var zoom_value = 0.4
 func _process(_delta):
+	# Play thruster sound when ship is being steered
+	if (
+		0. < $controller.intent_direction.length() and in_battle()
+		and not has_node("ai_control") and not has_node("replayer")
+		and not $thruster_sound.playing
+	):
+		$thruster_sound.play(randf())
+	elif 0. == $controller.intent_direction.length() and $thruster_sound.playing: 
+		var stop_fnc = create_tween()
+		stop_fnc.tween_interval(0.5)
+		stop_fnc.tween_callback(func() : $thruster_sound.stop())
+		stop_fnc.chain()
+	
 	# Handle dynamic zoom for camera
 	if has_node("cam"):
 		var next_zoom_value = clamp($controller.top_speed / get_velocity().length() * 10., 0.25, 0.5)
@@ -133,6 +146,7 @@ func _process(_delta):
 			was_alive = false
 			was_in_battle = false
 			explosion_shake($cam, 100., 0.8)
+			$explosion_sound.play()
 
 	# Erase explosion if alive
 	if is_alive() and ship_explosion != null:
