@@ -1,0 +1,55 @@
+[gd_scene load_steps=12 format=3 uid="uid://ces1a5si8kfsc"]
+
+[ext_resource type="Script" uid="uid://cvaasp78pgixj" path="res://scripts/meteor.gd" id="1_83eji"]
+[ext_resource type="Texture2D" uid="uid://dfbeabq0fdr4w" path="res://textures/asteroids.png" id="2_83eji"]
+[ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_lhxke"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_83eji"]
+radius = 72.468155
+height = 204.69724
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_83eji"]
+radius = 65.122955
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8tfog"]
+radius = 32.522976
+height = 218.13437
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lhxke"]
+radius = 21.826706
+height = 199.51257
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wfndj"]
+radius = 57.913563
+height = 154.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8tfog"]
+radius = 71.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r80lr"]
+radius = 66.77974
+height = 181.98311
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_stakr"]
+radius = 38.0
+height = 218.2238
+
+[node name="meteor" type="RigidBody2D"]
+mass = 50.0
+script = ExtResource("1_83eji")
+skin_idx = 7
+collision_shape = Array[Shape2D]([SubResource("CapsuleShape2D_83eji"), SubResource("CircleShape2D_83eji"), SubResource("CapsuleShape2D_8tfog"), SubResource("CapsuleShape2D_lhxke"), SubResource("CapsuleShape2D_wfndj"), SubResource("CircleShape2D_8tfog"), SubResource("CapsuleShape2D_r80lr"), SubResource("CapsuleShape2D_stakr")])
+collision_rotation = Array[float]([0.0, 0.0, 0.875, 0.92, 1.195, 0.0, 0.93, -0.865])
+metadata/_custom_type_script = "uid://bg8pweqwdny4o"
+
+[node name="skin" type="Sprite2D" parent="."]
+texture = ExtResource("2_83eji")
+region_enabled = true
+region_rect = Rect2(0, 1792, 256, 256)
+
+[node name="collision_shape" type="CollisionShape2D" parent="."]
+rotation = -0.865
+shape = SubResource("CapsuleShape2D_stakr")
+
+[node name="temporal_recorder" type="Node2D" parent="."]
+script = ExtResource("3_lhxke")

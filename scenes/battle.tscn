@@ -3,14 +3,12 @@
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_j7yva"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_4u087"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="2_ekamt"]
-[ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="2_kjq4e"]
 [ext_resource type="Shader" uid="uid://dvimhyltktrda" path="res://shaders/sonar.gdshader" id="2_qdfj8"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/character.tscn" id="2_sm623"]
 [ext_resource type="Script" uid="uid://bib83etyoggcu" path="res://scripts/effects/sensors_display.gd" id="3_m8v8v"]
 [ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/equipment/sonar_sensor.gd" id="4_3fx1x"]
 [ext_resource type="Shader" uid="uid://b7ifbbmdopsb" path="res://shaders/starfield.gdshader" id="4_fqtyt"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="5_3g8p0"]
-[ext_resource type="Texture2D" uid="uid://bs1tb484wprlw" path="res://textures/asteroid.png" id="5_7e0bu"]
 [ext_resource type="Texture2D" uid="uid://b3l70a8ih0ytb" path="res://textures/stars_larger.png" id="5_vceff"]
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="6_cj32i"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="7_mpb26"]
@@ -24,7 +22,6 @@
 [ext_resource type="Texture2D" uid="uid://l80grl266qqi" path="res://textures/ui/victory.png" id="14_eivww"]
 [ext_resource type="Texture2D" uid="uid://c2m8cwyuafmjq" path="res://textures/ui/restart_button_down.png" id="14_mpb26"]
 [ext_resource type="Texture2D" uid="uid://dckaqcgel4xpt" path="res://textures/ui/restart_button_hover.png" id="15_4u087"]
-[ext_resource type="Script" uid="uid://bg8pweqwdny4o" path="res://scripts/battle_debris.gd" id="15_p0caf"]
 [ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="15_rwtbh"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/player_carrier.tscn" id="16_61i1y"]
 [ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/player_carrier_top.png" id="17_dd63g"]
@@ -35,6 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/replay_button_hover.png" id="22_1rdfn"]
 [ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/player_carrier_bottom.png" id="24_lv4so"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://battle_ship_skin.gd" id="25_eivww"]
+[ext_resource type="PackedScene" uid="uid://ces1a5si8kfsc" path="res://scenes/meteor.tscn" id="25_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/battle_ship.png" id="25_lv4so"]
 [ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="25_r0ctv"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/fighter-ship-accent.png" id="30_at2n2"]
@@ -168,10 +166,6 @@ font_color = Color(0, 1, 1, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_58h07"]
 radius = 150.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jscwi"]
-radius = 71.78877
-height = 225.40234
 
 [sub_resource type="Resource" id="Resource_e50ek"]
 script = ExtResource("25_eivww")
@@ -549,110 +543,63 @@ shape = SubResource("CircleShape2D_58h07")
 
 [node name="debris" type="Node" parent="."]
 
-[node name="meteor" type="RigidBody2D" parent="debris"]
-position = Vector2(435, -218)
-mass = 50.0
-script = ExtResource("15_p0caf")
+[node name="meteor" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(-101, 138)
+skin_idx = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor"]
-rotation = 1.52542
-shape = SubResource("CapsuleShape2D_jscwi")
+[node name="meteor2" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(765.00006, -242.99998)
+rotation = -2.863026
+skin_idx = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="debris/meteor"]
-texture = ExtResource("5_7e0bu")
+[node name="meteor3" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(492.00006, -212.00003)
+rotation = -2.9309459
+skin_idx = 3
 
-[node name="temporal_recorder" type="Node2D" parent="debris/meteor"]
-script = ExtResource("2_kjq4e")
+[node name="meteor4" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(265, 618)
+skin_idx = 4
 
-[node name="meteor2" type="RigidBody2D" parent="debris"]
-position = Vector2(2269, -356)
-mass = 50.0
-script = ExtResource("15_p0caf")
+[node name="meteor11" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(559, 333)
+skin_idx = 5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor2"]
-rotation = 1.52542
-shape = SubResource("CapsuleShape2D_jscwi")
+[node name="meteor12" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(-91, 556)
+skin_idx = 6
 
-[node name="Sprite2D" type="Sprite2D" parent="debris/meteor2"]
-texture = ExtResource("5_7e0bu")
+[node name="meteor13" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(3433, 169)
+skin_idx = 6
 
-[node name="temporal_recorder" type="Node2D" parent="debris/meteor2"]
-script = ExtResource("2_kjq4e")
+[node name="meteor5" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(408, 49)
+rotation = -2.3048532
+skin_idx = 1
 
-[node name="meteor3" type="RigidBody2D" parent="debris"]
-position = Vector2(790, -582)
-mass = 50.0
-script = ExtResource("15_p0caf")
+[node name="meteor6" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(2881, -371)
+skin_idx = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor3"]
-rotation = 1.52542
-shape = SubResource("CapsuleShape2D_jscwi")
+[node name="meteor7" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(3045, -39)
+skin_idx = 5
 
-[node name="Sprite2D" type="Sprite2D" parent="debris/meteor3"]
-texture = ExtResource("5_7e0bu")
+[node name="meteor14" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(3224, 744)
+skin_idx = 4
 
-[node name="temporal_recorder" type="Node2D" parent="debris/meteor3"]
-script = ExtResource("2_kjq4e")
+[node name="meteor8" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(3242, 503)
+skin_idx = 1
 
-[node name="meteor5" type="RigidBody2D" parent="debris"]
-position = Vector2(545, 633)
-mass = 50.0
-script = ExtResource("15_p0caf")
+[node name="meteor9" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(3784, 506)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor5"]
-rotation = 1.52542
-shape = SubResource("CapsuleShape2D_jscwi")
-
-[node name="Sprite2D" type="Sprite2D" parent="debris/meteor5"]
-texture = ExtResource("5_7e0bu")
-
-[node name="temporal_recorder" type="Node2D" parent="debris/meteor5"]
-script = ExtResource("2_kjq4e")
-
-[node name="meteor4" type="RigidBody2D" parent="debris"]
-position = Vector2(2720, -143)
-mass = 50.0
-script = ExtResource("15_p0caf")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor4"]
-rotation = 1.52542
-shape = SubResource("CapsuleShape2D_jscwi")
-
-[node name="Sprite2D" type="Sprite2D" parent="debris/meteor4"]
-texture = ExtResource("5_7e0bu")
-
-[node name="temporal_recorder" type="Node2D" parent="debris/meteor4"]
-script = ExtResource("2_kjq4e")
-
-[node name="meteor6" type="RigidBody2D" parent="debris"]
-position = Vector2(1540, 1109)
-mass = 50.0
-script = ExtResource("15_p0caf")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor6"]
-rotation = 1.52542
-shape = SubResource("CapsuleShape2D_jscwi")
-
-[node name="Sprite2D" type="Sprite2D" parent="debris/meteor6"]
-texture = ExtResource("5_7e0bu")
-
-[node name="temporal_recorder" type="Node2D" parent="debris/meteor6"]
-script = ExtResource("2_kjq4e")
-
-[node name="meteor7" type="RigidBody2D" parent="debris"]
-position = Vector2(3012, 770)
-mass = 50.0
-script = ExtResource("15_p0caf")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="debris/meteor7"]
-rotation = 1.52542
-shape = SubResource("CapsuleShape2D_jscwi")
-
-[node name="Sprite2D" type="Sprite2D" parent="debris/meteor7"]
-texture = ExtResource("5_7e0bu")
-
-[node name="temporal_recorder" type="Node2D" parent="debris/meteor7"]
-script = ExtResource("2_kjq4e")
+[node name="meteor10" parent="debris" instance=ExtResource("25_ikjs2")]
+position = Vector2(2800, -73)
+skin_idx = 0
 
 [node name="combatants" type="Node" parent="."]
 
