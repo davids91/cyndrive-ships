@@ -244,6 +244,17 @@ stream = ExtResource("21_cicko")
 script = ExtResource("22_bj47h")
 triggers_per_second = 20
 
+[node name="mini_health_bar" type="ProgressBar" parent="."]
+modulate = Color(1, 0, 0, 1)
+top_level = true
+offset_right = 128.0
+offset_bottom = 16.0
+value = 100.0
+rounded = true
+allow_greater = true
+show_percentage = false
+
+[connection signal="health_changed" from="." to="." method="_on_health_changed"]
 [connection signal="boosting" from="controller" to="." method="_on_controller_boosting"]
 [connection signal="boost_energy_updated" from="energy_systems" to="." method="_on_energy_systems_boost_energy_updated"]
 [connection signal="weapon_energy_updated" from="energy_systems" to="." method="_on_energy_systems_weapon_energy_updated"]

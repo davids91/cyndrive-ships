@@ -139,6 +139,7 @@ func _process(delta):
 	var display_time: int = battle_start_timetamp_msec + int(BattleTimeline.instance.time_msec())
 	$GUI/debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
 	$GUI/time.set_text("0x%X//%X" % [display_time >> 16, display_time & 0xFFFF])
+	$GUI/sensors_display.get_material().set_shader_parameter("aspect_ratio", get_viewport().size.x/ get_viewport().size.y)
 
 	# Countdown to battle start
 	if 0 < init_countdown_sec:

@@ -21,6 +21,7 @@ signal weapon_energy_updated(new_energy_level: float)
 var health: float = starting_health
 var target_assist_original_size: float = 150.
 func _ready() -> void:
+	$mini_health_bar.set_visible(name != "character")
 	add_to_group("combatants")
 	$team.initialize(team_id, spawn_position, color)
 	$skin.init_skin(skin_layers, $team.color)
@@ -116,10 +117,14 @@ func _physics_process(delta: float) -> void:
 @onready var is_alive: bool = true
 @onready var was_alive: bool = true
 @onready var was_in_battle: bool = in_battle()
+@export var mini_health_bar_offset: Vector2 = Vector2(-64, 64)
 var ship_explosion : ShipExplosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 var zoom_value: float = 0.4
 func _process(_delta):
+	if $mini_health_bar.top_level:
+		$mini_health_bar.set_global_position(get_global_position() + mini_health_bar_offset)
+
 	# Sync state for being alive and in battle
 	if is_alive != was_alive: was_in_battle = in_battle()
 
@@ -366,3 +371,6 @@ func _on_energy_systems_boost_energy_updated(new_energy_level: float) -> void:
 
 func _on_energy_systems_weapon_energy_updated(new_energy_level: float) -> void:
 	weapon_energy_updated.emit(new_energy_level)
+
+func _on_health_changed(percentage: float) -> void:
+	$mini_health_bar.set_value_no_signal(percentage * $mini_health_bar.max_value)

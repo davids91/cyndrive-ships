@@ -59,7 +59,6 @@ texture = ExtResource("7_d02ko")
 script = ExtResource("9_xatsn")
 passive_movement_rotation_threshold = 0.2
 booster_strength = 50.0
-momentum_dampener = 0.85
 
 [node name="thruster_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("10_5fyrk")
@@ -74,6 +73,25 @@ script = ExtResource("14_5fyrk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="healing_aura"]
 shape = SubResource("CircleShape2D_d02ko")
+
+[node name="mini_health_bar" type="ProgressBar" parent="."]
+modulate = Color(1, 0, 0, 1)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_top = 50.0
+offset_right = 328.0
+offset_bottom = 82.0
+grow_horizontal = 2
+grow_vertical = 0
+rotation = -1.5707964
+value = 90.0
+rounded = true
+allow_greater = true
+show_percentage = false
 
 [connection signal="body_entered" from="healing_aura" to="healing_aura" method="_on_body_entered"]
 [connection signal="body_exited" from="healing_aura" to="healing_aura" method="_on_body_exited"]
