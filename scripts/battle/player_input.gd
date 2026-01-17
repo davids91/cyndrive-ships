@@ -29,7 +29,7 @@ func _process(_delta: float) -> void:
 	var action: Dictionary = {}
 	if is_shooting:
 		action["pewpew"] = xform(get_viewport().get_canvas_transform().affine_inverse(), get_viewport().get_mouse_position())
-	action_triggered.emit(action)
+		action_triggered.emit(action)
 
 #	_FORCE_INLINE_ real_t tdotx(const Vector2 &p_v) const { return columns[0][0] * p_v.x + columns[1][0] * p_v.y; }
 static func tdotx(mat, vec):

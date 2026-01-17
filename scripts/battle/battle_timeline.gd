@@ -18,16 +18,18 @@ var player_rewind_amount_sec: float
 var player_reverse_started_on_msec: float = 0.
 var player_reverse_started_on_usec: int = 0
 
-var time_accrued_usec = 0.0
-var time_accrued_msec = 0.0
+var time_accrued_usec: int = 0
+var time_accrued_msec: float = 0.0
 
 func _process(delta: float) -> void:
 	if time_flow != TimeFlow.BACKWARD:
-		time_accrued_msec += delta * 1000
-		time_accrued_usec += delta * 1000000
+		time_accrued_msec += delta * 1000.
+		time_accrued_usec += int(delta * 1000000.)
 
 ## Resetting sets the relative timestamp to be of the current time, and restarts the battle
 func reset() -> void:
+	time_accrued_usec = 0
+	time_accrued_msec = 0.0
 	time_flow = TimeFlow.FORWARD
 	player_timeline_start_msec = Time.get_ticks_msec()
 	player_timeline_start_usec = Time.get_ticks_usec()
