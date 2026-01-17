@@ -15,8 +15,6 @@ var time_flow : TimeFlow = TimeFlow.FORWARD
 var player_timeline_start_msec: float
 var player_timeline_start_usec: int
 var player_rewind_amount_sec: float
-var player_reverse_started_on_msec: float = 0.
-var player_reverse_started_on_usec: int = 0
 
 var time_accrued_usec: int = 0
 var time_accrued_msec: float = 0.0
@@ -34,8 +32,6 @@ func reset() -> void:
 	player_timeline_start_msec = Time.get_ticks_msec()
 	player_timeline_start_usec = Time.get_ticks_usec()
 	player_rewind_amount_sec = 0.
-	player_reverse_started_on_msec = 0.
-	player_reverse_started_on_usec = 0
 	round_reset.emit()
 
 func time_usec() -> int:
@@ -55,9 +51,7 @@ func time_since_msec(past_time_msec: float) -> float:
 	return time_msec() - past_time_msec
 
 func reverse(delta: float) -> void:
-	if 0. == player_reverse_started_on_msec:
-		player_reverse_started_on_msec = time_accrued_msec
-		player_reverse_started_on_usec = time_accrued_usec
+	if time_flow != TimeFlow.BACKWARD:		
 		time_flow = TimeFlow.BACKWARD
 		rewind_started.emit()
 	player_rewind_amount_sec += delta
@@ -65,11 +59,9 @@ func reverse(delta: float) -> void:
 func finish_reverse() -> void:
 	# Correct start time so records are stored with the actual relative timestamp moving forward
 	# Push it forward with the double of the rewind time --> time spent while reversing AND time reversed
-	player_timeline_start_msec += player_rewind_amount_sec * 2000
-	player_timeline_start_usec += int(player_rewind_amount_sec * 2000000.)
-	player_rewind_amount_sec = 0.
-	player_reverse_started_on_msec = 0.
-	player_reverse_started_on_usec = 0
+	time_accrued_msec -= player_rewind_amount_sec * 1000
+	time_accrued_usec -= int(player_rewind_amount_sec * 1000000.)
+	player_rewind_amount_sec = 0.	
 	time_flow = TimeFlow.FORWARD
 	rewind_stopped.emit()
 

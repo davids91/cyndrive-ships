@@ -8,12 +8,12 @@ func _ready() -> void:
 	self.hide()	
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause menu") and !game_is_paused:
+	if event.is_action_pressed("pause_menu") and !game_is_paused:
 		self.show()
 		self.process_mode = Node.PROCESS_MODE_ALWAYS #keeps menu working while rest of game is paused
 		game_is_paused = true		
 		get_tree().paused = true
-	elif event.is_action_pressed("pause menu") and game_is_paused:		
+	elif event.is_action_pressed("pause_menu") and game_is_paused:		
 		unpause_game()
 		
 func unpause_game():
