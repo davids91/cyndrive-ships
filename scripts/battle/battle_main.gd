@@ -31,6 +31,9 @@ func _ready():
 	for debris in $debris.get_children():
 		$timeline.connect("round_reset", debris.respawn)
 
+	var mine = preload("res://scenes/weapons/explossive_mine.tscn").instantiate()
+	$combatants/character.add_child(mine)
+
 	# Connect weapon slot signal for UI updates
 	if $combatants/character.has_node("weapon_slot"):
 		$combatants/character/weapon_slot.weapon_changed.connect(_on_weapon_changed)
