@@ -25,10 +25,8 @@ func _ready() -> void:
 	$team.initialize(team_id, spawn_position, color)
 	$skin.init_skin(skin_layers, $team.color)
 
-	if has_node("ai_control"):
-		$ai_control.enabled = true
-	if target_assist_shape:
-		target_assist_original_size = target_assist_shape.shape.radius
+	if has_node("ai_control"): $ai_control.enabled = true
+	if target_assist_shape: target_assist_original_size = target_assist_shape.shape.radius
 
 var debug_color: Color = Color.from_hsv(randf() * 6., 1., 1., 1.)
 func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void:
@@ -39,6 +37,7 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 	if "health" in snapshot:
 		was_alive = is_alive
 		health = snapshot["health"]
+		is_alive = 0 < health
 		if not was_alive and is_alive:
 			resurrect_me()
 			was_alive = is_alive
@@ -108,13 +107,11 @@ func _physics_process(delta: float) -> void:
 		if collision != null and collision.get_collider().has_method("get_mass"):
 			if body_in_contact == collision.get_collider():
 				contact_time += delta
-			else:
-				contact_time = 0.
+			else: contact_time = 0.
 			body_in_contact = collision.get_collider()
 			var mass_ratio = get_mass() / body_in_contact.get_mass()
 			body_in_contact.apply_impulse($controller.internal_force * delta * mass_ratio * 0.15)
-		else:
-			contact_time = 0.
+		else: contact_time = 0.
 
 @onready var is_alive: bool = true
 @onready var was_alive: bool = true
@@ -124,8 +121,7 @@ var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 var zoom_value: float = 0.4
 func _process(_delta):
 	# Sync state for being alive and in battle
-	if is_alive != was_alive:
-		was_in_battle = in_battle()
+	if is_alive != was_alive: was_in_battle = in_battle()
 
 	# Handle when player timeline gets different from characters timeline
 	if not in_battle() and was_in_battle:
@@ -176,8 +172,7 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 	if FeatureFlags.is_enabled("god_mode"):
 		var battle_main = get_tree().current_scene
 		if battle_main and "god_mode_active" in battle_main and battle_main.god_mode_active:
-			if $team.team_id == 1:
-				return
+			if $team.team_id == 1: return
 
 	if( # Damage from the main controlled character may induce temporal entanglement
 		source != null and source.name == "character" and name != "characters"
@@ -188,10 +183,8 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 	health -= max(0., strength)
 	is_alive = 0 < health
 	health_changed.emit(health / starting_health)
-	if health > low_health:
-		explosion_shake_smooth()
-	else:
-		explosion_shake()
+	if health > low_health: explosion_shake_smooth()
+	else: explosion_shake()
 
 	# Handle explosion when ship is destroyed
 	if !is_alive:
@@ -205,8 +198,7 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 			was_alive = false
 			was_in_battle = false
 			$explosion_sound.play()
-			if has_node("weapon_slot"):
-				$weapon_slot.shutdown()
+			if has_node("weapon_slot"): $weapon_slot.shutdown()
 			dead.emit(self)
 		unalive_me()
 
@@ -217,6 +209,7 @@ func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 	health_changed.emit(health / starting_health)
 
 func respawn():
+	if has_node("weapon_slot"): $weapon_slot.select_slot(0)
 	set_global_position(spawn_position)
 	set_velocity(Vector2())
 	set_collision_layer_value(1, true)
@@ -240,10 +233,11 @@ func respawn():
 			)
 			$replayer.usec_records.merge(records["action"])
 			$replayer.msec_records.merge(records["motion"])
-	if has_node("replayer"):
-		$replayer.reset()
-	if has_node("weapon_slot"):
-		$weapon_slot.reset()
+	if has_node("replayer"): $replayer.reset()
+	if has_node("weapon_slot"): $weapon_slot.reset()
+	if has_node("ai_control"):
+		$ai_control.stop()
+		$ai_control.resume()
 	extend_replayer = false
 	was_alive = true
 
@@ -253,15 +247,13 @@ func unalive_me():
 	was_alive = false
 	set_collision_layer_value(1, false)
 	set_visible(false)
-	if has_node("ai_control"):
-		$ai_control.set_disabled(true)
+	if has_node("ai_control"): $ai_control.set_disabled(true)
 	$controller.stop()
 
 func resurrect_me():
 	set_collision_layer_value(1, true)
 	set_visible(true)
-	if has_node("ai_control"):
-		$ai_control.set_disabled(false)
+	if has_node("ai_control"): $ai_control.set_disabled(false)
 	resurrected.emit(self)
 	$controller.start()
 
@@ -269,18 +261,15 @@ var control_enabled = false
 func pause_control() -> void:
 	control_enabled = false
 	$controller.stop()
-	if has_node("ai_control"):
-		$ai_control.stop()
+	if has_node("ai_control"): $ai_control.stop()
 
 func resume_control() -> void:
 	control_enabled = true
 	$controller.start()
-	if has_node("ai_control"):
-		$ai_control.resume()
+	if has_node("ai_control"): $ai_control.resume()
 
 func process_input_action(action: Dictionary) -> void:
 	if not in_battle(): return # cannot process any action while not in battle
-
 	if "weapon_slot" in action and has_node("weapon_slot"):
 		$weapon_slot.select_slot(action["weapon_slot"])
 		action["pewpew_released"] = true
@@ -317,21 +306,16 @@ func process_input_action(action: Dictionary) -> void:
 	if (
 		"pewpew" in action and "pewpew_target" in action and null != action["pewpew_target"]
 		and (action["pewpew_target"].get_global_position() - action["pewpew"]).length() < action["pewpew_target"].approx_size * 3
-	):
-		action["pewpew"] = action["pewpew_target"].get_global_position()
+	): action["pewpew"] = action["pewpew_target"].get_global_position()
 
 	$controller.process_input_action(action)
-	if has_node("energy_systems"):
-		$energy_systems.process_input_action(action)
-	if has_node("weapon_slot"):
-		$weapon_slot.process_input_action(action)
-	if has_node("temporal_recorder"):
-		$temporal_recorder.process_input_action(action)
+	if has_node("energy_systems"): $energy_systems.process_input_action(action)
+	if has_node("weapon_slot"): $weapon_slot.process_input_action(action)
+	if has_node("temporal_recorder"): $temporal_recorder.process_input_action(action)
 
 
 func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: int = 20) -> void:
-	if not has_node("cam"):
-		return
+	if not has_node("cam"): return
 	var tween = create_tween()
 
 	# Create multiple random shakes
@@ -346,8 +330,7 @@ func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: 
 	tween.tween_property($cam, "offset", Vector2.ZERO, duration / frequency)
 
 func explosion_shake_smooth(intensity: float = 30.0, duration: float = 0.5) -> void:
-	if not has_node("cam"):
-		return
+	if not has_node("cam"): return
 	var tween = create_tween()
 	var steps = 10
 	
@@ -359,7 +342,6 @@ func explosion_shake_smooth(intensity: float = 30.0, duration: float = 0.5) -> v
 			randf_range(-current_intensity, current_intensity)
 		)
 		tween.tween_property($cam, "offset", shake_offset, duration / steps)
-	
 	tween.tween_property($cam, "offset", Vector2.ZERO, 0.1)
 
 var ai_fallback: bool = true
@@ -371,8 +353,7 @@ func _on_replayer_temporal_scope_changed(in_scope: bool) -> void:
 		extend_replayer = true
 
 	# Fallback to AI once replayer runs out of records
-	if has_node("ai_control"):
-		$ai_control.set_disabled(in_scope or not ai_fallback)
+	if has_node("ai_control"): $ai_control.set_disabled(in_scope or not ai_fallback)
 
 func _on_controller_boosting(is_boosting: bool) -> void:
 	$booster_fx.visible = is_boosting

@@ -36,3 +36,8 @@ func get_energy_cost() -> float:
 func process_input_action(action: Dictionary) -> void:
 	if null != weapons[current_slot]:
 		weapons[current_slot].process_input_action(action)
+
+var is_shooting: bool = false
+func _process(_delta: float) -> void:
+	if null != weapons[current_slot]:
+		is_shooting = weapons[current_slot].is_shooting

@@ -1,22 +1,23 @@
 {
 	"_doc": "Feature flags - copy to feature_flags.json and set enabled:true to activate",
-
 	"example_feature": {
 		"enabled": false,
 		"description": "Example flag - replace with your own"
 	},
-
 	"god_mode": {
-		"enabled": false,
+		"enabled": true,
 		"description": "Enable god mode toggle (F9 key) - player takes no damage"
 	},
-
 	"disable_ai": {
 		"enabled": false,
 		"description": "Disable all enemy AI - useful for testing weapons"
-	}, 
+	},
 	"dialogue":{
 		"enabled": false, 
 		"description": "Enable Dialogue System - Dialogue will be disabled by default"
+	},
+	"pause_menu": {
+		"enabled": true,
+		"description": "Menu for Pausing battle"
 	}
 }

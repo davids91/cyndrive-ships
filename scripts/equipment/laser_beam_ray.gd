@@ -27,7 +27,6 @@ func reset() -> void:
 	current_strength_modifier = 1.
 
 var current_strength_modifier: float = 1.
-var is_shooting: bool = false
 var was_shooting: bool = false
 var pewpew_target: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:

@@ -20,13 +20,26 @@ var msec_records : Dictionary # key is in msec
 var last_time_flow = BattleTimeline.TimeFlow.FORWARD
 var last_snapshot
 
+static func reverse_action_key_in_snapshot(key: String, snapshot: Dictionary) -> void:
+	var initiated_key = key + "_initiated"
+	var released_key = key + "_released"
+	if initiated_key in snapshot:
+		var value = snapshot[initiated_key]
+		snapshot.erase(initiated_key)
+		snapshot[released_key] = value
+	elif released_key in snapshot:
+		var value = snapshot[released_key]
+		snapshot.erase(released_key)
+		snapshot[initiated_key] = value
+
 func _process(_delta: float) -> void:
 	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		# update stored actions
 		while not usec_records.is_empty() and usec_records.keys().back() > BattleTimeline.instance.time_usec():
-			if target.has_node("controller"):
+			if target.has_node("controller"): # Correct actions for reversed timeflow and apply them
 				var snapshot_to_apply = usec_records[usec_records.keys().back()]
-				snapshot_to_apply.erase("boost_initiated")
+				reverse_action_key_in_snapshot("boost", snapshot_to_apply)
+				reverse_action_key_in_snapshot("pewpew", snapshot_to_apply)
 				target.process_input_action(snapshot_to_apply)
 			usec_records.erase(usec_records.keys().back())
 

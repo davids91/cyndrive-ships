@@ -28,6 +28,7 @@ func set_disabled(yesno: bool) -> void:
 func stop() -> void:
 	enabled = false
 	chosen_target = null
+	moving_intention = Vector2()
 
 func resume() -> void:
 	enabled = true
@@ -149,7 +150,11 @@ func _physics_process(delta: float) -> void:
 
 	if target_is_acquired and not target_was_acquired: action["pewpew_initiated"] = true
 	elif not target_is_acquired and target_was_acquired: action["pewpew_released"] = true
-	
+	if (
+		not target_is_acquired and not "pewpew_released" in action
+		and character.has_node("weapon_slot") and not character.get_node("weapon_slot").is_shooting
+	): action["pewpew_released"] = true
+
 	if target_is_acquired and target_is_alive:
 		if (target_moving_avg - chosen_target.get_global_position()).length() < target_clamp_distance:
 			action["pewpew"] = chosen_target.get_global_position()
