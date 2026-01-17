@@ -4,11 +4,13 @@ uniform vec2 resolution = vec2(4096.0,4096.0);
 uniform vec2 uv_offset = vec2(0.,0.);
 uniform sampler2D noise_texture_star_strength: filter_nearest, repeat_enable;
 uniform sampler2D noise_texture_star_color: filter_nearest, repeat_enable;
-uniform float density: hint_range(1.0, 100.0, 0.1) = 20.0;
+uniform float density: hint_range(0.0, 100.0) = 20.0;
 uniform vec2 stars_speed = vec2(0.,0.);
 uniform float layers: hint_range(1.0, 10.0, 1.0) = 5.0;
 uniform float color_shift_strength: hint_range(0.0, 1.0) = 0.1;
 uniform float sample_rounder: hint_range(0.0, 10000.0) = 0.1;
+uniform float alpha: hint_range(0.0, 1.0) = 1.0;
+uniform float noise_scale = 1.;
 
 // https://github.com/curly-brace/Godot-3.0-Noise-Shaders/blob/master/assets/gpu_noise_shaders/simplex2d.tres
 vec3 mod289_3(vec3 x) {
@@ -71,7 +73,6 @@ float snoise(vec2 v) {
     return 130.0 * dot(m, g);
 }
 
-uniform float noise_scale = 1.;
 void fragment() {
 	vec2 uv = UV + uv_offset;
 	vec2 speed = TIME * stars_speed * .01;
@@ -80,13 +81,13 @@ void fragment() {
 	// Calculate star brightness
 	float stars = 0.0;
 	for (float i = 0.0; i < layers; i += 1.0){
-		float shift = i * 0.2; 
+		float shift = i * 0.2;
 		float brightness = 1.0 - i * 0.2;
+		float sampled_noise = 1.;
 		vec2 sample_coordinate = round((uv + shift + speed * (1.0 - i * 0.1)) * sample_rounder) / sample_rounder;
-		//float sampled_noise = texture(noise_texture_star_strength, sample_coordinate).r;
-		float sampled_noise = (
-			snoise(sample_coordinate * noise_scale)
-			* texture(noise_texture_star_strength, sample_coordinate).r
+		sampled_noise *= (
+			snoise(sample_coordinate * noise_scale) *
+			texture(noise_texture_star_strength, sample_coordinate).r
 		);
 		stars += step(0.2, pow(sampled_noise, density)) * brightness;
 	}
@@ -96,10 +97,9 @@ void fragment() {
 	if (0. < stars) {
 		float color_correction = texture(noise_texture_star_color, uv).r * 2. - 1.;
 		star_color.r += min(0., color_correction) * color_shift_strength;
-		star_color.g -= abs(color_correction) * color_shift_strength;
 		star_color.b -= max(0., color_correction) * color_shift_strength;
+		star_color.g -= color_shift_strength * ((1. - star_color.r) * 0.5 + (1. - star_color.b) * 0.5);
 	}
-	
-	COLOR = vec4(star_color, stars);
-	//COLOR = vec4(snoise(uv * noise_scale));
+
+	COLOR = vec4(star_color, stars * alpha);
 }
