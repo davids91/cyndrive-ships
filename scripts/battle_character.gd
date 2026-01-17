@@ -300,9 +300,10 @@ func process_input_action(action: Dictionary) -> void:
 			)
 			var camera_direction = $controller.intent_direction * -1
 			var boost_tween = create_tween()
-			boost_tween.tween_property($cam, "offset", camera_direction * approx_size * 2., 0.1)
-			boost_tween.tween_property($cam, "offset", Vector2(), 0.5)
-			boost_tween.chain()
+			if has_node("cam"):
+				boost_tween.tween_property($cam, "offset", camera_direction * approx_size * 2., 0.1)
+				boost_tween.tween_property($cam, "offset", Vector2(), 0.5)
+				boost_tween.chain()
 
 	# For targets representing past versions ( e.g. player previous round ), positions may mismatch slightly
 	# because of the inaccuracies in the replay system and floating point inaccuracies of the physics system

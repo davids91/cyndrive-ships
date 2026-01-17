@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=37 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="1_4dcfn"]
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/battle_character.gd" id="1_gqnfm"]
@@ -29,7 +29,6 @@
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="22_bj47h"]
 [ext_resource type="Script" uid="uid://co4eimc5mgx3i" path="res://scripts/equipment/weapon_slot.gd" id="23_weaponslot"]
 [ext_resource type="Script" uid="uid://n2lp6a2eyw3m" path="res://scripts/equipment/chain_lightning.gd" id="24_chainlightning"]
-[ext_resource type="PackedScene" uid="uid://dtxyjqq5vc8hv" path="res://scenes/weapons/explossive_mine.tscn" id="30_8rpqn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k8udw"]
 radius = 15.0
@@ -101,6 +100,8 @@ stream_3/stream = ExtResource("20_4lh0q")
 [node name="character" type="CharacterBody2D"]
 script = ExtResource("1_gqnfm")
 color = Color(0, 0, 0, 0)
+starting_health = 500.0
+max_health = 500.0
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 rotation = 1.5708
@@ -254,8 +255,6 @@ value = 100.0
 rounded = true
 allow_greater = true
 show_percentage = false
-
-[node name="ExplossiveMine" parent="." instance=ExtResource("30_8rpqn")]
 
 [connection signal="health_changed" from="." to="." method="_on_health_changed"]
 [connection signal="boosting" from="controller" to="." method="_on_controller_boosting"]

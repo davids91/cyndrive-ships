@@ -28,6 +28,9 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if target == null or parent == null:
+		queue_free()		
+		return
 	look_at(target.global_position)
 	lifetime_remaining -= delta
 	if lifetime_remaining <= 0.:

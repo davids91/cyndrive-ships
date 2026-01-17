@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dtxyjqq5vc8hv"]
+[gd_scene load_steps=5 format=3 uid="uid://dtxyjqq5vc8hv"]
 
 [ext_resource type="Texture2D" uid="uid://dlqpywsislhsh" path="res://models & sprites/mines & traps/Mine_Explossive-0001.png" id="1_3uwok"]
 [ext_resource type="Script" uid="uid://deblvxmkkv8c8" path="res://scripts/equipment/explossive_mine.gd" id="1_egrcn"]
@@ -6,6 +6,8 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c5pv0"]
 radius = 31.0
 height = 64.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_egrcn"]
 
 [node name="ExplossiveMine" type="Area2D"]
 z_index = -1
@@ -15,6 +17,16 @@ script = ExtResource("1_egrcn")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_3uwok")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
+[node name="collide_to_activate" type="CollisionShape2D" parent="."]
+scale = Vector2(10, 10)
 shape = SubResource("CapsuleShape2D_c5pv0")
+
+[node name="explode_radius" type="Area2D" parent="."]
+
+[node name="explosion_radius_collision" type="CollisionShape2D" parent="explode_radius"]
+visible = false
+scale = Vector2(100, 100)
+shape = SubResource("CircleShape2D_egrcn")
+debug_color = Color(0.80673623, 0.31795433, 0.33591256, 0.41960785)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

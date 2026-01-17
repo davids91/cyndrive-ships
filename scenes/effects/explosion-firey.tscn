@@ -17,10 +17,6 @@
 
 [node name="ExplosionFirey" type="Node2D"]
 script = ExtResource("1_1d0c4")
-explosion_damage = null
-explosion_length = null
-explosion_strength = null
-explosion_range = null
 
 [node name="smoke1" type="Sprite2D" parent="."]
 position = Vector2(29, -25)
