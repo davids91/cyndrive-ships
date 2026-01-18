@@ -662,7 +662,7 @@ max_health = 500.0
 
 [node name="character" parent="combatants" node_paths=PackedStringArray("target_assist_shape") instance=ExtResource("2_sm623")]
 position = Vector2(1581, -2512)
-rotation = 1.5707964
+rotation = 1.570289
 team_id = 1
 skin_layers = Array[ExtResource("25_eivww")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0

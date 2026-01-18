@@ -4,16 +4,20 @@ var is_activated = false
 
 var drop_position 
 var x_offset = -33
+var attached_position 
 
 func _ready() -> void:
 	position.x = x_offset
+	attached_position = Vector2(x_offset, position.y)
 
 @onready var level = get_tree().current_scene	
 const EXPLOSION_FIREY = preload("uid://btx22762p6sdy")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("drop_mine") and not is_activated:
-		deploy_mine()	
+		deploy_mine()
+	elif event.is_action_pressed("drop_mine") and is_activated:
+		attach_mine()
 
 func explode_mine() -> void:
 	var explode_effect = EXPLOSION_FIREY.instantiate()
@@ -51,6 +55,16 @@ func deploy_mine() -> void:
 	run_deployed_tween()
 	is_activated = true
 
+func attach_mine() -> void:	
+	var player = level.get_node("combatants/character")
+	
+	var tween_out = create_tween()
+	tween_out.tween_property(self, "scale", Vector2(0.0, 0.0), .5)
+	tween_out.tween_callback(func():
+		reparent(player)		
+		position = attached_position
+		z_index = -1
+		is_activated = false)		
 
 func _on_body_entered(body: Node2D) -> void:	
 	if body.has_node("team") and is_activated:		
