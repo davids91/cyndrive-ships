@@ -11,7 +11,6 @@ height = 64.0
 
 [node name="ExplossiveMine" type="Area2D"]
 z_index = -1
-position = Vector2(0, -3)
 script = ExtResource("1_egrcn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

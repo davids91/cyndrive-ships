@@ -7,6 +7,9 @@ class_name BattleShipLaser extends BattleShipWeapon
 @export var shutdown_time_sec: float = 0.15
 @export var target_time_sec: float = 0.01
 
+func _ready() -> void:
+	$raycast.collide_with_areas = true
+
 func shutdown() -> void:
 	# TECHDEBT: In case the laser is released before warmup, the tweens get in conflict, so wait until at least the warmup is finished
 	await get_tree().create_timer(warmup_time_sec).timeout
@@ -76,6 +79,8 @@ func _physics_process(_delta: float) -> void:
 			var victim = $raycast.get_collider()
 			if victim.has_method("accept_damage"):
 				victim.accept_damage(base_damage * current_strength_modifier, get_parent())
+			if victim.has_method("explode_mine") and victim.is_activated:
+				victim.explode_mine()
 		if not was_shooting and not $sound.playing:
 			$sound.play()
 		if $sound.playing:

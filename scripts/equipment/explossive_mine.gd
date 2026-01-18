@@ -21,14 +21,18 @@ func explode_mine() -> void:
 		explode_effect.global_position = drop_position
 		level.get_node("mush").add_child(explode_effect)
 		explode_effect.reinit()
+		explode_effect.scale = Vector2(3,3)
 		var bodies_in_radius =$explode_radius.get_overlapping_bodies()	
 		for body in bodies_in_radius:
-			if body.has_node("team"):		
-				var body_team_id = body.get("team_id")		
+			if body.has_node("team") and body.was_alive:		
+				var body_team_id = body.get_node("team").team_id
 				if body_team_id != 1:
 					print("kill an enemy!")
-					body.queue_free() #need to trigger death/explosion on the body seems it might be auto based on queue_free?
-		queue_free()
+					body.dead.emit(body)
+					body.was_alive = false
+					body.was_in_battle = false
+					body.unalive_me()
+		queue_free() #remove the mine
 
 func run_deployed_tween():	
 	var tween = create_tween()
@@ -49,7 +53,7 @@ func deploy_mine() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:	
-	if body.has_node("team"):		
+	if body.has_node("team") and is_activated:		
 		var body_team_id = body.get("team_id")		
 		if body_team_id != 1:
 			explode_mine()
