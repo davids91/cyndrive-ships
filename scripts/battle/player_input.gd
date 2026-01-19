@@ -3,11 +3,13 @@ extends Node2D
 class_name PlayerInput
 
 signal action_triggered(action: Dictionary)
+signal activate_mine()
 
 var current_intent: Vector2 = Vector2()
 var is_shooting: bool = false
 var current_pewpew_target: Vector2 = Vector2()
 var input_disabled = true
+var has_mine = true
 
 func set_disabled(yesno: bool) -> void:
 	input_disabled = yesno
@@ -18,6 +20,10 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		(is_shooting and (not "pewpew_released" in action or not action["pewpew_released"]))
 		or ("pewpew_initiated" in action and action["pewpew_initiated"])
 	)
+	
+	
+	if input_event.is_action_pressed("drop_mine"):
+		activate_mine.emit()							
 
 	if "intent" in action:
 		current_intent += action["intent"]

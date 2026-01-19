@@ -22,6 +22,8 @@ func _ready():
 	for combatant in $combatants.get_children():
 		combatant.spawn_position = combatant.get_global_position()
 		$timeline.connect("round_reset", combatant.respawn)
+		$timeline.connect("rewind_started", combatant.pause_control)
+		$timeline.connect("rewind_stopped", combatant.resume_control)
 		combatant.dead.connect(_on_battle_character_dead)
 		combatant.resurrected.connect(_on_battle_character_resurrected)
 		living_team_members[combatant.get_node("team").team_id] += 1
@@ -36,8 +38,9 @@ func _ready():
 		$combatants/character/weapon_slot.weapon_changed.connect(_on_weapon_changed)
 
 func spawn_mine():
-		var mine = preload("res://scenes/weapons/explossive_mine.tscn").instantiate()
+		var mine = preload("res://scenes/weapons/explossive_mine.tscn").instantiate()		
 		$combatants/character.add_child(mine)		
+		$player_input.has_mine = true
 
 var debug_lines = []
 func display_line(from: Vector2, to: Vector2, color: Color) -> void:
@@ -239,6 +242,8 @@ func create_new_puppet(predecessor: BattleCharacter) -> void:
 	replayer.usec_records = records["action"]
 	replayer.msec_records = records["motion"]
 	$timeline.connect("round_reset", puppet.respawn)
+	$timeline.connect("rewind_started", puppet.pause_control)
+	$timeline.connect("rewind_stopped", puppet.resume_control)
 	$timeline.connect("round_reset", replayer.reset)
 	$timeline.connect("round_reset", replayer.start_replay)
 	replayer.reset()
