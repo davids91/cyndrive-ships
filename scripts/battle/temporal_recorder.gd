@@ -36,7 +36,10 @@ func _process(_delta: float) -> void:
 	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		# update stored actions
 		while not usec_records.is_empty() and usec_records.keys().back() > BattleTimeline.instance.time_usec():
-			if target.has_node("controller"): # Correct actions for reversed timeflow and apply them
+			if ( # Correct actions for reversed timeflow and apply them
+				target.has_node("controller")
+				and not (target.has_node("replayer") and target.get_node("replayer").is_within_current_time())
+			):
 				var snapshot_to_apply = usec_records[usec_records.keys().back()]
 				reverse_action_key_in_snapshot("boost", snapshot_to_apply)
 				reverse_action_key_in_snapshot("pewpew", snapshot_to_apply)
@@ -140,6 +143,8 @@ func _physics_process(_delta: float) -> void:
 	var current_snapshot = {"transform": target.get_transform()}
 	if "velocity" in target:
 		current_snapshot["velocity"] = target.get_velocity()
+	if "global_rotation" in target:
+		current_snapshot["rotation"] = target.get_global_rotation()
 	if "linear_velocity" in target:
 		current_snapshot["linear_velocity"] = target.get_linear_velocity()
 	if "angular_velocity" in target:

@@ -22,8 +22,6 @@ func _ready():
 	for combatant in $combatants.get_children():
 		combatant.spawn_position = combatant.get_global_position()
 		$timeline.connect("round_reset", combatant.respawn)
-		$timeline.connect("rewind_started", combatant.pause_control)
-		$timeline.connect("rewind_stopped", combatant.resume_control)
 		combatant.dead.connect(_on_battle_character_dead)
 		combatant.resurrected.connect(_on_battle_character_resurrected)
 		living_team_members[combatant.get_node("team").team_id] += 1
@@ -241,8 +239,6 @@ func create_new_puppet(predecessor: BattleCharacter) -> void:
 	replayer.usec_records = records["action"]
 	replayer.msec_records = records["motion"]
 	$timeline.connect("round_reset", puppet.respawn)
-	$timeline.connect("rewind_started", puppet.pause_control)
-	$timeline.connect("rewind_stopped", puppet.resume_control)
 	$timeline.connect("round_reset", replayer.reset)
 	$timeline.connect("round_reset", replayer.start_replay)
 	replayer.reset()

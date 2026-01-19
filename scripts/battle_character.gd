@@ -14,7 +14,6 @@ signal weapon_energy_updated(new_energy_level: float)
 @export var starting_health: float = 10.
 @export var max_health: float = 12.
 @export var target_assist_shape: CollisionShape2D
-@export var temporal_correction_distance_threshold: float = approx_size / 2.
 @export var low_health: float = 3.
 @export_range(0., 200.) var mass: float = 10.
 
@@ -49,12 +48,14 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 	var correction_length = (snapshot["transform"].get_origin() - get_transform().get_origin()).length()
 	var tween_length = max(0., over_time_msec) / 1000.;
 	if "internal_force" in snapshot:
-		create_tween().tween_property($controller, "internal_force", snapshot["internal_force"], tween_length)
+		$controller.internal_force = snapshot["internal_force"] * BattleTimeline.instance.time_flow
 	if "velocity" in snapshot:
-		create_tween().tween_property(self, "velocity", snapshot["velocity"], tween_length)
+		velocity = snapshot["velocity"] * BattleTimeline.instance.time_flow
+	if "rotation" in snapshot:
+		set_global_rotation(snapshot["rotation"])
 
-	# Add an afterimage of the character, and erase it shortafter
-	if temporal_correction_distance_threshold < correction_length:
+	# Add an afterimage of the character if correction moved it from course too much, and erase it short after
+	if approx_size * 2. < correction_length:
 		create_tween().tween_property(self, "transform", snapshot["transform"], tween_length)
 		var clone = $skin.duplicate()
 		clone.set_skins_material(preload("res://resources/implode_effect.tres").duplicate())
@@ -103,24 +104,25 @@ func apply_impulse(impulse: Vector2) -> void:
 var body_in_contact: Object = null
 var contact_time: float = 0.
 func _physics_process(delta: float) -> void:
-	if control_enabled == true:
-		var collision = move_and_collide(get_velocity() * delta)
-		if collision != null and collision.get_collider().has_method("get_mass"):
-			if body_in_contact == collision.get_collider():
-				contact_time += delta
-			else: contact_time = 0.
-			body_in_contact = collision.get_collider()
-			var mass_ratio = get_mass() / body_in_contact.get_mass()
-			body_in_contact.apply_impulse($controller.internal_force * delta * mass_ratio * 0.15)
+	var collision = move_and_collide(get_velocity() * delta)
+	if collision != null and collision.get_collider().has_method("get_mass"):
+		if body_in_contact == collision.get_collider():
+			contact_time += delta
 		else: contact_time = 0.
+		body_in_contact = collision.get_collider()
+		var mass_ratio = get_mass() / body_in_contact.get_mass()
+		body_in_contact.apply_impulse($controller.internal_force * delta * mass_ratio * 0.15)
+	else: contact_time = 0.
 
 @onready var is_alive: bool = true
 @onready var was_alive: bool = true
 @onready var was_in_battle: bool = in_battle()
 @export var mini_health_bar_offset: Vector2 = Vector2(-64, 64)
+@export var motion_zoom_range: float = 0.02
+@export var motion_zoom_center: float = 0.3
 var ship_explosion : ShipExplosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
-var zoom_value: float = 0.4
+var current_zoom_value: float = motion_zoom_center
 func _process(_delta):
 	if $mini_health_bar.top_level:
 		$mini_health_bar.set_global_position(get_global_position() + mini_health_bar_offset)
@@ -162,12 +164,15 @@ func _process(_delta):
 	
 	# Handle dynamic zoom for camera
 	if has_node("cam"):
-		var next_zoom_value = clamp($controller.top_speed / get_velocity().length() * 10., 0.25, 0.5)
-		zoom_value = lerpf(zoom_value, next_zoom_value, 0.01)
-		$cam.zoom.x = zoom_value
-		$cam.zoom.y = zoom_value
+		var next_zoom_value = clamp(
+			$controller.top_speed / get_velocity().length() * 10.,
+			motion_zoom_center - motion_zoom_range, motion_zoom_center + motion_zoom_range
+		)
+		current_zoom_value = lerpf(current_zoom_value, next_zoom_value, 0.01)
+		$cam.zoom.x = current_zoom_value
+		$cam.zoom.y = current_zoom_value
 		if target_assist_shape:
-			target_assist_shape.shape.radius = target_assist_original_size * (0.5 / zoom_value)
+			target_assist_shape.shape.radius = target_assist_original_size * (0.5 / current_zoom_value)
 
 @export var laser_strength: float = 1.
 @export var entanglement_chance: float = 0.05

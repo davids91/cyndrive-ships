@@ -66,19 +66,20 @@ func _process(delta: float) -> void:
 	# Step action pointer to closesr to actual time if needed
 	var delta_to_current_action = INF
 	var current_time_flow = BattleTimeline.instance.time_flow
-	if abs(current_action_key) < usec_records.keys().size():
+	while abs(current_action_key) < usec_records.keys().size():
 		delta_to_current_action = -BattleTimeline.instance.time_since_usec(usec_records.keys()[current_action_key])
 		var delta_to_next_action = INF
 		if abs(current_action_key + current_time_flow) < usec_records.keys().size():
 			delta_to_next_action = -BattleTimeline.instance.time_since_usec(usec_records.keys()[current_action_key + current_time_flow])
 
-		# Step the action pointer to the closest action
+		# Step the action pointer to the direction of the closest action
 		if 0 < delta_to_current_action and delta_to_next_action < delta_to_current_action:
 			if last_applied_usec_key != current_action_key: # Apply the current action if not applied already
 				last_applied_usec_key = current_action_key
 				ship.process_input_action(usec_records[usec_records.keys()[current_action_key]])
 			current_action_key += current_time_flow
 			delta_to_current_action = delta_to_next_action
+		else: break # Can't step action pointer forward anymore, because it is at the correct spot
 
 	# Apply upcoming action
 	if ( # if there is any action stored for the current time

@@ -25,6 +25,7 @@ stream_3/stream = ExtResource("14_em532")
 radius = 450.0
 
 [node name="player_carrier" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("1_ny2j2")
 approx_size = 700.0
 color = Color(1, 1, 1, 0)
