@@ -6,6 +6,8 @@ extends Area2D
 var ships_within_aura: Dictionary = {}
 @onready var character: BattleCharacter = get_parent()
 
+
+
 func _on_body_entered(body: Node2D) -> void:
 	if(
 		body != character
@@ -14,6 +16,9 @@ func _on_body_entered(body: Node2D) -> void:
 		ships_within_aura[body] = BattleTimeline.instance.time_msec()
 		if body.has_node("repair_indicator"):
 			body.get_node("repair_indicator").set_visible(true)
+	#if body.has_node("cam"):
+	#	var battle_ref = get_tree().get_root().get_node("battle")
+	#	battle_ref.spawn_mine()
 
 func _on_body_exited(body: Node2D) -> void:
 	if body.has_node("repair_indicator"):

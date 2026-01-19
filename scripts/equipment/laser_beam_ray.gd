@@ -78,9 +78,7 @@ func _physics_process(_delta: float) -> void:
 		if null != $raycast.get_collider():
 			var victim = $raycast.get_collider()
 			if victim.has_method("accept_damage"):
-				victim.accept_damage(base_damage * current_strength_modifier, get_parent())
-			if victim.has_method("explode_mine") and victim.is_activated:
-				victim.explode_mine()
+				victim.accept_damage(base_damage * current_strength_modifier, get_parent())		
 		if not was_shooting and not $sound.playing:
 			$sound.play()
 		if $sound.playing:

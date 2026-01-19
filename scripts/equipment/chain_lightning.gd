@@ -66,6 +66,9 @@ func _physics_process(_delta: float) -> void:
 		if beam_line.width <= 0 or beam_line.points.size() < 2:
 			continue
 
+		if not is_instance_valid(active_chain[i].from_node) or not is_instance_valid(active_chain[i].to_node):
+			continue
+
 		var segment = active_chain[i]
 		var from_pos = _get_segment_position(segment.from_node, beam_line.points[0])
 		var to_pos = _get_segment_position(segment.to_node, beam_line.points[beam_line.points.size() - 1])
@@ -124,6 +127,7 @@ func _perform_first_hit(space_state: PhysicsDirectSpaceState2D, current_pos: Vec
 	var victim = result["collider"]
 	if victim.has_method("accept_damage"):
 		victim.accept_damage(base_damage, wielder)
+	
 
 	return {"from": current_pos, "to": result["position"], "victim": victim, "damage": base_damage}
 
@@ -152,25 +156,27 @@ func _raycast_to_position(space_state: PhysicsDirectSpaceState2D, from: Vector2,
 	var direction = (to - from).normalized()
 	var extended_to = from + direction * 5000.0
 
-	var query = PhysicsRayQueryParameters2D.create(from, extended_to)
+	var query = PhysicsRayQueryParameters2D.create(from, extended_to)	
 	var exclude_rids: Array[RID] = []
+	query.collide_with_areas = true
 	for obj in exclude:
 		if obj is CollisionObject2D:
 			exclude_rids.append(obj.get_rid())
 	query.exclude = exclude_rids
+
 	return space_state.intersect_ray(query)
 
 func _is_valid_chain_target(combatant: Node2D, exclude: Array, my_team: Node) -> bool:
 	"""Check if a combatant is a valid chain lightning target."""
-	if not combatant.has_method("accept_damage"):
+	if not combatant.has_method("accept_damage"):		
+		return false		
+	if combatant in exclude:		
 		return false
-	if combatant in exclude:
-		return false
-	if combatant.has_method("in_battle") and not combatant.in_battle():
+	if combatant.has_method("in_battle") and not combatant.in_battle():		
 		return false
 	if my_team != null and combatant.has_node("team"):
-		if not combatant.get_node("team").is_enemy(my_team):
-			return false
+		if not combatant.get_node("team").is_enemy(my_team):			
+			return false	
 	return true
 
 func _find_next_chain_target(from_pos: Vector2, exclude: Array) -> Node2D:
@@ -188,9 +194,8 @@ func _find_next_chain_target(from_pos: Vector2, exclude: Array) -> Node2D:
 
 		candidates.append({
 			"target": combatant,
-			"distance": distance
-		})
-
+			"distance": distance		
+		})	
 	if candidates.is_empty():
 		return null
 
