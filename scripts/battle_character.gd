@@ -320,7 +320,6 @@ func process_input_action(action: Dictionary) -> void:
 	): action["pewpew"] = action["pewpew_target"].get_global_position()
 
 	$controller.process_input_action(action)
-	if has_node("energy_systems"): $energy_systems.process_input_action(action)
 	if has_node("weapon_slot"): $weapon_slot.process_input_action(action)
 	if has_node("temporal_recorder"): $temporal_recorder.process_input_action(action)
 

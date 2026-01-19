@@ -14,7 +14,7 @@ func _ready() -> void:
 	position.x = x_offset
 	attached_position = Vector2(x_offset, position.y)
 
-@onready var level = get_tree().current_scene	
+@onready var level = get_tree().current_scene
 const EXPLOSION_FIREY = preload("uid://btx22762p6sdy")
 
 func _input(event: InputEvent) -> void:

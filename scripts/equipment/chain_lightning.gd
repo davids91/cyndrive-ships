@@ -31,7 +31,6 @@ class ChainSegment:
 @export var max_bounces: int = 4
 @export_range(0.0, 1.0) var damage_falloff: float = 0.75  # 25% reduction per jump
 
-var firing: bool = false
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var target_position: Vector2 = Vector2()
 
@@ -53,9 +52,9 @@ func _ready() -> void:
 		beam_lines.append(line)
 
 func process_input_action(action: Dictionary) -> void:
-	if "pewpew" in action:
-		target_position = action["pewpew"]
-		firing = true
+	if "pewpew_target" in action and null != action["pewpew_target"] and wielder != action["pewpew_target"]:
+		target_position = action["pewpew_target"].get_global_position()
+		is_shooting = true
 
 func _physics_process(_delta: float) -> void:
 	if active_chain.is_empty() and $sound.playing: $sound.stop()
@@ -78,10 +77,10 @@ func _physics_process(_delta: float) -> void:
 			segment.cached_to = to_pos
 			beam_line.points = _generate_jagged_path(from_pos, to_pos, segment.seed_value)
 
-	if not firing:
+	if not is_shooting:
 		return
 
-	firing = false
+	is_shooting = false
 	var chain_targets = _execute_chain_attack()
 	_animate_chain(chain_targets)
 	$sound.play(randf() * 5.)
@@ -125,7 +124,7 @@ func _perform_first_hit(space_state: PhysicsDirectSpaceState2D, current_pos: Vec
 		return {"from": current_pos, "to": target_position, "victim": null, "damage": 0}
 
 	var victim = result["collider"]
-	if victim.has_method("accept_damage"):
+	if victim != wielder and victim.has_method("accept_damage"):
 		victim.accept_damage(base_damage, wielder)
 	
 
