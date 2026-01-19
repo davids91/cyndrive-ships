@@ -200,21 +200,32 @@ func _process(delta):
 	if reverse_being_held:
 		reverse_hold_time_sec += delta
 		if reverse_hold_time_sec > short_reverse_hold_time_sec:
+			if not reverse_initiated:
+				$GUI/rewind_effects.set_visible(true)
+				create_tween().tween_method(
+					func(w): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+					0., 1., short_reverse_hold_time_sec * 2.
+				)
 			reverse_initiated = true
 			current_laupeerium -= delta
 			laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
 			$timeline.reverse(delta)
-			$GUI/rewind_effects.set_visible(true)
-			$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 			$GUI/defeat.set_visible(false)
 			$GUI/victory.set_visible(false)
 			$GUI/restart_round_panel.set_visible(false)
+			$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 	if reverse_initiated:
 		if not reverse_being_held:
 			$timeline.finish_reverse()
 			reverse_hold_time_sec = 0.
 			reverse_initiated = false
-			$GUI/rewind_effects.set_visible(false)
+			var rewind_hide_tween = create_tween()
+			rewind_hide_tween.tween_method(
+				func(w): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+				1., 0., short_reverse_hold_time_sec * 2.
+			)
+			rewind_hide_tween.tween_callback(func() : $GUI/rewind_effects.set_visible(false))
+			rewind_hide_tween.chain()
 
 func entangle_ship_with_player(ship: BattleCharacter) -> void:
 	if ship.has_node("replayer") or ship.name == "character": return # Nothing to do when ship is already entangled

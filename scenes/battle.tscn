@@ -162,11 +162,10 @@ shader = ExtResource("9_61i1y")
 shader_parameter/screen_ratio_w_h = 1.7777778
 shader_parameter/noise = SubResource("NoiseTexture2D_saiin")
 shader_parameter/rewind_amount = 0.0
-shader_parameter/rewind_intensity = 1.0
+shader_parameter/rewind_intensity = 0.0
 shader_parameter/circle_centers = PackedVector2Array(0.65, 0.245, 0.315, 0.235, 0.405, 0.46)
 shader_parameter/circle_radiuses = PackedFloat32Array(0.48, 0.335, 0.16)
 shader_parameter/max_rings = 10.0
-shader_parameter/ring_length_variation = 0.19600000931
 shader_parameter/pixellize_size = 200.0
 shader_parameter/color_1 = Color(0.16862746, 1, 0.98039216, 1)
 shader_parameter/color_2 = Color(0.17234308, 0.00012254089, 0.5416377, 1)
@@ -582,6 +581,7 @@ texture_hover = ExtResource("15_4u087")
 stretch_mode = 4
 
 [node name="Pause Menu2" parent="GUI" instance=ExtResource("24_ikjs2")]
+visible = false
 offset_left = 517.0
 offset_top = 276.99997
 offset_right = 517.0
