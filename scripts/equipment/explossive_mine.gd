@@ -37,6 +37,7 @@ func explode_mine() -> void:
 				if body_team_id != 1:					
 					body.was_alive = false
 					body.was_in_battle = false
+					body.dead.emit(body)
 					body.unalive_me()
 		await get_tree().create_timer(.2).timeout #give lightning time to draw
 		queue_free() #remove the mine
