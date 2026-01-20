@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=38 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="1_4dcfn"]
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/battle_character.gd" id="1_gqnfm"]
@@ -43,6 +43,9 @@ shader_parameter/glow_color = Color(0.19999999, 1, 0.30666673, 0.5921569)
 shader_parameter/wave_count = 6.1630002452425
 shader_parameter/wave_spacing = 0.23300000780762
 shader_parameter/pixel_size = 8.0000003325
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8vsun"]
+viewport_path = NodePath("skin/layers")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_sougf"]
 streams_count = 4
@@ -130,8 +133,18 @@ grow_vertical = 2
 [node name="skin" type="Node2D" parent="."]
 script = ExtResource("4_u0pwc")
 
-[node name="placeholder" type="Sprite2D" parent="skin"]
+[node name="layers" type="SubViewport" parent="skin"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+
+[node name="cam" type="Camera2D" parent="skin/layers"]
+
+[node name="placeholder" type="Sprite2D" parent="skin/layers"]
 texture = ExtResource("3_u0pwc")
+
+[node name="skin_image" type="Sprite2D" parent="skin"]
+texture = SubResource("ViewportTexture_8vsun")
 
 [node name="team" type="Node2D" parent="."]
 script = ExtResource("3_j5io8")

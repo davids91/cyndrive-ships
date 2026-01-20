@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=4 uid="uid://b3trh6sc7bkeq"]
+[gd_scene load_steps=67 format=4 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_j7yva"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_4u087"]
@@ -16,24 +16,24 @@
 [ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="9_61i1y"]
 [ext_resource type="Script" uid="uid://ba0vnf5082iwk" path="res://scripts/status_container.gd" id="10_fpf3k"]
 [ext_resource type="PackedScene" uid="uid://dtqjekkcmkdfh" path="res://scenes/effects/energy_bar_control.tscn" id="10_saiin"]
-[ext_resource type="Texture2D" uid="uid://dmwshk0rg5g1b" path="res://textures/ui/panel_tileset.png" id="12_1m01a"]
+[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panel_tileset.png" id="12_1m01a"]
 [ext_resource type="Texture2D" uid="uid://026apoj7buxx" path="res://textures/ui/restart_button_up.png" id="13_e50ek"]
-[ext_resource type="Texture2D" uid="uid://f4rt3lfhwecq" path="res://textures/ui/LASER_ICON.png" id="13_lv4so"]
+[ext_resource type="Texture2D" uid="uid://o7i8sqffami5" path="res://textures/ui/LASER_ICON.png" id="13_lv4so"]
 [ext_resource type="Texture2D" uid="uid://l80grl266qqi" path="res://textures/ui/victory.png" id="14_eivww"]
 [ext_resource type="Texture2D" uid="uid://c2m8cwyuafmjq" path="res://textures/ui/restart_button_down.png" id="14_mpb26"]
 [ext_resource type="Texture2D" uid="uid://dckaqcgel4xpt" path="res://textures/ui/restart_button_hover.png" id="15_4u087"]
 [ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="15_rwtbh"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/player_carrier.tscn" id="16_61i1y"]
 [ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/player_carrier_top.png" id="17_dd63g"]
-[ext_resource type="Texture2D" uid="uid://ctjb6qnmprqfc" path="res://textures/ui/CHAIN_LIGHTNING_ICON.png" id="19_mpb26"]
+[ext_resource type="Texture2D" uid="uid://5ffs6v6ii1g8" path="res://textures/ui/CHAIN_LIGHTNING_ICON.png" id="19_mpb26"]
 [ext_resource type="Texture2D" uid="uid://bosgurqjrj5i7" path="res://textures/ui/replay_button_up.png" id="20_8a2ah"]
 [ext_resource type="Texture2D" uid="uid://bprsxwc3kl0vm" path="res://textures/ui/replay_button_down.png" id="21_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/fighter-ship-base.png" id="21_jt4d8"]
-[ext_resource type="Texture2D" uid="uid://cq13s2edw8k5o" path="res://textures/ui/replay_button_hover.png" id="22_1rdfn"]
-[ext_resource type="PackedScene" uid="uid://1o5og2xeefgp" path="res://scenes/pause menu.tscn" id="24_ikjs2"]
-[ext_resource type="Texture2D" uid="uid://chh1l4wcbghbx" path="res://textures/player_carrier_bottom.png" id="24_lv4so"]
+[ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/replay_button_hover.png" id="22_1rdfn"]
+[ext_resource type="PackedScene" path="res://scenes/pause menu.tscn" id="24_ikjs2"]
+[ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/player_carrier_bottom.png" id="24_lv4so"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://battle_ship_skin.gd" id="25_eivww"]
-[ext_resource type="PackedScene" uid="uid://ces1a5si8kfsc" path="res://scenes/meteor.tscn" id="25_ikjs2"]
+[ext_resource type="PackedScene" path="res://scenes/meteor.tscn" id="25_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/battle_ship.png" id="25_lv4so"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/fighter-ship-accent.png" id="30_at2n2"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/dialogue.tscn" id="35_4u087"]
@@ -202,6 +202,21 @@ scale = Vector2(1, 1)
 rotation = 0.0
 metadata/_custom_type_script = "uid://cud6a5voxneed"
 
+[sub_resource type="Curve" id="Curve_8a2ah"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 387.30502), 0.0, -286.33978, 0, 0, Vector2(0.62785864, 259.64706), -680.9095, -680.9095, 0, 0, Vector2(0.7546778, 9.17395), -1497.7778, -1497.7778, 0, 0, Vector2(0.8128898, 1), -3281.3196, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_ikjs2"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0.00831601, 340.0395), 0.0, -25.619877, 0, 0, Vector2(0.4760915, 345.66812), -525.49896, -525.49896, 0, 0, Vector2(0.6881497, 198.2428), 0.0, 0.0, 0, 0, Vector2(0.91268194, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.95634097, 1), -2265.3918, 198.92365, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_1rdfn"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
+point_count = 5
+
 [sub_resource type="Resource" id="Resource_rwtbh"]
 script = ExtResource("25_eivww")
 metadata/_custom_type_script = "uid://cud6a5voxneed"
@@ -244,63 +259,111 @@ motion_mirroring = Vector2(8192, 8192)
 
 [node name="starfield_shaded" type="ColorRect" parent="parallax_background/starfield_container"]
 material = SubResource("ShaderMaterial_1rdfn")
-offset_left = -4856.0
-offset_top = -4307.0
-offset_right = -760.0
-offset_bottom = -211.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 4096.0
+offset_bottom = 4096.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="starfield_shaded2" type="ColorRect" parent="parallax_background/starfield_container"]
 material = SubResource("ShaderMaterial_1rdfn")
-offset_left = -760.0
-offset_top = -4307.0
-offset_right = 3336.0
-offset_bottom = -211.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 4096.0
+offset_right = 8192.0
+offset_bottom = 4096.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="starfield_shaded3" type="ColorRect" parent="parallax_background/starfield_container"]
 material = SubResource("ShaderMaterial_1rdfn")
-offset_left = -4856.0
-offset_top = -211.0
-offset_right = -760.0
-offset_bottom = 3885.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 4096.0
+offset_right = 4096.0
+offset_bottom = 8192.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="starfield_shaded4" type="ColorRect" parent="parallax_background/starfield_container"]
 material = SubResource("ShaderMaterial_1rdfn")
-offset_left = -760.0
-offset_top = -211.0
-offset_right = 3336.0
-offset_bottom = 3885.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 4096.0
+offset_top = 4096.0
+offset_right = 8192.0
+offset_bottom = 8192.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="starfield_nebula" type="ColorRect" parent="parallax_background/starfield_container"]
 z_index = -500
 material = SubResource("ShaderMaterial_ikjs2")
-offset_left = -4856.0
-offset_top = -4307.0
-offset_right = -760.0
-offset_bottom = -211.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 4096.0
+offset_bottom = 4096.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="starfield_nebula2" type="ColorRect" parent="parallax_background/starfield_container"]
 z_index = -500
 material = SubResource("ShaderMaterial_ikjs2")
-offset_left = -760.0
-offset_top = -4307.0
-offset_right = 3336.0
-offset_bottom = -211.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 4096.0
+offset_right = 8192.0
+offset_bottom = 4096.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="starfield_nebula3" type="ColorRect" parent="parallax_background/starfield_container"]
 z_index = -500
 material = SubResource("ShaderMaterial_ikjs2")
-offset_left = -4856.0
-offset_top = -211.0
-offset_right = -760.0
-offset_bottom = 3885.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 4096.0
+offset_right = 4096.0
+offset_bottom = 8192.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="starfield_nebula4" type="ColorRect" parent="parallax_background/starfield_container"]
 z_index = -500
 material = SubResource("ShaderMaterial_ikjs2")
-offset_left = -760.0
-offset_top = -211.0
-offset_right = 3336.0
-offset_bottom = 3885.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 4096.0
+offset_top = 4096.0
+offset_right = 8192.0
+offset_bottom = 8192.0
+grow_horizontal = 2
+grow_vertical = 2
 rotation = -0.00094335736
 
 [node name="planet_layer" type="ParallaxLayer" parent="parallax_background"]
@@ -382,6 +445,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="sensors_display" type="ColorRect" parent="GUI"]
+visible = false
 material = SubResource("ShaderMaterial_th0af")
 anchors_preset = 15
 anchor_right = 1.0
@@ -658,12 +722,17 @@ skin_idx = 0
 
 [node name="player_carrier" parent="combatants" groups=["complex_collision_shapes"] instance=ExtResource("16_61i1y")]
 position = Vector2(1690, -2699)
+approx_size = 770.0
 team_id = 1
 skin_layers = Array[ExtResource("25_eivww")]([SubResource("Resource_e50ek"), SubResource("Resource_mpb26")])
 starting_health = 500.0
 max_health = 500.0
+red_curve_phasing = SubResource("Curve_8a2ah")
+green_curve_phasing = SubResource("Curve_ikjs2")
+blue_curve_phasing = SubResource("Curve_1rdfn")
 
 [node name="character" parent="combatants" node_paths=PackedStringArray("target_assist_shape") instance=ExtResource("2_sm623")]
+visible = false
 position = Vector2(1581, -2512)
 rotation = 1.570289
 team_id = 1

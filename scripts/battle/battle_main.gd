@@ -36,9 +36,10 @@ func _ready():
 	# Connect weapon slot signal for UI updates
 	if $combatants/character.has_node("weapon_slot"):
 		$combatants/character/weapon_slot.weapon_changed.connect(_on_weapon_changed)
+	$combatants/player_carrier.phase_in(round_start_delay_sec)
 
 func spawn_mine():
-		var mine = preload("res://scenes/weapons/explossive_mine.tscn").instantiate()		
+		var mine = preload("res://scenes/weapons/explossive_mine.tscn").instantiate()
 		$combatants/character.add_child(mine)		
 		$player_input.has_mine = true
 
@@ -153,6 +154,7 @@ func _process(delta):
 		init_countdown_sec = max(init_countdown_sec - delta, 0)
 		$GUI/score.set_text("%0.3f" % init_countdown_sec)
 		if init_countdown_sec <= 0:
+			$combatants/character.set_visible(true)
 			for combatant in $combatants.get_children():
 				combatant.resume_control()
 			$timeline.reset()
@@ -171,8 +173,8 @@ func _process(delta):
 		if 2 < characters_in_battle:
 			var viewport_size = get_viewport_rect().size
 			var zoom_level = min(
-				viewport_size.x / view_rectangle.size.x,
-				viewport_size.y / view_rectangle.size.y,
+				viewport_size.x / min(view_rectangle.size.x, 4096),
+				viewport_size.y / min(view_rectangle.size.y, 4096),
 			) * 0.9
 			replay_viewport.position = lerp(replay_viewport.position, view_rectangle.position, replay_screen_responsiveness)
 			replay_viewport.size = lerp(replay_viewport.size, view_rectangle.size, replay_screen_responsiveness)

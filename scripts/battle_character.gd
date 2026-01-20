@@ -20,13 +20,48 @@ signal weapon_energy_updated(new_energy_level: float)
 var health: float = starting_health
 var target_assist_original_size: float = 150.
 func _ready() -> void:
-	$mini_health_bar.set_visible(name != "character")
+	$mini_health_bar.set_visible(name != "player_carrier")
 	add_to_group("combatants")
 	$team.initialize(team_id, spawn_position, color)
 	$skin.init_skin(skin_layers, $team.color)
 
 	if has_node("ai_control"): $ai_control.enabled = true
 	if target_assist_shape: target_assist_original_size = target_assist_shape.shape.radius
+
+@export var red_curve_phasing: Curve
+@export var green_curve_phasing: Curve
+@export var blue_curve_phasing: Curve
+func phase_in(phase_in_duration_sec: float) -> void:
+	$phase_effect.set_visible(true)
+	var red_phase_tween = create_tween()
+	red_phase_tween.tween_method(
+		func(w):
+			$phase_effect.get_material().set_shader_parameter(
+				"phase_red", red_curve_phasing.sample(w)
+			),
+		0., 1.,
+		phase_in_duration_sec
+	)
+	create_tween().tween_method(
+		func(w):
+			$phase_effect.get_material().set_shader_parameter("phase_green",
+			green_curve_phasing.sample(w)),
+		0., 1.,
+		phase_in_duration_sec
+	)
+	create_tween().tween_method(
+		func(w):
+			$phase_effect.get_material().set_shader_parameter("phase_blue",
+			blue_curve_phasing.sample(w)),
+		0., 1.,
+		phase_in_duration_sec
+	)
+	red_phase_tween.tween_callback(func() :
+		$skin.set_visible(true)
+		$mini_health_bar.visible = true
+	)
+	red_phase_tween.chain()
+
 
 var debug_color: Color = Color.from_hsv(randf() * 6., 1., 1., 1.)
 func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void:
