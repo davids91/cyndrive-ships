@@ -142,11 +142,12 @@ var reverse_hold_time_sec: float = 0.
 var reverse_tap_count: int = 0
 var reverse_last_tap_at: int = Time.get_ticks_msec()
 var replay_viewport = Rect2()
-@onready var battle_start_timestamp_msec: int = int(Time.get_unix_time_from_system())
-func _process(delta):
-	var display_time: int = battle_start_timestamp_msec + int(BattleTimeline.instance.time_msec())
+#@onready var battle_start_timestamp_msec: int = int(Time.get_unix_time_from_system())
+func _process(delta):	
 	$GUI/debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
-	$GUI/time.set_text("0x%X//%X" % [display_time >> 16, display_time & 0xFFFF])
+	var display_time: float = BattleTimeline.instance.time_msec()
+	var total_seconds: int = int(display_time / 1000.0)
+	$GUI/time.set_text("%d:%02d" % [total_seconds / 60, total_seconds % 60])
 	$GUI/sensors_display.get_material().set_shader_parameter("aspect_ratio", get_viewport().size.x/ get_viewport().size.y)
 
 	# Countdown to battle start

@@ -1,8 +1,12 @@
 extends Node2D
 
-@onready var character: BattleCharacter = get_parent()
+@onready var character: BattleCharacter
 
 var skins_material : ShaderMaterial
+
+func _ready() -> void:
+	character = get_parent() as BattleCharacter
+
 func set_burn_percentage(percentage: float) -> void:
 	skins_material.set_shader_parameter("burn_percentage", percentage)
 
@@ -11,7 +15,7 @@ func set_team_color(color: Color) -> void:
 
 func set_skins_material(mat: ShaderMaterial) -> void:
 	skins_material = mat
-	for c in $layers.et_children():
+	for c in $layers.get_children():
 		c.material = mat
 
 func init_skin(skin_layers: Array[BattleShipSkin], team_color: Color) -> void:

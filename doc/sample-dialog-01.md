@@ -9,7 +9,7 @@ P: I’m excited to be here! Just let me know when you want me to launch into sp
 L: …Sounds like he didn’t hear you anyway, which is a skill I should try to learn from him if he survives this test flight.
 
 I: Survive?! You think he won’t survive?
-
+-
 L: Yes, I, I risked everything to steal your technology and put it on this one, irreplaceable space ship, and I set up an obstacle course to decapitate the pilot, and smash our collective life’s work into smithereens. I had all of the hull removed before we began today, just to make sure it was extra-sure to crumple into dust.
 
 I: Joke all you want, but you sound like Team Pocket when you talk like that—
