@@ -9,10 +9,10 @@ var attached_position
 var player_input 
 static var active_mines = []
 
-func _ready() -> void:
+func _ready() -> void:	
 	$collide_to_activate.disabled = true
-	player_input =  level.get_node("player_input")
-	player_input.activate_mine.connect(check_mine_deploy)
+	player_input =  level.get_node("player_input")	
+	player_input.held_mine = self	
 	collision_layer = 1
 	collision_mask = 0
 	position.x = x_offset
@@ -20,14 +20,6 @@ func _ready() -> void:
 
 @onready var level = get_tree().current_scene
 const EXPLOSION_FIREY = preload("uid://btx22762p6sdy")
-
-func check_mine_deploy():	
-	if player_input.has_mine == true and !is_activated:	
-		deploy_mine()
-		player_input.has_mine = false
-	elif player_input.has_mine == false and is_activated:
-		attach_mine()
-		player_input.has_mine = true		
 
 func explode_mine() -> void:
 	var explode_effect = EXPLOSION_FIREY.instantiate()
@@ -61,16 +53,18 @@ func accept_damage(_x,_y):
 
 func deploy_mine() -> void:	
 	if self == null:
-		return
-	active_mines.append(self)	
+		return	
 	$collide_to_activate.disabled = false
+	player_input.attach_nearest_mine.connect(attach_mine)
 	drop_position=global_position	
 	get_parent().remove_child(self)
 	level.get_node("combatants").add_child(self)
 	set_global_position(drop_position)
 	set_global_rotation(0)
-	run_deployed_tween()	
+	run_deployed_tween()
+	player_input.held_mine = null	
 	is_activated = true
+	active_mines.append(self)
 
 func find_closest_mine() -> Node2D:
 	var closest_mine = null
@@ -84,13 +78,18 @@ func find_closest_mine() -> Node2D:
 			closest_mine = mine
 	return closest_mine
 
-func attach_mine() -> void:		
+func attach_mine() -> void:
+	if player_input.held_mine != null:
+		return		
 	var player = level.get_node("combatants/character")		
-	var closest_mine = find_closest_mine()	
+	var closest_mine = find_closest_mine()
+	player_input.attach_nearest_mine.disconnect(closest_mine.attach_mine)
+	player_input.held_mine = closest_mine
 	if closest_mine != null:
 		active_mines.erase(closest_mine)
 		var tween_out = closest_mine.create_tween()
 		closest_mine.get_node("collide_to_activate").disabled = true
+		player_input.held_mine = closest_mine
 		tween_out.tween_property(closest_mine, "scale", Vector2(0.0, 0.0), .5)
 		tween_out.tween_callback(func():
 			closest_mine.reparent(player)		

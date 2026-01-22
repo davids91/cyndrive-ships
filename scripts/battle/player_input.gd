@@ -3,13 +3,13 @@ extends Node2D
 class_name PlayerInput
 
 signal action_triggered(action: Dictionary)
-signal activate_mine()
+signal attach_nearest_mine()
 
 var current_intent: Vector2 = Vector2()
 var is_shooting: bool = false
 var current_pewpew_target: Vector2 = Vector2()
 var input_disabled = true
-var has_mine = true
+var held_mine
 
 func set_disabled(yesno: bool) -> void:
 	input_disabled = yesno
@@ -22,8 +22,11 @@ func _unhandled_input(input_event: InputEvent) -> void:
 	)
 	
 	
-	if input_event.is_action_pressed("drop_mine"):
-		activate_mine.emit()							
+	if input_event.is_action_pressed("drop_mine"):		
+		if held_mine != null:
+			held_mine.deploy_mine()
+		else:
+			attach_nearest_mine.emit()
 
 	if "intent" in action:
 		current_intent += action["intent"]
@@ -31,7 +34,7 @@ func _unhandled_input(input_event: InputEvent) -> void:
 	if not input_disabled:
 		action_triggered.emit(action)
 
-func _process(_delta: float) -> void:
+func _process(_delta: float) -> void:	
 	var action: Dictionary = {}
 	if is_shooting:
 		action["pewpew"] = xform(get_viewport().get_canvas_transform().affine_inverse(), get_viewport().get_mouse_position())

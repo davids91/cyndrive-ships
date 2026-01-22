@@ -41,7 +41,7 @@ func _ready():
 func spawn_mine():
 		var mine = preload("res://scenes/weapons/explossive_mine.tscn").instantiate()
 		$combatants/character.add_child(mine)		
-		$player_input.has_mine = true
+		$player_input.held_mine = mine
 
 var debug_lines = []
 func display_line(from: Vector2, to: Vector2, color: Color) -> void:
@@ -147,7 +147,8 @@ func _process(delta):
 	$GUI/debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
 	var display_time: float = BattleTimeline.instance.time_msec()
 	var total_seconds: int = int(display_time / 1000.0)
-	$GUI/time.set_text("%d:%02d" % [total_seconds / 60, total_seconds % 60])
+	var minutes: int = int(total_seconds / 60.0)
+	$GUI/time.set_text("%d:%02d" % [minutes, total_seconds % 60])
 	$GUI/sensors_display.get_material().set_shader_parameter("aspect_ratio", get_viewport().size.x/ get_viewport().size.y)
 
 	# Countdown to battle start

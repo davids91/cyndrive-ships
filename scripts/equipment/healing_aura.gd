@@ -22,7 +22,7 @@ func _on_body_entered(body: Node2D) -> void:
 		ships_within_aura[body] = BattleTimeline.instance.time_msec()
 		if body.has_node("repair_indicator"):
 			body.get_node("repair_indicator").set_visible(true)
-	if body.has_node("cam") and player_input.has_mine == false:		
+	if body.has_node("cam") and player_input.held_mine==null:
 		battle_ref.spawn_mine()
 
 func _on_body_exited(body: Node2D) -> void:
