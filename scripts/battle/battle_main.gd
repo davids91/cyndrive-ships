@@ -305,7 +305,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		$combatants/character/controller.start()
 
 	if event.is_action_pressed("key_bindings") and just_pressed:
-		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)
+		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)	
 
 	if event.is_action_pressed("replay") and just_pressed:
 		if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:
