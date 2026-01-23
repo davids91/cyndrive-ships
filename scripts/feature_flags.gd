@@ -12,6 +12,7 @@ func _ready() -> void:
 
 func _load_flags() -> void:
 	if not FileAccess.file_exists("res://feature_flags.json"):
+		print("ERROR: missing feature_flags.json - every feature will be turned off!")
 		return
 	var file := FileAccess.open("res://feature_flags.json", FileAccess.READ)
 	if file:
