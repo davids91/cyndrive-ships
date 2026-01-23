@@ -3,11 +3,12 @@ extends CanvasLayer
 @onready var dialogText = %main_dialogue
 @onready var dialogIcon = %npc_icon
 
-const npc_professor_texture = preload("res://textures/npc_scientist.png")
-const npc_general_texture = preload("res://textures/npc_general.png")
-const npc_player_texture = preload("res://textures/npc_player.png")
+const npc_I_texture = preload("res://textures/npc_2.png")
+const npc_L_texture = preload("res://textures/npc_2.png")
+const npc_M_texture = preload("res://textures/npc_4.png")
+const npc_P_texture = preload("res://textures/npc_3.png")
 
-const seconds_per_letter = 0.07
+const seconds_per_letter = 0.06
 const DIALOG_TXT: Array[String] = [ \
 "I: If you were really the leader you claim you are, you would fly that ship yourself, instead of subjecting this innocent pilot to losing his memories!", \
 "L: The intercom is on! He can hear you!", \
@@ -54,11 +55,13 @@ func _process(delta: float) -> void:
 	
 	# which npc avatar to use?
 	if line[0] == "I":
-		dialogIcon.texture = npc_professor_texture
+		dialogIcon.texture = npc_I_texture
 	elif line[0] == "L":
-		dialogIcon.texture = npc_general_texture
-	else:		
-		dialogIcon.texture = npc_player_texture
+		dialogIcon.texture = npc_L_texture
+	elif line[0] == "M":
+		dialogIcon.texture = npc_M_texture
+	else: 
+		dialogIcon.texture = npc_P_texture
 
 	if current_letter > line.length():
 		current_line += 1
