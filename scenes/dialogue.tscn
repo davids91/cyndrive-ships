@@ -28,19 +28,6 @@ size = Vector2(100, 100)
 [node name="dialogue" type="CanvasLayer"]
 script = ExtResource("1_3n4vj")
 
-[node name="background_container" type="MarginContainer" parent="."]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 40.0
-grow_vertical = 0
-
-[node name="dialogue_panel" type="TileMapLayer" parent="background_container"]
-position = Vector2(64, -32)
-tile_map_data = PackedByteArray("AAAAAEIAAAABAAAAAAD+/0IAAAAAAAAAAAD+/0MAAAAAAAEAAAD//0IAAAABAAAAAAD+/0QAAAAAAAIAAAD+/0wAAAAAAAMAAAD+/0sAAAADAAIAAAD//0wAAAABAAMAAAD+/0oAAAAAAAIAAAAAAEwAAAACAAMAAAAeAEIAAAACAAAAAAAfAEIAAAACAAAAAAAgAEMAAAADAAEAAAAgAEQAAAAAAAIAAAAgAEIAAAADAAAAAAABAEwAAAACAAMAAAAdAEwAAAACAAMAAAAeAEwAAAACAAMAAAAfAEwAAAACAAMAAAAgAEUAAAAAAAIAAAAgAEkAAAAAAAIAAAAgAEoAAAADAAIAAAAgAEsAAAAAAAIAAAAgAEwAAAADAAMAAAABAEIAAAACAAMAAAAdAEIAAAACAAMAAAD+/0UAAAAAAAIAAAD+/0kAAAAAAAIAAAA=")
-tile_set = SubResource("TileSet_fqtyt")
-
 [node name="control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 2
@@ -50,13 +37,35 @@ offset_top = -150.0
 offset_right = 480.0
 grow_vertical = 0
 
+[node name="Panel" type="Panel" parent="control"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = -26.0
+offset_right = 552.0
+offset_bottom = 134.0
+
+[node name="background_container" type="MarginContainer" parent="control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="dialogue_panel" type="TileMapLayer" parent="control/background_container"]
+tile_map_data = PackedByteArray("AAAAAPf/AAAAAAAAAAAAAPj/AAAAAAEAAAAAAPn/AAAAAAIAAAAAAPr/AAAAAAIAAAAAAP7/AAAAAAIAAAAAAP//AAAAAAIAAAAAAAAAAAADAAIAAAAAAAEAAAAAAAMAAAABAPf/AAABAAAAAAABAAEAAAABAAMAAAACAPf/AAABAAAAAAACAAEAAAACAAMAAAADAPf/AAACAAMAAAADAAEAAAACAAMAAAAfAPf/AAACAAMAAAAfAAEAAAACAAMAAAAgAPf/AAACAAAAAAAgAAEAAAACAAMAAAAhAPf/AAACAAAAAAAhAAEAAAACAAMAAAAiAPf/AAADAAAAAAAiAPj/AAADAAEAAAAiAPn/AAAAAAIAAAAiAPr/AAAAAAIAAAAiAP7/AAAAAAIAAAAiAP//AAADAAIAAAAiAAAAAAAAAAIAAAAiAAEAAAADAAMAAAA=")
+tile_set = SubResource("TileSet_fqtyt")
+
 [node name="content_container" type="MarginContainer" parent="control"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -138.0
-offset_right = 517.0
+offset_left = 22.0
+offset_top = -166.0
+offset_right = 539.0
+offset_bottom = -28.0
 grow_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="control/content_container"]
@@ -67,7 +76,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 texture = SubResource("PlaceholderTexture2D_3n4vj")
-expand_mode = 5
+expand_mode = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="control/content_container/HBoxContainer"]
 layout_mode = 2
