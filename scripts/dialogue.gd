@@ -3,8 +3,8 @@ extends CanvasLayer
 @onready var dialogText = %main_dialogue
 @onready var dialogIcon = %npc_icon
 
+const npc_L_texture = preload("res://textures/npc_1.png")
 const npc_I_texture = preload("res://textures/npc_2.png")
-const npc_L_texture = preload("res://textures/npc_2.png")
 const npc_M_texture = preload("res://textures/npc_4.png")
 const npc_P_texture = preload("res://textures/npc_3.png")
 
