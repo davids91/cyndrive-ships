@@ -3,6 +3,10 @@ extends CanvasLayer
 @onready var dialogText = %main_dialogue
 @onready var dialogIcon = %npc_icon
 
+const npc_professor_texture = preload("res://textures/npc_scientist.png")
+const npc_general_texture = preload("res://textures/npc_general.png")
+const npc_player_texture = preload("res://textures/npc_player.png")
+
 const seconds_per_letter = 0.07
 const DIALOG_TXT: Array[String] = [ \
 "I: If you were really the leader you claim you are, you would fly that ship yourself, instead of subjecting this innocent pilot to losing his memories!", \
@@ -47,6 +51,14 @@ func _process(delta: float) -> void:
 	
 	# print("DIALOG line:"+str(current_line)+ " letter:"+str(current_letter) + " TXT:"+txt)
 	dialogText.text = txt
+	
+	# which npc avatar to use?
+	if line[0] == "I":
+		dialogIcon.texture = npc_professor_texture
+	elif line[0] == "L":
+		dialogIcon.texture = npc_general_texture
+	else:		
+		dialogIcon.texture = npc_player_texture
 
 	if current_letter > line.length():
 		current_line += 1

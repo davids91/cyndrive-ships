@@ -28,8 +28,16 @@ size = Vector2(100, 100)
 [node name="dialogue" type="CanvasLayer"]
 script = ExtResource("1_3n4vj")
 
-[node name="dialogue_panel" type="TileMapLayer" parent="."]
-position = Vector2(35, -155)
+[node name="background_container" type="MarginContainer" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="dialogue_panel" type="TileMapLayer" parent="background_container"]
+position = Vector2(64, -32)
 tile_map_data = PackedByteArray("AAAAAEIAAAABAAAAAAD+/0IAAAAAAAAAAAD+/0MAAAAAAAEAAAD//0IAAAABAAAAAAD+/0QAAAAAAAIAAAD+/0wAAAAAAAMAAAD+/0sAAAADAAIAAAD//0wAAAABAAMAAAD+/0oAAAAAAAIAAAAAAEwAAAACAAMAAAAeAEIAAAACAAAAAAAfAEIAAAACAAAAAAAgAEMAAAADAAEAAAAgAEQAAAAAAAIAAAAgAEIAAAADAAAAAAABAEwAAAACAAMAAAAdAEwAAAACAAMAAAAeAEwAAAACAAMAAAAfAEwAAAACAAMAAAAgAEUAAAAAAAIAAAAgAEkAAAAAAAIAAAAgAEoAAAADAAIAAAAgAEsAAAAAAAIAAAAgAEwAAAADAAMAAAABAEIAAAACAAMAAAAdAEIAAAACAAMAAAD+/0UAAAAAAAIAAAD+/0kAAAAAAAIAAAA=")
 tile_set = SubResource("TileSet_fqtyt")
 
@@ -38,33 +46,28 @@ layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 14.0
-offset_top = -168.0
-offset_right = 551.0
-offset_bottom = -15.0
+offset_top = -150.0
+offset_right = 480.0
 grow_vertical = 0
 
 [node name="content_container" type="MarginContainer" parent="control"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -258.5
-offset_top = -69.0
-offset_right = 258.5
-offset_bottom = 69.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -138.0
+offset_right = 517.0
+grow_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="control/content_container"]
 layout_mode = 2
 
 [node name="npc_icon" type="TextureRect" parent="control/content_container/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 texture = SubResource("PlaceholderTexture2D_3n4vj")
+expand_mode = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="control/content_container/HBoxContainer"]
 layout_mode = 2
