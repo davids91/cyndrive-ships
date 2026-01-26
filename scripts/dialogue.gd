@@ -43,7 +43,8 @@ func _process(delta: float) -> void:
 	
 	delay_remaining -= delta
 	
-	if delay_remaining > 0: #still waiting?
+	# No lines to display
+	if delay_remaining > 0 or abs(current_line) > DIALOG_TXT.size():
 		return
 	
 	var line = DIALOG_TXT[current_line]

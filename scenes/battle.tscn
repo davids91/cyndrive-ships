@@ -16,9 +16,9 @@
 [ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="9_61i1y"]
 [ext_resource type="Script" uid="uid://ba0vnf5082iwk" path="res://scripts/status_container.gd" id="10_fpf3k"]
 [ext_resource type="PackedScene" uid="uid://dtqjekkcmkdfh" path="res://scenes/effects/energy_bar_control.tscn" id="10_saiin"]
-[ext_resource type="Texture2D" uid="uid://dmwshk0rg5g1b" path="res://textures/ui/panel_tileset.png" id="12_1m01a"]
+[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panel_tileset.png" id="12_1m01a"]
 [ext_resource type="Texture2D" uid="uid://026apoj7buxx" path="res://textures/ui/restart_button_up.png" id="13_e50ek"]
-[ext_resource type="Texture2D" uid="uid://f4rt3lfhwecq" path="res://textures/ui/LASER_ICON.png" id="13_lv4so"]
+[ext_resource type="Texture2D" uid="uid://o7i8sqffami5" path="res://textures/ui/LASER_ICON.png" id="13_lv4so"]
 [ext_resource type="Texture2D" uid="uid://l80grl266qqi" path="res://textures/ui/victory.png" id="14_eivww"]
 [ext_resource type="PackedScene" uid="uid://da65gog0rxq45" path="res://scenes/keybindings_panel.tscn" id="14_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://c2m8cwyuafmjq" path="res://textures/ui/restart_button_down.png" id="14_mpb26"]
@@ -26,15 +26,15 @@
 [ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="15_rwtbh"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/player_carrier.tscn" id="16_61i1y"]
 [ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/player_carrier_top.png" id="17_dd63g"]
-[ext_resource type="Texture2D" uid="uid://ctjb6qnmprqfc" path="res://textures/ui/CHAIN_LIGHTNING_ICON.png" id="19_mpb26"]
+[ext_resource type="Texture2D" uid="uid://5ffs6v6ii1g8" path="res://textures/ui/CHAIN_LIGHTNING_ICON.png" id="19_mpb26"]
 [ext_resource type="Texture2D" uid="uid://bosgurqjrj5i7" path="res://textures/ui/replay_button_up.png" id="20_8a2ah"]
 [ext_resource type="Texture2D" uid="uid://bprsxwc3kl0vm" path="res://textures/ui/replay_button_down.png" id="21_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/fighter-ship-base.png" id="21_jt4d8"]
-[ext_resource type="Texture2D" uid="uid://cq13s2edw8k5o" path="res://textures/ui/replay_button_hover.png" id="22_1rdfn"]
-[ext_resource type="PackedScene" uid="uid://1o5og2xeefgp" path="res://scenes/pause menu.tscn" id="24_ikjs2"]
-[ext_resource type="Texture2D" uid="uid://chh1l4wcbghbx" path="res://textures/player_carrier_bottom.png" id="24_lv4so"]
+[ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/replay_button_hover.png" id="22_1rdfn"]
+[ext_resource type="PackedScene" path="res://scenes/pause menu.tscn" id="24_ikjs2"]
+[ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/player_carrier_bottom.png" id="24_lv4so"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://battle_ship_skin.gd" id="25_eivww"]
-[ext_resource type="PackedScene" uid="uid://ces1a5si8kfsc" path="res://scenes/meteor.tscn" id="25_ikjs2"]
+[ext_resource type="PackedScene" path="res://scenes/meteor.tscn" id="25_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/battle_ship.png" id="25_lv4so"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/fighter-ship-accent.png" id="30_at2n2"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/dialogue.tscn" id="35_4u087"]
@@ -175,9 +175,6 @@ shader_parameter/color_2 = Color(0.17234308, 0.00012254089, 0.5416377, 1)
 font_size = 50
 font_color = Color(0, 1, 1, 1)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_58h07"]
-radius = 150.0
-
 [sub_resource type="Resource" id="Resource_e50ek"]
 script = ExtResource("25_eivww")
 texture = ExtResource("24_lv4so")
@@ -214,6 +211,9 @@ metadata/_custom_type_script = "uid://cud6a5voxneed"
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_61i1y"]
 points = PackedVector2Array(0, 50, 0, -50, 1000000, -5000, 1000000, 5000)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_58h07"]
+radius = 200.0
 
 [sub_resource type="Resource" id="Resource_f0g0v"]
 script = ExtResource("25_eivww")
@@ -259,6 +259,7 @@ offset_right = 4096.0
 offset_bottom = 4096.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="starfield_shaded2" type="ColorRect" parent="parallax_background/starfield_container"]
 material = SubResource("ShaderMaterial_1rdfn")
@@ -272,6 +273,7 @@ offset_right = 8192.0
 offset_bottom = 4096.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="starfield_shaded3" type="ColorRect" parent="parallax_background/starfield_container"]
 material = SubResource("ShaderMaterial_1rdfn")
@@ -285,6 +287,7 @@ offset_right = 4096.0
 offset_bottom = 8192.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="starfield_shaded4" type="ColorRect" parent="parallax_background/starfield_container"]
 material = SubResource("ShaderMaterial_1rdfn")
@@ -299,6 +302,7 @@ offset_right = 8192.0
 offset_bottom = 8192.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="starfield_nebula" type="ColorRect" parent="parallax_background/starfield_container"]
 z_index = -500
@@ -312,6 +316,7 @@ offset_right = 4096.0
 offset_bottom = 4096.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="starfield_nebula2" type="ColorRect" parent="parallax_background/starfield_container"]
 z_index = -500
@@ -326,6 +331,7 @@ offset_right = 8192.0
 offset_bottom = 4096.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="starfield_nebula3" type="ColorRect" parent="parallax_background/starfield_container"]
 z_index = -500
@@ -340,6 +346,7 @@ offset_right = 4096.0
 offset_bottom = 8192.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="starfield_nebula4" type="ColorRect" parent="parallax_background/starfield_container"]
 z_index = -500
@@ -356,6 +363,7 @@ offset_bottom = 8192.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -0.00094335736
+mouse_filter = 2
 
 [node name="planet_layer" type="ParallaxLayer" parent="parallax_background"]
 motion_scale = Vector2(0.05, 0.05)
@@ -399,6 +407,7 @@ offset_right = 672.0
 offset_bottom = 77.0
 text = "0xDEAD//BEEF"
 label_settings = ExtResource("7_mpb26")
+vertical_alignment = 1
 
 [node name="objective_panel" type="TileMapLayer" parent="GUI"]
 modulate = Color(1, 1, 1, 0.54901963)
@@ -470,27 +479,16 @@ grow_vertical = 0
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GUI/status_padding"]
-layout_mode = 2
-
-[node name="temporal_equipment_status" type="HBoxContainer" parent="GUI/status_padding/VBoxContainer"]
-layout_mode = 2
-alignment = 2
-
-[node name="laupeerium" parent="GUI/status_padding/VBoxContainer/temporal_equipment_status" instance=ExtResource("10_saiin")]
-layout_mode = 2
-label_text = "Time Engine Fuel"
-
-[node name="battleship_status" type="HBoxContainer" parent="GUI/status_padding/VBoxContainer"]
+[node name="battleship_status" type="HBoxContainer" parent="GUI/status_padding"]
 layout_mode = 2
 theme_override_constants/separation = 40
 script = ExtResource("10_fpf3k")
 
-[node name="laser_energy" parent="GUI/status_padding/VBoxContainer/battleship_status" instance=ExtResource("10_saiin")]
+[node name="laupeerium" parent="GUI/status_padding/battleship_status" instance=ExtResource("10_saiin")]
 layout_mode = 2
-label_text = "Weapons"
+label_text = "Time Fuel"
 
-[node name="boost_energy" parent="GUI/status_padding/VBoxContainer/battleship_status" instance=ExtResource("10_saiin")]
+[node name="boost_energy" parent="GUI/status_padding/battleship_status" instance=ExtResource("10_saiin")]
 layout_mode = 2
 label_text = "Thruster Boost"
 
@@ -505,6 +503,18 @@ tile_set = SubResource("TileSet_eivww")
 modulate = Color(1, 1, 1, 0.54901963)
 tile_map_data = PackedByteArray("AAABAAsAAAAAAAAAAAABAAwAAAAAAAEAAAACAAsAAAABAAAAAAAHABIAAAACAAMAAAAIABEAAAADAAIAAAAIABIAAAADAAMAAAA=")
 tile_set = SubResource("TileSet_eivww")
+
+[node name="weapon_energy" parent="GUI/selected_weapon_panel" instance=ExtResource("10_saiin")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 28.0
+offset_top = 253.0
+offset_right = 281.0
+offset_bottom = 350.0
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(0.4, 0.4)
 
 [node name="restart_round_panel" type="TileMapLayer" parent="GUI"]
 visible = false
@@ -545,6 +555,18 @@ texture = ExtResource("13_lv4so")
 [node name="chain_lightning_icon" type="Sprite2D" parent="GUI"]
 position = Vector2(79, 373)
 texture = ExtResource("19_mpb26")
+
+[node name="restart_during_replay" type="TextureButton" parent="GUI"]
+visible = false
+offset_left = 164.0
+offset_top = 178.0
+offset_right = 676.0
+offset_bottom = 306.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("13_e50ek")
+texture_pressed = ExtResource("14_mpb26")
+texture_hover = ExtResource("15_4u087")
+stretch_mode = 4
 
 [node name="victory" type="Sprite2D" parent="GUI"]
 visible = false
@@ -594,13 +616,6 @@ offset_left = 517.0
 offset_top = 276.99997
 offset_right = 517.0
 offset_bottom = 277.0
-
-[node name="target_assist" type="Area2D" parent="."]
-collision_layer = 2
-script = ExtResource("6_cj32i")
-
-[node name="collsion_shape" type="CollisionShape2D" parent="target_assist"]
-shape = SubResource("CircleShape2D_58h07")
 
 [node name="debris" type="Node" parent="."]
 
@@ -675,7 +690,7 @@ red_curve_phasing = SubResource("Curve_8a2ah")
 green_curve_phasing = SubResource("Curve_ikjs2")
 blue_curve_phasing = SubResource("Curve_1rdfn")
 
-[node name="character" parent="combatants" node_paths=PackedStringArray("target_assist_shape") instance=ExtResource("2_sm623")]
+[node name="character" parent="combatants" instance=ExtResource("2_sm623")]
 visible = false
 position = Vector2(1581, -2512)
 rotation = 1.570289
@@ -683,7 +698,6 @@ team_id = 1
 skin_layers = Array[ExtResource("25_eivww")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0
 max_health = 22.0
-target_assist_shape = NodePath("../../target_assist/collsion_shape")
 
 [node name="cam" type="Camera2D" parent="combatants/character"]
 zoom = Vector2(0.5, 0.5)
@@ -693,6 +707,14 @@ shape = SubResource("ConvexPolygonShape2D_61i1y")
 target_position = Vector2(0, 0)
 script = ExtResource("4_3fx1x")
 rotation_speed = 0.05
+
+[node name="target_assist" type="Area2D" parent="combatants/character"]
+top_level = true
+collision_layer = 2
+script = ExtResource("6_cj32i")
+
+[node name="collision_shape" type="CollisionShape2D" parent="combatants/character/target_assist"]
+shape = SubResource("CircleShape2D_58h07")
 
 [node name="enemy" parent="combatants" instance=ExtResource("2_sm623")]
 position = Vector2(1515, 237)
@@ -833,11 +855,12 @@ script = ExtResource("5_3g8p0")
 
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
 [connection signal="pressed" from="GUI/restart_round_panel/TextureButton" to="." method="restart_round"]
+[connection signal="pressed" from="GUI/restart_during_replay" to="." method="reset_game"]
 [connection signal="pressed" from="GUI/victory/replay_button" to="." method="_on_replay_button_pressed"]
 [connection signal="pressed" from="GUI/victory/restart_button" to="." method="reset_game"]
 [connection signal="pressed" from="GUI/defeat/TextureButton" to="." method="reset_game"]
-[connection signal="body_entered" from="target_assist" to="target_assist" method="_on_body_entered"]
-[connection signal="body_exited" from="target_assist" to="target_assist" method="_on_body_exited"]
-[connection signal="boost_energy_updated" from="combatants/character" to="GUI/status_padding/VBoxContainer/battleship_status" method="_on_energy_systems_boost_energy_updated"]
+[connection signal="boost_energy_updated" from="combatants/character" to="GUI/status_padding/battleship_status" method="_on_energy_systems_boost_energy_updated"]
 [connection signal="health_changed" from="combatants/character" to="GUI/sensors_display" method="set_health_percentage"]
-[connection signal="weapon_energy_updated" from="combatants/character" to="GUI/status_padding/VBoxContainer/battleship_status" method="_on_energy_systems_weapon_energy_updated"]
+[connection signal="weapon_energy_updated" from="combatants/character" to="GUI/selected_weapon_panel/weapon_energy" method="_on_character_weapon_energy_updated"]
+[connection signal="body_entered" from="combatants/character/target_assist" to="combatants/character/target_assist" method="_on_body_entered"]
+[connection signal="body_exited" from="combatants/character/target_assist" to="combatants/character/target_assist" method="_on_body_exited"]

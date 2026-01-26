@@ -4,7 +4,7 @@ extends Node2D
 @export_range(0., 1.) var replay_screen_responsiveness: float = 0.2
 
 @onready var character_template = preload("res://scenes/character.tscn")
-@onready var laupeerium_bar: UIEnergyBar = $GUI/status_padding/VBoxContainer/temporal_equipment_status/laupeerium
+@onready var laupeerium_bar: UIEnergyBar = $GUI/status_padding/battleship_status/laupeerium
 
 const round_start_delay_sec: float = 2.
 var init_countdown_sec: float = round_start_delay_sec
@@ -40,7 +40,7 @@ func _ready():
 
 func spawn_mine():
 		var mine = preload("res://scenes/weapons/explossive_mine.tscn").instantiate()
-		$combatants/character.add_child(mine)		
+		$combatants/character.add_child(mine)
 		$player_input.held_mine = mine
 
 var debug_lines = []
@@ -66,9 +66,12 @@ func reset_game() -> void:
 		explosion.queue_free()
 	get_tree().call_deferred("reload_current_scene")
 
+@export var rewind_battle_laupeerium_cost: float = 1.
 func restart_round(rewind_animation: bool = true) -> void:
+	if current_laupeerium < rewind_battle_laupeerium_cost: return
+
 	# Handle resource changes with round restart
-	if not is_replay: current_laupeerium -= 1.
+	if not is_replay: current_laupeerium -= rewind_battle_laupeerium_cost
 	laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
 	$combatants/character/energy_systems.reset()
 
@@ -142,8 +145,8 @@ var reverse_hold_time_sec: float = 0.
 var reverse_tap_count: int = 0
 var reverse_last_tap_at: int = Time.get_ticks_msec()
 var replay_viewport = Rect2()
-#@onready var battle_start_timestamp_msec: int = int(Time.get_unix_time_from_system())
-func _process(delta):	
+
+func _process(delta):
 	$GUI/debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
 	var display_time: float = BattleTimeline.instance.time_msec()
 	var total_seconds: int = int(display_time / 1000.0)
@@ -188,19 +191,19 @@ func _process(delta):
 		living_team_members[1], " vs ", living_team_members[2],
 		" - Score:", int(kill_score * kill_score_multiplier + current_laupeerium * resource_score_multiplier)
 	))
-	$target_assist.set_position(get_global_mouse_position())
 	if $combatants.has_node("character") and $combatants/character/sonar_sensor.direct_control:
 		var direction = (get_global_mouse_position() - $combatants/character.get_global_position()).normalized()
 		$combatants/character/sonar_sensor.set_manual_rotation(direction.angle())
 
 	# Handling Battle restart
-	if (Time.get_ticks_msec() - reverse_last_tap_at) > tap_interval_msec:
+	if (Time.get_ticks_msec() - reverse_last_tap_at) > tap_interval_msec and rewind_battle_laupeerium_cost < current_laupeerium:
 		reverse_tap_count = 0
 	if 2 <= reverse_tap_count:
 		reverse_tap_count = 0
 		restart_round()
 
 	# Handling Timeline reverse
+	if current_laupeerium <= 0.: reverse_being_held = false
 	if reverse_being_held:
 		reverse_hold_time_sec += delta
 		if reverse_hold_time_sec > short_reverse_hold_time_sec:
@@ -307,7 +310,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("key_bindings") and just_pressed:
 		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)	
 
-	if event.is_action_pressed("replay") and just_pressed:
+	if event.is_action_pressed("replay") and just_pressed and 0 < current_laupeerium:
 		if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:
 			reverse_tap_count += 1
 		reverse_last_tap_at = Time.get_ticks_msec()
@@ -389,9 +392,11 @@ func _on_replay_button_pressed() -> void:
 			c.ai_fallback = false
 			c.get_node("ai_control").set_disabled(true)
 		entangle_ship_with_player(c)
+		if c.has_node("target_assist"):
+			c.get_node("target_assist").set_disabled(true)
 	restart_round(false)
 	$player_input.set_disabled(true)
 	$combatants/character.queue_free()
 	$replay_camera.make_current()
-	$target_assist.set_disabled(true)
 	$GUI/sensors_display.hide_health(0.5)
+	$GUI/restart_during_replay.set_visible(true)

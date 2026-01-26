@@ -13,7 +13,6 @@ signal weapon_energy_updated(new_energy_level: float)
 @export var skin_layers: Array[BattleShipSkin] = []
 @export var starting_health: float = 10.
 @export var max_health: float = 12.
-@export var target_assist_shape: CollisionShape2D
 @export var low_health: float = 3.
 @export_range(0., 200.) var mass: float = 10.
 
@@ -26,7 +25,7 @@ func _ready() -> void:
 	$skin.init_skin(skin_layers, $team.color)
 
 	if has_node("ai_control"): $ai_control.enabled = true
-	if target_assist_shape: target_assist_original_size = target_assist_shape.shape.radius
+	if has_node("target_assist"): target_assist_original_size = $target_assist/collision_shape.shape.radius
 
 @export var red_curve_phasing: Curve
 @export var green_curve_phasing: Curve
@@ -159,6 +158,7 @@ var ship_explosion : ShipExplosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 var current_zoom_value: float = motion_zoom_center
 func _process(_delta):
+	if has_node("target_assist"): $target_assist.set_position(get_global_mouse_position())
 	if $mini_health_bar.top_level:
 		$mini_health_bar.set_global_position(get_global_position() + mini_health_bar_offset)
 
@@ -206,8 +206,8 @@ func _process(_delta):
 		current_zoom_value = lerpf(current_zoom_value, next_zoom_value, 0.01)
 		$cam.zoom.x = current_zoom_value
 		$cam.zoom.y = current_zoom_value
-		if target_assist_shape:
-			target_assist_shape.shape.radius = target_assist_original_size * (0.5 / current_zoom_value)
+		if has_node("target_assist"):
+			$target_assist/collision_shape.shape.radius = target_assist_original_size * (0.5 / current_zoom_value)
 
 @export var laser_strength: float = 1.
 @export var entanglement_chance: float = 0.05
@@ -323,13 +323,13 @@ func process_input_action(action: Dictionary) -> void:
 		if has_node("energy_systems"):
 			if "boost_initiated" in action and not $energy_systems.has_boost_energy():
 				action.erase("boost_initiated")
-			if  "pewpew" in action and not $energy_systems.has_weapon_energy():
+			if "pewpew" in action and not $energy_systems.has_weapon_energy():
 				action.erase("pewpew")
 				action["pewpew_released"] = true
 		
-		if not has_node("ai_control") and "pewpew" in action and $"../../target_assist".is_target_locked():
-			action["pewpew"] = $"../../target_assist".get_current_target_position()
-			action["pewpew_target"] =  $"../../target_assist".get_current_target()
+		if("pewpew" in action and has_node("target_assist") and $target_assist.is_target_locked()):
+			action["pewpew"] = $target_assist.get_current_target_position()
+			action["pewpew_target"] =  $target_assist.get_current_target()
 			
 		# move camera lightly on boost  
 		if "boost_initiated" in action:

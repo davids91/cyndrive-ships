@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var character: BattleCharacter
+@onready var character: Node = get_parent()
 
 var skins_material : ShaderMaterial
 

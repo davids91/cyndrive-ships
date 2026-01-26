@@ -3,11 +3,11 @@
 [ext_resource type="Texture2D" uid="uid://dlqpywsislhsh" path="res://models & sprites/mines & traps/Mine_Explossive-0001.png" id="1_3uwok"]
 [ext_resource type="Script" uid="uid://deblvxmkkv8c8" path="res://scripts/equipment/explossive_mine.gd" id="1_egrcn"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c5pv0"]
-radius = 31.0
-height = 64.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_jshdd"]
+radius = 20.396078
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_egrcn"]
+radius = 5.0
 
 [node name="ExplossiveMine" type="Area2D" groups=["combatants"]]
 z_index = -1
@@ -18,9 +18,10 @@ texture = ExtResource("1_3uwok")
 
 [node name="collide_to_activate" type="CollisionShape2D" parent="."]
 scale = Vector2(2, 2)
-shape = SubResource("CapsuleShape2D_c5pv0")
+shape = SubResource("CircleShape2D_jshdd")
 
 [node name="explode_radius" type="Area2D" parent="."]
+monitorable = false
 
 [node name="explosion_radius_collision" type="CollisionShape2D" parent="explode_radius"]
 scale = Vector2(75, 75)

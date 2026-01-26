@@ -20,9 +20,7 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		(is_shooting and (not "pewpew_released" in action or not action["pewpew_released"]))
 		or ("pewpew_initiated" in action and action["pewpew_initiated"])
 	)
-	
-	
-	if input_event.is_action_pressed("drop_mine"):		
+	if input_event.is_action_pressed("drop_mine"):
 		if held_mine != null:
 			held_mine.deploy_mine()
 		else:

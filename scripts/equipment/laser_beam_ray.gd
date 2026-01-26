@@ -7,9 +7,6 @@ class_name BattleShipLaser extends BattleShipWeapon
 @export var shutdown_time_sec: float = 0.15
 @export var target_time_sec: float = 0.01
 
-func _ready() -> void:
-	$raycast.collide_with_areas = true
-
 func shutdown() -> void:
 	# TECHDEBT: In case the laser is released before warmup, the tweens get in conflict, so wait until at least the warmup is finished
 	await get_tree().create_timer(warmup_time_sec).timeout
@@ -34,6 +31,7 @@ var was_shooting: bool = false
 var pewpew_target: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	if "pewpew" in action:
+		#if get_parent().name == "character": print("PEW", BattleTimeline.instance.time_msec())
 		create_tween().tween_method(func(pos): pewpew_target = pos, pewpew_target, action["pewpew"], target_time_sec)
 
 	was_shooting = is_shooting

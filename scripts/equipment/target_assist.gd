@@ -35,7 +35,13 @@ func highlight_centermost() -> void:
 		highligthed_body = target
 		
 func _on_body_entered(body: Node2D) -> void:
-	if body and body.has_method("set_highlight"):
+	if(
+		body and body.has_method("set_highlight")
+		and ( # Either the parent doesN't have a team node, or the body is an enemy by team assignments
+			not get_parent().has_node("team")
+			or (body.has_node("team") and body.get_node("team").is_enemy(get_parent().get_node("team")))
+		)
+	):
 		contained_bodies[body] = BattleTimeline.instance.time_msec()
 		highlight_centermost()
 

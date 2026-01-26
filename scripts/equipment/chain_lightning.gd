@@ -157,7 +157,6 @@ func _raycast_to_position(space_state: PhysicsDirectSpaceState2D, from: Vector2,
 
 	var query = PhysicsRayQueryParameters2D.create(from, extended_to)	
 	var exclude_rids: Array[RID] = []
-	query.collide_with_areas = true
 	for obj in exclude:
 		if obj is CollisionObject2D:
 			exclude_rids.append(obj.get_rid())
@@ -167,14 +166,14 @@ func _raycast_to_position(space_state: PhysicsDirectSpaceState2D, from: Vector2,
 
 func _is_valid_chain_target(combatant: Node2D, exclude: Array, my_team: Node) -> bool:
 	"""Check if a combatant is a valid chain lightning target."""
-	if not combatant.has_method("accept_damage"):		
-		return false		
-	if combatant in exclude:		
+	if not combatant.has_method("accept_damage"):
 		return false
-	if combatant.has_method("in_battle") and not combatant.in_battle():		
+	if combatant in exclude:
+		return false
+	if combatant.has_method("in_battle") and not combatant.in_battle():
 		return false
 	if my_team != null and combatant.has_node("team"):
-		if not combatant.get_node("team").is_enemy(my_team):			
+		if not combatant.get_node("team").is_enemy(my_team):
 			return false	
 	return true
 
