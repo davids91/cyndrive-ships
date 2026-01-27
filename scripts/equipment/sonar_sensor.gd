@@ -4,24 +4,18 @@ extends ShapeCast2D
 @export var blip_radius: float = 100.
 @export var tics_per_sec: float = 10.
 
-@onready var display_node: ColorRect = get_node("/root/battle/GUI/sensors_display")
+@onready var display_node: Node2D = get_node("/root/battle/GUI/sensors_display")
 @onready var last_checked: float = 0.
 
-var direct_control: bool = false
 var blips: Dictionary = {}
 
-func set_manual_rotation(rad: float) -> void:
-	direct_control = true
-	set_global_rotation(rad)
-
 func _process(_delta: float) -> void:
-	if !direct_control: set_global_rotation(get_global_rotation() + rotation_speed)
-	display_node.set_sonar_rotation(get_global_rotation())
+	set_global_rotation(get_global_rotation() + rotation_speed)
 	
 func _physics_process(delta: float) -> void:
 	# Only evaluate a few times per second, or with manual control
 	last_checked += delta
-	if last_checked < (1. / tics_per_sec) and not direct_control:
+	if last_checked < (1. / tics_per_sec):
 		return
 	last_checked = 0.
 

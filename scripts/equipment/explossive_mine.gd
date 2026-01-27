@@ -19,24 +19,28 @@ func _ready() -> void:
 	attached_position = Vector2(x_offset, position.y)
 
 @onready var level = get_tree().current_scene
-const EXPLOSION_FIREY = preload("uid://btx22762p6sdy")
+const EXPLOSION_FIREY = preload("res://scenes/effects/explosion-firey.tscn")
 
 func explode_mine() -> void:
 	var explode_effect = EXPLOSION_FIREY.instantiate()
-	if explode_effect != null:						
+	explode_effect.explosion_damage = 15.
+	explode_effect.explosion_length = 3.
+	explode_effect.explosion_strength = 3000.
+	explode_effect.explosion_range = 600.
+	if explode_effect != null:
 		explode_effect.global_position = drop_position
 		level.get_node("mush").add_child(explode_effect)
 		explode_effect.reinit()
 		explode_effect.scale = Vector2(3,3)
-		var bodies_in_radius =$explode_radius.get_overlapping_bodies()	
-		for body in bodies_in_radius:
-			if body.has_node("team") and body.was_alive:		
-				var body_team_id = body.get_node("team").team_id
-				if body_team_id != 1:					
-					body.was_alive = false
-					body.was_in_battle = false
-					body.dead.emit(body)
-					body.unalive_me()
+		#var bodies_in_radius = $explode_radius.get_overlapping_bodies()
+		#for body in bodies_in_radius:
+			#if body.has_node("team") and body.was_alive:
+				#var body_team_id = body.get_node("team").team_id
+				#if body_team_id != 1:
+					#body.was_alive = false
+					#body.was_in_battle = false
+					#body.dead.emit(body)
+					#body.unalive_me()
 		await get_tree().create_timer(.2).timeout #give lightning time to draw
 		active_mines.erase(self)
 		queue_free() #remove the mine

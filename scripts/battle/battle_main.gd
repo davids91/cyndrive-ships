@@ -13,7 +13,6 @@ var living_team_members: Dictionary = {}
 var god_mode_active: bool = false
 
 func _ready():
-	reset_health_display()
 	laupeerium_bar.bars_remaining = UIEnergyBar.max_bars
 	$combatants/character/controller.stop()
 	$combatants/character/cam.make_current()
@@ -56,12 +55,7 @@ func _draw() -> void:
 	for line in debug_lines:
 		draw_line(line.from, line.to, line.color, 3.0)
 
-func reset_health_display() -> void:
-	$GUI/sensors_display.expose_health(0.5)
-	create_tween().tween_method($GUI/sensors_display.set_health_percentage, 0., 1., round_start_delay_sec)
-
 func reset_game() -> void:
-	$GUI/sensors_display.set_sonar_visibility(true)
 	for explosion in $mush.get_children():
 		explosion.queue_free()
 	get_tree().call_deferred("reload_current_scene")
@@ -105,7 +99,6 @@ func restart_round(rewind_animation: bool = true) -> void:
 
 	# Set up UI for the new round
 	$GUI/rewind_effects.set_visible(true)
-	reset_health_display()
 
 	# Move the player to its spawn position
 	var respawn_time = 1.
@@ -152,7 +145,6 @@ func _process(delta):
 	var total_seconds: int = int(display_time / 1000.0)
 	var minutes: int = int(total_seconds / 60.0)
 	$GUI/time.set_text("%d:%02d" % [minutes, total_seconds % 60])
-	$GUI/sensors_display.get_material().set_shader_parameter("aspect_ratio", get_viewport().size.x/ get_viewport().size.y)
 
 	# Countdown to battle start
 	if 0 < init_countdown_sec:
@@ -163,8 +155,11 @@ func _process(delta):
 			for combatant in $combatants.get_children():
 				combatant.resume_control()
 			$timeline.reset()
-			$GUI/sensors_display.set_sonar_visibility(false)
 			$player_input.set_disabled(false)
+			$GUI/score.set_text(str(
+				living_team_members[1], " vs ", living_team_members[2],
+				" - Score: ", int(kill_score * kill_score_multiplier)
+			))
 		else: return
 
 	# Handle camera while replay
@@ -185,15 +180,6 @@ func _process(delta):
 			replay_viewport.size = lerp(replay_viewport.size, view_rectangle.size, replay_screen_responsiveness)
 			$replay_camera.zoom = Vector2(zoom_level, zoom_level)
 			$replay_camera.set_global_position(replay_viewport.position + replay_viewport.size / 2.)
-
-	# score, target assist area and sensor control
-	$GUI/score.set_text(str(
-		living_team_members[1], " vs ", living_team_members[2],
-		" - Score:", int(kill_score * kill_score_multiplier + current_laupeerium * resource_score_multiplier)
-	))
-	if $combatants.has_node("character") and $combatants/character/sonar_sensor.direct_control:
-		var direction = (get_global_mouse_position() - $combatants/character.get_global_position()).normalized()
-		$combatants/character/sonar_sensor.set_manual_rotation(direction.angle())
 
 	# Handling Battle restart
 	if (Time.get_ticks_msec() - reverse_last_tap_at) > tap_interval_msec and rewind_battle_laupeerium_cost < current_laupeerium:
@@ -319,14 +305,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_released("replay"):
 		reverse_being_held = false
-	
-	if event.is_action_pressed("radar-control") and just_pressed:
-		$combatants/character/sonar_sensor.direct_control = true
-		$GUI/sensors_display.set_sonar_visibility(true)
-
-	if event.is_action_released("radar-control"):
-		$GUI/sensors_display.set_sonar_visibility(false)
-		$combatants/character/sonar_sensor.direct_control = false
 
 func player_defeated() -> bool:
 	return (
@@ -358,7 +336,10 @@ func _on_battle_character_dead(character: BattleCharacter) -> void:
 	living_team_members[dead_character_team.team_id] -= 1
 	if $combatants/character/team.is_enemy(dead_character_team):
 		kill_score += character.starting_health
-
+	$GUI/score.set_text(str(
+		living_team_members[1], " vs ", living_team_members[2],
+		" - Score: ", int(kill_score * kill_score_multiplier)
+	))
 	if player_defeated():
 		$GUI/victory.set_visible(false)
 		$GUI/restart_round_panel.set_visible(false)
@@ -367,6 +348,10 @@ func _on_battle_character_dead(character: BattleCharacter) -> void:
 		$GUI/restart_round_panel.set_visible(false)
 		$GUI/defeat.set_visible(false)
 		$GUI/victory.set_visible(true)
+		$GUI/score.set_text(str(
+			living_team_members[1], " vs ", living_team_members[2],
+			" - Score: ", int(kill_score * kill_score_multiplier + current_laupeerium * resource_score_multiplier)
+		))
 	elif $combatants.has_node("character") and not $combatants/character.is_alive:
 		$GUI/victory.set_visible(false)
 		$GUI/defeat.set_visible(false)
@@ -377,6 +362,10 @@ func _on_battle_character_resurrected(character: BattleCharacter) -> void:
 	if $combatants.has_node("character") and $combatants/character.is_alive:
 		$GUI/restart_round_panel.set_visible(false)
 	living_team_members[character.get_node("team").team_id] += 1
+	$GUI/score.set_text(str(
+		living_team_members[1], " vs ", living_team_members[2],
+		" - Score: ", int(kill_score * kill_score_multiplier)
+	))
 
 const one_weapon_slot_width_with_padding: float = 128.5
 func _on_weapon_changed(slot: int) -> void:
@@ -398,5 +387,5 @@ func _on_replay_button_pressed() -> void:
 	$player_input.set_disabled(true)
 	$combatants/character.queue_free()
 	$replay_camera.make_current()
-	$GUI/sensors_display.hide_health(0.5)
 	$GUI/restart_during_replay.set_visible(true)
+	$GUI/score.set_visible(false)

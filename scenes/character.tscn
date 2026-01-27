@@ -169,7 +169,7 @@ metadata/_custom_type_script = "uid://cy4bwltyfsq3g"
 
 [node name="sound" type="AudioStreamPlayer2D" parent="laser_beam"]
 stream = SubResource("AudioStreamRandomizer_sougf")
-volume_db = -20.0
+volume_db = -30.0
 attenuation = 0.3186402
 max_polyphony = 5
 
@@ -194,7 +194,7 @@ metadata/_custom_type_script = "uid://cy4bwltyfsq3g"
 
 [node name="sound" type="AudioStreamPlayer2D" parent="chain_lightning"]
 stream = SubResource("AudioStreamRandomizer_i0gp7")
-volume_db = -15.0
+volume_db = -30.0
 attenuation = 0.3186402
 max_polyphony = 5
 

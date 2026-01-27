@@ -1,4 +1,4 @@
-extends ColorRect
+extends Node2D
 
 const SONAR_BLIP_SCENE = preload("res://scenes/effects/sonar_blip.tscn")
 

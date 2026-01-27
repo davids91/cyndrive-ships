@@ -5,7 +5,7 @@ extends Node2D
 @export var target_clamp_distance: float = 300.
 @export var laser_haste: float = 0.6
 @export var laser_lookahead: float = 0.15
-@export var attack_range: float = 1000.
+@export var attack_range: float = 1200.
 @export var goldfish_memory_sec: float = 1.
 @export var stuck_sec_threshold: float = 3.
 @export var stuck_motion_threshold: float = 30.
@@ -149,12 +149,13 @@ func _physics_process(delta: float) -> void:
 	else: target_is_acquired = false
 
 	if target_is_acquired and not target_was_acquired: action["pewpew_initiated"] = true
-	elif not target_is_acquired and target_was_acquired: action["pewpew_released"] = true
-	if (
-		not target_is_acquired and not "pewpew_released" in action
-		and character.has_node("weapon_slot") and not character.get_node("weapon_slot").is_shooting
+	elif(
+		not target_is_acquired and target_was_acquired
+		or (
+			not target_is_acquired and not "pewpew_released" in action
+			and character.has_node("weapon_slot") and character.get_node("weapon_slot").is_shooting
+		)
 	): action["pewpew_released"] = true
-
 	if target_is_acquired and target_is_alive:
 		if (target_moving_avg - chosen_target.get_global_position()).length() < target_clamp_distance:
 			action["pewpew"] = chosen_target.get_global_position()
