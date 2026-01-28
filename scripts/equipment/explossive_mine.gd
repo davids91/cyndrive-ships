@@ -4,6 +4,7 @@ const EXPLOSION_FIREY = preload("res://scenes/effects/explosion-firey.tscn")
 
 @export var mine_drag_strength: float = 50.
 @export var mine_drag_length: float = 25.
+@export var fault_chance: float = 0.005
 
 @onready var level = get_tree().current_scene
 var is_activated: bool = false
@@ -68,7 +69,7 @@ func deploy_mine(activation_delay_msec : float = 0.0) -> void:
 		func():
 			$collide_to_activate.disabled = false
 			run_deployed_tween()
-			is_activated = true
+			is_activated = fault_chance < randf()
 			attached_to = null
 	)
 

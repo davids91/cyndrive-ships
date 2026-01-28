@@ -17,14 +17,11 @@ signal weapon_energy_updated(new_energy_level: float)
 @export_range(0., 200.) var mass: float = 10.
 
 var health: float = starting_health
-var target_assist_original_size: float = 150.
 func _ready() -> void:
 	$mini_health_bar.set_visible(name != "player_carrier")
 	$team.initialize(team_id, spawn_position, color)
 	$skin.init_skin(skin_layers, $team.color)
-
 	if has_node("ai_control"): $ai_control.enabled = true
-	if has_node("target_assist"): target_assist_original_size = $target_assist/collision_shape.shape.radius
 
 @export var red_curve_phasing: Curve
 @export var green_curve_phasing: Curve
@@ -152,11 +149,8 @@ func _physics_process(delta: float) -> void:
 @onready var was_alive: bool = true
 @onready var was_in_battle: bool = in_battle()
 @export var mini_health_bar_offset: Vector2 = Vector2(-64, 64)
-@export var motion_zoom_range: float = 0.02
-@export var motion_zoom_center: float = 0.3
 var ship_explosion : ShipExplosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
-var current_zoom_value: float = motion_zoom_center
 func _process(_delta):
 	if has_node("target_assist"): $target_assist.set_position(get_global_mouse_position())
 	if $mini_health_bar.top_level:
@@ -196,18 +190,6 @@ func _process(_delta):
 		stop_fnc.tween_interval(0.5)
 		stop_fnc.tween_callback(func() : $thruster_sound.stop())
 		stop_fnc.chain()
-	
-	# Handle dynamic zoom for camera
-	if has_node("cam"):
-		var next_zoom_value = clamp(
-			$controller.top_speed / get_velocity().length() * 10.,
-			motion_zoom_center - motion_zoom_range, motion_zoom_center + motion_zoom_range
-		)
-		current_zoom_value = lerpf(current_zoom_value, next_zoom_value, 0.01)
-		$cam.zoom.x = current_zoom_value
-		$cam.zoom.y = current_zoom_value
-		if has_node("target_assist"):
-			$target_assist/collision_shape.shape.radius = target_assist_original_size * (0.5 / current_zoom_value)
 
 @export var laser_strength: float = 1.
 @export var entanglement_chance: float = 0.05

@@ -261,6 +261,9 @@ func create_new_puppet(predecessor: BattleCharacter) -> void:
 	$combatants.add_child(puppet)
 	predecessor.get_node("temporal_recorder").start_recording()
 
+@export var motion_zoom_range: float = 0.02
+@export var motion_zoom_center: float = 0.3
+var current_zoom_value: float = motion_zoom_center
 func _unhandled_input(event: InputEvent) -> void:
 	if is_replay: return
 	var just_pressed = event.is_pressed() and not event.is_echo()
@@ -298,6 +301,22 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_released("replay"):
 		reverse_being_held = false
+#
+	if event.is_action_pressed("zoom_in"):
+		motion_zoom_center *= 0.95
+		current_zoom_value *= 0.95
+	elif event.is_action_pressed("zoom_out"):
+		motion_zoom_center *= 1.05
+		current_zoom_value *= 1.05
+
+	# Handle dynamic zoom for camera
+	var next_zoom_value = clamp(
+		$combatants/character/controller.top_speed / $combatants/character.get_velocity().length() * 10.,
+		motion_zoom_center - motion_zoom_range, motion_zoom_center + motion_zoom_range
+	)
+	current_zoom_value = lerpf(current_zoom_value, next_zoom_value, 0.01)
+	$combatants/character/cam.zoom.x = current_zoom_value
+	$combatants/character/cam.zoom.y = current_zoom_value
 
 func player_defeated() -> bool:
 	return (
