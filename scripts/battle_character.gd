@@ -20,7 +20,6 @@ var health: float = starting_health
 var target_assist_original_size: float = 150.
 func _ready() -> void:
 	$mini_health_bar.set_visible(name != "player_carrier")
-	add_to_group("combatants")
 	$team.initialize(team_id, spawn_position, color)
 	$skin.init_skin(skin_layers, $team.color)
 
@@ -134,6 +133,7 @@ func get_mass() -> float:
 func apply_impulse(impulse: Vector2) -> void:
 	$controller.apply_impulse(impulse)
 
+#TODO: add linear velocity to temporal state for battleDebris
 # Keeping track of the body the character is in contact with
 var body_in_contact: Object = null
 var contact_time: float = 0.
@@ -313,6 +313,7 @@ func resume_control() -> void:
 	$controller.start()
 	if has_node("ai_control"): $ai_control.resume()
 
+var held_mine: ExplosiveMine = null
 func process_input_action(action: Dictionary) -> void:
 	if not in_battle(): return # cannot process any action while not in battle
 	if "weapon_slot" in action and has_node("weapon_slot"):
@@ -320,6 +321,10 @@ func process_input_action(action: Dictionary) -> void:
 		action["pewpew_released"] = true
 
 	if(control_enabled):
+		if not null == held_mine and "deploy_mine" in action and action["deploy_mine"]:
+			held_mine.deploy_mine()
+			held_mine = null
+
 		if has_node("energy_systems"):
 			if "boost_initiated" in action and not $energy_systems.has_boost_energy():
 				action.erase("boost_initiated")

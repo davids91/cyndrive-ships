@@ -30,17 +30,10 @@ func _ready():
 	for debris in $debris.get_children():
 		$timeline.connect("round_reset", debris.respawn)
 
-	spawn_mine()
-
 	# Connect weapon slot signal for UI updates
 	if $combatants/character.has_node("weapon_slot"):
 		$combatants/character/weapon_slot.weapon_changed.connect(_on_weapon_changed)
 	$combatants/player_carrier.phase_in(round_start_delay_sec)
-
-func spawn_mine():
-		var mine = preload("res://scenes/weapons/explossive_mine.tscn").instantiate()
-		$combatants/character.add_child(mine)
-		$player_input.held_mine = mine
 
 var debug_lines = []
 func display_line(from: Vector2, to: Vector2, color: Color) -> void:
@@ -138,7 +131,6 @@ var reverse_hold_time_sec: float = 0.
 var reverse_tap_count: int = 0
 var reverse_last_tap_at: int = Time.get_ticks_msec()
 var replay_viewport = Rect2()
-
 func _process(delta):
 	$GUI/debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
 	var display_time: float = BattleTimeline.instance.time_msec()
@@ -152,6 +144,7 @@ func _process(delta):
 		$GUI/score.set_text("%0.3f" % init_countdown_sec)
 		if init_countdown_sec <= 0:
 			$combatants/character.set_visible(true)
+			$combatants/character.held_mine.set_visible(true) # TECHDEBT: make initial mine attached to the ship visible
 			for combatant in $combatants.get_children():
 				combatant.resume_control()
 			$timeline.reset()

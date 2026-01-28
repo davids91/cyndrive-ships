@@ -29,8 +29,8 @@ var spawnTimestampSec: float = 0. # game timestamp of when triggered
 var lifespanSec: float = 2. # seconds of life until faded out
 var currentAgeSec: float = 0. # can increase and decrease freely
 
-func reinit() -> void:
-	spawnTimestampSec = BattleTimeline.instance.time_msec() / 1000.
+func reinit(msec_delay: float = 0.) -> void:
+	spawnTimestampSec = BattleTimeline.instance.time_msec() / 1000. + msec_delay
 
 func apply_shockwave(delta: float) -> void:
 	var root = get_tree().get_root()

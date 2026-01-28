@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://ces1a5si8kfsc"]
+[gd_scene load_steps=12 format=3 uid="uid://dni5mwbuc6qpp"]
 
-[ext_resource type="Script" uid="uid://cvaasp78pgixj" path="res://scripts/meteor.gd" id="1_83eji"]
-[ext_resource type="Texture2D" uid="uid://dfbeabq0fdr4w" path="res://textures/asteroids.png" id="2_83eji"]
+[ext_resource type="Script" path="res://scripts/meteor.gd" id="1_83eji"]
+[ext_resource type="Texture2D" uid="uid://i02weyd6teyy" path="res://textures/asteroids.png" id="2_83eji"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_lhxke"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_83eji"]
@@ -34,7 +34,7 @@ height = 181.98311
 radius = 38.0
 height = 218.2238
 
-[node name="meteor" type="RigidBody2D"]
+[node name="meteor" type="RigidBody2D" groups=["destroyables"]]
 mass = 50.0
 script = ExtResource("1_83eji")
 skin_idx = 7

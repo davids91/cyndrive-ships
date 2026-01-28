@@ -100,7 +100,7 @@ stream_1/stream = ExtResource("18_cicko")
 stream_2/stream = ExtResource("19_bj47h")
 stream_3/stream = ExtResource("20_4lh0q")
 
-[node name="character" type="CharacterBody2D"]
+[node name="character" type="CharacterBody2D" groups=["destroyables"]]
 script = ExtResource("1_gqnfm")
 color = Color(0, 0, 0, 0)
 starting_health = 500.0

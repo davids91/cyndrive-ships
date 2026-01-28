@@ -1,107 +1,85 @@
-extends Area2D
+class_name ExplosiveMine extends BattleDebris
 
-var is_activated = false
-
-var drop_position 
-var x_offset = -33
-
-var attached_position 
-var player_input 
-static var active_mines = []
-
-func _ready() -> void:	
-	$collide_to_activate.disabled = true
-	player_input =  level.get_node("player_input")	
-	player_input.held_mine = self	
-	collision_layer = 1
-	collision_mask = 0
-	position.x = x_offset
-	attached_position = Vector2(x_offset, position.y)
-
-@onready var level = get_tree().current_scene
 const EXPLOSION_FIREY = preload("res://scenes/effects/explosion-firey.tscn")
 
-func explode_mine() -> void:
-	var explode_effect = EXPLOSION_FIREY.instantiate()
-	explode_effect.explosion_damage = 15.
-	explode_effect.explosion_length = 3.
-	explode_effect.explosion_strength = 3000.
-	explode_effect.explosion_range = 600.
-	if explode_effect != null:
-		explode_effect.global_position = drop_position
-		level.get_node("mush").add_child(explode_effect)
-		explode_effect.reinit()
-		explode_effect.scale = Vector2(3,3)
-		#var bodies_in_radius = $explode_radius.get_overlapping_bodies()
-		#for body in bodies_in_radius:
-			#if body.has_node("team") and body.was_alive:
-				#var body_team_id = body.get_node("team").team_id
-				#if body_team_id != 1:
-					#body.was_alive = false
-					#body.was_in_battle = false
-					#body.dead.emit(body)
-					#body.unalive_me()
-		await get_tree().create_timer(.2).timeout #give lightning time to draw
-		active_mines.erase(self)
-		queue_free() #remove the mine
+@export var mine_drag_strength: float = 50.
+@export var mine_drag_length: float = 25.
 
-func run_deployed_tween():	
+@onready var level = get_tree().current_scene
+var is_activated: bool = false
+var mount_offset: Vector2 = Vector2(-3., 0.)
+var attached_position: Vector2
+
+func _ready() -> void:
+	$collide_to_activate.disabled = true
+
+func _process(_delta: float) -> void:
+	$chain.points[0] = get_global_position()
+	if not null == attached_to: $chain.points[1] = attached_to.get_global_position()
+	else: $chain.points[1] = get_global_position()
+
+func _physics_process(_delta: float) -> void:
+	# Handle dragging the attached mine behind ship
+	if not null == attached_to:
+		# Calculate the direction the mine should be dragged, including the velocity of the mine
+		var mine_pull_vector = (
+			attached_to.get_global_position() + mount_offset.rotated(attached_to.get_global_rotation())
+			- (get_global_position() + get_linear_velocity() * 0.1)
+		)
+		# Cut the pull strength in case the mine is close to the ship
+		var mine_pull_near_coeff = min(mine_drag_length, mine_pull_vector.length()) * smoothstep(0., mine_drag_length, mine_pull_vector.length())
+
+		# Amplify the pull strength if the mine is far away from the ship
+		var mine_pull_far_coeff = smoothstep(mine_drag_length, 0., mine_pull_vector.length())
+		mine_pull_vector = mine_pull_vector.normalized() * mine_pull_near_coeff / max(0.1, mine_pull_far_coeff)
+
+		# Only apply any force if the mine os far away
+		if mine_pull_vector.length() > mine_drag_length:
+			apply_impulse(mine_pull_vector)
+
+var explosion: ShipExplosion = null
+func explode_mine() -> void:
+	if null == explosion:
+		explosion = EXPLOSION_FIREY.instantiate()
+		explosion.explosion_damage = 15.
+		explosion.explosion_length = 3.
+		explosion.explosion_strength = 3000.
+		explosion.explosion_range = 600.
+		level.get_node("mush").add_child(explosion)
+	explosion.global_position = get_global_position()
+	explosion.reinit()
+	explosion.scale = Vector2(3,3)
+	await get_tree().create_timer(.2).timeout #give lightning time to draw
+	queue_free()
+
+func accept_damage(_strength: float, _source: BattleCharacter = null) -> void:
+	if is_activated: explode_mine()
+
+func run_deployed_tween():
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(1.3, 1.3), .5)
 	tween.tween_property(self, "scale", Vector2(1, 1), .5)
-	tween.set_loops(0)	
+	tween.set_loops(0)
 
-func accept_damage(_x,_y):
-	if self != null:
-		explode_mine()
+func deploy_mine(activation_delay_msec : float = 0.0) -> void:
+	var delay_tween = create_tween()
+	delay_tween.tween_interval(activation_delay_msec)
+	delay_tween.tween_callback(
+		func():
+			$collide_to_activate.disabled = false
+			run_deployed_tween()
+			is_activated = true
+			attached_to = null
+	)
 
-func deploy_mine() -> void:	
-	if self == null:
-		return	
-	$collide_to_activate.disabled = false
-	player_input.attach_nearest_mine.connect(attach_mine)
-	drop_position=global_position	
-	get_parent().remove_child(self)
-	level.get_node("combatants").add_child(self)
-	set_global_position(drop_position)
-	set_global_rotation(0)
-	run_deployed_tween()
-	player_input.held_mine = null	
-	is_activated = true
-	active_mines.append(self)
-
-func find_closest_mine() -> Node2D:
-	var closest_mine = null
-
-	var closest_distance = INF
-	var char_position = level.get_node("combatants/character").global_position
-	for mine in active_mines:
-		var dist = char_position.distance_to(mine.global_position)
-		if dist < closest_distance:
-			closest_distance = dist
-			closest_mine = mine
-	return closest_mine
-
-func attach_mine() -> void:
-	if player_input.held_mine != null:
-		return		
-	var player = level.get_node("combatants/character")		
-	var closest_mine = find_closest_mine()
-	player_input.attach_nearest_mine.disconnect(closest_mine.attach_mine)
-	player_input.held_mine = closest_mine
-	if closest_mine != null:
-		active_mines.erase(closest_mine)
-		var tween_out = closest_mine.create_tween()
-		closest_mine.get_node("collide_to_activate").disabled = true
-		player_input.held_mine = closest_mine
-		tween_out.tween_property(closest_mine, "scale", Vector2(0.0, 0.0), .5)
-		tween_out.tween_callback(func():
-			closest_mine.reparent(player)		
-			closest_mine.position = attached_position			
-			closest_mine.is_activated = false)
+var attached_to: BattleCharacter = null
+func attach_mine(ship: BattleCharacter, attached_length: float = ship.approx_size) -> void:
+	attached_to = ship
+	mine_drag_length = attached_length
+	set_global_position(ship.get_global_position() + mount_offset)
 	
 func _on_explode_radius_body_entered(body: Node2D) -> void:
-	if body.has_node("team") and is_activated:		
-		var body_team_id = body.get("team_id")		
+	if body.has_node("team") and is_activated:
+		var body_team_id = body.get("team_id")
 		if body_team_id != 1:
 			explode_mine()

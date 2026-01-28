@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dtxyjqq5vc8hv"]
+[gd_scene load_steps=6 format=3 uid="uid://dtxyjqq5vc8hv"]
 
 [ext_resource type="Texture2D" uid="uid://dlqpywsislhsh" path="res://models & sprites/mines & traps/Mine_Explossive-0001.png" id="1_3uwok"]
 [ext_resource type="Script" uid="uid://deblvxmkkv8c8" path="res://scripts/equipment/explossive_mine.gd" id="1_egrcn"]
+[ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_jshdd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jshdd"]
 radius = 20.396078
@@ -9,7 +10,7 @@ radius = 20.396078
 [sub_resource type="CircleShape2D" id="CircleShape2D_egrcn"]
 radius = 5.0
 
-[node name="ExplossiveMine" type="Area2D" groups=["combatants"]]
+[node name="ExplossiveMine" type="RigidBody2D" groups=["destroyables"]]
 z_index = -1
 script = ExtResource("1_egrcn")
 
@@ -27,5 +28,14 @@ monitorable = false
 scale = Vector2(75, 75)
 shape = SubResource("CircleShape2D_egrcn")
 debug_color = Color(0.80673623, 0.31795433, 0.33591256, 0.41960785)
+
+[node name="temporal_recorder" type="Node2D" parent="."]
+script = ExtResource("3_jshdd")
+
+[node name="chain" type="Line2D" parent="."]
+top_level = true
+z_index = -5
+points = PackedVector2Array(0, 0, 0, 0)
+default_color = Color(0.17193, 0.22, 0.16939999, 1)
 
 [connection signal="body_entered" from="explode_radius" to="." method="_on_explode_radius_body_entered"]

@@ -3,13 +3,11 @@ extends Node2D
 class_name PlayerInput
 
 signal action_triggered(action: Dictionary)
-signal attach_nearest_mine()
 
 var current_intent: Vector2 = Vector2()
 var is_shooting: bool = false
 var current_pewpew_target: Vector2 = Vector2()
-var input_disabled = true
-var held_mine
+var input_disabled: bool = true
 
 func set_disabled(yesno: bool) -> void:
 	input_disabled = yesno
@@ -20,11 +18,6 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		(is_shooting and (not "pewpew_released" in action or not action["pewpew_released"]))
 		or ("pewpew_initiated" in action and action["pewpew_initiated"])
 	)
-	if input_event.is_action_pressed("drop_mine"):
-		if held_mine != null:
-			held_mine.deploy_mine()
-		else:
-			attach_nearest_mine.emit()
 
 	if "intent" in action:
 		current_intent += action["intent"]
@@ -57,6 +50,7 @@ Output format is the following:
 	action["pewpew_initiated"]: boolean value for weapon activation
 	action["pewpew_released"]: boolean value for weapon deactivation
 	action["pewpew_target"]: the target object to which the laser is supposed to be fired
+	action["deploy_mine"]: activate and release the attached mine ( if any )
 """
 static func get_action(input_event):
 	var action = Dictionary()
@@ -83,6 +77,9 @@ static func get_action(input_event):
 
 	if input_event.is_action_released("boost"):
 		action["boost_released"] = true
+
+	if input_event.is_action_pressed("deploy_mine"):
+		action["deploy_mine"] = true
 
 	# Handle weapon selection (1-4 keys)
 	if(

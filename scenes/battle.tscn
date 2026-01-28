@@ -34,7 +34,7 @@
 [ext_resource type="PackedScene" path="res://scenes/pause menu.tscn" id="24_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/player_carrier_bottom.png" id="24_lv4so"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://battle_ship_skin.gd" id="25_eivww"]
-[ext_resource type="PackedScene" path="res://scenes/meteor.tscn" id="25_ikjs2"]
+[ext_resource type="PackedScene" uid="uid://dni5mwbuc6qpp" path="res://scenes/meteor.tscn" id="25_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/battle_ship.png" id="25_lv4so"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/fighter-ship-accent.png" id="30_at2n2"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/dialogue.tscn" id="35_4u087"]

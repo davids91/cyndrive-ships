@@ -182,7 +182,7 @@ func _find_next_chain_target(from_pos: Vector2, exclude: Array) -> Node2D:
 	var my_team = wielder.get_node("team") if wielder.has_node("team") else null
 	var candidates: Array[Dictionary] = []
 
-	for combatant in get_tree().get_nodes_in_group("combatants"):
+	for combatant in get_tree().get_nodes_in_group("destroyables"):
 		if not _is_valid_chain_target(combatant, exclude, my_team):
 			continue
 

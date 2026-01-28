@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b2el5b6ucyivj"]
+[gd_scene load_steps=22 format=3 uid="uid://b2el5b6ucyivj"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/battle_character.gd" id="1_ny2j2"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/skin.gd" id="2_i8lxl"]
@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://dajttw71kitgt" path="res://audio/explosion_001.wav" id="12_55my7"]
 [ext_resource type="AudioStream" uid="uid://besa8dwtnwqwy" path="res://audio/explosion_002.wav" id="13_14t5u"]
 [ext_resource type="Script" uid="uid://dglqu1ynocp45" path="res://scripts/equipment/healing_aura.gd" id="14_5fyrk"]
+[ext_resource type="Script" uid="uid://3dfit16uksc1" path="res://scripts/equipment/mine_attachement_aura.gd" id="14_a3wjc"]
 [ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="14_em532"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_d02ko"]
@@ -25,8 +26,12 @@ stream_1/stream = ExtResource("12_55my7")
 stream_2/stream = ExtResource("13_14t5u")
 stream_3/stream = ExtResource("14_em532")
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a3wjc"]
+radius = 200.0
+height = 800.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_d02ko"]
-radius = 450.0
+radius = 500.0
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_5fyrk"]
 viewport_path = NodePath("skin/layers")
@@ -99,6 +104,14 @@ autoplay = true
 [node name="explosion_sound" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_d16w7")
 
+[node name="mine_attachement_aura" type="Area2D" parent="."]
+position = Vector2(-125, 0)
+monitorable = false
+script = ExtResource("14_a3wjc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="mine_attachement_aura"]
+shape = SubResource("CapsuleShape2D_a3wjc")
+
 [node name="healing_aura" type="Area2D" parent="."]
 script = ExtResource("14_5fyrk")
 
@@ -139,5 +152,7 @@ offset_bottom = 512.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[connection signal="body_entered" from="mine_attachement_aura" to="mine_attachement_aura" method="_on_body_entered"]
+[connection signal="body_exited" from="mine_attachement_aura" to="mine_attachement_aura" method="_on_body_exited"]
 [connection signal="body_entered" from="healing_aura" to="healing_aura" method="_on_body_entered"]
 [connection signal="body_exited" from="healing_aura" to="healing_aura" method="_on_body_exited"]
