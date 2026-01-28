@@ -1,7 +1,17 @@
-[gd_scene load_steps=9 format=3 uid="uid://dx5l0c02m750q"]
+[gd_scene load_steps=19 format=3 uid="uid://dx5l0c02m750q"]
 
 [ext_resource type="Shader" uid="uid://b7ifbbmdopsb" path="res://shaders/starfield.gdshader" id="1_6gwg5"]
 [ext_resource type="Texture2D" uid="uid://b3l70a8ih0ytb" path="res://textures/stars_larger.png" id="2_frxoh"]
+[ext_resource type="Texture2D" uid="uid://vpojjmw16ptw" path="res://textures/nebulae/transparent/nebula1.png" id="3_frxoh"]
+[ext_resource type="Texture2D" uid="uid://crcnq323n8uy8" path="res://textures/nebulae/transparent/nebula2.png" id="4_s0ssu"]
+[ext_resource type="Texture2D" uid="uid://wr347s1d5v38" path="res://textures/nebulae/transparent/nebula3.png" id="5_vqo4o"]
+[ext_resource type="Texture2D" uid="uid://b4x8e550p4y1" path="res://textures/nebulae/transparent/nebula4.png" id="6_l815f"]
+[ext_resource type="Texture2D" uid="uid://de725ln3wf3lf" path="res://textures/nebulae/transparent/nebula5.png" id="7_jvh4g"]
+[ext_resource type="Texture2D" uid="uid://d0dqgmpf8yx8v" path="res://textures/nebulae/transparent/nebula6.png" id="8_mc1a7"]
+[ext_resource type="Texture2D" uid="uid://dksbn8h5uipof" path="res://textures/nebulae/transparent/nebula7.png" id="9_v0dfh"]
+[ext_resource type="Texture2D" uid="uid://nce2vtjr1ais" path="res://textures/nebulae/transparent/nebula8.png" id="10_hmbkx"]
+[ext_resource type="Texture2D" uid="uid://cxswedm35yw8m" path="res://textures/nebulae/transparent/nebula9.png" id="11_vsm6e"]
+[ext_resource type="Texture2D" uid="uid://boplpb3vy3e1s" path="res://textures/nebulae/transparent/nebula10.png" id="12_hohc0"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_fqtyt"]
 frequency = 0.0397
@@ -182,4 +192,88 @@ motion_mirroring = Vector2(32184, 32184)
 [node name="Sprite2D" type="Sprite2D" parent="planet_layer"]
 texture_repeat = 3
 texture = ExtResource("2_frxoh")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebulae" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.025, 0.025)
+motion_mirroring = Vector2(32184, 32184)
+
+[node name="nebula1" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(1882, 1510)
+scale = Vector2(8, 8)
+texture = ExtResource("3_frxoh")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebula2" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(-464, 1138)
+scale = Vector2(8, 8)
+texture = ExtResource("4_s0ssu")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebula3" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(511, -1208)
+scale = Vector2(8, 8)
+texture = ExtResource("5_vqo4o")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebula4" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(-1928, -2370)
+scale = Vector2(8, 8)
+texture = ExtResource("6_l815f")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebula5" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(4784, -396)
+scale = Vector2(8, 8)
+texture = ExtResource("7_jvh4g")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebula6" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(3483, 4505)
+scale = Vector2(8, 8)
+texture = ExtResource("8_mc1a7")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebula7" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(580, 4366)
+scale = Vector2(8, 8)
+texture = ExtResource("9_v0dfh")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebula8" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(-2881, 2438)
+scale = Vector2(8, 8)
+texture = ExtResource("10_hmbkx")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebula9" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(-5366, -117)
+scale = Vector2(8, 8)
+texture = ExtResource("11_vsm6e")
+region_rect = Rect2(0, 0, 2048, 2048)
+
+[node name="nebula10" type="Sprite2D" parent="nebulae"]
+modulate = Color(1, 1, 1, 0.39215687)
+texture_repeat = 1
+position = Vector2(5248, 2809)
+scale = Vector2(8, 8)
+texture = ExtResource("12_hohc0")
 region_rect = Rect2(0, 0, 2048, 2048)
