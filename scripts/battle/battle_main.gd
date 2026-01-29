@@ -301,7 +301,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_released("replay"):
 		reverse_being_held = false
-#
+
 	if event.is_action_pressed("zoom_in"):
 		motion_zoom_center *= 0.95
 		current_zoom_value *= 0.95

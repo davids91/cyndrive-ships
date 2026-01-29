@@ -58,11 +58,8 @@ func phase_in(phase_in_duration_sec: float) -> void:
 	red_phase_tween.chain()
 
 
-var debug_color: Color = Color.from_hsv(randf() * 6., 1., 1., 1.)
+var debug_color: Color = Color.from_hsv(randf(), 1., 1., 1.)
 func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void:
-	# DEBUG LINES FOR MOTION CORRECTION
-	get_parent().get_parent().display_line(transform.get_origin(), snapshot["transform"].get_origin(), debug_color)
-	# DEBUG LINES FOR MOTION CORRECTION
 
 	if "health" in snapshot:
 		was_alive = is_alive
@@ -79,10 +76,8 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 	var tween_length = max(0., over_time_msec) / 1000.;
 	if "internal_force" in snapshot:
 		$controller.internal_force = snapshot["internal_force"] * BattleTimeline.instance.time_flow
-	if "velocity" in snapshot:
-		velocity = snapshot["velocity"] * BattleTimeline.instance.time_flow
-	if "rotation" in snapshot:
-		set_global_rotation(snapshot["rotation"])
+	if "velocity" in snapshot: velocity = snapshot["velocity"] * BattleTimeline.instance.time_flow
+	if "rotation" in snapshot: set_global_rotation(snapshot["rotation"])
 
 	# Add an afterimage of the character if correction moved it from course too much, and erase it short after
 	if approx_size * 2. < correction_length:
@@ -100,6 +95,9 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 			0.0, 1.0, 0.5
 		)
 		tween.finished.connect(func(): clone.queue_free())
+		# DEBUG LINES FOR MOTION CORRECTION
+		get_parent().get_parent().display_line(transform.get_origin(), snapshot["transform"].get_origin(), debug_color)
+		# DEBUG LINES FOR MOTION CORRECTION
 
 func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 	spawn_position = predecessor.spawn_position
@@ -130,7 +128,6 @@ func get_mass() -> float:
 func apply_impulse(impulse: Vector2) -> void:
 	$controller.apply_impulse(impulse)
 
-#TODO: add linear velocity to temporal state for battleDebris
 # Keeping track of the body the character is in contact with
 var body_in_contact: Object = null
 var contact_time: float = 0.
@@ -146,7 +143,7 @@ func _physics_process(delta: float) -> void:
 	else: contact_time = 0.
 
 @onready var is_alive: bool = true
-@onready var was_alive: bool = true
+@onready var was_alive: bool = is_alive
 @onready var was_in_battle: bool = in_battle()
 @export var mini_health_bar_offset: Vector2 = Vector2(-64, 64)
 var ship_explosion : ShipExplosion

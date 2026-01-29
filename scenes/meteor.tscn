@@ -1,7 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://dni5mwbuc6qpp"]
+[gd_scene load_steps=14 format=3 uid="uid://dni5mwbuc6qpp"]
 
-[ext_resource type="Script" path="res://scripts/meteor.gd" id="1_83eji"]
+[ext_resource type="Script" uid="uid://cvaasp78pgixj" path="res://scripts/meteor.gd" id="1_83eji"]
 [ext_resource type="Texture2D" uid="uid://i02weyd6teyy" path="res://textures/asteroids.png" id="2_83eji"]
+[ext_resource type="Material" uid="uid://hwlaracobxoh" path="res://resources/implode_effect.tres" id="2_lhxke"]
+[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/simple_skin.gd" id="3_8tfog"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_lhxke"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_83eji"]
@@ -43,9 +45,11 @@ collision_rotation = Array[float]([0.0, 0.0, 0.875, 0.92, 1.195, 0.0, 0.93, -0.8
 metadata/_custom_type_script = "uid://bg8pweqwdny4o"
 
 [node name="skin" type="Sprite2D" parent="."]
+material = ExtResource("2_lhxke")
 texture = ExtResource("2_83eji")
 region_enabled = true
 region_rect = Rect2(0, 1792, 256, 256)
+script = ExtResource("3_8tfog")
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 rotation = -0.865

@@ -18,7 +18,7 @@ var msec_records : Dictionary # key is in msec
 @onready var target : PhysicsBody2D = get_parent()
 
 var last_time_flow = BattleTimeline.TimeFlow.FORWARD
-var last_snapshot
+var last_snapshot: Dictionary
 
 static func reverse_action_key_in_snapshot(key: String, snapshot: Dictionary) -> void:
 	var initiated_key = key + "_initiated"
@@ -50,7 +50,7 @@ func _process(_delta: float) -> void:
 		while not msec_records.is_empty() and msec_records.keys().back() > BattleTimeline.instance.time_msec():
 			last_snapshot = { msec_records.keys().back() : msec_records[msec_records.keys().back()]}
 			msec_records.erase(msec_records.keys().back())
-		if not msec_records.is_empty() or last_snapshot != null:
+		if not msec_records.is_empty() or (last_snapshot != null and not last_snapshot.is_empty()):
 			var corrective_snapshot
 			var time_to_snapshot
 			if msec_records.is_empty() and last_snapshot != null:
@@ -67,7 +67,7 @@ func _process(_delta: float) -> void:
 			target.correct_temporal_state(corrective_snapshot, time_to_snapshot)
 	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.FORWARD \
 		and last_time_flow == BattleTimeline.TimeFlow.BACKWARD \
-		and last_snapshot != null:
+		and last_snapshot != null and not last_snapshot.is_empty():
 			target.correct_temporal_state(last_snapshot[last_snapshot.keys()[0]], 0.001)
 	last_time_flow = BattleTimeline.instance.time_flow
 var last_triggered = 0. 
@@ -134,13 +134,14 @@ func copy_marked_records(last_usec_timestamp: int, last_msec_timestamp: float) -
 				recorded_motion[key] = msec_records[key]
 	return { "action" : recorded_action, "motion" :  recorded_motion }
 
-
 func _physics_process(_delta: float) -> void:
 	if not recording or BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD \
 		or abs(BattleTimeline.instance.time_since_msec(last_triggered)) <  (1000. / triggers_per_second):
 			return
 	last_triggered = BattleTimeline.instance.time_msec()
 	var current_snapshot = {"transform": target.get_transform()}
+
+	# state relevant to moving bodies
 	if "velocity" in target:
 		current_snapshot["velocity"] = target.get_velocity()
 	if "global_rotation" in target:
@@ -149,10 +150,12 @@ func _physics_process(_delta: float) -> void:
 		current_snapshot["linear_velocity"] = target.get_linear_velocity()
 	if "angular_velocity" in target:
 		current_snapshot["angular_velocity"] = target.get_angular_velocity()
-	if target.has_node("controller"):
-		current_snapshot["internal_force"] = target.get_node("controller").internal_force
-	if "health" in target:
-		current_snapshot["health"] = target.health
-	if target.has_node("energy_systems"):
-		current_snapshot["energy"] = target.get_node("energy_systems").temporal_snapshot()
+
+	# state relevant only to ships
+	if target.has_node("controller"): current_snapshot["internal_force"] = target.get_node("controller").internal_force
+	if "health" in target: current_snapshot["health"] = target.health
+	if target.has_node("energy_systems"): current_snapshot["energy"] = target.get_node("energy_systems").temporal_snapshot()
+	if "held_mine" in target and not target.held_mine == null: current_snapshot["held_mine"] = target.held_mine
+
+	# Store the collected data
 	msec_records[last_triggered] = current_snapshot

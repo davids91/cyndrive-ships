@@ -1,8 +1,41 @@
-[gd_scene load_steps=6 format=3 uid="uid://dtxyjqq5vc8hv"]
+[gd_scene load_steps=13 format=3 uid="uid://dtxyjqq5vc8hv"]
 
 [ext_resource type="Texture2D" uid="uid://dlqpywsislhsh" path="res://models & sprites/mines & traps/Mine_Explossive-0001.png" id="1_3uwok"]
 [ext_resource type="Script" uid="uid://deblvxmkkv8c8" path="res://scripts/equipment/explossive_mine.gd" id="1_egrcn"]
+[ext_resource type="Shader" uid="uid://c66rqecsnsqsu" path="res://shaders/implode.gdshader" id="2_w211o"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_jshdd"]
+[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/simple_skin.gd" id="4_gcdep"]
+
+[sub_resource type="Curve" id="Curve_8jh2m"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_0dpix"]
+curve = SubResource("Curve_8jh2m")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sti4k"]
+noise_type = 5
+frequency = 0.0188
+fractal_type = 2
+fractal_octaves = 2
+fractal_lacunarity = 2.525
+fractal_gain = 2.0
+domain_warp_type = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2hyy3"]
+noise = SubResource("FastNoiseLite_sti4k")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gcdep"]
+shader = ExtResource("2_w211o")
+shader_parameter/noise = SubResource("NoiseTexture2D_2hyy3")
+shader_parameter/burn_color = Color(1, 1, 0, 1)
+shader_parameter/team_color = Color(0.48235294, 0.48235294, 0.48235294, 0)
+shader_parameter/burn_percentage = 0.0
+shader_parameter/burn_curve = SubResource("CurveTexture_0dpix")
+shader_parameter/burn_threshold = 1.0
+shader_parameter/burn_flame_supression = 0.50000002375
+shader_parameter/pixel_scale = 2.0000000475
+shader_parameter/color_aberration = 0.150000007125
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jshdd"]
 radius = 20.396078
@@ -14,8 +47,10 @@ radius = 5.0
 z_index = -1
 script = ExtResource("1_egrcn")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="skin" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_gcdep")
 texture = ExtResource("1_3uwok")
+script = ExtResource("4_gcdep")
 
 [node name="collide_to_activate" type="CollisionShape2D" parent="."]
 scale = Vector2(2, 2)
