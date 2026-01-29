@@ -157,5 +157,10 @@ func _physics_process(_delta: float) -> void:
 	if target.has_node("energy_systems"): current_snapshot["energy"] = target.get_node("energy_systems").temporal_snapshot()
 	if "held_mine" in target and not target.held_mine == null: current_snapshot["held_mine"] = target.held_mine
 
+	# state relevant only to mines
+	if "is_activated" in target: current_snapshot["is_activated"] = target.is_activated
+	if "is_exploded" in target: current_snapshot["is_exploded"] = target.is_exploded
+	if "attached_to" in target and not target.attached_to == null: current_snapshot["attached_to"] = target.attached_to
+
 	# Store the collected data
 	msec_records[last_triggered] = current_snapshot

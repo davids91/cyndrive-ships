@@ -62,6 +62,10 @@ func restart_round(rewind_animation: bool = true) -> void:
 	laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
 	$combatants/character/energy_systems.reset()
 
+	#TechDebt: Eliminate mine after round end
+	if not $combatants/character.held_mine == null:
+		$combatants/character.held_mine.queue_free()
+
 	# Stop the fighting
 	for combatant in $combatants.get_children():
 		if "pause_control" in combatant:

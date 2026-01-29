@@ -60,6 +60,8 @@ func phase_in(phase_in_duration_sec: float) -> void:
 
 var debug_color: Color = Color.from_hsv(randf(), 1., 1., 1.)
 func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void:
+	if "held_mine" in snapshot and not null == snapshot["held_mine"]:
+		held_mine = snapshot["held_mine"]
 
 	if "health" in snapshot:
 		was_alive = is_alive
@@ -98,6 +100,7 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 		# DEBUG LINES FOR MOTION CORRECTION
 		get_parent().get_parent().display_line(transform.get_origin(), snapshot["transform"].get_origin(), debug_color)
 		# DEBUG LINES FOR MOTION CORRECTION
+
 
 func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 	spawn_position = predecessor.spawn_position
@@ -271,12 +274,14 @@ func unalive_me():
 	was_alive = false
 	set_collision_layer_value(1, false)
 	set_visible(false)
+	if null != held_mine: held_mine.set_visible(false)
 	if has_node("ai_control"): $ai_control.set_disabled(true)
 	$controller.stop()
 
 func resurrect_me():
 	set_collision_layer_value(1, true)
 	set_visible(true)
+	if null != held_mine: held_mine.set_visible(true)
 	if has_node("ai_control"): $ai_control.set_disabled(false)
 	resurrected.emit(self)
 	$controller.start()

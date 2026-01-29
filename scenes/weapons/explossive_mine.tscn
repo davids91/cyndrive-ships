@@ -45,7 +45,9 @@ radius = 5.0
 
 [node name="ExplossiveMine" type="RigidBody2D" groups=["destroyables"]]
 z_index = -1
+collision_layer = 0
 script = ExtResource("1_egrcn")
+debris_collision_layer_value = 0
 
 [node name="skin" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_gcdep")
@@ -55,6 +57,7 @@ script = ExtResource("4_gcdep")
 [node name="collide_to_activate" type="CollisionShape2D" parent="."]
 scale = Vector2(2, 2)
 shape = SubResource("CircleShape2D_jshdd")
+disabled = true
 
 [node name="explode_radius" type="Area2D" parent="."]
 monitorable = false

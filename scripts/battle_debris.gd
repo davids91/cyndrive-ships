@@ -1,5 +1,7 @@
 class_name BattleDebris extends RigidBody2D
 
+@export var debris_collision_layer_value = 0x01
+
 @onready var spawn_snapshot: Dictionary = get_snapshot()
 @onready var spawn_time_msec: float = BattleTimeline.instance.time_msec()
 @onready var was_in_battle: bool = in_battle()
@@ -19,11 +21,11 @@ func get_snapshot() -> Dictionary:
 func _process(_delta: float) -> void:
 	if not in_battle() and was_in_battle:
 		create_tween().tween_method(func(value): $skin.set_burn_percentage(value), 0.0, 1.0, 0.5)
-		set_collision_layer_value(1, false)
+		set_collision_layer_value(debris_collision_layer_value, false)
 		was_in_battle = false
 	elif in_battle() and not was_in_battle:
 		create_tween().tween_method(func(value): $skin.set_burn_percentage(value), 1.0, 0.0, 0.5)
-		set_collision_layer_value(1, true)
+		set_collision_layer_value(debris_collision_layer_value, true)
 		was_in_battle = true
 
 var physics_interval_msec = 1000. / Engine.physics_ticks_per_second
