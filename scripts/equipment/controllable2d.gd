@@ -21,39 +21,21 @@ Run curve based on https://www.youtube.com/watch?v=yorTG9at90g
 		- deceleration: x^2
 """
 @export_range(0.001, 200) var top_speed: float = 20.
-@export_range(1, 100) var start_resistance: float = 10.
-@export_range(1, 100) var stop_resistance: float = 5.
+@export_range(0., 100) var start_resistance: float = 0.
 @export_range(0.1, 10.) var booster_strength: float = 2.
 @export_range(0., 1.) var momentum_dampener: float = 0.85
 
-
-"""
-From 0 to the top speed the curve the player changes speed is based on x^2 / @start_resistance.
-The function provides the speed based on x
-"""
 func accelerate_function(x: float) -> float:
 	return pow(x,2.) / start_resistance
 
-"""
-Decelerating from top speed to fullstop the curve of the player speed follows x^2 / @stop_resistance.
-The function provides the speed based on x
-"""	
 func decelerate_function(x: float) -> float:
-	return pow(max(0., x),2.) / stop_resistance
+	return pow(max(0., x),2.)
 
-"""
-Given: y(@speed) = x^2/@start_resistance; Based on that x = sqrt(y * @start_resistance)
-The function provides the x value for the given y value(speed).
-"""
 func get_accel_x(speed: float) -> float:
 	return sqrt(start_resistance * speed)
 	
-"""
-Given: y(@speed) = x^2/@stop_resistance; Based on that x = sqrt(y * @stop_resistance)
-The function provides the x value for the given y value(speed).
-"""
 func get_decel_x(speed: float) -> float:
-	return sqrt(stop_resistance * speed)
+	return sqrt(speed)
 
 func start() -> void:
 	enabled = true

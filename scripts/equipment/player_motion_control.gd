@@ -28,16 +28,18 @@ func apply_impulse(impulse: Vector2) -> void:
 	current_impulse += impulse
 
 var last_intent: Vector2 = Vector2()
+var last_movement_input: Vector2 = Vector2()
 var is_boosting: bool = false
-@export var angle_response: float = 0.5
-@export var speed_response: float = 0.45
-@export_range(0., 1.) var floatiness = 0.1
+@export_range(0., 1.) var angle_response: float = 0.5
+@export_range(0., 1.) var speed_response: float = 0.45
+@export_range(0., 1.) var floatiness: float = 0.965
 func process_input_action(action: Dictionary) -> void:
 	if "intent" in action:
-		if 0. == action["intent"].length():
-			intent_direction *= floatiness
-		elif 0 == intent_direction.length():
+		last_movement_input = action["intent"]
+		if intent_direction.length() < 0.1:
 			intent_direction = action["intent"]
+		elif action["intent"].length() < 0.1:
+			intent_direction = action["intent"] 
 		else:
 			var new_angle = lerp_angle(intent_direction.angle(), action["intent"].angle(), angle_response)
 			intent_direction = Vector2(cos(new_angle), sin(new_angle))
@@ -51,20 +53,28 @@ func process_input_action(action: Dictionary) -> void:
 
 @onready var last_position = get_global_position()
 func _physics_process(_delta: float) -> void:
-	internal_force = lerp(internal_force, intent_direction, speed_response)
+	if 0 < intent_direction.length():
+		internal_force = lerp(internal_force, intent_direction, speed_response)
+		if is_boosting:
+			internal_force += intent_direction * booster_strength
+	
 	if intent_direction.length() < 0.15:
 		intent_direction = Vector2()
 	if not enabled or BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		return
-	character.set_rotation(internal_force.angle())
-	character.set_velocity(
-		(internal_force + current_impulse) * character.approx_size * top_speed
-		* (booster_strength if is_boosting else 1.0)
-	)
+	
+	# Calculate inner forces when not rewinding
+	var pos_diff = (get_global_position() - last_position)
+	if pos_diff.length() > 0.05: character.set_global_rotation(pos_diff.angle())
+	character.set_velocity((internal_force + current_impulse) * character.approx_size * top_speed)
+	
+	internal_force *= floatiness
+	if internal_force.length() < 0.1: internal_force = Vector2()
+	
+	current_impulse *= 0.7
+	if current_impulse.length() < 0.1: current_impulse = Vector2()
+	
 	last_position = get_global_position()
-	var impulse_decrease_amount = max(character.approx_size, internal_force.length() * (1. - floatiness))
-	if impulse_decrease_amount >= current_impulse.length(): current_impulse = Vector2()
-	else: current_impulse -= current_impulse.normalized() * impulse_decrease_amount
 
 #region temporal corrective functions
 

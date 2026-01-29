@@ -14,7 +14,7 @@ signal weapon_energy_updated(new_energy_level: float)
 @export var starting_health: float = 10.
 @export var max_health: float = 12.
 @export var low_health: float = 3.
-@export_range(0., 200.) var mass: float = 10.
+@export_range(0., 1000.) var mass: float = 10.
 
 var health: float = starting_health
 func _ready() -> void:
@@ -22,6 +22,12 @@ func _ready() -> void:
 	$team.initialize(team_id, spawn_position, color)
 	$skin.init_skin(skin_layers, $team.color)
 	if has_node("ai_control"): $ai_control.enabled = true
+	else:
+		$controller.set_script(preload("res://scripts/equipment/player_motion_control.gd"))
+		$controller.character = self
+		$controller.last_position = get_global_position()
+		$controller.stop()
+		$controller.start()
 
 @export var red_curve_phasing: Curve
 @export var green_curve_phasing: Curve

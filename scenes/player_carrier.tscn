@@ -51,7 +51,7 @@ script = ExtResource("1_ny2j2")
 approx_size = 700.0
 color = Color(1, 1, 1, 0)
 starting_health = 25.0
-mass = 100.0
+mass = 1000.0
 
 [node name="skin" type="Node2D" parent="."]
 visible = false

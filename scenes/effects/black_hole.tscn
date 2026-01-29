@@ -24,7 +24,7 @@ shader_parameter/distortion_strength = 9.66
 shader_parameter/color_base = Color(0.93, 0.6, 0.3, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1rdfn"]
-radius = 1250.0
+radius = 1100.0
 
 [node name="black_hole" type="Area2D"]
 material = SubResource("ShaderMaterial_r0ctv")

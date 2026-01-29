@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=4 uid="uid://b3trh6sc7bkeq"]
+[gd_scene load_steps=60 format=4 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_j7yva"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_4u087"]
@@ -515,6 +515,7 @@ team_id = 1
 skin_layers = Array[ExtResource("25_eivww")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0
 max_health = 22.0
+mass = 100.0
 
 [node name="cam" type="Camera2D" parent="combatants/character"]
 zoom = Vector2(0.5, 0.5)

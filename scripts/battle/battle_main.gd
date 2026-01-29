@@ -278,21 +278,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			god_mode_active = !god_mode_active
 			$GUI/debug_stats/god_mode_label.visible = god_mode_active
 
-	# Switch to snappy control
-	if event.is_action_pressed("motion_switch_1") and just_pressed:
-		$combatants/character/controller.set_script(preload("res://scripts/equipment/player_motion_control.gd"))
-		$combatants/character/controller.character = $combatants/character
-		$combatants/character/controller.stop()
-		$combatants/character/controller.start()
-
-	# Switch to floaty control
-	if event.is_action_pressed("motion_switch_2") and just_pressed:
-		$combatants/character/controller.set_script(preload("res://scripts/equipment/controllable2d.gd"))
-		$combatants/character/controller.character = $combatants/character
-		$combatants/character/controller.last_position = $combatants/character.get_global_position()
-		$combatants/character/controller.stop()
-		$combatants/character/controller.start()
-
 	if event.is_action_pressed("key_bindings") and just_pressed:
 		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)	
 
