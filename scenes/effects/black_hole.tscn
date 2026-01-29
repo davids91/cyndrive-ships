@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://blkx4xohejd2i"]
+
+[ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="1_tcq75"]
+[ext_resource type="Script" uid="uid://bs8h5t1b4u1x3" path="res://scripts/effects/black_hole.gd" id="2_mfsi2"]
+
+[sub_resource type="Curve" id="Curve_r0ctv"]
+_limits = [-0.02, 0.03, 0.0, 1.0]
+_data = [Vector2(0, -0.011394151), 0.0, 0.0017824195, 0, 0, Vector2(0.87, 0), 0.006755447, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_4gblq"]
+curve = SubResource("Curve_r0ctv")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r0ctv"]
+shader = ExtResource("1_tcq75")
+shader_parameter/aspect_ratio = 1.0
+shader_parameter/radius = 0.2
+shader_parameter/halo_size = 2.0
+shader_parameter/glow = 0.5
+shader_parameter/ring_radius = 1.0
+shader_parameter/pulse_inverse_speed = 1000
+shader_parameter/distortion_curve = SubResource("CurveTexture_4gblq")
+shader_parameter/distortion_strength = 9.66
+shader_parameter/color_base = Color(0.93, 0.6, 0.3, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1rdfn"]
+radius = 1250.0
+
+[node name="black_hole" type="Area2D"]
+material = SubResource("ShaderMaterial_r0ctv")
+script = ExtResource("2_mfsi2")
+strength = 7.18
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1rdfn")
+
+[node name="black_hole_original" type="ColorRect" parent="."]
+z_index = 100
+material = SubResource("ShaderMaterial_r0ctv")
+offset_left = -1250.0
+offset_top = -1250.0
+offset_right = 1250.0
+offset_bottom = 1250.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
