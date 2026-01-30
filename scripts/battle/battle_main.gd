@@ -13,6 +13,11 @@ var living_team_members: Dictionary = {}
 var god_mode_active: bool = false
 
 func _ready():
+	if FeatureFlags.is_enabled("dialogue"):
+		$dialogue.connect(
+			"dialogue_signal_0",
+			func(): $GUI/keybindings_panel.set_visible(true)
+		)
 	laupeerium_bar.bars_remaining = UIEnergyBar.max_bars
 	$combatants/character/controller.stop()
 	$combatants/character/cam.make_current()
@@ -279,7 +284,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			$GUI/debug_stats/god_mode_label.visible = god_mode_active
 
 	if event.is_action_pressed("key_bindings") and just_pressed:
-		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)	
+		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)
 
 	if event.is_action_pressed("replay") and just_pressed and 0 < current_laupeerium:
 		if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:

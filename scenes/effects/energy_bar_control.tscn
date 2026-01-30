@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://dtqjekkcmkdfh"]
+[gd_scene load_steps=4 format=3 uid="uid://dtqjekkcmkdfh"]
 
 [ext_resource type="Script" uid="uid://1vtjp764wo3y" path="res://scripts/equipment/energy_bar_control.gd" id="1_cfvfj"]
-[ext_resource type="Texture2D" uid="uid://b0mra82s6muyq" path="res://textures/ui/ui-progress-bar.png" id="1_qew8n"]
 [ext_resource type="Texture2D" uid="uid://dvp66u6gimpp1" path="res://textures/ui/ui-progress-bar-pip-left-aligned.png" id="2_8buh7"]
 [ext_resource type="LabelSettings" uid="uid://dbv6lunqh8d5t" path="res://resources/dimmed_text_font.tres" id="2_ys6ld"]
 
@@ -23,7 +22,6 @@ label_settings = ExtResource("2_ys6ld")
 [node name="energy_bar" type="TextureRect" parent="."]
 self_modulate = Color(1, 1, 1, 0.5019608)
 layout_mode = 2
-texture = ExtResource("1_qew8n")
 
 [node name="energy_bar_pip" type="TextureRect" parent="energy_bar"]
 visible = false

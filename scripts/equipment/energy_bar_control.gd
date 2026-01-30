@@ -37,5 +37,5 @@ func _bars_remaining_changed(bars: int) -> void:
 	for i in range(energy_bars.size()):
 		energy_bars.get(i).visible = (i < bars)
 
-func _on_character_weapon_energy_updated(new_energy_level: float) -> void:
+func energy_updated(new_energy_level: float) -> void:
 	bars_remaining = round(new_energy_level)

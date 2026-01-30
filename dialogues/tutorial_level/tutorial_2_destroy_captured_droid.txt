@@ -1,0 +1,9 @@
+#[c0]Congratulations on passing the navigation test!
+#[c1]Do not scratch the ship!
+#[c0]We're in outer space! There's literally nothing here to scratch the ship!
+#[c1]#[s0]There's that droid!
+#[c0]Yes, but  that's .. #[p400]That's *sigh*
+Pilot! We captured that deactivated `Team Pocket Co. Universal Battle Droid` for uh..
+Your next test is to destroy it.
+#[c1]Wait what..?#[p0]
+#[c0]ELIMINATE THE DROID! DO IT!

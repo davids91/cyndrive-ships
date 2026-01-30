@@ -1,0 +1,349 @@
+[gd_scene load_steps=32 format=4 uid="uid://c2bembjrgkdwd"]
+
+[ext_resource type="Script" uid="uid://d3lxvjyphmp50" path="res://scripts/battle_gui.gd" id="1_8vxf1"]
+[ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="1_pgs3n"]
+[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panel_tileset.png" id="2_8vxf1"]
+[ext_resource type="LabelSettings" uid="uid://dbv6lunqh8d5t" path="res://resources/dimmed_text_font.tres" id="3_o14dv"]
+[ext_resource type="Shader" uid="uid://dvimhyltktrda" path="res://shaders/sonar.gdshader" id="4_uxqju"]
+[ext_resource type="Script" uid="uid://bib83etyoggcu" path="res://scripts/effects/sensors_display.gd" id="5_ywr47"]
+[ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="6_tfwac"]
+[ext_resource type="PackedScene" uid="uid://dtqjekkcmkdfh" path="res://scenes/effects/energy_bar_control.tscn" id="8_gxw16"]
+[ext_resource type="PackedScene" uid="uid://da65gog0rxq45" path="res://scenes/keybindings_panel.tscn" id="9_6n4mw"]
+[ext_resource type="Texture2D" uid="uid://026apoj7buxx" path="res://textures/ui/restart_button_up.png" id="10_rbv3r"]
+[ext_resource type="Texture2D" uid="uid://c2m8cwyuafmjq" path="res://textures/ui/restart_button_down.png" id="11_n1dtb"]
+[ext_resource type="Texture2D" uid="uid://dckaqcgel4xpt" path="res://textures/ui/restart_button_hover.png" id="12_73pwi"]
+[ext_resource type="Texture2D" uid="uid://o7i8sqffami5" path="res://textures/ui/LASER_ICON.png" id="13_a7irf"]
+[ext_resource type="Texture2D" uid="uid://5ffs6v6ii1g8" path="res://textures/ui/CHAIN_LIGHTNING_ICON.png" id="14_ts7hs"]
+[ext_resource type="Texture2D" uid="uid://l80grl266qqi" path="res://textures/ui/victory.png" id="15_mpuuo"]
+[ext_resource type="Texture2D" uid="uid://bosgurqjrj5i7" path="res://textures/ui/replay_button_up.png" id="16_mbn67"]
+[ext_resource type="Texture2D" uid="uid://bprsxwc3kl0vm" path="res://textures/ui/replay_button_down.png" id="17_2aanm"]
+[ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/replay_button_hover.png" id="18_cq71w"]
+[ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="19_swp6i"]
+[ext_resource type="PackedScene" path="res://scenes/pause menu.tscn" id="20_1owcp"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lv4so"]
+texture = ExtResource("2_8vxf1")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+1:2/0 = 0
+1:1/0 = 0
+2:2/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_eivww"]
+sources/0 = SubResource("TileSetAtlasSource_lv4so")
+
+[sub_resource type="LabelSettings" id="LabelSettings_ikjs2"]
+line_spacing = 0.0
+font_size = 25
+font_color = Color(0, 1, 1, 0.5019608)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4gblq"]
+line_spacing = 0.0
+font_size = 28
+font_color = Color(0, 1.1801987, 1.1801987, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1m01a"]
+noise_type = 0
+frequency = 0.0755
+offset = Vector3(-522.31, 106.74, -0.45)
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lv4so"]
+noise = SubResource("FastNoiseLite_1m01a")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_th0af"]
+shader = ExtResource("4_uxqju")
+shader_parameter/greeble_noise = SubResource("NoiseTexture2D_lv4so")
+shader_parameter/noise_offset = Vector2(0, 0)
+shader_parameter/aspect_ratio = 1.7777778
+shader_parameter/sonar_angle = 5.0800002413
+shader_parameter/sonar_width_percent = 0.015
+shader_parameter/sonar_sharpness = -0.5
+shader_parameter/center_blindspot = 0.15
+shader_parameter/sonar_ring_length = 3.0
+shader_parameter/sonar_blindspot_ring = 0.950000045125
+shader_parameter/sonar_display_strength = 0.2910000138225
+shader_parameter/sonar_color = Color(0, 1, 0.5, 1)
+shader_parameter/health = 1.0
+shader_parameter/health_range = 1.14800005453
+shader_parameter/health_angle = 1.4790000702525
+shader_parameter/health_ring_width = 0.0
+shader_parameter/health_ring_core_width = 0.0750000035625
+shader_parameter/health_display_alpha = 0.55
+shader_parameter/greeble_strength = 0.0250000011875
+shader_parameter/pixel_size = 75.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_61i1y"]
+noise_type = 0
+frequency = 0.0173
+offset = Vector3(2, -1.2, 0)
+fractal_type = 2
+fractal_octaves = 3
+fractal_lacunarity = 3.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_saiin"]
+noise = SubResource("FastNoiseLite_61i1y")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_saiin"]
+shader = ExtResource("6_tfwac")
+shader_parameter/screen_ratio_w_h = 1.7777778
+shader_parameter/noise = SubResource("NoiseTexture2D_saiin")
+shader_parameter/rewind_amount = 0.0
+shader_parameter/rewind_intensity = 0.0
+shader_parameter/circle_centers = PackedVector2Array(0.65, 0.245, 0.315, 0.235, 0.405, 0.46)
+shader_parameter/circle_radiuses = PackedFloat32Array(0.48, 0.335, 0.16)
+shader_parameter/max_rings = 10.0
+shader_parameter/pixellize_size = 200.0
+shader_parameter/color_1 = Color(0.16862746, 1, 0.98039216, 1)
+shader_parameter/color_2 = Color(0.17234308, 0.00012254089, 0.5416377, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rwtbh"]
+font_size = 50
+font_color = Color(0, 1, 1, 1)
+
+[node name="GUI" type="CanvasLayer"]
+script = ExtResource("1_8vxf1")
+
+[node name="debug_stats" type="HBoxContainer" parent="."]
+offset_left = 6.565
+offset_right = 231.565
+offset_bottom = 40.0
+
+[node name="fps" type="Label" parent="debug_stats"]
+layout_mode = 2
+text = "666 fps"
+
+[node name="god_mode_label" type="Label" parent="debug_stats"]
+visible = false
+modulate = Color(1, 0.8, 0, 0.7)
+layout_mode = 2
+text = "GOD MODE"
+
+[node name="score" type="Label" parent="."]
+offset_left = 12.0
+offset_top = 36.0
+offset_right = 98.0
+offset_bottom = 81.0
+text = "1 vs 1"
+label_settings = ExtResource("1_pgs3n")
+
+[node name="time" type="Label" parent="."]
+offset_left = 702.0
+offset_top = 29.0
+offset_right = 923.0
+offset_bottom = 74.0
+text = "0xDEAD//BEEF"
+label_settings = ExtResource("1_pgs3n")
+vertical_alignment = 1
+
+[node name="objective_panel" type="TileMapLayer" parent="."]
+modulate = Color(1, 1, 1, 0.54901963)
+tile_map_data = PackedByteArray("AAAAAAIAAAAAAAAAAAAAAAMAAAADAAIAAAABAAIAAAACAAAAAAACAAIAAAACAAAAAAAVAAMAAAAAAAIAAAATAAIAAAACAAAAAAAUAAIAAAACAAAAAAAVAAIAAAADAAAAAAATAAoAAAACAAAAAAAUAAoAAAACAAAAAAAVAAkAAAAAAAIAAAAVAAoAAAADAAMAAAAAAAkAAAAAAAIAAAAAAAoAAAAAAAMAAAABAAoAAAACAAAAAAACAAoAAAACAAAAAAA=")
+tile_set = SubResource("TileSet_eivww")
+
+[node name="time_label" type="Label" parent="."]
+offset_left = 604.0
+offset_top = 25.0
+offset_right = 1061.0
+offset_bottom = 166.0
+text = "Time:"
+label_settings = ExtResource("3_o14dv")
+
+[node name="info_label2" type="Label" parent="."]
+offset_left = 604.0
+offset_top = 25.0
+offset_right = 1061.0
+offset_bottom = 174.0
+text = "Press 'R' to rewind battle
+Triple-tap 'R' to restart battle
+Press 'K' for keybindings"
+label_settings = SubResource("LabelSettings_ikjs2")
+vertical_alignment = 2
+
+[node name="objective" type="Label" parent="."]
+offset_left = 10.0
+offset_top = 72.0
+offset_right = 339.0
+offset_bottom = 165.0
+text = "Current Objective:
+Eliminate Enemy Drones"
+label_settings = SubResource("LabelSettings_4gblq")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="sensors_display" type="Node2D" parent="."]
+material = SubResource("ShaderMaterial_th0af")
+script = ExtResource("5_ywr47")
+
+[node name="rewind_effects" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_saiin")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="status_padding" type="MarginContainer" parent="."]
+offset_left = 366.0
+offset_top = 24.0
+offset_right = 952.0
+offset_bottom = 183.0
+scale = Vector2(0.825, 0.8)
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 10
+
+[node name="battleship_status" type="VBoxContainer" parent="status_padding"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="laupeerium" parent="status_padding/battleship_status" instance=ExtResource("8_gxw16")]
+layout_mode = 2
+label_text = "Time Fuel"
+
+[node name="boost_energy" parent="status_padding/battleship_status" instance=ExtResource("8_gxw16")]
+layout_mode = 2
+label_text = "Boost"
+
+[node name="keybindings_panel" parent="." instance=ExtResource("9_6n4mw")]
+
+[node name="weapon_selector_panel" type="TileMapLayer" parent="."]
+modulate = Color(1, 1, 1, 0.54901963)
+tile_map_data = PackedByteArray("AAABABEAAAAAAAEAAAABABIAAAAAAAMAAAAIAAwAAAAAAAIAAAACABIAAAABAAMAAAAHAAsAAAACAAAAAAAIAAsAAAADAAAAAAABABkAAAAAAAEAAAABABoAAAAAAAMAAAACABoAAAABAAMAAAAHABMAAAACAAAAAAAIABMAAAADAAAAAAAIABQAAAAAAAIAAAABACEAAAAAAAEAAAABACIAAAAAAAMAAAACACIAAAABAAMAAAAHABsAAAACAAAAAAAIABsAAAADAAAAAAAIABwAAAAAAAIAAAABACkAAAAAAAEAAAABACoAAAAAAAMAAAACACoAAAABAAMAAAAHACMAAAACAAAAAAAIACMAAAADAAAAAAAIACQAAAAAAAIAAAA=")
+tile_set = SubResource("TileSet_eivww")
+
+[node name="selected_weapon_panel" type="TileMapLayer" parent="."]
+modulate = Color(1, 1, 1, 0.54901963)
+tile_map_data = PackedByteArray("AAABAAsAAAAAAAAAAAABAAwAAAAAAAEAAAACAAsAAAABAAAAAAAHABIAAAACAAMAAAAIABEAAAADAAIAAAAIABIAAAADAAMAAAA=")
+tile_set = SubResource("TileSet_eivww")
+
+[node name="weapon_energy" parent="selected_weapon_panel" instance=ExtResource("8_gxw16")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 28.0
+offset_top = 253.0
+offset_right = 281.0
+offset_bottom = 350.0
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(0.4, 0.4)
+
+[node name="restart_round_panel" type="TileMapLayer" parent="."]
+visible = false
+self_modulate = Color(1, 1, 1, 0.5019608)
+tile_map_data = PackedByteArray("AAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAJAA0AAAAAAAIAAAAJAA4AAAAAAAIAAAAJAA8AAAAAAAIAAAAJABAAAAAAAAIAAAAJABEAAAAAAAIAAAAJABIAAAAAAAIAAAAJABMAAAAAAAIAAAAJABQAAAAAAAIAAAAJABUAAAAAAAIAAAAJABYAAAAAAAIAAAAJABcAAAAAAAIAAAAJABgAAAAAAAIAAAAJABkAAAAAAAIAAAAJABoAAAAAAAIAAAAJABsAAAAAAAIAAAAJABwAAAAAAAIAAAAJAB0AAAAAAAIAAAAJAB4AAAAAAAIAAAAJAB8AAAAAAAIAAAAJACAAAAAAAAIAAAAKAAsAAAABAAAAAAALAAsAAAABAAMAAAAMAAsAAAACAAAAAAANAAsAAAABAAAAAAAOAAsAAAACAAMAAAAPAAsAAAACAAMAAAAQAAsAAAABAAAAAAARAAsAAAACAAMAAAASAAsAAAABAAAAAAATAAsAAAABAAAAAAAUAAsAAAACAAMAAAAVAAsAAAABAAAAAAAWAAsAAAABAAMAAAAYAAsAAAABAAMAAAAZAAsAAAACAAAAAAAaAAsAAAACAAMAAAAbAAsAAAACAAMAAAAcAAsAAAACAAAAAAAdAAsAAAABAAAAAAAeAAsAAAACAAAAAAAfAAsAAAACAAMAAAAgAAsAAAABAAAAAAAhAAsAAAACAAMAAAAiAAsAAAACAAAAAAAjAAsAAAACAAAAAAAkAAsAAAABAAMAAAAlAAsAAAACAAMAAAAmAAsAAAABAAAAAAAnAAsAAAABAAMAAAAoAAsAAAACAAMAAAApAAsAAAABAAAAAAAqAAsAAAABAAMAAAArAAsAAAABAAAAAAAsAAsAAAABAAMAAAAtAAsAAAABAAMAAAAuAAsAAAACAAAAAAAvAAsAAAACAAAAAAAXAAsAAAABAAMAAAAwAAsAAAABAAMAAAAxAAsAAAACAAAAAAAyAAsAAAACAAMAAAAzAAsAAAACAAAAAAA0AAsAAAABAAAAAAA1AAsAAAACAAAAAAA2AAsAAAADAAAAAAA2AAwAAAAAAAEAAAA2AA0AAAADAAEAAAA2AA4AAAAAAAEAAAA2AA8AAAAAAAIAAAA2ABAAAAAAAAIAAAA2ABEAAAAAAAIAAAA2ABIAAAAAAAIAAAA2ABMAAAAAAAIAAAA2ABQAAAAAAAIAAAA2ABUAAAAAAAIAAAA2ABYAAAAAAAIAAAA2ABcAAAAAAAIAAAA2ABgAAAAAAAIAAAA2ABkAAAAAAAIAAAA2ABoAAAAAAAIAAAA2ABsAAAAAAAIAAAA2ABwAAAAAAAIAAAA2AB0AAAAAAAIAAAA2AB4AAAAAAAIAAAA2AB8AAAAAAAEAAAA2ACAAAAAAAAIAAAAJACEAAAAAAAMAAAA2ACEAAAADAAMAAAAKACEAAAABAAAAAAALACEAAAACAAMAAAAMACEAAAABAAAAAAANACEAAAACAAMAAAAOACEAAAACAAMAAAAPACEAAAABAAAAAAAQACEAAAACAAMAAAARACEAAAABAAMAAAASACEAAAACAAAAAAATACEAAAACAAMAAAAUACEAAAACAAMAAAAVACEAAAACAAMAAAAWACEAAAABAAAAAAAXACEAAAACAAMAAAAYACEAAAABAAAAAAAZACEAAAACAAAAAAAaACEAAAABAAMAAAAbACEAAAABAAMAAAAcACEAAAACAAMAAAAdACEAAAACAAAAAAAeACEAAAABAAAAAAAfACEAAAABAAMAAAAgACEAAAACAAAAAAAhACEAAAACAAMAAAAiACEAAAACAAAAAAAjACEAAAABAAMAAAAkACEAAAABAAMAAAAlACEAAAABAAAAAAAmACEAAAACAAAAAAAnACEAAAACAAAAAAAoACEAAAABAAMAAAApACEAAAABAAMAAAAqACEAAAABAAAAAAArACEAAAABAAAAAAAsACEAAAACAAAAAAAtACEAAAACAAMAAAAuACEAAAACAAAAAAAvACEAAAABAAAAAAAwACEAAAACAAAAAAAxACEAAAABAAMAAAAyACEAAAACAAAAAAAzACEAAAACAAAAAAA0ACEAAAABAAAAAAA1ACEAAAACAAAAAAA=")
+tile_set = SubResource("TileSet_eivww")
+
+[node name="restart_round_text" type="Label" parent="restart_round_panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -253.0
+offset_top = 121.0
+offset_right = 1269.0
+offset_bottom = 409.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You are in limbo!
+Would you like to try again?"
+label_settings = SubResource("LabelSettings_rwtbh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButton" type="TextureButton" parent="restart_round_panel"]
+offset_left = 256.0
+offset_top = 377.0
+offset_right = 768.0
+offset_bottom = 505.0
+texture_normal = ExtResource("10_rbv3r")
+texture_pressed = ExtResource("11_n1dtb")
+texture_hover = ExtResource("12_73pwi")
+stretch_mode = 4
+
+[node name="laser_icon" type="Sprite2D" parent="."]
+position = Vector2(75, 235)
+texture = ExtResource("13_a7irf")
+
+[node name="chain_lightning_icon" type="Sprite2D" parent="."]
+position = Vector2(79, 373)
+texture = ExtResource("14_ts7hs")
+
+[node name="restart_during_replay" type="TextureButton" parent="."]
+visible = false
+offset_left = 164.0
+offset_top = 178.0
+offset_right = 676.0
+offset_bottom = 306.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("10_rbv3r")
+texture_pressed = ExtResource("11_n1dtb")
+texture_hover = ExtResource("12_73pwi")
+stretch_mode = 4
+
+[node name="victory" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(499, 278)
+scale = Vector2(0.45237273, 0.46296296)
+texture = ExtResource("15_mpuuo")
+
+[node name="replay_button" type="TextureButton" parent="victory"]
+offset_left = 128.21284
+offset_top = 187.91998
+offset_right = 640.2128
+offset_bottom = 315.91998
+texture_normal = ExtResource("16_mbn67")
+texture_pressed = ExtResource("17_2aanm")
+texture_hover = ExtResource("18_cq71w")
+stretch_mode = 4
+
+[node name="restart_button" type="TextureButton" parent="victory"]
+offset_left = -744.9609
+offset_top = 196.56004
+offset_right = -232.96088
+offset_bottom = 324.56006
+texture_normal = ExtResource("10_rbv3r")
+texture_pressed = ExtResource("11_n1dtb")
+texture_hover = ExtResource("12_73pwi")
+stretch_mode = 4
+
+[node name="defeat" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(517, 276.99997)
+scale = Vector2(0.5305556, 0.5305556)
+texture = ExtResource("19_swp6i")
+
+[node name="TextureButton" type="TextureButton" parent="defeat"]
+offset_left = -345.0
+offset_top = 135.0
+offset_right = 167.0
+offset_bottom = 263.0
+texture_normal = ExtResource("10_rbv3r")
+texture_pressed = ExtResource("11_n1dtb")
+texture_hover = ExtResource("12_73pwi")
+stretch_mode = 4
+
+[node name="Pause Menu2" parent="." instance=ExtResource("20_1owcp")]
+visible = false
+offset_left = 517.0
+offset_top = 276.99997
+offset_right = 517.0
+offset_bottom = 277.0
+
+[connection signal="pressed" from="restart_round_panel/TextureButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="restart_during_replay" to="." method="_on_reset_game_pressed"]
+[connection signal="pressed" from="victory/replay_button" to="." method="_on_replay_button_pressed"]
+[connection signal="pressed" from="victory/restart_button" to="." method="_on_restart_button_pressed"]

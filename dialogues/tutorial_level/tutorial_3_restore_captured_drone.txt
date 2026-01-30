@@ -1,0 +1,6 @@
+#[c1]NOOOOOO That was the only captured droid we had!
+#[c0]#[t200] . . .#[t]right
+Pilot can you undo the destructing, please?
+#[c2] I .. uh #[p300] ..what?
+#[c1]Oh that's right! I forgot about the time engine!
+You can hold "R" to reverse time. Be frugal though! We have a limited supply of Laupeerium!

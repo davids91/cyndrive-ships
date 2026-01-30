@@ -1,134 +1,25 @@
-[gd_scene load_steps=60 format=4 uid="uid://b3trh6sc7bkeq"]
+[gd_scene load_steps=31 format=3 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_j7yva"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_4u087"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="2_ekamt"]
-[ext_resource type="Shader" uid="uid://dvimhyltktrda" path="res://shaders/sonar.gdshader" id="2_qdfj8"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/character.tscn" id="2_sm623"]
-[ext_resource type="Script" uid="uid://bib83etyoggcu" path="res://scripts/effects/sensors_display.gd" id="3_m8v8v"]
 [ext_resource type="PackedScene" uid="uid://blkx4xohejd2i" path="res://scenes/effects/black_hole.tscn" id="4_1rdfn"]
 [ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/equipment/sonar_sensor.gd" id="4_3fx1x"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="4_8a2ah"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="5_3g8p0"]
+[ext_resource type="PackedScene" uid="uid://c2bembjrgkdwd" path="res://scenes/battle_gui.tscn" id="6_61i1y"]
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="6_cj32i"]
-[ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="7_mpb26"]
-[ext_resource type="LabelSettings" uid="uid://dbv6lunqh8d5t" path="res://resources/dimmed_text_font.tres" id="8_4u087"]
-[ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="9_61i1y"]
-[ext_resource type="Script" uid="uid://ba0vnf5082iwk" path="res://scripts/status_container.gd" id="10_fpf3k"]
-[ext_resource type="PackedScene" uid="uid://dtqjekkcmkdfh" path="res://scenes/effects/energy_bar_control.tscn" id="10_saiin"]
-[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panel_tileset.png" id="12_1m01a"]
-[ext_resource type="Texture2D" uid="uid://026apoj7buxx" path="res://textures/ui/restart_button_up.png" id="13_e50ek"]
-[ext_resource type="Texture2D" uid="uid://o7i8sqffami5" path="res://textures/ui/LASER_ICON.png" id="13_lv4so"]
-[ext_resource type="Texture2D" uid="uid://l80grl266qqi" path="res://textures/ui/victory.png" id="14_eivww"]
-[ext_resource type="PackedScene" uid="uid://da65gog0rxq45" path="res://scenes/keybindings_panel.tscn" id="14_ikjs2"]
-[ext_resource type="Texture2D" uid="uid://c2m8cwyuafmjq" path="res://textures/ui/restart_button_down.png" id="14_mpb26"]
-[ext_resource type="Texture2D" uid="uid://dckaqcgel4xpt" path="res://textures/ui/restart_button_hover.png" id="15_4u087"]
-[ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="15_rwtbh"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/player_carrier.tscn" id="16_61i1y"]
 [ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/player_carrier_top.png" id="17_dd63g"]
-[ext_resource type="Texture2D" uid="uid://5ffs6v6ii1g8" path="res://textures/ui/CHAIN_LIGHTNING_ICON.png" id="19_mpb26"]
-[ext_resource type="Texture2D" uid="uid://bosgurqjrj5i7" path="res://textures/ui/replay_button_up.png" id="20_8a2ah"]
-[ext_resource type="Texture2D" uid="uid://bprsxwc3kl0vm" path="res://textures/ui/replay_button_down.png" id="21_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/fighter-ship-base.png" id="21_jt4d8"]
-[ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/replay_button_hover.png" id="22_1rdfn"]
-[ext_resource type="PackedScene" path="res://scenes/pause menu.tscn" id="24_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/player_carrier_bottom.png" id="24_lv4so"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://battle_ship_skin.gd" id="25_eivww"]
 [ext_resource type="PackedScene" uid="uid://dni5mwbuc6qpp" path="res://scenes/meteor.tscn" id="25_ikjs2"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/battle_ship.png" id="25_lv4so"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/fighter-ship-accent.png" id="30_at2n2"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/dialogue.tscn" id="35_4u087"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lv4so"]
-texture = ExtResource("12_1m01a")
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-0:1/0 = 0
-3:1/0 = 0
-0:2/0 = 0
-3:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-1:2/0 = 0
-1:1/0 = 0
-2:2/0 = 0
-2:1/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_eivww"]
-sources/0 = SubResource("TileSetAtlasSource_lv4so")
-
-[sub_resource type="LabelSettings" id="LabelSettings_ikjs2"]
-line_spacing = 0.0
-font_size = 25
-font_color = Color(0, 1, 1, 0.5019608)
-
-[sub_resource type="LabelSettings" id="LabelSettings_4gblq"]
-line_spacing = 0.0
-font_size = 28
-font_color = Color(0, 1.1801987, 1.1801987, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_1m01a"]
-noise_type = 0
-frequency = 0.0755
-offset = Vector3(-522.31, 106.74, -0.45)
-fractal_weighted_strength = 1.0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lv4so"]
-noise = SubResource("FastNoiseLite_1m01a")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_th0af"]
-shader = ExtResource("2_qdfj8")
-shader_parameter/greeble_noise = SubResource("NoiseTexture2D_lv4so")
-shader_parameter/noise_offset = Vector2(0, 0)
-shader_parameter/aspect_ratio = 1.7777778
-shader_parameter/sonar_angle = 5.0800002413
-shader_parameter/sonar_width_percent = 0.015
-shader_parameter/sonar_sharpness = -0.5
-shader_parameter/center_blindspot = 0.15
-shader_parameter/sonar_ring_length = 3.0
-shader_parameter/sonar_blindspot_ring = 0.950000045125
-shader_parameter/sonar_display_strength = 0.2910000138225
-shader_parameter/sonar_color = Color(0, 1, 0.5, 1)
-shader_parameter/health = 1.0
-shader_parameter/health_range = 1.14800005453
-shader_parameter/health_angle = 1.4790000702525
-shader_parameter/health_ring_width = 0.0
-shader_parameter/health_ring_core_width = 0.0750000035625
-shader_parameter/health_display_alpha = 0.55
-shader_parameter/greeble_strength = 0.0250000011875
-shader_parameter/pixel_size = 75.0
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_61i1y"]
-noise_type = 0
-frequency = 0.0173
-offset = Vector3(2, -1.2, 0)
-fractal_type = 2
-fractal_octaves = 3
-fractal_lacunarity = 3.0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_saiin"]
-noise = SubResource("FastNoiseLite_61i1y")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_saiin"]
-shader = ExtResource("9_61i1y")
-shader_parameter/screen_ratio_w_h = 1.7777778
-shader_parameter/noise = SubResource("NoiseTexture2D_saiin")
-shader_parameter/rewind_amount = 0.0
-shader_parameter/rewind_intensity = 0.0
-shader_parameter/circle_centers = PackedVector2Array(0.65, 0.245, 0.315, 0.235, 0.405, 0.46)
-shader_parameter/circle_radiuses = PackedFloat32Array(0.48, 0.335, 0.16)
-shader_parameter/max_rings = 10.0
-shader_parameter/pixellize_size = 200.0
-shader_parameter/color_1 = Color(0.16862746, 1, 0.98039216, 1)
-shader_parameter/color_2 = Color(0.17234308, 0.00012254089, 0.5416377, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_rwtbh"]
-font_size = 50
-font_color = Color(0, 1, 1, 1)
+[ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="39_1rdfn"]
 
 [sub_resource type="Resource" id="Resource_e50ek"]
 script = ExtResource("25_eivww")
@@ -199,240 +90,7 @@ position = Vector2(-536, -2386)
 
 [node name="parallax_background" parent="." instance=ExtResource("4_8a2ah")]
 
-[node name="GUI" type="CanvasLayer" parent="."]
-
-[node name="debug_stats" type="HBoxContainer" parent="GUI"]
-offset_left = 6.565
-offset_right = 231.565
-offset_bottom = 40.0
-
-[node name="fps" type="Label" parent="GUI/debug_stats"]
-layout_mode = 2
-text = "666 fps"
-
-[node name="god_mode_label" type="Label" parent="GUI/debug_stats"]
-visible = false
-modulate = Color(1, 0.8, 0, 0.7)
-layout_mode = 2
-text = "GOD MODE"
-
-[node name="score" type="Label" parent="GUI"]
-offset_left = 12.0
-offset_top = 36.0
-offset_right = 98.0
-offset_bottom = 81.0
-text = "1 vs 1"
-label_settings = ExtResource("7_mpb26")
-
-[node name="time" type="Label" parent="GUI"]
-offset_left = 451.0
-offset_top = 32.0
-offset_right = 672.0
-offset_bottom = 77.0
-text = "0xDEAD//BEEF"
-label_settings = ExtResource("7_mpb26")
-vertical_alignment = 1
-
-[node name="objective_panel" type="TileMapLayer" parent="GUI"]
-modulate = Color(1, 1, 1, 0.54901963)
-tile_map_data = PackedByteArray("AAAAAAIAAAAAAAAAAAAAAAMAAAADAAIAAAABAAIAAAACAAAAAAACAAIAAAACAAAAAAAVAAMAAAAAAAIAAAATAAIAAAACAAAAAAAUAAIAAAACAAAAAAAVAAIAAAADAAAAAAATAAoAAAACAAAAAAAUAAoAAAACAAAAAAAVAAkAAAAAAAIAAAAVAAoAAAADAAMAAAAAAAkAAAAAAAIAAAAAAAoAAAAAAAMAAAABAAoAAAACAAAAAAACAAoAAAACAAAAAAA=")
-tile_set = SubResource("TileSet_eivww")
-
-[node name="time_label" type="Label" parent="GUI"]
-offset_left = 353.0
-offset_top = 28.0
-offset_right = 810.0
-offset_bottom = 169.0
-text = "Time:"
-label_settings = ExtResource("8_4u087")
-
-[node name="info_label2" type="Label" parent="GUI"]
-offset_left = 353.0
-offset_top = 28.0
-offset_right = 810.0
-offset_bottom = 177.0
-text = "Press 'R' to rewind battle
-Triple-tap 'R' to restart battle
-Press 'K' for keybindings"
-label_settings = SubResource("LabelSettings_ikjs2")
-vertical_alignment = 2
-
-[node name="objective" type="Label" parent="GUI"]
-offset_left = 10.0
-offset_top = 72.0
-offset_right = 339.0
-offset_bottom = 165.0
-text = "Current Objective:
-Eliminate Enemy Drones"
-label_settings = SubResource("LabelSettings_4gblq")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="sensors_display" type="Node2D" parent="GUI"]
-material = SubResource("ShaderMaterial_th0af")
-script = ExtResource("3_m8v8v")
-
-[node name="rewind_effects" type="ColorRect" parent="GUI"]
-visible = false
-material = SubResource("ShaderMaterial_saiin")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="status_padding" type="MarginContainer" parent="GUI"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -586.0
-offset_top = -159.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 10
-
-[node name="battleship_status" type="HBoxContainer" parent="GUI/status_padding"]
-layout_mode = 2
-theme_override_constants/separation = 40
-script = ExtResource("10_fpf3k")
-
-[node name="laupeerium" parent="GUI/status_padding/battleship_status" instance=ExtResource("10_saiin")]
-layout_mode = 2
-label_text = "Time Fuel"
-
-[node name="boost_energy" parent="GUI/status_padding/battleship_status" instance=ExtResource("10_saiin")]
-layout_mode = 2
-label_text = "Thruster Boost"
-
-[node name="keybindings_panel" parent="GUI" instance=ExtResource("14_ikjs2")]
-
-[node name="weapon_selector_panel" type="TileMapLayer" parent="GUI"]
-modulate = Color(1, 1, 1, 0.54901963)
-tile_map_data = PackedByteArray("AAABABEAAAAAAAEAAAABABIAAAAAAAMAAAAIAAwAAAAAAAIAAAACABIAAAABAAMAAAAHAAsAAAACAAAAAAAIAAsAAAADAAAAAAABABkAAAAAAAEAAAABABoAAAAAAAMAAAACABoAAAABAAMAAAAHABMAAAACAAAAAAAIABMAAAADAAAAAAAIABQAAAAAAAIAAAABACEAAAAAAAEAAAABACIAAAAAAAMAAAACACIAAAABAAMAAAAHABsAAAACAAAAAAAIABsAAAADAAAAAAAIABwAAAAAAAIAAAABACkAAAAAAAEAAAABACoAAAAAAAMAAAACACoAAAABAAMAAAAHACMAAAACAAAAAAAIACMAAAADAAAAAAAIACQAAAAAAAIAAAA=")
-tile_set = SubResource("TileSet_eivww")
-
-[node name="selected_weapon_panel" type="TileMapLayer" parent="GUI"]
-modulate = Color(1, 1, 1, 0.54901963)
-tile_map_data = PackedByteArray("AAABAAsAAAAAAAAAAAABAAwAAAAAAAEAAAACAAsAAAABAAAAAAAHABIAAAACAAMAAAAIABEAAAADAAIAAAAIABIAAAADAAMAAAA=")
-tile_set = SubResource("TileSet_eivww")
-
-[node name="weapon_energy" parent="GUI/selected_weapon_panel" instance=ExtResource("10_saiin")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 28.0
-offset_top = 253.0
-offset_right = 281.0
-offset_bottom = 350.0
-grow_horizontal = 1
-grow_vertical = 1
-scale = Vector2(0.4, 0.4)
-
-[node name="restart_round_panel" type="TileMapLayer" parent="GUI"]
-visible = false
-self_modulate = Color(1, 1, 1, 0.5019608)
-tile_map_data = PackedByteArray("AAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAJAA0AAAAAAAIAAAAJAA4AAAAAAAIAAAAJAA8AAAAAAAIAAAAJABAAAAAAAAIAAAAJABEAAAAAAAIAAAAJABIAAAAAAAIAAAAJABMAAAAAAAIAAAAJABQAAAAAAAIAAAAJABUAAAAAAAIAAAAJABYAAAAAAAIAAAAJABcAAAAAAAIAAAAJABgAAAAAAAIAAAAJABkAAAAAAAIAAAAJABoAAAAAAAIAAAAJABsAAAAAAAIAAAAJABwAAAAAAAIAAAAJAB0AAAAAAAIAAAAJAB4AAAAAAAIAAAAJAB8AAAAAAAIAAAAJACAAAAAAAAIAAAAKAAsAAAABAAAAAAALAAsAAAABAAMAAAAMAAsAAAACAAAAAAANAAsAAAABAAAAAAAOAAsAAAACAAMAAAAPAAsAAAACAAMAAAAQAAsAAAABAAAAAAARAAsAAAACAAMAAAASAAsAAAABAAAAAAATAAsAAAABAAAAAAAUAAsAAAACAAMAAAAVAAsAAAABAAAAAAAWAAsAAAABAAMAAAAYAAsAAAABAAMAAAAZAAsAAAACAAAAAAAaAAsAAAACAAMAAAAbAAsAAAACAAMAAAAcAAsAAAACAAAAAAAdAAsAAAABAAAAAAAeAAsAAAACAAAAAAAfAAsAAAACAAMAAAAgAAsAAAABAAAAAAAhAAsAAAACAAMAAAAiAAsAAAACAAAAAAAjAAsAAAACAAAAAAAkAAsAAAABAAMAAAAlAAsAAAACAAMAAAAmAAsAAAABAAAAAAAnAAsAAAABAAMAAAAoAAsAAAACAAMAAAApAAsAAAABAAAAAAAqAAsAAAABAAMAAAArAAsAAAABAAAAAAAsAAsAAAABAAMAAAAtAAsAAAABAAMAAAAuAAsAAAACAAAAAAAvAAsAAAACAAAAAAAXAAsAAAABAAMAAAAwAAsAAAABAAMAAAAxAAsAAAACAAAAAAAyAAsAAAACAAMAAAAzAAsAAAACAAAAAAA0AAsAAAABAAAAAAA1AAsAAAACAAAAAAA2AAsAAAADAAAAAAA2AAwAAAAAAAEAAAA2AA0AAAADAAEAAAA2AA4AAAAAAAEAAAA2AA8AAAAAAAIAAAA2ABAAAAAAAAIAAAA2ABEAAAAAAAIAAAA2ABIAAAAAAAIAAAA2ABMAAAAAAAIAAAA2ABQAAAAAAAIAAAA2ABUAAAAAAAIAAAA2ABYAAAAAAAIAAAA2ABcAAAAAAAIAAAA2ABgAAAAAAAIAAAA2ABkAAAAAAAIAAAA2ABoAAAAAAAIAAAA2ABsAAAAAAAIAAAA2ABwAAAAAAAIAAAA2AB0AAAAAAAIAAAA2AB4AAAAAAAIAAAA2AB8AAAAAAAEAAAA2ACAAAAAAAAIAAAAJACEAAAAAAAMAAAA2ACEAAAADAAMAAAAKACEAAAABAAAAAAALACEAAAACAAMAAAAMACEAAAABAAAAAAANACEAAAACAAMAAAAOACEAAAACAAMAAAAPACEAAAABAAAAAAAQACEAAAACAAMAAAARACEAAAABAAMAAAASACEAAAACAAAAAAATACEAAAACAAMAAAAUACEAAAACAAMAAAAVACEAAAACAAMAAAAWACEAAAABAAAAAAAXACEAAAACAAMAAAAYACEAAAABAAAAAAAZACEAAAACAAAAAAAaACEAAAABAAMAAAAbACEAAAABAAMAAAAcACEAAAACAAMAAAAdACEAAAACAAAAAAAeACEAAAABAAAAAAAfACEAAAABAAMAAAAgACEAAAACAAAAAAAhACEAAAACAAMAAAAiACEAAAACAAAAAAAjACEAAAABAAMAAAAkACEAAAABAAMAAAAlACEAAAABAAAAAAAmACEAAAACAAAAAAAnACEAAAACAAAAAAAoACEAAAABAAMAAAApACEAAAABAAMAAAAqACEAAAABAAAAAAArACEAAAABAAAAAAAsACEAAAACAAAAAAAtACEAAAACAAMAAAAuACEAAAACAAAAAAAvACEAAAABAAAAAAAwACEAAAACAAAAAAAxACEAAAABAAMAAAAyACEAAAACAAAAAAAzACEAAAACAAAAAAA0ACEAAAABAAAAAAA1ACEAAAACAAAAAAA=")
-tile_set = SubResource("TileSet_eivww")
-
-[node name="restart_round_text" type="Label" parent="GUI/restart_round_panel"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -253.0
-offset_top = 121.0
-offset_right = 1269.0
-offset_bottom = 409.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "You are in limbo!
-Would you like to try again?"
-label_settings = SubResource("LabelSettings_rwtbh")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TextureButton" type="TextureButton" parent="GUI/restart_round_panel"]
-offset_left = 256.0
-offset_top = 377.0
-offset_right = 768.0
-offset_bottom = 505.0
-texture_normal = ExtResource("13_e50ek")
-texture_pressed = ExtResource("14_mpb26")
-texture_hover = ExtResource("15_4u087")
-stretch_mode = 4
-
-[node name="laser_icon" type="Sprite2D" parent="GUI"]
-position = Vector2(75, 235)
-texture = ExtResource("13_lv4so")
-
-[node name="chain_lightning_icon" type="Sprite2D" parent="GUI"]
-position = Vector2(79, 373)
-texture = ExtResource("19_mpb26")
-
-[node name="restart_during_replay" type="TextureButton" parent="GUI"]
-visible = false
-offset_left = 164.0
-offset_top = 178.0
-offset_right = 676.0
-offset_bottom = 306.0
-scale = Vector2(0.5, 0.5)
-texture_normal = ExtResource("13_e50ek")
-texture_pressed = ExtResource("14_mpb26")
-texture_hover = ExtResource("15_4u087")
-stretch_mode = 4
-
-[node name="victory" type="Sprite2D" parent="GUI"]
-visible = false
-position = Vector2(499, 278)
-scale = Vector2(0.45237273, 0.46296296)
-texture = ExtResource("14_eivww")
-
-[node name="replay_button" type="TextureButton" parent="GUI/victory"]
-offset_left = 128.21284
-offset_top = 187.91998
-offset_right = 640.2128
-offset_bottom = 315.91998
-texture_normal = ExtResource("20_8a2ah")
-texture_pressed = ExtResource("21_ikjs2")
-texture_hover = ExtResource("22_1rdfn")
-stretch_mode = 4
-
-[node name="restart_button" type="TextureButton" parent="GUI/victory"]
-offset_left = -744.9609
-offset_top = 196.56004
-offset_right = -232.96088
-offset_bottom = 324.56006
-texture_normal = ExtResource("13_e50ek")
-texture_pressed = ExtResource("14_mpb26")
-texture_hover = ExtResource("15_4u087")
-stretch_mode = 4
-
-[node name="defeat" type="Sprite2D" parent="GUI"]
-visible = false
-position = Vector2(517, 276.99997)
-scale = Vector2(0.5305556, 0.5305556)
-texture = ExtResource("15_rwtbh")
-
-[node name="TextureButton" type="TextureButton" parent="GUI/defeat"]
-offset_left = -345.0
-offset_top = 135.0
-offset_right = 167.0
-offset_bottom = 263.0
-texture_normal = ExtResource("13_e50ek")
-texture_pressed = ExtResource("14_mpb26")
-texture_hover = ExtResource("15_4u087")
-stretch_mode = 4
-
-[node name="Pause Menu2" parent="GUI" instance=ExtResource("24_ikjs2")]
-visible = false
-offset_left = 517.0
-offset_top = 276.99997
-offset_right = 517.0
-offset_bottom = 277.0
+[node name="GUI" parent="." instance=ExtResource("6_61i1y")]
 
 [node name="debris" type="Node" parent="."]
 
@@ -670,15 +328,19 @@ script = ExtResource("5_3g8p0")
 [node name="mush" type="Node" parent="."]
 
 [node name="dialogue" parent="." instance=ExtResource("35_4u087")]
+dialog = "res://dialogues/tutorial_level/tutorial_0_greeting.txt"
+dialogue_signals_count = 1
+
+[node name="FeatureFlaggedNode" type="Node" parent="dialogue"]
+script = ExtResource("39_1rdfn")
+flag_name = "dialogue"
+metadata/_custom_type_script = "uid://cdy0wfjq4rl2c"
 
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
-[connection signal="pressed" from="GUI/restart_round_panel/TextureButton" to="." method="restart_round"]
-[connection signal="pressed" from="GUI/restart_during_replay" to="." method="reset_game"]
-[connection signal="pressed" from="GUI/victory/replay_button" to="." method="_on_replay_button_pressed"]
-[connection signal="pressed" from="GUI/victory/restart_button" to="." method="reset_game"]
-[connection signal="pressed" from="GUI/defeat/TextureButton" to="." method="reset_game"]
-[connection signal="boost_energy_updated" from="combatants/character" to="GUI/status_padding/battleship_status" method="_on_energy_systems_boost_energy_updated"]
-[connection signal="health_changed" from="combatants/character" to="GUI/sensors_display" method="set_health_percentage"]
-[connection signal="weapon_energy_updated" from="combatants/character" to="GUI/selected_weapon_panel/weapon_energy" method="_on_character_weapon_energy_updated"]
+[connection signal="replay_game" from="GUI" to="." method="_on_replay_button_pressed"]
+[connection signal="reset_game" from="GUI" to="." method="reset_game"]
+[connection signal="restart_round" from="GUI" to="." method="restart_round"]
+[connection signal="boost_energy_updated" from="combatants/character" to="GUI" method="_on_character_boost_energy_updated"]
+[connection signal="weapon_energy_updated" from="combatants/character" to="GUI" method="_on_character_weapon_energy_updated"]
 [connection signal="body_entered" from="combatants/character/target_assist" to="combatants/character/target_assist" method="_on_body_entered"]
 [connection signal="body_exited" from="combatants/character/target_assist" to="combatants/character/target_assist" method="_on_body_exited"]

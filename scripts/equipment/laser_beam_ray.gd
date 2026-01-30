@@ -31,7 +31,6 @@ var was_shooting: bool = false
 var pewpew_target: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	if "pewpew" in action:
-		#if get_parent().name == "character": print("PEW", BattleTimeline.instance.time_msec())
 		create_tween().tween_method(func(pos): pewpew_target = pos, pewpew_target, action["pewpew"], target_time_sec)
 
 	was_shooting = is_shooting
