@@ -20,6 +20,6 @@ void fragment() {
 	vec4 blue_skin = texture(skin, blue_uv);
 	COLOR = vec4(
 		red_skin.r, green_skin.g, blue_skin.b,
-		(original_skin.a + red_skin.a + green_skin.a + blue_skin.a) / 4.
+		(red_skin.a + green_skin.a + blue_skin.a) / 3.
 	);
 }

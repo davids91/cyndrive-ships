@@ -34,8 +34,7 @@ func _ready() -> void:
 @export var blue_curve_phasing: Curve
 func phase_in(phase_in_duration_sec: float) -> void:
 	$phase_effect.set_visible(true)
-	var red_phase_tween = create_tween()
-	red_phase_tween.tween_method(
+	create_tween().tween_method(
 		func(w):
 			$phase_effect.get_material().set_shader_parameter(
 				"phase_red", red_curve_phasing.sample(w)
@@ -57,11 +56,24 @@ func phase_in(phase_in_duration_sec: float) -> void:
 		0., 1.,
 		phase_in_duration_sec
 	)
-	red_phase_tween.tween_callback(func() :
+	create_tween().tween_method(
+		func(w):
+			$phase_effect.get_material().set_shader_parameter("phase_green",
+			green_curve_phasing.sample(w)),
+		0., 1.,
+		phase_in_duration_sec
+	)
+	var zoom_phase_tween = create_tween()
+	zoom_phase_tween.tween_method(
+		func(w): $phase_effect.get_material().set_shader_parameter("zoom", w),
+		0., 1.,
+		phase_in_duration_sec
+	).set_ease(Tween.EASE_OUT)
+	zoom_phase_tween.tween_callback(func() :
 		$skin.set_visible(true)
 		$mini_health_bar.visible = true
 	)
-	red_phase_tween.chain()
+	zoom_phase_tween.chain()
 
 
 var debug_color: Color = Color.from_hsv(randf(), 1., 1., 1.)
