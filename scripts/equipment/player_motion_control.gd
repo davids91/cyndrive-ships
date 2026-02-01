@@ -52,7 +52,7 @@ func process_input_action(action: Dictionary) -> void:
 	if was_boosting != is_boosting: boosting.emit(is_boosting)
 
 @onready var last_position = get_global_position()
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if 0 < intent_direction.length():
 		internal_force = lerp(internal_force, intent_direction, speed_response)
 		if is_boosting:
@@ -66,7 +66,7 @@ func _physics_process(_delta: float) -> void:
 	# Calculate inner forces when not rewinding
 	var pos_diff = (get_global_position() - last_position)
 	if pos_diff.length() > 0.05: character.set_global_rotation(pos_diff.angle())
-	character.set_velocity((internal_force + current_impulse) * character.approx_size * top_speed)
+	character.set_velocity((internal_force + current_impulse * delta) * character.approx_size * top_speed)
 	
 	internal_force *= floatiness
 	if internal_force.length() < 0.1: internal_force = Vector2()

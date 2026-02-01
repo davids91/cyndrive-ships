@@ -7,8 +7,8 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_body_exited(body: Node2D) -> void:
 	bodies_within.erase(body)
-@export var strength: float = 1.
-@export var time_to_die_msec: float = 2000.
+@export var strength: float = 1000.
+@export var time_to_die_msec: float = 500.
 @export var death_radius: float = 250
 func _process(_delta: float) -> void:
 	for body in bodies_within:
