@@ -12,6 +12,9 @@ Proper self-driving capabilities could not be delivered to battleships before ti
 - Time travel
 - Bullet-hell
 
+# Documentation
+ - [Time travel implementation](doc/TIME_TRAVEL.md)
+
 # Battle Controls
 Key | Action
 ---:|:---

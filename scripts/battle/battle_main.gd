@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var starting_laupeerium: float = 25.
-@export_range(0., 1.) var replay_screen_responsiveness: float = 0.2
+@export_range(0., 1.) var replay_screen_responsiveness: float = 0.05
 
 @onready var character_template = preload("res://scenes/character.tscn")
 @onready var laupeerium_bar: UIEnergyBar = $GUI/status_padding/battleship_status/laupeerium
@@ -182,6 +182,15 @@ func _process(delta):
 			replay_viewport.size = lerp(replay_viewport.size, view_rectangle.size, replay_screen_responsiveness)
 			$replay_camera.zoom = Vector2(zoom_level, zoom_level)
 			$replay_camera.set_global_position(replay_viewport.position + replay_viewport.size / 2.)
+	else:
+		# Handle dynamic zoom for camera
+		var next_zoom_value = clamp(
+			$combatants/character/controller.top_speed / $combatants/character.get_velocity().length() * 10.,
+			motion_zoom_center - motion_zoom_range, motion_zoom_center + motion_zoom_range
+		)
+		current_zoom_value = lerpf(current_zoom_value, next_zoom_value, 0.01)
+		$combatants/character/cam.zoom.x = current_zoom_value
+		$combatants/character/cam.zoom.y = current_zoom_value
 
 	# Handling Battle restart
 	if (Time.get_ticks_msec() - reverse_last_tap_at) > tap_interval_msec and rewind_battle_laupeerium_cost < current_laupeerium:
@@ -302,15 +311,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("zoom_out"):
 		motion_zoom_center *= 1.05
 		current_zoom_value *= 1.05
-
-	# Handle dynamic zoom for camera
-	var next_zoom_value = clamp(
-		$combatants/character/controller.top_speed / $combatants/character.get_velocity().length() * 10.,
-		motion_zoom_center - motion_zoom_range, motion_zoom_center + motion_zoom_range
-	)
-	current_zoom_value = lerpf(current_zoom_value, next_zoom_value, 0.01)
-	$combatants/character/cam.zoom.x = current_zoom_value
-	$combatants/character/cam.zoom.y = current_zoom_value
 
 func player_defeated() -> bool:
 	return (

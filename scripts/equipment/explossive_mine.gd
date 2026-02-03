@@ -89,7 +89,7 @@ func deploy_mine(activation_delay_msec : float = 0.0) -> void:
 	delay_tween.tween_callback(
 		func():
 			$collide_to_activate.disabled = false
-			is_activated = fault_chance < randf()
+			is_activated = true
 			attached_to = null
 			run_deployed_tween()
 	)

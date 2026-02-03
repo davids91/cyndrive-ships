@@ -51,6 +51,7 @@ func _physics_process(delta: float) -> void:
 	if(
 		FeatureFlags.is_enabled("disable_ai")
 		or time_until_script_execution >= 0
+		or BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD
 	): return
 
 	if(
@@ -113,7 +114,7 @@ func _physics_process(delta: float) -> void:
 	# Determine the speed to advance towards the target
 	var ideal_speed = lerp(
 		character.get_node("controller").top_speed, 0.,
-		max_distance_from_target / distance_to_target
+		max_distance_from_target / max(0.000001, distance_to_target)
 	)
 
 	# Detect where ship should move towards
@@ -177,4 +178,7 @@ func _physics_process(delta: float) -> void:
 		seconds_left_to_boost -= delta
 		if 0 < seconds_left_to_boost: action["boost_released"] = true
 		else: action["intent"] = boost_direction
+
+	if 0 == action["movement_intent"].length(): action.erase("movement_intent")
+
 	character.process_input_action(action)

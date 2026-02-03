@@ -151,7 +151,6 @@ script = ExtResource("3_j5io8")
 
 [node name="energy_systems" type="Node" parent="." node_paths=PackedStringArray("weapon_system")]
 script = ExtResource("6_vovfy")
-weapon_recharge_per_sec = 50.0
 weapon_system = NodePath("../weapon_slot")
 metadata/_custom_type_script = "uid://cdrsm7mlhnmnm"
 

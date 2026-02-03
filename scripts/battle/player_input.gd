@@ -4,6 +4,11 @@ class_name PlayerInput
 
 signal action_triggered(action: Dictionary)
 
+static var _instance: PlayerInput = null
+static var instance: PlayerInput:
+	get:
+		return _instance
+
 var current_intent: Vector2 = Vector2()
 var is_shooting: bool = false
 var current_pewpew_target: Vector2 = Vector2()
@@ -88,3 +93,11 @@ static func get_action(input_event):
 	):
 		action["weapon_slot"] = input_event.physical_keycode - KEY_1
 	return action
+
+func _enter_tree() -> void:
+	if instance == null:
+		_instance = self
+
+func _exit_tree() -> void:
+	if instance == self:
+		_instance = null

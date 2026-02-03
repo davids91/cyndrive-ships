@@ -281,6 +281,10 @@ func respawn():
 	if has_node("replayer"): $replayer.reset()
 	if has_node("weapon_slot"): $weapon_slot.reset()
 	if has_node("ai_control"):
+		$ai_control.set_disabled(
+			(has_node("replayer") and $replayer.is_within_current_time())
+			or not ai_fallback
+		)
 		$ai_control.stop()
 		$ai_control.resume()
 	extend_replayer = false
@@ -314,6 +318,7 @@ func resume_control() -> void:
 	control_enabled = true
 	$controller.start()
 	if has_node("ai_control"): $ai_control.resume()
+	else: $controller.intent_direction = PlayerInput.instance.current_intent
 
 var held_mine: ExplosiveMine = null
 func process_input_action(action: Dictionary) -> void:
