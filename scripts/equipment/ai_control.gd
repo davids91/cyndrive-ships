@@ -58,7 +58,7 @@ func _physics_process(delta: float) -> void:
 		permanently_disabled or not enabled
 		or not character.in_battle()
 	):
-		character.process_input_action({"intent": Vector2()})
+		character.process_input_action({"movement_intent": Vector2()})
 		return
 
 	time_until_script_execution = 1. / runs_per_second
@@ -120,10 +120,10 @@ func _physics_process(delta: float) -> void:
 	# Detect where ship should move towards
 	if target_is_alive:
 		moving_intention = (target_moving_avg - character.get_global_position()).normalized() * ideal_speed
-		action["intent"] = moving_intention
+		action["movement_intent"] = moving_intention
 	else:
 		moving_intention = (character.spawn_position - character.get_global_position()).normalized() * ideal_speed
-		action["intent"] = moving_intention
+		action["movement_intent"] = moving_intention
 
 	# See if there's anything in the way to the target
 	target_was_acquired = target_is_acquired
@@ -149,18 +149,18 @@ func _physics_process(delta: float) -> void:
 		)
 	else: target_is_acquired = false
 
-	if target_is_acquired and not target_was_acquired: action["pewpew_initiated"] = true
+	if target_is_acquired and not target_was_acquired: action["action_initiated"] = true
 	elif(
 		not target_is_acquired and target_was_acquired
 		or (
-			not target_is_acquired and not "pewpew_released" in action
+			not target_is_acquired and not "action_released" in action
 			and character.has_node("weapon_slot") and character.get_node("weapon_slot").is_shooting
 		)
-	): action["pewpew_released"] = true
+	): action["action_released"] = true
 	if target_is_acquired and target_is_alive:
 		if (target_moving_avg - chosen_target.get_global_position()).length() < target_clamp_distance:
-			action["pewpew"] = chosen_target.get_global_position()
-		else: action["pewpew"] = target_moving_avg
+			action["action_intent"] = chosen_target.get_global_position()
+		else: action["action_intent"] = target_moving_avg
 		action["pewpew_target"] = chosen_target
 
 	# Detect if the ship is stuck, and apply boost to break free
@@ -169,15 +169,15 @@ func _physics_process(delta: float) -> void:
 		(get_global_position() - position_moving_avg).length() < stuck_motion_threshold
 		and null != get_parent().body_in_contact and get_parent().contact_time > stuck_sec_threshold
 	):
-		action["intent"] = (character.get_global_position() - get_parent().body_in_contact.get_global_position()).normalized()
+		action["movement_intent"] = (character.get_global_position() - get_parent().body_in_contact.get_global_position()).normalized()
 		action["boost_initiated"] = true
 		seconds_left_to_boost = seconds_of_bossting_after_stuck
-		boost_direction = action["intent"]
+		boost_direction = action["movement_intent"]
 
 	if 0 < seconds_left_to_boost:
 		seconds_left_to_boost -= delta
 		if 0 < seconds_left_to_boost: action["boost_released"] = true
-		else: action["intent"] = boost_direction
+		else: action["movement_intent"] = boost_direction
 
 	if 0 == action["movement_intent"].length(): action.erase("movement_intent")
 

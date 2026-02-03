@@ -42,7 +42,7 @@ func _process(_delta: float) -> void:
 			):
 				var snapshot_to_apply = usec_records[usec_records.keys().back()]
 				reverse_action_key_in_snapshot("boost", snapshot_to_apply)
-				reverse_action_key_in_snapshot("pewpew", snapshot_to_apply)
+				reverse_action_key_in_snapshot("action_intent", snapshot_to_apply)
 				target.process_input_action(snapshot_to_apply)
 			usec_records.erase(usec_records.keys().back())
 

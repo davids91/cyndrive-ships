@@ -1,6 +1,7 @@
 class_name BattleDebris extends RigidBody2D
 
 @export var debris_collision_layer_value = 0x01
+@export var approx_size: float = 100.
 
 @onready var spawn_snapshot: Dictionary = get_snapshot()
 @onready var spawn_time_msec: float = BattleTimeline.instance.time_msec()

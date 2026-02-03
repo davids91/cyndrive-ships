@@ -34,14 +34,14 @@ var is_boosting: bool = false
 @export_range(0., 1.) var speed_response: float = 0.45
 @export_range(0., 1.) var floatiness: float = 0.965
 func process_input_action(action: Dictionary) -> void:
-	if "intent" in action:
-		last_movement_input = action["intent"]
+	if "movement_intent" in action:
+		last_movement_input = action["movement_intent"]
 		if intent_direction.length() < 0.1:
-			intent_direction = action["intent"]
-		elif action["intent"].length() < 0.1:
-			intent_direction = action["intent"] 
+			intent_direction = action["movement_intent"]
+		elif action["movement_intent"].length() < 0.1:
+			intent_direction = action["movement_intent"]
 		else:
-			var new_angle = lerp_angle(intent_direction.angle(), action["intent"].angle(), angle_response)
+			var new_angle = lerp_angle(intent_direction.angle(), action["movement_intent"].angle(), angle_response)
 			intent_direction = Vector2(cos(new_angle), sin(new_angle))
 			last_intent = intent_direction
 	var was_boosting = is_boosting

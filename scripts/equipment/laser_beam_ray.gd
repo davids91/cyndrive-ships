@@ -30,13 +30,16 @@ var current_strength_modifier: float = 1.
 var was_shooting: bool = false
 var pewpew_target: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
-	if "pewpew" in action:
-		create_tween().tween_method(func(pos): pewpew_target = pos, pewpew_target, action["pewpew"], target_time_sec)
+	if "action_intent" in action:
+		create_tween().tween_method(
+			func(pos): pewpew_target = pos,
+			pewpew_target, action["action_intent"], target_time_sec
+		)
 
 	was_shooting = is_shooting
 	is_shooting = (
-		(is_shooting and (not "pewpew_released" in action or not action["pewpew_released"]))
-		or ("pewpew_initiated" in action and action["pewpew_initiated"])
+		(is_shooting and (not "action_released" in action or not action["action_released"]))
+		or ("action_initiated" in action and action["action_initiated"])
 	)
 	if is_shooting:
 		$sound.play()

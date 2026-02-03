@@ -56,9 +56,9 @@ func apply_impulse(impulse: Vector2) -> void:
 var last_intent: Vector2 = Vector2()
 var is_boosting: bool = false
 func process_input_action(action: Dictionary) -> void:
-	if "intent" in action:
-		intent_direction = Vector2(sign(action["intent"].x), sign(action["intent"].y))
-		if 0. < action["intent"].length():
+	if "movement_intent" in action:
+		intent_direction = Vector2(sign(action["movement_intent"].x), sign(action["movement_intent"].y))
+		if 0. < action["movement_intent"].length():
 			last_intent = intent_direction
 	var was_boosting = is_boosting
 	is_boosting = (

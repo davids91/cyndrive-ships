@@ -74,6 +74,9 @@ func explode_mine() -> void:
 	is_exploded = true
 	await get_tree().create_timer(.2).timeout #give lightning time to draw
 
+func set_highlight(yesno: bool) -> void:
+	$target_arrow.set_visible(yesno)
+
 func accept_damage(_strength: float, _source: BattleCharacter = null) -> void:
 	if is_activated: explode_mine()
 

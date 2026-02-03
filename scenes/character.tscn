@@ -101,6 +101,7 @@ stream_2/stream = ExtResource("19_bj47h")
 stream_3/stream = ExtResource("20_4lh0q")
 
 [node name="character" type="CharacterBody2D" groups=["destroyables"]]
+collision_layer = 3
 script = ExtResource("1_gqnfm")
 color = Color(0, 0, 0, 0)
 starting_health = 500.0
@@ -182,6 +183,7 @@ default_color = Color(1, 0, 0, 0.78431374)
 [node name="raycast" type="RayCast2D" parent="laser_beam"]
 top_level = true
 target_position = Vector2(475, -32)
+collide_with_areas = true
 
 [node name="chain_lightning" type="Node2D" parent="." node_paths=PackedStringArray("wielder")]
 script = ExtResource("24_chainlightning")

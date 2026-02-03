@@ -170,7 +170,6 @@ func _physics_process(delta: float) -> void:
 var ship_explosion : ShipExplosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 func _process(_delta):
-	if has_node("target_assist"): $target_assist.set_position(get_global_mouse_position())
 	if $mini_health_bar.top_level:
 		$mini_health_bar.set_global_position(get_global_position() + mini_health_bar_offset)
 
@@ -325,7 +324,7 @@ func process_input_action(action: Dictionary) -> void:
 	if not in_battle(): return # cannot process any action while not in battle
 	if "weapon_slot" in action and has_node("weapon_slot"):
 		$weapon_slot.select_slot(action["weapon_slot"])
-		action["pewpew_released"] = true
+		action["action_released"] = true
 
 	if(control_enabled):
 		if not null == held_mine and "deploy_mine" in action and action["deploy_mine"]:
@@ -335,12 +334,12 @@ func process_input_action(action: Dictionary) -> void:
 		if has_node("energy_systems"):
 			if "boost_initiated" in action and not $energy_systems.has_boost_energy():
 				action.erase("boost_initiated")
-			if "pewpew" in action and not $energy_systems.has_weapon_energy():
-				action.erase("pewpew")
-				action["pewpew_released"] = true
+			if "action_intent" in action and not $energy_systems.has_weapon_energy():
+				action.erase("action_intent")
+				action["action_released"] = true
 		
-		if("pewpew" in action and has_node("target_assist") and $target_assist.is_target_locked()):
-			action["pewpew"] = $target_assist.get_current_target_position()
+		if("action_intent" in action and has_node("target_assist") and $target_assist.is_target_locked()):
+			action["action_intent"] = $target_assist.get_current_target_position()
 			action["pewpew_target"] =  $target_assist.get_current_target()
 			
 		# move camera lightly on boost  
@@ -362,9 +361,9 @@ func process_input_action(action: Dictionary) -> void:
 	# Should the target be slightly off, but still around the actual laser position, the position is corrected
 	# so past versions of the players can hit their targets more accurately
 	if (
-		"pewpew" in action and "pewpew_target" in action and null != action["pewpew_target"]
-		and (action["pewpew_target"].get_global_position() - action["pewpew"]).length() < action["pewpew_target"].approx_size * 3
-	): action["pewpew"] = action["pewpew_target"].get_global_position()
+		"action_intent" in action and "pewpew_target" in action and null != action["pewpew_target"]
+		and (action["pewpew_target"].get_global_position() - action["action_intent"]).length() < action["pewpew_target"].approx_size * 3
+	): action["action_intent"] = action["pewpew_target"].get_global_position()
 
 	$controller.process_input_action(action)
 	if has_node("weapon_slot"): $weapon_slot.process_input_action(action)
