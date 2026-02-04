@@ -1,9 +1,9 @@
 [gd_scene load_steps=14 format=3 uid="uid://dni5mwbuc6qpp"]
 
-[ext_resource type="Script" uid="uid://cvaasp78pgixj" path="res://scripts/meteor.gd" id="1_83eji"]
+[ext_resource type="Script" uid="uid://cvaasp78pgixj" path="res://scripts/entities/meteor.gd" id="1_83eji"]
 [ext_resource type="Texture2D" uid="uid://i02weyd6teyy" path="res://textures/asteroids.png" id="2_83eji"]
 [ext_resource type="Material" uid="uid://hwlaracobxoh" path="res://resources/implode_effect.tres" id="2_lhxke"]
-[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/simple_skin.gd" id="3_8tfog"]
+[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/entities/simple_skin.gd" id="3_8tfog"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_lhxke"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_83eji"]

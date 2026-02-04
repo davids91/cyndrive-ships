@@ -9,6 +9,7 @@ signal dialouge_finished()
 	preload("res://textures/npc_1.png"),
 	preload("res://textures/npc_2.png"),
 	preload("res://textures/npc_3.png"),
+	preload("res://textures/tutorial_boss.png"),
 	preload("res://textures/npc_4.png")
 ]
 

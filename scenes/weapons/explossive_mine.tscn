@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://deblvxmkkv8c8" path="res://scripts/equipment/explossive_mine.gd" id="1_egrcn"]
 [ext_resource type="Shader" uid="uid://c66rqecsnsqsu" path="res://shaders/implode.gdshader" id="2_w211o"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_jshdd"]
-[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/simple_skin.gd" id="4_gcdep"]
+[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/entities/simple_skin.gd" id="4_gcdep"]
 [ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/target.png" id="6_gcdep"]
 
 [sub_resource type="Curve" id="Curve_8jh2m"]

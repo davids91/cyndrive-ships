@@ -1,42 +1,42 @@
 [gd_scene load_steps=39 format=3 uid="uid://bxvkgl6pp7mn0"]
 
-[ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="1_4dcfn"]
-[ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/battle_character.gd" id="1_gqnfm"]
-[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="3_j5io8"]
-[ext_resource type="Texture2D" uid="uid://boy2t7aons7q8" path="res://icon.svg" id="3_u0pwc"]
-[ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://scripts/equipment/laser_beam_ray.gd" id="4_2t4uj"]
-[ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/skin.gd" id="4_u0pwc"]
-[ext_resource type="Script" uid="uid://cdrsm7mlhnmnm" path="res://scripts/equipment/energy_systems.gd" id="6_vovfy"]
-[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/target.png" id="8_pt8yu"]
-[ext_resource type="AudioStream" uid="uid://tlk8d7op7rfi" path="res://audio/laser_1.wav" id="10_8vsun"]
-[ext_resource type="AudioStream" uid="uid://cj2onr3cwpkuu" path="res://audio/chain_lightning_1.wav" id="10_sougf"]
-[ext_resource type="AudioStream" uid="uid://bnrdi8bq76v7v" path="res://audio/laser_2.wav" id="11_8rpqn"]
-[ext_resource type="AudioStream" uid="uid://bt6iti1d0u2bv" path="res://audio/chain_lightning_2.wav" id="11_p478o"]
-[ext_resource type="AudioStream" uid="uid://bqh8lv83t44ky" path="res://audio/chain_lightning_3.wav" id="12_2y1m1"]
-[ext_resource type="AudioStream" uid="uid://ek4nsx32wrle" path="res://audio/laser_3.wav" id="12_i0gp7"]
-[ext_resource type="AudioStream" uid="uid://bk6en08xn1djx" path="res://audio/chain_lightning_4.wav" id="13_41u22"]
-[ext_resource type="AudioStream" uid="uid://3gxc0hqxn1re" path="res://audio/laser_4.wav" id="13_imt6f"]
-[ext_resource type="AudioStream" uid="uid://c76b3d0ookchm" path="res://audio/chain_lightning_5.wav" id="14_8vsun"]
-[ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="14_8yvht"]
-[ext_resource type="AudioStream" uid="uid://blyru66ib1vq7" path="res://audio/chain_lightning_6.wav" id="15_8rpqn"]
-[ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="16_x8k1v"]
-[ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="17_u0pwc"]
-[ext_resource type="AudioStream" uid="uid://dajttw71kitgt" path="res://audio/explosion_001.wav" id="18_cicko"]
-[ext_resource type="AudioStream" uid="uid://besa8dwtnwqwy" path="res://audio/explosion_002.wav" id="19_bj47h"]
-[ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="20_4lh0q"]
-[ext_resource type="Shader" uid="uid://djx4bom2edoc6" path="res://shaders/repairs.gdshader" id="20_u0pwc"]
-[ext_resource type="PackedScene" uid="uid://c085tc8npm2p2" path="res://scenes/weapons/shield.tscn" id="21_8rpqn"]
-[ext_resource type="AudioStream" uid="uid://bokt2np2jc03c" path="res://audio/engine_booster.wav" id="21_cicko"]
-[ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="22_bj47h"]
-[ext_resource type="Script" uid="uid://co4eimc5mgx3i" path="res://scripts/equipment/weapon_slot.gd" id="23_weaponslot"]
-[ext_resource type="Script" uid="uid://n2lp6a2eyw3m" path="res://scripts/equipment/chain_lightning.gd" id="24_chainlightning"]
+[ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
+[ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_fbtwq"]
+[ext_resource type="Shader" uid="uid://djx4bom2edoc6" path="res://shaders/repairs.gdshader" id="3_57a82"]
+[ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="4_ykdog"]
+[ext_resource type="Texture2D" uid="uid://boy2t7aons7q8" path="res://icon.svg" id="5_upp82"]
+[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="6_33oy3"]
+[ext_resource type="Script" uid="uid://cdrsm7mlhnmnm" path="res://scripts/equipment/energy_systems.gd" id="7_0nsx8"]
+[ext_resource type="Script" uid="uid://co4eimc5mgx3i" path="res://scripts/equipment/weapon_slot.gd" id="8_owx80"]
+[ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://scripts/equipment/laser_beam_ray.gd" id="9_1fjy2"]
+[ext_resource type="AudioStream" uid="uid://tlk8d7op7rfi" path="res://audio/laser_1.wav" id="10_6264f"]
+[ext_resource type="AudioStream" uid="uid://bnrdi8bq76v7v" path="res://audio/laser_2.wav" id="11_txnga"]
+[ext_resource type="AudioStream" uid="uid://ek4nsx32wrle" path="res://audio/laser_3.wav" id="12_1fi68"]
+[ext_resource type="AudioStream" uid="uid://3gxc0hqxn1re" path="res://audio/laser_4.wav" id="13_ksc2f"]
+[ext_resource type="Script" uid="uid://n2lp6a2eyw3m" path="res://scripts/equipment/chain_lightning.gd" id="14_kijp1"]
+[ext_resource type="AudioStream" uid="uid://cj2onr3cwpkuu" path="res://audio/chain_lightning_1.wav" id="15_7vd05"]
+[ext_resource type="AudioStream" uid="uid://bt6iti1d0u2bv" path="res://audio/chain_lightning_2.wav" id="16_8hsct"]
+[ext_resource type="AudioStream" uid="uid://bqh8lv83t44ky" path="res://audio/chain_lightning_3.wav" id="17_7lcbk"]
+[ext_resource type="AudioStream" uid="uid://bk6en08xn1djx" path="res://audio/chain_lightning_4.wav" id="18_iblh4"]
+[ext_resource type="AudioStream" uid="uid://c76b3d0ookchm" path="res://audio/chain_lightning_5.wav" id="19_4rw3p"]
+[ext_resource type="AudioStream" uid="uid://blyru66ib1vq7" path="res://audio/chain_lightning_6.wav" id="20_3fltb"]
+[ext_resource type="PackedScene" uid="uid://c085tc8npm2p2" path="res://scenes/weapons/shield.tscn" id="21_hynoq"]
+[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/target.png" id="22_hm7ac"]
+[ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="23_aa58f"]
+[ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="24_axo4l"]
+[ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="25_qaijt"]
+[ext_resource type="AudioStream" uid="uid://dajttw71kitgt" path="res://audio/explosion_001.wav" id="26_0ft2w"]
+[ext_resource type="AudioStream" uid="uid://besa8dwtnwqwy" path="res://audio/explosion_002.wav" id="27_5mkc6"]
+[ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="28_uokki"]
+[ext_resource type="AudioStream" uid="uid://bokt2np2jc03c" path="res://audio/engine_booster.wav" id="29_hg731"]
+[ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="30_5j1ue"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k8udw"]
 radius = 15.0
 height = 60.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cicko"]
-shader = ExtResource("20_u0pwc")
+shader = ExtResource("3_57a82")
 shader_parameter/glow_intensity = 1.80600008252512
 shader_parameter/glow_speed = 0.10000000149012
 shader_parameter/radial_glow = 1.434000020615
@@ -50,19 +50,19 @@ viewport_path = NodePath("skin/layers")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_sougf"]
 streams_count = 4
-stream_0/stream = ExtResource("10_8vsun")
-stream_1/stream = ExtResource("11_8rpqn")
-stream_2/stream = ExtResource("12_i0gp7")
-stream_3/stream = ExtResource("13_imt6f")
+stream_0/stream = ExtResource("10_6264f")
+stream_1/stream = ExtResource("11_txnga")
+stream_2/stream = ExtResource("12_1fi68")
+stream_3/stream = ExtResource("13_ksc2f")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_i0gp7"]
 streams_count = 6
-stream_0/stream = ExtResource("10_sougf")
-stream_1/stream = ExtResource("11_p478o")
-stream_2/stream = ExtResource("12_2y1m1")
-stream_3/stream = ExtResource("13_41u22")
-stream_4/stream = ExtResource("14_8vsun")
-stream_5/stream = ExtResource("15_8rpqn")
+stream_0/stream = ExtResource("15_7vd05")
+stream_1/stream = ExtResource("16_8hsct")
+stream_2/stream = ExtResource("17_7lcbk")
+stream_3/stream = ExtResource("18_iblh4")
+stream_4/stream = ExtResource("19_4rw3p")
+stream_5/stream = ExtResource("20_3fltb")
 
 [sub_resource type="GDScript" id="GDScript_vovfy"]
 script/source = "extends Node2D
@@ -96,14 +96,14 @@ colors = PackedColorArray(1, 0.972549, 0, 1, 0.9203016, 0.25930175, 0, 1, 0, 0, 
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7qyni"]
 streams_count = 4
-stream_0/stream = ExtResource("17_u0pwc")
-stream_1/stream = ExtResource("18_cicko")
-stream_2/stream = ExtResource("19_bj47h")
-stream_3/stream = ExtResource("20_4lh0q")
+stream_0/stream = ExtResource("25_qaijt")
+stream_1/stream = ExtResource("26_0ft2w")
+stream_2/stream = ExtResource("27_5mkc6")
+stream_3/stream = ExtResource("28_uokki")
 
 [node name="character" type="CharacterBody2D" groups=["destroyables"]]
 collision_layer = 3
-script = ExtResource("1_gqnfm")
+script = ExtResource("1_iulgi")
 color = Color(0, 0, 0, 0)
 starting_health = 500.0
 max_health = 500.0
@@ -113,7 +113,7 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_k8udw")
 
 [node name="controller" type="Node2D" parent="."]
-script = ExtResource("1_4dcfn")
+script = ExtResource("2_fbtwq")
 
 [node name="repair_indicator" type="ColorRect" parent="."]
 visible = false
@@ -133,7 +133,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="skin" type="Node2D" parent="."]
-script = ExtResource("4_u0pwc")
+script = ExtResource("4_ykdog")
 
 [node name="layers" type="SubViewport" parent="skin"]
 disable_3d = true
@@ -143,26 +143,26 @@ handle_input_locally = false
 [node name="cam" type="Camera2D" parent="skin/layers"]
 
 [node name="placeholder" type="Sprite2D" parent="skin/layers"]
-texture = ExtResource("3_u0pwc")
+texture = ExtResource("5_upp82")
 
 [node name="skin_image" type="Sprite2D" parent="skin"]
 texture = SubResource("ViewportTexture_8vsun")
 
 [node name="team" type="Node2D" parent="."]
-script = ExtResource("3_j5io8")
+script = ExtResource("6_33oy3")
 
 [node name="energy_systems" type="Node" parent="." node_paths=PackedStringArray("weapon_system")]
-script = ExtResource("6_vovfy")
+script = ExtResource("7_0nsx8")
 weapon_system = NodePath("../weapon_slot")
 metadata/_custom_type_script = "uid://cdrsm7mlhnmnm"
 
 [node name="weapon_slot" type="Node" parent="." node_paths=PackedStringArray("weapons")]
-script = ExtResource("23_weaponslot")
+script = ExtResource("8_owx80")
 weapons = [NodePath("../laser_beam"), NodePath("../chain_lightning")]
 metadata/_custom_type_script = "uid://co4eimc5mgx3i"
 
 [node name="laser_beam" type="Node2D" parent="."]
-script = ExtResource("4_2t4uj")
+script = ExtResource("9_1fjy2")
 target_time_sec = 0.0
 base_damage = 0.4
 energy_cost = 0.05
@@ -187,7 +187,7 @@ target_position = Vector2(475, -32)
 collide_with_areas = true
 
 [node name="chain_lightning" type="Node2D" parent="." node_paths=PackedStringArray("wielder")]
-script = ExtResource("24_chainlightning")
+script = ExtResource("14_kijp1")
 wielder = NodePath("..")
 chain_radius = 750.0
 base_damage = 0.05
@@ -200,7 +200,7 @@ volume_db = -30.0
 attenuation = 0.3186402
 max_polyphony = 5
 
-[node name="shield" parent="." instance=ExtResource("21_8rpqn")]
+[node name="shield" parent="." instance=ExtResource("21_hynoq")]
 position = Vector2(128, 0)
 
 [node name="debug_label" type="Label" parent="."]
@@ -217,10 +217,10 @@ script = SubResource("GDScript_vovfy")
 [node name="target_arrow" type="Sprite2D" parent="."]
 visible = false
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("8_pt8yu")
+texture = ExtResource("22_hm7ac")
 
 [node name="thruster_sound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("14_8yvht")
+stream = ExtResource("23_aa58f")
 
 [node name="thruster_fx" type="CPUParticles2D" parent="."]
 position = Vector2(-45, 0)
@@ -236,7 +236,7 @@ angle_max = 360.0
 scale_amount_min = 4.0
 scale_amount_max = 4.0
 color_ramp = SubResource("Gradient_0dpix")
-script = ExtResource("16_x8k1v")
+script = ExtResource("24_axo4l")
 
 [node name="booster_fx" type="CPUParticles2D" parent="."]
 visible = false
@@ -258,10 +258,10 @@ color_ramp = SubResource("Gradient_0dpix")
 stream = SubResource("AudioStreamRandomizer_7qyni")
 
 [node name="booster_sound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("21_cicko")
+stream = ExtResource("29_hg731")
 
 [node name="temporal_recorder" type="Node2D" parent="."]
-script = ExtResource("22_bj47h")
+script = ExtResource("30_5j1ue")
 triggers_per_second = 20
 
 [node name="mini_health_bar" type="ProgressBar" parent="."]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=22 format=3 uid="uid://b2el5b6ucyivj"]
 
-[ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/battle_character.gd" id="1_ny2j2"]
-[ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/skin.gd" id="2_i8lxl"]
+[ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_ny2j2"]
+[ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="2_i8lxl"]
 [ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/player_carrier_bottom.png" id="2_oieim"]
 [ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="3_5fyrk"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="4_8jh2m"]

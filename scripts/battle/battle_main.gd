@@ -3,7 +3,7 @@ extends Node2D
 @export var starting_laupeerium: float = 25.
 @export_range(0., 1.) var replay_screen_responsiveness: float = 0.05
 
-@onready var character_template = preload("res://scenes/character.tscn")
+@onready var character_template = preload("res://scenes/entities/base_ship.tscn")
 @onready var laupeerium_bar: UIEnergyBar = $GUI/status_padding/battleship_status/laupeerium
 
 const round_start_delay_sec: float = 2.
