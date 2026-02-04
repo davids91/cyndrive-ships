@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=39 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="1_4dcfn"]
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/battle_character.gd" id="1_gqnfm"]
@@ -25,6 +25,7 @@
 [ext_resource type="AudioStream" uid="uid://besa8dwtnwqwy" path="res://audio/explosion_002.wav" id="19_bj47h"]
 [ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="20_4lh0q"]
 [ext_resource type="Shader" uid="uid://djx4bom2edoc6" path="res://shaders/repairs.gdshader" id="20_u0pwc"]
+[ext_resource type="PackedScene" uid="uid://c085tc8npm2p2" path="res://scenes/weapons/shield.tscn" id="21_8rpqn"]
 [ext_resource type="AudioStream" uid="uid://bokt2np2jc03c" path="res://audio/engine_booster.wav" id="21_cicko"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="22_bj47h"]
 [ext_resource type="Script" uid="uid://co4eimc5mgx3i" path="res://scripts/equipment/weapon_slot.gd" id="23_weaponslot"]
@@ -198,6 +199,9 @@ stream = SubResource("AudioStreamRandomizer_i0gp7")
 volume_db = -30.0
 attenuation = 0.3186402
 max_polyphony = 5
+
+[node name="shield" parent="." instance=ExtResource("21_8rpqn")]
+position = Vector2(128, 0)
 
 [node name="debug_label" type="Label" parent="."]
 visible = false

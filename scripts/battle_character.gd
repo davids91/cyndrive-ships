@@ -21,6 +21,7 @@ func _ready() -> void:
 	$mini_health_bar.set_visible(name != "player_carrier")
 	$team.initialize(team_id, spawn_position, color)
 	$skin.init_skin(skin_layers, $team.color)
+	if has_node("laser_beam"): $laser_beam.base_damage *= laser_strength
 	if has_node("ai_control"): $ai_control.enabled = true
 	else:
 		$controller.set_script(preload("res://scripts/equipment/player_motion_control.gd"))
@@ -254,6 +255,7 @@ func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 
 func respawn():
 	if has_node("weapon_slot"): $weapon_slot.select_slot(0)
+	if has_node("shield"): $shield.shutdown()
 	set_global_position(spawn_position)
 	set_velocity(Vector2())
 	set_collision_layer_value(1, true)
@@ -320,13 +322,19 @@ func resume_control() -> void:
 	else: $controller.intent_direction = PlayerInput.instance.current_intent
 
 var held_mine: ExplosiveMine = null
+var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	if not in_battle(): return # cannot process any action while not in battle
+
 	if "weapon_slot" in action and has_node("weapon_slot"):
 		$weapon_slot.select_slot(action["weapon_slot"])
 		action["action_released"] = true
 
 	if(control_enabled):
+		if "action_direction" in action and 0. < action["action_direction"].length() and has_node("shield"):
+			current_action_direction = action["action_direction"]
+		else: current_action_direction = Vector2()
+
 		if not null == held_mine and "deploy_mine" in action and action["deploy_mine"]:
 			held_mine.deploy_mine()
 			held_mine = null
@@ -335,10 +343,9 @@ func process_input_action(action: Dictionary) -> void:
 			if "boost_initiated" in action and not $energy_systems.has_boost_energy():
 				action.erase("boost_initiated")
 			if "action_intent" in action and not $energy_systems.has_weapon_energy():
-				action.erase("action_intent")
 				action["action_released"] = true
 		
-		if("action_intent" in action and has_node("target_assist") and $target_assist.is_target_locked()):
+		if("action_direction" in action and has_node("target_assist") and $target_assist.is_target_locked()):
 			action["action_intent"] = $target_assist.get_current_target_position()
 			action["pewpew_target"] =  $target_assist.get_current_target()
 			
@@ -366,6 +373,7 @@ func process_input_action(action: Dictionary) -> void:
 	): action["action_intent"] = action["pewpew_target"].get_global_position()
 
 	$controller.process_input_action(action)
+	if has_node("shield"): $shield.process_input_action(action)
 	if has_node("weapon_slot"): $weapon_slot.process_input_action(action)
 	if has_node("temporal_recorder"): $temporal_recorder.process_input_action(action)
 

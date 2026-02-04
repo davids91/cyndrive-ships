@@ -181,6 +181,7 @@ zoom = Vector2(0.5, 0.5)
 [node name="sonar_sensor" type="ShapeCast2D" parent="combatants/character"]
 shape = SubResource("ConvexPolygonShape2D_61i1y")
 target_position = Vector2(0, 0)
+collision_mask = 3
 script = ExtResource("4_3fx1x")
 rotation_speed = 0.05
 
@@ -188,6 +189,7 @@ rotation_speed = 0.05
 top_level = true
 shape = SubResource("ConvexPolygonShape2D_saiin")
 target_position = Vector2(0, 0)
+collision_mask = 3
 script = ExtResource("6_cj32i")
 
 [node name="enemy" parent="combatants" instance=ExtResource("2_sm623")]

@@ -6,7 +6,7 @@ signal weapon_changed(slot: int)
 var current_slot: int = 0
 
 func reset() -> void:
-	if null != weapons[current_slot] and "reset" in weapons[current_slot]:
+	if abs(current_slot) < weapons.size() and null != weapons[current_slot] and "reset" in weapons[current_slot]:
 		weapons[current_slot].reset()
 
 func shutdown():
@@ -34,10 +34,10 @@ func get_energy_cost() -> float:
 	else: return 1.
 
 func process_input_action(action: Dictionary) -> void:
-	if null != weapons[current_slot]:
+	if abs(current_slot) < weapons.size() and null != weapons[current_slot]:
 		weapons[current_slot].process_input_action(action)
 
 var is_shooting: bool = false
 func _process(_delta: float) -> void:
-	if null != weapons[current_slot]:
+	if abs(current_slot) < weapons.size() and null != weapons[current_slot]:
 		is_shooting = weapons[current_slot].is_shooting
