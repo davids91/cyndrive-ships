@@ -161,7 +161,7 @@ func _physics_process(delta: float) -> void:
 		if (target_moving_avg - chosen_target.get_global_position()).length() < target_clamp_distance:
 			action["action_intent"] = chosen_target.get_global_position()
 		else: action["action_intent"] = target_moving_avg
-		action["pewpew_target"] = chosen_target
+		action["acquired_target"] = chosen_target
 
 	# Detect if the ship is stuck, and apply boost to break free
 	position_moving_avg = lerp(get_global_position(), position_moving_avg, 0.5)

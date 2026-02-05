@@ -9,11 +9,12 @@ static var instance: PlayerInput:
 	get:
 		return _instance
 
+@export var input_disabled: bool = true
+
 var current_intent: Vector2 = Vector2()
 var current_action_direction: Vector2 = Vector2()
 var is_shooting: bool = false
-var current_pewpew_target: Vector2 = Vector2()
-var input_disabled: bool = true
+var current_acquired_target: Vector2 = Vector2()
 
 func set_disabled(yesno: bool) -> void:
 	input_disabled = yesno
@@ -67,7 +68,7 @@ Output format is the following:
 	action["switch_shield"]: boolean value for shield activation(when active, action direction is used to set shield position instead of weapon aim)
 	action["action_initiated"]: boolean value for weapon activation
 	action["action_released"]: boolean value for weapon deactivation
-	action["pewpew_target"]: the target object to which the laser is supposed to be fired
+	action["acquired_target"]: the target object to which the laser is supposed to be fired
 	action["deploy_mine"]: activate and release the attached mine ( if any )
 """
 static func get_action(input_event):

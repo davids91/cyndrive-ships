@@ -230,6 +230,7 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 	health_changed.emit(health / starting_health)
 	if health > low_health: explosion_shake_smooth()
 	else: explosion_shake()
+	$mini_health_bar.set_value_no_signal(health / starting_health * $mini_health_bar.max_value)
 
 	# Handle explosion when ship is destroyed
 	if !is_alive:
@@ -251,7 +252,7 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 	health = min(health + max(0., strength), max_health)
 	is_alive = 0 < health
-	health_changed.emit(health / starting_health)
+	$mini_health_bar.set_value_no_signal(health / starting_health * $mini_health_bar.max_value)
 
 func respawn():
 	if has_node("weapon_slot"): $weapon_slot.select_slot(0)
@@ -347,7 +348,7 @@ func process_input_action(action: Dictionary) -> void:
 		
 		if("action_direction" in action and has_node("target_assist") and $target_assist.is_target_locked()):
 			action["action_intent"] = $target_assist.get_current_target_position()
-			action["pewpew_target"] =  $target_assist.get_current_target()
+			action["acquired_target"] =  $target_assist.get_current_target()
 			
 		# move camera lightly on boost  
 		if "boost_initiated" in action:
@@ -368,9 +369,9 @@ func process_input_action(action: Dictionary) -> void:
 	# Should the target be slightly off, but still around the actual laser position, the position is corrected
 	# so past versions of the players can hit their targets more accurately
 	if (
-		"action_intent" in action and "pewpew_target" in action and null != action["pewpew_target"]
-		and (action["pewpew_target"].get_global_position() - action["action_intent"]).length() < action["pewpew_target"].approx_size * 3
-	): action["action_intent"] = action["pewpew_target"].get_global_position()
+		"action_intent" in action and "acquired_target" in action and null != action["acquired_target"]
+		and (action["acquired_target"].get_global_position() - action["action_intent"]).length() < action["acquired_target"].approx_size * 3
+	): action["action_intent"] = action["acquired_target"].get_global_position()
 
 	$controller.process_input_action(action)
 	if has_node("shield"): $shield.process_input_action(action)
@@ -430,6 +431,3 @@ func _on_energy_systems_boost_energy_updated(new_energy_level: float) -> void:
 
 func _on_energy_systems_weapon_energy_updated(new_energy_level: float) -> void:
 	weapon_energy_updated.emit(new_energy_level)
-
-func _on_health_changed(percentage: float) -> void:
-	$mini_health_bar.set_value_no_signal(percentage * $mini_health_bar.max_value)

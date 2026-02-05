@@ -28,16 +28,16 @@ func reset() -> void:
 
 var current_strength_modifier: float = 1.
 var was_shooting: bool = false
-var pewpew_target: Vector2 = Vector2()
+var acquired_target: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	if "action_intent" in action:
 		create_tween().tween_method(
-			func(pos): pewpew_target = pos,
-			pewpew_target, action["action_intent"], target_time_sec
+			func(pos): acquired_target = pos,
+			acquired_target, action["action_intent"], target_time_sec
 		)
 
 	was_shooting = is_shooting
-	is_shooting = (
+	is_shooting = "acquired_target" in action and (
 		(is_shooting and (not "action_released" in action or not action["action_released"]))
 		or ("action_initiated" in action and action["action_initiated"])
 	)
@@ -71,7 +71,7 @@ func _physics_process(_delta: float) -> void:
 		return
 	$beam_line.points[1] = hit_position()
 	$raycast.set_global_position(get_global_position())
-	$raycast.target_position = get_global_position() + (pewpew_target - get_global_position()) * 1000.
+	$raycast.target_position = get_global_position() + (acquired_target - get_global_position()) * 1000.
 
 	# Handle sounds and applying damage
 	if is_shooting:
