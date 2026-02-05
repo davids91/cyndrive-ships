@@ -57,16 +57,19 @@ func _physics_process(delta: float) -> void:
 		internal_force = lerp(internal_force, intent_direction, speed_response)
 		if is_boosting:
 			internal_force += intent_direction * booster_strength
-	
+
 	if intent_direction.length() < 0.15:
 		intent_direction = Vector2()
-	if not enabled or BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
-		return
-	
+
+	if not enabled: return
+
 	# Calculate inner forces when not rewinding
 	var pos_diff = (get_global_position() - last_position)
 	if pos_diff.length() > 0.05: character.set_global_rotation(pos_diff.angle())
-	character.set_velocity((internal_force + current_impulse * delta) * character.approx_size * top_speed)
+	character.set_velocity(
+		(internal_force + current_impulse * delta)
+		* character.approx_size * top_speed * BattleTimeline.instance.time_flow
+	)
 	
 	internal_force *= floatiness
 	if internal_force.length() < 0.1: internal_force = Vector2()

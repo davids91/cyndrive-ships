@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/battle_ship.png" id="13_qs6j5"]
 [ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/equipment/sonar_sensor.gd" id="14_f1ub4"]
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="15_5bo7e"]
+[ext_resource type="Shape2D" uid="uid://bbuubnw2b6ne4" path="res://resources/target_assist_shape.tres" id="15_pmnbd"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/fighter-ship-base.png" id="16_f4125"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/fighter-ship-accent.png" id="17_2y2lr"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="18_54bea"]
@@ -57,9 +58,6 @@ metadata/_custom_type_script = "uid://cud6a5voxneed"
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_61i1y"]
 points = PackedVector2Array(0, 50, 0, -50, 1000000, -5000, 1000000, 5000)
-
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_saiin"]
-points = PackedVector2Array(-100, 100, -100, -100, 5000, -1000, 5000, 1000)
 
 [sub_resource type="Resource" id="Resource_f0g0v"]
 script = ExtResource("9_25tx2")
@@ -187,7 +185,7 @@ rotation_speed = 0.05
 
 [node name="target_assist" type="ShapeCast2D" parent="combatants/character"]
 top_level = true
-shape = SubResource("ConvexPolygonShape2D_saiin")
+shape = ExtResource("15_pmnbd")
 target_position = Vector2(0, 0)
 collision_mask = 3
 script = ExtResource("15_5bo7e")

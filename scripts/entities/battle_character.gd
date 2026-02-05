@@ -97,6 +97,8 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 	var tween_length = max(0., over_time_msec) / 1000.;
 	if "internal_force" in snapshot:
 		$controller.internal_force = snapshot["internal_force"] * BattleTimeline.instance.time_flow
+	if "current_impulse" in snapshot and "current_impulse" in $controller:
+		$controller.current_impulse = snapshot["current_impulse"] * BattleTimeline.instance.time_flow
 	if "velocity" in snapshot: velocity = snapshot["velocity"] * BattleTimeline.instance.time_flow
 	if "rotation" in snapshot: set_global_rotation(snapshot["rotation"])
 
@@ -104,22 +106,18 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 	if approx_size * 2. < correction_length:
 		create_tween().tween_property(self, "transform", snapshot["transform"], tween_length)
 		var clone = $skin.duplicate()
-		clone.set_skins_material(preload("res://resources/implode_effect.tres").duplicate())
+		clone.set_skins_material(preload("res://resources/implode_effect.tres"))
+		clone.set_team_color(color)
 		clone.set_transform($skin.get_transform())
 		clone.set_global_position(get_global_position())
 		clone.set_global_rotation(get_global_rotation())
-		if "replace_skin" in clone: clone.replace_skin = false
 		$"../../mush".add_child(clone)
 		var tween = create_tween()
-		tween.tween_method(
-			func(value): clone.set_burn_percentage(value),
-			0.0, 1.0, 0.5
-		)
+		tween.tween_method(func(value): clone.set_burn_percentage(value), 0.0, 1.0, 0.3)
 		tween.finished.connect(func(): clone.queue_free())
 		# DEBUG LINES FOR MOTION CORRECTION
 		get_parent().get_parent().display_line(transform.get_origin(), snapshot["transform"].get_origin(), debug_color)
 		# DEBUG LINES FOR MOTION CORRECTION
-
 
 func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 	spawn_position = predecessor.spawn_position
@@ -264,6 +262,7 @@ func respawn():
 	is_alive = true
 	was_alive = true
 	health = starting_health
+	$mini_health_bar.set_value_no_signal(health / starting_health * $mini_health_bar.max_value)
 	$controller.stop()
 	$controller.start()
 	resume_control()
@@ -343,11 +342,11 @@ func process_input_action(action: Dictionary) -> void:
 		if has_node("energy_systems"):
 			if "boost_initiated" in action and not $energy_systems.has_boost_energy():
 				action.erase("boost_initiated")
-			if "action_intent" in action and not $energy_systems.has_weapon_energy():
+			if "acquired_target_position" in action and not $energy_systems.has_weapon_energy():
 				action["action_released"] = true
 		
 		if("action_direction" in action and has_node("target_assist") and $target_assist.is_target_locked()):
-			action["action_intent"] = $target_assist.get_current_target_position()
+			action["acquired_target_position"] = $target_assist.get_current_target_position()
 			action["acquired_target"] =  $target_assist.get_current_target()
 			
 		# move camera lightly on boost  
@@ -369,15 +368,14 @@ func process_input_action(action: Dictionary) -> void:
 	# Should the target be slightly off, but still around the actual laser position, the position is corrected
 	# so past versions of the players can hit their targets more accurately
 	if (
-		"action_intent" in action and "acquired_target" in action and null != action["acquired_target"]
-		and (action["acquired_target"].get_global_position() - action["action_intent"]).length() < action["acquired_target"].approx_size * 3
-	): action["action_intent"] = action["acquired_target"].get_global_position()
+		"acquired_target_position" in action and "acquired_target" in action and null != action["acquired_target"]
+		and (action["acquired_target"].get_global_position() - action["acquired_target_position"]).length() < action["acquired_target"].approx_size * 3
+	): action["acquired_target_position"] = action["acquired_target"].get_global_position()
 
 	$controller.process_input_action(action)
 	if has_node("shield"): $shield.process_input_action(action)
 	if has_node("weapon_slot"): $weapon_slot.process_input_action(action)
 	if has_node("temporal_recorder"): $temporal_recorder.process_input_action(action)
-
 
 func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: int = 20) -> void:
 	if not has_node("cam"): return

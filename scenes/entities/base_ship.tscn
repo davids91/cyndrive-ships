@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=40 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_fbtwq"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="4_ykdog"]
 [ext_resource type="Texture2D" uid="uid://boy2t7aons7q8" path="res://icon.svg" id="5_upp82"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="6_33oy3"]
+[ext_resource type="Material" uid="uid://hwlaracobxoh" path="res://resources/implode_effect.tres" id="6_ce6sv"]
 [ext_resource type="Script" uid="uid://cdrsm7mlhnmnm" path="res://scripts/equipment/energy_systems.gd" id="7_0nsx8"]
 [ext_resource type="Script" uid="uid://co4eimc5mgx3i" path="res://scripts/equipment/weapon_slot.gd" id="8_owx80"]
 [ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://scripts/equipment/laser_beam_ray.gd" id="9_1fjy2"]
@@ -146,6 +147,7 @@ handle_input_locally = false
 texture = ExtResource("5_upp82")
 
 [node name="skin_image" type="Sprite2D" parent="skin"]
+material = ExtResource("6_ce6sv")
 texture = SubResource("ViewportTexture_8vsun")
 
 [node name="team" type="Node2D" parent="."]

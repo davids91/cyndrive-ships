@@ -159,8 +159,10 @@ func _physics_process(delta: float) -> void:
 	): action["action_released"] = true
 	if target_is_acquired and target_is_alive:
 		if (target_moving_avg - chosen_target.get_global_position()).length() < target_clamp_distance:
-			action["action_intent"] = chosen_target.get_global_position()
-		else: action["action_intent"] = target_moving_avg
+			action["acquired_target_position"] = chosen_target.get_global_position()
+		else: action["acquired_target_position"] = target_moving_avg
+		var to_target = ( chosen_target.get_global_position() - character.get_global_position() )
+		action["action_direction"] = to_target.normalized()
 		action["acquired_target"] = chosen_target
 
 	# Detect if the ship is stuck, and apply boost to break free

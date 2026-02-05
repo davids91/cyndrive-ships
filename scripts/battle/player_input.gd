@@ -39,7 +39,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if not was_shooting and is_shooting:
 		action["action_initiated"] = true
 
-	if not input_disabled:
+	if not input_disabled and not action.is_empty():
 		action_triggered.emit(action)
 
 func _process(_delta: float) -> void:
@@ -62,7 +62,7 @@ Provides the processed control output in a form of a dictionary from the provide
 Output format is the following:
 	action["movement_intent"]: vector: intent of user control in 2D space (up, down, left right). Vector values are either -1, 0 or 1
 	action["action_direction"]: vector: direction of weapon action in 2D space (up, down, left right). Vector values are either -1, 0 or 1
-	action["action_intent"]: vector: weapon target position in 2D space
+	action["acquired_target_position"]: vector: weapon target position in 2D space
 	action["boost_initiated"]: boolean value for the activation of the ships booster
 	action["boost_released"]: boolean value for the de-activation of the ships booster ( not stored in temporal records )
 	action["switch_shield"]: boolean value for shield activation(when active, action direction is used to set shield position instead of weapon aim)

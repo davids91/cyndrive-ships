@@ -25,16 +25,16 @@ var target_out_of_sight_countdown_sec = goldfish_memory_sec
 func _physics_process(delta: float) -> void:
 	var target: Node2D = null
 
+	# Position target assist to align with player control
+	set_global_position(character.get_global_position())
+	set_global_rotation(PlayerInput.instance.current_action_direction.angle())
+
 	# Reset target if the ship is not attacking
 	if 0. == PlayerInput.instance.current_action_direction.length():
 		if not highligthed_body == null and highligthed_body.has_method("set_highlight"):
 			highligthed_body.set_highlight(false)
 		highligthed_body = null
 		return
-
-	# Position target assist to align with player control
-	set_global_position(character.get_global_position())
-	set_global_rotation(PlayerInput.instance.current_action_direction.angle())
 
 	# Handle targeting
 	force_shapecast_update()

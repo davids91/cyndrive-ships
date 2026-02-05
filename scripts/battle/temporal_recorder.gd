@@ -42,7 +42,6 @@ func _process(_delta: float) -> void:
 			):
 				var snapshot_to_apply = usec_records[usec_records.keys().back()]
 				reverse_action_key_in_snapshot("boost", snapshot_to_apply)
-				reverse_action_key_in_snapshot("action_intent", snapshot_to_apply)
 				target.process_input_action(snapshot_to_apply)
 			usec_records.erase(usec_records.keys().back())
 
@@ -142,17 +141,18 @@ func _physics_process(_delta: float) -> void:
 	var current_snapshot = {"transform": target.get_transform()}
 
 	# state relevant to moving bodies
-	if "velocity" in target:
-		current_snapshot["velocity"] = target.get_velocity()
-	if "global_rotation" in target:
-		current_snapshot["rotation"] = target.get_global_rotation()
-	if "linear_velocity" in target:
-		current_snapshot["linear_velocity"] = target.get_linear_velocity()
-	if "angular_velocity" in target:
-		current_snapshot["angular_velocity"] = target.get_angular_velocity()
+	if "velocity" in target: current_snapshot["velocity"] = target.get_velocity()
+	if "global_rotation" in target: current_snapshot["rotation"] = target.get_global_rotation()
+	if "linear_velocity" in target: current_snapshot["linear_velocity"] = target.get_linear_velocity()
+	if "angular_velocity" in target: current_snapshot["angular_velocity"] = target.get_angular_velocity()
 
 	# state relevant only to ships
-	if target.has_node("controller"): current_snapshot["internal_force"] = target.get_node("controller").internal_force
+	if target.has_node("controller"):
+		var node = target.get_node("controller")
+		current_snapshot["internal_force"] = node.internal_force
+		if "current_impulse" in node:
+			current_snapshot["current_impulse"] = node.current_impulse
+		current_snapshot["internal_force"] = node.internal_force
 	if "health" in target: current_snapshot["health"] = target.health
 	if target.has_node("energy_systems"): current_snapshot["energy"] = target.get_node("energy_systems").temporal_snapshot()
 	if "held_mine" in target and not target.held_mine == null: current_snapshot["held_mine"] = target.held_mine

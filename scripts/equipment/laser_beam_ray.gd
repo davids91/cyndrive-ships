@@ -30,17 +30,18 @@ var current_strength_modifier: float = 1.
 var was_shooting: bool = false
 var acquired_target: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
-	if "action_intent" in action:
+	if "acquired_target_position" in action:
 		create_tween().tween_method(
 			func(pos): acquired_target = pos,
-			acquired_target, action["action_intent"], target_time_sec
+			acquired_target, action["acquired_target_position"], target_time_sec
 		)
 
 	was_shooting = is_shooting
-	is_shooting = "acquired_target" in action and (
-		(is_shooting and (not "action_released" in action or not action["action_released"]))
-		or ("action_initiated" in action and action["action_initiated"])
+	is_shooting = (
+		"acquired_target_position" in action and "action_direction" in action
+		and 0. < action["action_direction"].length()
 	)
+
 	if is_shooting:
 		$sound.play()
 		if not was_shooting: # Laser alpha and width animation
