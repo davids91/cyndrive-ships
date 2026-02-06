@@ -316,6 +316,7 @@ func resume_control() -> void:
 	if has_node("ai_control"): $ai_control.resume()
 
 var held_mine: ExplosiveMine = null
+
 func process_input_action(action: Dictionary) -> void:
 	if not in_battle(): return # cannot process any action while not in battle
 	if "weapon_slot" in action and has_node("weapon_slot"):
@@ -326,13 +327,15 @@ func process_input_action(action: Dictionary) -> void:
 		if not null == held_mine and "deploy_mine" in action and action["deploy_mine"]:
 			held_mine.deploy_mine()
 			held_mine = null
-
+		
 		if has_node("energy_systems"):
 			if "boost_initiated" in action and not $energy_systems.has_boost_energy():
 				action.erase("boost_initiated")
+			
 			if "pewpew" in action and not $energy_systems.has_weapon_energy():
-				action.erase("pewpew")
-				action["pewpew_released"] = true
+				if not _infinite_ammo_enabled():
+					action.erase("pewpew")
+					action["pewpew_released"] = true
 		
 		if("pewpew" in action and has_node("target_assist") and $target_assist.is_target_locked()):
 			action["pewpew"] = $target_assist.get_current_target_position()
@@ -417,7 +420,15 @@ func _on_energy_systems_boost_energy_updated(new_energy_level: float) -> void:
 	boost_energy_updated.emit(new_energy_level)
 
 func _on_energy_systems_weapon_energy_updated(new_energy_level: float) -> void:
-	weapon_energy_updated.emit(new_energy_level)
+	if not _infinite_ammo_enabled():
+		weapon_energy_updated.emit(new_energy_level)
 
 func _on_health_changed(percentage: float) -> void:
 	$mini_health_bar.set_value_no_signal(percentage * $mini_health_bar.max_value)
+	
+func _infinite_ammo_enabled() -> bool:
+	if FeatureFlags.is_enabled("infinite_ammo"):
+		var battle_main = get_tree().current_scene
+		if battle_main and "infinite_ammo_active" in battle_main and battle_main.infinite_ammo_active:
+			return true
+	return false

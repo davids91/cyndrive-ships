@@ -19,5 +19,9 @@
 	"pause_menu": {
 		"enabled": true,
 		"description": "Menu for Pausing battle"
+	},
+	"infinite_ammo": {
+		"enabled": true,
+		"description": "Enable infinite ammo toggle (F7 key)"
 	}
 }
