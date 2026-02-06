@@ -4,32 +4,48 @@ class_name PlayerInput
 
 signal action_triggered(action: Dictionary)
 
+static var _instance: PlayerInput = null
+static var instance: PlayerInput:
+	get:
+		return _instance
+
+@export var input_disabled: bool = true
+
 var current_intent: Vector2 = Vector2()
+var current_action_direction: Vector2 = Vector2()
 var is_shooting: bool = false
-var current_pewpew_target: Vector2 = Vector2()
-var input_disabled: bool = true
+var current_acquired_target: Vector2 = Vector2()
 
 func set_disabled(yesno: bool) -> void:
 	input_disabled = yesno
 
-func _unhandled_input(input_event: InputEvent) -> void:
-	var action = get_action(input_event)
-	is_shooting = (
-		(is_shooting and (not "pewpew_released" in action or not action["pewpew_released"]))
-		or ("pewpew_initiated" in action and action["pewpew_initiated"])
+func _unhandled_key_input(event: InputEvent) -> void:
+	var action = get_action(event)
+
+	if "movement_intent" in action:
+		current_intent += action["movement_intent"]
+		action["movement_intent"] = current_intent
+
+	var was_shooting = is_shooting
+	if "action_direction" in action:
+		action["action_direction"] = action["action_direction"]
+		current_action_direction += action["action_direction"]
+		action["action_direction"] = current_action_direction
+		is_shooting = 0 < action["action_direction"].length()
+
+	if was_shooting and not is_shooting:
+		action["action_released"] = true
+
+	if not was_shooting and is_shooting:
+		action["action_initiated"] = true
+
+	if not input_disabled and not action.is_empty():
+		action_triggered.emit(action)
+
+func _process(_delta: float) -> void:
+	if is_shooting: action_triggered.emit(
+		{"action_direction": current_action_direction}
 	)
-
-	if "intent" in action:
-		current_intent += action["intent"]
-		action["intent"] = current_intent
-	if not input_disabled:
-		action_triggered.emit(action)
-
-func _process(_delta: float) -> void:	
-	var action: Dictionary = {}
-	if is_shooting:
-		action["pewpew"] = xform(get_viewport().get_canvas_transform().affine_inverse(), get_viewport().get_mouse_position())
-		action_triggered.emit(action)
 
 #	_FORCE_INLINE_ real_t tdotx(const Vector2 &p_v) const { return columns[0][0] * p_v.x + columns[1][0] * p_v.y; }
 static func tdotx(mat, vec):
@@ -43,34 +59,41 @@ static func xform(mat, vec):
 	return Vector2(tdotx(mat, vec), tdoty(mat, vec)) + mat.get_origin()
 """
 Provides the processed control output in a form of a dictionary from the provided data and user input events
-Output format is the following: 
-	action["intent"]: vector: intent of user control in 2D space (up, down, left right). Vector values are either -1, 0 or 1
+Output format is the following:
+	action["movement_intent"]: vector: intent of user control in 2D space (up, down, left right). Vector values are either -1, 0 or 1
+	action["action_direction"]: vector: direction of weapon action in 2D space (up, down, left right). Vector values are either -1, 0 or 1
+	action["acquired_target_position"]: vector: weapon target position in 2D space
 	action["boost_initiated"]: boolean value for the activation of the ships booster
 	action["boost_released"]: boolean value for the de-activation of the ships booster ( not stored in temporal records )
-	action["pewpew_initiated"]: boolean value for weapon activation
-	action["pewpew_released"]: boolean value for weapon deactivation
-	action["pewpew_target"]: the target object to which the laser is supposed to be fired
+	action["switch_shield"]: boolean value for shield activation(when active, action direction is used to set shield position instead of weapon aim)
+	action["action_initiated"]: boolean value for weapon activation
+	action["action_released"]: boolean value for weapon deactivation
+	action["acquired_target"]: the target object to which the laser is supposed to be fired
 	action["deploy_mine"]: activate and release the attached mine ( if any )
 """
 static func get_action(input_event):
 	var action = Dictionary()
 	var intent_direction = Vector2(
-		(-1. if input_event.is_action_pressed("left") else 0. + 1. if input_event.is_action_pressed("right") else 0.),\
-		(1. if input_event.is_action_pressed("down") else 0. + -1. if input_event.is_action_pressed("up") else 0.)
+		(-1. if input_event.is_action_pressed("movement_left") else 0. + 1. if input_event.is_action_pressed("movement_right") else 0.),\
+		(1. if input_event.is_action_pressed("movement_down") else 0. + -1. if input_event.is_action_pressed("movement_up") else 0.)
 	)
 	intent_direction -= Vector2(
-		(-1. if input_event.is_action_released("left") else 0. + 1. if input_event.is_action_released("right") else 0.),\
-		(1. if input_event.is_action_released("down") else 0. + -1. if input_event.is_action_released("up") else 0.)
+		(-1. if input_event.is_action_released("movement_left") else 0. + 1. if input_event.is_action_released("movement_right") else 0.),\
+		(1. if input_event.is_action_released("movement_down") else 0. + -1. if input_event.is_action_released("movement_up") else 0.)
 	)
-	
 	if 0. < intent_direction.length():
-		action["intent"] = intent_direction
+		action["movement_intent"] = intent_direction
 
-	if(input_event.is_action_pressed("pewpew")):
-		action["pewpew_initiated"] = true
-
-	if(input_event.is_action_released("pewpew")):
-		action["pewpew_released"] = true
+	var action_direction = Vector2(
+		(-1. if input_event.is_action_pressed("action_left") else 0. + 1. if input_event.is_action_pressed("action_right") else 0.),\
+		(1. if input_event.is_action_pressed("action_down") else 0. + -1. if input_event.is_action_pressed("action_up") else 0.)
+	)
+	action_direction -= Vector2(
+		(-1. if input_event.is_action_released("action_left") else 0. + 1. if input_event.is_action_released("action_right") else 0.),\
+		(1. if input_event.is_action_released("action_down") else 0. + -1. if input_event.is_action_released("action_up") else 0.)
+	)
+	if 0. < action_direction.length():
+		action["action_direction"] = action_direction
 
 	if input_event.is_action_pressed("boost"):
 		action["boost_initiated"] = true
@@ -81,6 +104,9 @@ static func get_action(input_event):
 	if input_event.is_action_pressed("deploy_mine"):
 		action["deploy_mine"] = true
 
+	if input_event.is_action_pressed("activate_shield"):
+		action["switch_shield"] = true
+
 	# Handle weapon selection (1-4 keys)
 	if(
 		input_event is InputEventKey and input_event.pressed and not input_event.echo
@@ -88,3 +114,11 @@ static func get_action(input_event):
 	):
 		action["weapon_slot"] = input_event.physical_keycode - KEY_1
 	return action
+
+func _enter_tree() -> void:
+	if instance == null:
+		_instance = self
+
+func _exit_tree() -> void:
+	if instance == self:
+		_instance = null

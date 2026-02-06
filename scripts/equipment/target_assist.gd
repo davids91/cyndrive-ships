@@ -1,14 +1,17 @@
-extends Area2D
+extends ShapeCast2D
 
-var enabled: bool = true
-var contained_bodies: Dictionary = {}
+
+@export var goldfish_memory_sec: float = 3.
+
+@onready var character: BattleCharacter = get_parent()
+
 var highligthed_body: Node2D
 
 func set_disabled(yesno: bool) -> void:
 	enabled = not yesno
 
 func is_target_locked() -> bool:
-	return 0 < contained_bodies.size()
+	return not highligthed_body == null
 
 func get_current_target() -> Node2D:
 	return highligthed_body
@@ -18,35 +21,59 @@ func get_current_target_position() -> Vector2:
 		return highligthed_body.get_global_position()
 	return get_global_position()
 
-func highlight_centermost() -> void:
-	if contained_bodies.is_empty():
+var target_out_of_sight_countdown_sec = goldfish_memory_sec
+func _physics_process(delta: float) -> void:
+	var target: Node2D = null
+
+	# Position target assist to align with player control
+	set_global_position(character.get_global_position())
+	set_global_rotation(PlayerInput.instance.current_action_direction.angle())
+
+	# Reset target if the ship is not attacking
+	if 0. == PlayerInput.instance.current_action_direction.length():
+		if not highligthed_body == null and highligthed_body.has_method("set_highlight"):
+			highligthed_body.set_highlight(false)
+		highligthed_body = null
 		return
-	var target = contained_bodies.keys().front()
-	for body in contained_bodies:
-		if (get_global_position() - body.get_global_position()).length() \
-		< (get_global_position() - target.get_global_position()).length():
-			target = body
 
-	if highligthed_body and highligthed_body.has_method("set_highlight"):
-		highligthed_body.set_highlight(false)
+	# Handle targeting
+	force_shapecast_update()
+	var still_in_view: bool = false
+	for i in range(get_collision_count()):
+		var collider = get_collider(i)
+		still_in_view = still_in_view or (collider == highligthed_body)
+		if(
+			# Only target neutral and enemy characters
+			collider and collider.has_method("set_highlight")
+			and ( # Either the parent doesn't have a team node
+				not get_parent().has_node("team")
+				or not collider.has_node("team")
+				or ( # Or collider is an enemy by team assignments
+					collider.has_node("team")
+					and collider.get_node("team").is_enemy(get_parent().get_node("team"))
+				)
+			) and (
+				target == null
+				or (
+					(get_global_position() - collider.get_global_position()).length() 
+					< (get_global_position() - target.get_global_position()).length()
+				)
+			)
+		): target = collider
 
-	if target.has_method("set_highlight"):
-		target.set_highlight(true)
-		highligthed_body = target
-		
-func _on_body_entered(body: Node2D) -> void:
-	if(
-		body and body.has_method("set_highlight")
-		and ( # Either the parent doesN't have a team node, or the body is an enemy by team assignments
-			not get_parent().has_node("team")
-			or (body.has_node("team") and body.get_node("team").is_enemy(get_parent().get_node("team")))
-		)
+	if (
+		(highligthed_body == null or not highligthed_body.in_battle() or not still_in_view)
 	):
-		contained_bodies[body] = BattleTimeline.instance.time_msec()
-		highlight_centermost()
-
-func _on_body_exited(body: Node2D) -> void:
-	contained_bodies.erase(body)
-	if(body.has_method("set_highlight")):
-		body.set_highlight(false)
-	highlight_centermost()
+		if not target == null and target != highligthed_body: # Switch targets
+			if not highligthed_body == null and highligthed_body.has_method("set_highlight"):
+				highligthed_body.set_highlight(false)
+			if target.has_method("set_highlight"):
+				target.set_highlight(true)
+			highligthed_body = target
+			target_out_of_sight_countdown_sec = goldfish_memory_sec
+		else: 
+			target_out_of_sight_countdown_sec -= delta
+			if target_out_of_sight_countdown_sec <= 0.:
+				if not highligthed_body == null and highligthed_body.has_method("set_highlight"):
+					highligthed_body.set_highlight(false)
+				highligthed_body = null

@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://c085tc8npm2p2"]
+
+[ext_resource type="Script" uid="uid://divayv6wey3kx" path="res://scripts/equipment/shield.gd" id="1_lqkp7"]
+[ext_resource type="Shader" uid="uid://dvimhyltktrda" path="res://shaders/sonar.gdshader" id="2_btmqt"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dd63g"]
+radius = 28.0
+height = 200.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bi5l8"]
+noise_type = 2
+frequency = 0.25
+fractal_gain = 0.43
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_imt6f"]
+noise = SubResource("FastNoiseLite_bi5l8")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lqkp7"]
+resource_local_to_scene = true
+shader = ExtResource("2_btmqt")
+shader_parameter/greeble_noise = SubResource("NoiseTexture2D_imt6f")
+shader_parameter/noise_offset = Vector2(0, 0)
+shader_parameter/aspect_ratio = 1.0
+shader_parameter/shield = 1.0
+shader_parameter/shield_inner_color = Color(0, 1, 1, 1)
+shader_parameter/shield_outer_color = Color(0, 0.7833333, 1, 1)
+shader_parameter/shield_range = 1.250000059375
+shader_parameter/shield_angle = 0.0
+shader_parameter/shield_ring_width = 0.350000016625
+shader_parameter/shield_ring_core_width = 0.10000000475
+shader_parameter/shield_display_alpha = 0.50000002375
+shader_parameter/greeble_strength = 0.2000000095
+shader_parameter/pixel_size = 18.195
+
+[node name="shield" type="Area2D"]
+top_level = true
+script = ExtResource("1_lqkp7")
+
+[node name="shield_shape" type="CollisionShape2D" parent="."]
+z_index = 10
+position = Vector2(60, 0)
+shape = SubResource("CapsuleShape2D_dd63g")
+
+[node name="display" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_lqkp7")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 3.1415927
+pivot_offset = Vector2(128, 128)

@@ -40,7 +40,7 @@ shader_parameter/density = 3.750000178125
 shader_parameter/stars_speed = Vector2(0, 0)
 shader_parameter/layers = 5.0
 shader_parameter/color_shift_strength = 0.450000021375
-shader_parameter/sample_rounder = 975.0000463125
+shader_parameter/sample_rounder = 400.000019
 shader_parameter/alpha = 1.0
 shader_parameter/noise_scale = 250.0
 

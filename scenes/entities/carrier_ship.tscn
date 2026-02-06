@@ -1,7 +1,7 @@
 [gd_scene load_steps=22 format=3 uid="uid://b2el5b6ucyivj"]
 
-[ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/battle_character.gd" id="1_ny2j2"]
-[ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/skin.gd" id="2_i8lxl"]
+[ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_ny2j2"]
+[ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="2_i8lxl"]
 [ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/player_carrier_bottom.png" id="2_oieim"]
 [ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="3_5fyrk"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="4_8jh2m"]
@@ -46,6 +46,7 @@ shader_parameter/phase_blue = 0.5
 shader_parameter/zoom = 1.00000004680148
 
 [node name="player_carrier" type="CharacterBody2D"]
+collision_layer = 3
 motion_mode = 1
 script = ExtResource("1_ny2j2")
 approx_size = 700.0
@@ -105,6 +106,8 @@ autoplay = true
 stream = SubResource("AudioStreamRandomizer_d16w7")
 
 [node name="mine_attachement_aura" type="Area2D" parent="."]
+light_mask = 2
+visibility_layer = 3
 position = Vector2(-125, 0)
 monitorable = false
 script = ExtResource("14_a3wjc")
@@ -113,6 +116,8 @@ script = ExtResource("14_a3wjc")
 shape = SubResource("CapsuleShape2D_a3wjc")
 
 [node name="healing_aura" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 3
 script = ExtResource("14_5fyrk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="healing_aura"]

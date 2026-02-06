@@ -65,6 +65,7 @@ domain_warp_type = 1
 noise = SubResource("FastNoiseLite_sti4k")
 
 [resource]
+resource_local_to_scene = true
 shader = SubResource("Shader_xqo7t")
 shader_parameter/noise = SubResource("NoiseTexture2D_2hyy3")
 shader_parameter/burn_color = Color(1, 1, 0, 1)

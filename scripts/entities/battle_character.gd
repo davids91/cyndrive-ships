@@ -21,6 +21,7 @@ func _ready() -> void:
 	$mini_health_bar.set_visible(name != "player_carrier")
 	$team.initialize(team_id, spawn_position, color)
 	$skin.init_skin(skin_layers, $team.color)
+	if has_node("laser_beam"): $laser_beam.base_damage *= laser_strength
 	if has_node("ai_control"): $ai_control.enabled = true
 	else:
 		$controller.set_script(preload("res://scripts/equipment/player_motion_control.gd"))
@@ -96,6 +97,8 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 	var tween_length = max(0., over_time_msec) / 1000.;
 	if "internal_force" in snapshot:
 		$controller.internal_force = snapshot["internal_force"] * BattleTimeline.instance.time_flow
+	if "current_impulse" in snapshot and "current_impulse" in $controller:
+		$controller.current_impulse = snapshot["current_impulse"] * BattleTimeline.instance.time_flow
 	if "velocity" in snapshot: velocity = snapshot["velocity"] * BattleTimeline.instance.time_flow
 	if "rotation" in snapshot: set_global_rotation(snapshot["rotation"])
 
@@ -103,22 +106,18 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 	if approx_size * 2. < correction_length:
 		create_tween().tween_property(self, "transform", snapshot["transform"], tween_length)
 		var clone = $skin.duplicate()
-		clone.set_skins_material(preload("res://resources/implode_effect.tres").duplicate())
+		clone.set_skins_material(preload("res://resources/implode_effect.tres"))
+		clone.set_team_color(color)
 		clone.set_transform($skin.get_transform())
 		clone.set_global_position(get_global_position())
 		clone.set_global_rotation(get_global_rotation())
-		if "replace_skin" in clone: clone.replace_skin = false
 		$"../../mush".add_child(clone)
 		var tween = create_tween()
-		tween.tween_method(
-			func(value): clone.set_burn_percentage(value),
-			0.0, 1.0, 0.5
-		)
+		tween.tween_method(func(value): clone.set_burn_percentage(value), 0.0, 1.0, 0.3)
 		tween.finished.connect(func(): clone.queue_free())
 		# DEBUG LINES FOR MOTION CORRECTION
 		get_parent().get_parent().display_line(transform.get_origin(), snapshot["transform"].get_origin(), debug_color)
 		# DEBUG LINES FOR MOTION CORRECTION
-
 
 func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 	spawn_position = predecessor.spawn_position
@@ -170,7 +169,6 @@ func _physics_process(delta: float) -> void:
 var ship_explosion : ShipExplosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 func _process(_delta):
-	if has_node("target_assist"): $target_assist.set_position(get_global_mouse_position())
 	if $mini_health_bar.top_level:
 		$mini_health_bar.set_global_position(get_global_position() + mini_health_bar_offset)
 
@@ -230,6 +228,7 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 	health_changed.emit(health / starting_health)
 	if health > low_health: explosion_shake_smooth()
 	else: explosion_shake()
+	$mini_health_bar.set_value_no_signal(health / starting_health * $mini_health_bar.max_value)
 
 	# Handle explosion when ship is destroyed
 	if !is_alive:
@@ -251,10 +250,11 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 	health = min(health + max(0., strength), max_health)
 	is_alive = 0 < health
-	health_changed.emit(health / starting_health)
+	$mini_health_bar.set_value_no_signal(health / starting_health * $mini_health_bar.max_value)
 
 func respawn():
 	if has_node("weapon_slot"): $weapon_slot.select_slot(0)
+	if has_node("shield"): $shield.shutdown()
 	set_global_position(spawn_position)
 	set_velocity(Vector2())
 	set_collision_layer_value(1, true)
@@ -262,6 +262,7 @@ func respawn():
 	is_alive = true
 	was_alive = true
 	health = starting_health
+	$mini_health_bar.set_value_no_signal(health / starting_health * $mini_health_bar.max_value)
 	$controller.stop()
 	$controller.start()
 	resume_control()
@@ -281,6 +282,10 @@ func respawn():
 	if has_node("replayer"): $replayer.reset()
 	if has_node("weapon_slot"): $weapon_slot.reset()
 	if has_node("ai_control"):
+		$ai_control.set_disabled(
+			(has_node("replayer") and $replayer.is_within_current_time())
+			or not ai_fallback
+		)
 		$ai_control.stop()
 		$ai_control.resume()
 	extend_replayer = false
@@ -314,16 +319,22 @@ func resume_control() -> void:
 	control_enabled = true
 	$controller.start()
 	if has_node("ai_control"): $ai_control.resume()
+	else: $controller.intent_direction = PlayerInput.instance.current_intent
 
 var held_mine: ExplosiveMine = null
-
+var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	if not in_battle(): return # cannot process any action while not in battle
+
 	if "weapon_slot" in action and has_node("weapon_slot"):
 		$weapon_slot.select_slot(action["weapon_slot"])
-		action["pewpew_released"] = true
+		action["action_released"] = true
 
 	if(control_enabled):
+		if "action_direction" in action and 0. < action["action_direction"].length() and has_node("shield"):
+			current_action_direction = action["action_direction"]
+		else: current_action_direction = Vector2()
+
 		if not null == held_mine and "deploy_mine" in action and action["deploy_mine"]:
 			held_mine.deploy_mine()
 			held_mine = null
@@ -336,10 +347,12 @@ func process_input_action(action: Dictionary) -> void:
 				if not _infinite_ammo_enabled():
 					action.erase("pewpew")
 					action["pewpew_released"] = true
+			if "acquired_target_position" in action and not $energy_systems.has_weapon_energy():
+				action["action_released"] = true
 		
-		if("pewpew" in action and has_node("target_assist") and $target_assist.is_target_locked()):
-			action["pewpew"] = $target_assist.get_current_target_position()
-			action["pewpew_target"] =  $target_assist.get_current_target()
+		if("action_direction" in action and has_node("target_assist") and $target_assist.is_target_locked()):
+			action["acquired_target_position"] = $target_assist.get_current_target_position()
+			action["acquired_target"] =  $target_assist.get_current_target()
 			
 		# move camera lightly on boost  
 		if "boost_initiated" in action:
@@ -360,14 +373,14 @@ func process_input_action(action: Dictionary) -> void:
 	# Should the target be slightly off, but still around the actual laser position, the position is corrected
 	# so past versions of the players can hit their targets more accurately
 	if (
-		"pewpew" in action and "pewpew_target" in action and null != action["pewpew_target"]
-		and (action["pewpew_target"].get_global_position() - action["pewpew"]).length() < action["pewpew_target"].approx_size * 3
-	): action["pewpew"] = action["pewpew_target"].get_global_position()
+		"acquired_target_position" in action and "acquired_target" in action and null != action["acquired_target"]
+		and (action["acquired_target"].get_global_position() - action["acquired_target_position"]).length() < action["acquired_target"].approx_size * 3
+	): action["acquired_target_position"] = action["acquired_target"].get_global_position()
 
 	$controller.process_input_action(action)
+	if has_node("shield"): $shield.process_input_action(action)
 	if has_node("weapon_slot"): $weapon_slot.process_input_action(action)
 	if has_node("temporal_recorder"): $temporal_recorder.process_input_action(action)
-
 
 func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: int = 20) -> void:
 	if not has_node("cam"): return
@@ -422,9 +435,6 @@ func _on_energy_systems_boost_energy_updated(new_energy_level: float) -> void:
 func _on_energy_systems_weapon_energy_updated(new_energy_level: float) -> void:
 	if not _infinite_ammo_enabled():
 		weapon_energy_updated.emit(new_energy_level)
-
-func _on_health_changed(percentage: float) -> void:
-	$mini_health_bar.set_value_no_signal(percentage * $mini_health_bar.max_value)
 	
 func _infinite_ammo_enabled() -> bool:
 	if FeatureFlags.is_enabled("infinite_ammo"):

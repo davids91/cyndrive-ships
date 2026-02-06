@@ -1,6 +1,6 @@
 [gd_scene load_steps=32 format=4 uid="uid://c2bembjrgkdwd"]
 
-[ext_resource type="Script" uid="uid://d3lxvjyphmp50" path="res://scripts/battle_gui.gd" id="1_8vxf1"]
+[ext_resource type="Script" uid="uid://d3lxvjyphmp50" path="res://scripts/ui_menus/battle_gui.gd" id="1_8vxf1"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="1_pgs3n"]
 [ext_resource type="Texture2D" uid="uid://balba014se3re" path="res://textures/ui/panel_tileset.png" id="2_8vxf1"]
 [ext_resource type="LabelSettings" uid="uid://dbv6lunqh8d5t" path="res://resources/dimmed_text_font.tres" id="3_o14dv"]
@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://bib83etyoggcu" path="res://scripts/effects/sensors_display.gd" id="5_ywr47"]
 [ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="6_tfwac"]
 [ext_resource type="PackedScene" uid="uid://dtqjekkcmkdfh" path="res://scenes/effects/energy_bar_control.tscn" id="8_gxw16"]
-[ext_resource type="PackedScene" uid="uid://da65gog0rxq45" path="res://scenes/keybindings_panel.tscn" id="9_6n4mw"]
+[ext_resource type="PackedScene" uid="uid://da65gog0rxq45" path="res://scenes/UI/keybindings_panel.tscn" id="9_6n4mw"]
 [ext_resource type="Texture2D" uid="uid://026apoj7buxx" path="res://textures/ui/restart_button_up.png" id="10_rbv3r"]
 [ext_resource type="Texture2D" uid="uid://c2m8cwyuafmjq" path="res://textures/ui/restart_button_down.png" id="11_n1dtb"]
 [ext_resource type="Texture2D" uid="uid://dckaqcgel4xpt" path="res://textures/ui/restart_button_hover.png" id="12_73pwi"]
@@ -19,7 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://bprsxwc3kl0vm" path="res://textures/ui/replay_button_down.png" id="17_2aanm"]
 [ext_resource type="Texture2D" uid="uid://cq13s2edw8k5o" path="res://textures/ui/replay_button_hover.png" id="18_cq71w"]
 [ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="19_swp6i"]
-[ext_resource type="PackedScene" uid="uid://1o5og2xeefgp" path="res://scenes/pause menu.tscn" id="20_1owcp"]
+[ext_resource type="PackedScene" uid="uid://1o5og2xeefgp" path="res://scenes/UI/pause menu.tscn" id="20_1owcp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lv4so"]
 texture = ExtResource("2_8vxf1")
@@ -67,20 +67,14 @@ shader = ExtResource("4_uxqju")
 shader_parameter/greeble_noise = SubResource("NoiseTexture2D_lv4so")
 shader_parameter/noise_offset = Vector2(0, 0)
 shader_parameter/aspect_ratio = 1.7777778
-shader_parameter/sonar_angle = 5.0800002413
-shader_parameter/sonar_width_percent = 0.015
-shader_parameter/sonar_sharpness = -0.5
-shader_parameter/center_blindspot = 0.15
-shader_parameter/sonar_ring_length = 3.0
-shader_parameter/sonar_blindspot_ring = 0.950000045125
-shader_parameter/sonar_display_strength = 0.2910000138225
-shader_parameter/sonar_color = Color(0, 1, 0.5, 1)
-shader_parameter/health = 1.0
-shader_parameter/health_range = 1.14800005453
-shader_parameter/health_angle = 1.4790000702525
-shader_parameter/health_ring_width = 0.0
-shader_parameter/health_ring_core_width = 0.0750000035625
-shader_parameter/health_display_alpha = 0.55
+shader_parameter/shield = 0.5
+shader_parameter/shield_inner_color = Color(0, 0, 1, 1)
+shader_parameter/shield_outer_color = Color(0, 0, 1, 1)
+shader_parameter/shield_range = 0.5
+shader_parameter/shield_angle = 0.5
+shader_parameter/shield_ring_width = 0.9
+shader_parameter/shield_ring_core_width = 0.1
+shader_parameter/shield_display_alpha = 0.55
 shader_parameter/greeble_strength = 0.0250000011875
 shader_parameter/pixel_size = 75.0
 

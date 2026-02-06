@@ -1,9 +1,9 @@
 [gd_scene load_steps=14 format=3 uid="uid://dni5mwbuc6qpp"]
 
-[ext_resource type="Script" uid="uid://cvaasp78pgixj" path="res://scripts/meteor.gd" id="1_83eji"]
+[ext_resource type="Script" uid="uid://cvaasp78pgixj" path="res://scripts/entities/meteor.gd" id="1_83eji"]
 [ext_resource type="Texture2D" uid="uid://i02weyd6teyy" path="res://textures/asteroids.png" id="2_83eji"]
 [ext_resource type="Material" uid="uid://hwlaracobxoh" path="res://resources/implode_effect.tres" id="2_lhxke"]
-[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/simple_skin.gd" id="3_8tfog"]
+[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/entities/simple_skin.gd" id="3_8tfog"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_lhxke"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_83eji"]
@@ -37,11 +37,13 @@ radius = 38.0
 height = 218.2238
 
 [node name="meteor" type="RigidBody2D" groups=["destroyables"]]
+collision_layer = 3
 mass = 50.0
 script = ExtResource("1_83eji")
 skin_idx = 7
 collision_shape = Array[Shape2D]([SubResource("CapsuleShape2D_83eji"), SubResource("CircleShape2D_83eji"), SubResource("CapsuleShape2D_8tfog"), SubResource("CapsuleShape2D_lhxke"), SubResource("CapsuleShape2D_wfndj"), SubResource("CircleShape2D_8tfog"), SubResource("CapsuleShape2D_r80lr"), SubResource("CapsuleShape2D_stakr")])
 collision_rotation = Array[float]([0.0, 0.0, 0.875, 0.92, 1.195, 0.0, 0.93, -0.865])
+debris_collision_layer_value = 3
 metadata/_custom_type_script = "uid://bg8pweqwdny4o"
 
 [node name="skin" type="Sprite2D" parent="."]

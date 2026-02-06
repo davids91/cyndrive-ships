@@ -85,9 +85,8 @@ func _update_weapon_energy(bars: float) -> void:
 #Recharge
 var weapon_recharge_time = 0.0
 func _recharge_weapon(delta: float) -> void:
-	const weapon_recharge_per_second: float = 1
 	weapon_recharge_time += delta
-	var time_to_one_bar = (1.0 / weapon_recharge_per_second)
+	var time_to_one_bar = (1.0 / weapon_recharge_per_sec)
 	if (weapon_recharge_time < time_to_one_bar): return
 	weapon_recharge_time = weapon_recharge_time - time_to_one_bar
 	if weapon_energy_remaining < max_weapon: _update_weapon_energy(1)

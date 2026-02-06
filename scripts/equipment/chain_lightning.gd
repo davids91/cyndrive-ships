@@ -52,8 +52,8 @@ func _ready() -> void:
 		beam_lines.append(line)
 
 func process_input_action(action: Dictionary) -> void:
-	if "pewpew_target" in action and null != action["pewpew_target"] and wielder != action["pewpew_target"]:
-		target_position = action["pewpew_target"].get_global_position()
+	if "acquired_target" in action and null != action["acquired_target"] and wielder != action["acquired_target"]:
+		target_position = action["acquired_target"].get_global_position()
 		is_shooting = true
 
 func _physics_process(_delta: float) -> void:

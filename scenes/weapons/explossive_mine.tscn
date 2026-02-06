@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://dtxyjqq5vc8hv"]
+[gd_scene load_steps=14 format=3 uid="uid://dtxyjqq5vc8hv"]
 
 [ext_resource type="Texture2D" uid="uid://dlqpywsislhsh" path="res://models & sprites/mines & traps/Mine_Explossive-0001.png" id="1_3uwok"]
 [ext_resource type="Script" uid="uid://deblvxmkkv8c8" path="res://scripts/equipment/explossive_mine.gd" id="1_egrcn"]
 [ext_resource type="Shader" uid="uid://c66rqecsnsqsu" path="res://shaders/implode.gdshader" id="2_w211o"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_jshdd"]
-[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/simple_skin.gd" id="4_gcdep"]
+[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/entities/simple_skin.gd" id="4_gcdep"]
+[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/target.png" id="6_gcdep"]
 
 [sub_resource type="Curve" id="Curve_8jh2m"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -45,9 +46,8 @@ radius = 5.0
 
 [node name="ExplossiveMine" type="RigidBody2D" groups=["destroyables"]]
 z_index = -1
-collision_layer = 0
 script = ExtResource("1_egrcn")
-debris_collision_layer_value = 0
+approx_size = 5.0
 
 [node name="skin" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_gcdep")
@@ -60,6 +60,8 @@ shape = SubResource("CircleShape2D_jshdd")
 disabled = true
 
 [node name="explode_radius" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 3
 monitorable = false
 
 [node name="explosion_radius_collision" type="CollisionShape2D" parent="explode_radius"]
@@ -75,5 +77,10 @@ top_level = true
 z_index = -5
 points = PackedVector2Array(0, 0, 0, 0)
 default_color = Color(0.17193, 0.22, 0.16939999, 1)
+
+[node name="target_arrow" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_gcdep")
 
 [connection signal="body_entered" from="explode_radius" to="." method="_on_explode_radius_body_entered"]

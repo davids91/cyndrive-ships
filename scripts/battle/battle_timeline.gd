@@ -2,7 +2,7 @@ class_name BattleTimeline extends Node
 
 static var _instance: BattleTimeline = null
 static var instance: BattleTimeline:
-	get: 
+	get:
 		return _instance
 
 enum TimeFlow {FORWARD = 1, BACKWARD = -1}
@@ -76,4 +76,3 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	if instance == self:
 		_instance = null
-		

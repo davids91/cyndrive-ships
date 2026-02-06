@@ -28,6 +28,8 @@ radius = 1100.0
 
 [node name="black_hole" type="Area2D"]
 material = SubResource("ShaderMaterial_r0ctv")
+collision_layer = 0
+collision_mask = 3
 script = ExtResource("2_mfsi2")
 strength = 7.18
 
