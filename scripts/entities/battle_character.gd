@@ -341,7 +341,8 @@ func process_input_action(action: Dictionary) -> void:
 		
 		if has_node("energy_systems"):
 			if "boost_initiated" in action and not $energy_systems.has_boost_energy():
-				action.erase("boost_initiated")
+				if not _infinite_boost_enabled():
+					action.erase("boost_initiated")
 			
 			if "pewpew" in action and not $energy_systems.has_weapon_energy():
 				if not _infinite_ammo_enabled():
@@ -430,7 +431,8 @@ func _on_controller_boosting(is_boosting: bool) -> void:
 	else: $booster_sound.stop()
 
 func _on_energy_systems_boost_energy_updated(new_energy_level: float) -> void:
-	boost_energy_updated.emit(new_energy_level)
+	if not _infinite_boost_enabled():
+		boost_energy_updated.emit(new_energy_level)
 
 func _on_energy_systems_weapon_energy_updated(new_energy_level: float) -> void:
 	if not _infinite_ammo_enabled():
@@ -440,5 +442,12 @@ func _infinite_ammo_enabled() -> bool:
 	if FeatureFlags.is_enabled("infinite_ammo"):
 		var battle_main = get_tree().current_scene
 		if battle_main and "infinite_ammo_active" in battle_main and battle_main.infinite_ammo_active:
+			return true
+	return false
+	
+func _infinite_boost_enabled() -> bool:
+	if FeatureFlags.is_enabled("infinite_boost"):
+		var battle_main = get_tree().current_scene
+		if battle_main and "infinite_boost_active" in battle_main and battle_main.infinite_boost_active:
 			return true
 	return false

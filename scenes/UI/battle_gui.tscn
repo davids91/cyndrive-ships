@@ -1,6 +1,6 @@
 [gd_scene load_steps=32 format=4 uid="uid://c2bembjrgkdwd"]
 
-[ext_resource type="Script" uid="uid://d3lxvjyphmp50" path="res://scripts/ui_menus/battle_gui.gd" id="1_8vxf1"]
+[ext_resource type="Script" path="res://scripts/ui_menus/battle_gui.gd" id="1_8vxf1"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="1_pgs3n"]
 [ext_resource type="Texture2D" uid="uid://balba014se3re" path="res://textures/ui/panel_tileset.png" id="2_8vxf1"]
 [ext_resource type="LabelSettings" uid="uid://dbv6lunqh8d5t" path="res://resources/dimmed_text_font.tres" id="3_o14dv"]
@@ -129,6 +129,12 @@ visible = false
 modulate = Color(1, 0.07058824, 0.08235294, 1)
 layout_mode = 2
 text = "INFINITE AMMO"
+
+[node name="infinite_boost_label" type="Label" parent="debug_stats"]
+visible = false
+modulate = Color(1, 0.07058824, 0.08235294, 1)
+layout_mode = 2
+text = "INFINITE BOOST"
 
 [node name="score" type="Label" parent="."]
 offset_left = 12.0

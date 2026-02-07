@@ -12,6 +12,7 @@ var current_laupeerium: float = starting_laupeerium
 var living_team_members: Dictionary = {}
 var god_mode_active: bool = false
 var infinite_ammo_active: bool = false
+var infinite_boost_active: bool = false
 
 func _ready():
 	if FeatureFlags.is_enabled("dialogue"):
@@ -292,6 +293,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventKey and event.physical_keycode == KEY_F7 and just_pressed:
 			infinite_ammo_active = !infinite_ammo_active
 			$GUI/debug_stats/infinite_ammo_label.visible = infinite_ammo_active
+			
+	# Infinite boost toggle (F8)
+	if FeatureFlags.is_enabled("infinite_boost"):
+		if event is InputEventKey and event.physical_keycode == KEY_F8 and just_pressed:
+			infinite_boost_active = !infinite_boost_active
+			$GUI/debug_stats/infinite_boost_label.visible = infinite_boost_active
 	
 	# God mode toggle (F9)
 	if FeatureFlags.is_enabled("god_mode"):

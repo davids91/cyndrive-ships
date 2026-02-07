@@ -23,5 +23,9 @@
 	"infinite_ammo": {
 		"enabled": true,
 		"description": "Enable infinite ammo toggle (F7 key)"
+	},
+	"infinite_boost": {
+		"enabled": true,
+		"description": "Enable infinite boost toggle (F8 key)"
 	}
 }
