@@ -11,6 +11,8 @@ extends Node2D
 @export var stuck_motion_threshold: float = 30.
 @export var seconds_of_bossting_after_stuck: float = 0.5
 
+@onready var mush: Node = get_tree().current_scene.get_node("mush")
+@onready var combatants: Node = get_tree().current_scene.get_node("combatants")
 @onready var character: BattleCharacter = get_parent()
 var position_moving_avg: Vector2 = get_global_position()
 var target_moving_avg: Vector2 = Vector2()
@@ -63,7 +65,6 @@ func _physics_process(delta: float) -> void:
 
 	time_until_script_execution = 1. / runs_per_second
 	var action = Dictionary()
-	var combatants = character.get_parent()
 
 	# target not visible
 	var space_state = get_world_2d().direct_space_state
@@ -176,6 +177,15 @@ func _physics_process(delta: float) -> void:
 		seconds_left_to_boost = seconds_of_bossting_after_stuck
 		boost_direction = action["movement_intent"]
 
+	# Look into 3 random targets within the mush, and if any of them is close, try to avoid!
+	if 0 < mush.get_child_count(): for try in range(3):
+		var to_avoid: Node = mush.get_children().pick_random()
+		var vec_to_avoid: Vector2 = get_global_position() - to_avoid.get_global_position()
+		if vec_to_avoid.length() < attack_range:
+			action["movement_intent"] = lerp( # the closer it is, the more it should move!
+				action["movement_intent"], action["movement_intent"] + vec_to_avoid.normalized() * attack_range,
+				vec_to_avoid.length() / attack_range
+			)
 	if 0 < seconds_left_to_boost:
 		seconds_left_to_boost -= delta
 		if 0 < seconds_left_to_boost: action["boost_released"] = true
