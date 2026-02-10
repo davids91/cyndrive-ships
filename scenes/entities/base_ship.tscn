@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=45 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_fbtwq"]
@@ -12,8 +12,11 @@
 [ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://scripts/equipment/laser_beam_ray.gd" id="9_1fjy2"]
 [ext_resource type="AudioStream" uid="uid://tlk8d7op7rfi" path="res://audio/laser_1.wav" id="10_6264f"]
 [ext_resource type="Script" uid="uid://c3plgl4d6gvx8" path="res://scripts/equipment/hotsaber.gd" id="10_epi0i"]
+[ext_resource type="Script" uid="uid://bg34ym62aq750" path="res://scripts/equipment/hotsaber_chain.gd" id="11_tpj62"]
 [ext_resource type="AudioStream" uid="uid://bnrdi8bq76v7v" path="res://audio/laser_2.wav" id="11_txnga"]
 [ext_resource type="AudioStream" uid="uid://ek4nsx32wrle" path="res://audio/laser_3.wav" id="12_1fi68"]
+[ext_resource type="Shape2D" uid="uid://b57evapeybd5l" path="res://resources/hotsaber_chain_shape.tres" id="12_attt3"]
+[ext_resource type="Shape2D" uid="uid://7p8tur3mn7x0" path="res://resources/hotsaber_hurt_shape.tres" id="12_ei2dj"]
 [ext_resource type="AudioStream" uid="uid://3gxc0hqxn1re" path="res://audio/laser_4.wav" id="13_ksc2f"]
 [ext_resource type="Script" uid="uid://n2lp6a2eyw3m" path="res://scripts/equipment/chain_lightning.gd" id="14_kijp1"]
 [ext_resource type="AudioStream" uid="uid://cj2onr3cwpkuu" path="res://audio/chain_lightning_1.wav" id="15_7vd05"]
@@ -50,9 +53,7 @@ shader_parameter/pixel_size = 8.0000003325
 [sub_resource type="ViewportTexture" id="ViewportTexture_8vsun"]
 viewport_path = NodePath("skin/layers")
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_epi0i"]
-radius = 5.0
-height = 150.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_attt3"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_sougf"]
 streams_count = 4
@@ -165,44 +166,134 @@ metadata/_custom_type_script = "uid://cdrsm7mlhnmnm"
 
 [node name="weapon_slot" type="Node" parent="." node_paths=PackedStringArray("weapons")]
 script = ExtResource("8_owx80")
-weapons = [NodePath("../laser_beam"), NodePath("../chain_lightning")]
+weapons = [NodePath("../laser_beam"), NodePath("../chain_lightning"), NodePath("../hotsaber")]
 metadata/_custom_type_script = "uid://co4eimc5mgx3i"
 
 [node name="hotsaber" type="Node2D" parent="."]
+top_level = true
 script = ExtResource("10_epi0i")
+base_damage = 100.0
+energy_cost = 0.0
 
-[node name="RigidBody2D" type="RigidBody2D" parent="hotsaber"]
+[node name="stem" type="RigidBody2D" parent="hotsaber"]
+top_level = true
+collision_layer = 4
+collision_mask = 7
+mass = 10.0
+script = ExtResource("11_tpj62")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="hotsaber/stem"]
+position = Vector2(0, 9)
+node_a = NodePath("..")
+node_b = NodePath("../../middle")
+
+[node name="collision_shape" type="CollisionShape2D" parent="hotsaber/stem"]
+shape = SubResource("CircleShape2D_attt3")
+disabled = true
+
+[node name="hurt_aura" type="Area2D" parent="hotsaber/stem"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/stem/hurt_aura"]
+position = Vector2(0, 25)
+shape = ExtResource("12_ei2dj")
+
+[node name="middle" type="RigidBody2D" parent="hotsaber"]
+top_level = true
+position = Vector2(0, 45)
+collision_layer = 4
+collision_mask = 7
 mass = 0.001
+script = ExtResource("11_tpj62")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/RigidBody2D"]
-position = Vector2(0, 100)
-shape = SubResource("CapsuleShape2D_epi0i")
+[node name="collision_shape" type="CollisionShape2D" parent="hotsaber/middle"]
+shape = ExtResource("12_attt3")
+disabled = true
 
-[node name="PinJoint2D" type="PinJoint2D" parent="hotsaber"]
-position = Vector2(0, 175)
-node_a = NodePath("../RigidBody2D")
-node_b = NodePath("../RigidBody2D2")
+[node name="PinJoint2D2" type="PinJoint2D" parent="hotsaber/middle"]
+position = Vector2(0, 35)
+node_a = NodePath("..")
+node_b = NodePath("../../middle2")
 
-[node name="RigidBody2D2" type="RigidBody2D" parent="hotsaber"]
-position = Vector2(0, 150)
+[node name="hurt_aura" type="Area2D" parent="hotsaber/middle"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/middle/hurt_aura"]
+position = Vector2(0, 30)
+shape = ExtResource("12_ei2dj")
+
+[node name="middle2" type="RigidBody2D" parent="hotsaber"]
+top_level = true
+position = Vector2(0, 115)
+collision_layer = 4
+collision_mask = 7
 mass = 0.001
+script = ExtResource("11_tpj62")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/RigidBody2D2"]
-position = Vector2(0, 100)
-shape = SubResource("CapsuleShape2D_epi0i")
+[node name="collision_shape" type="CollisionShape2D" parent="hotsaber/middle2"]
+shape = ExtResource("12_attt3")
+disabled = true
 
-[node name="PinJoint2D2" type="PinJoint2D" parent="hotsaber"]
-position = Vector2(0, 325)
-node_a = NodePath("../RigidBody2D2")
-node_b = NodePath("../RigidBody2D3")
+[node name="PinJoint2D3" type="PinJoint2D" parent="hotsaber/middle2"]
+position = Vector2(0, 35)
+node_a = NodePath("..")
+node_b = NodePath("../../middle3")
 
-[node name="RigidBody2D3" type="RigidBody2D" parent="hotsaber"]
-position = Vector2(0, 300)
+[node name="hurt_aura" type="Area2D" parent="hotsaber/middle2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/middle2/hurt_aura"]
+position = Vector2(0, 10)
+shape = ExtResource("12_ei2dj")
+
+[node name="middle3" type="RigidBody2D" parent="hotsaber"]
+top_level = true
+position = Vector2(0, 185)
+collision_layer = 4
+collision_mask = 7
 mass = 0.001
+script = ExtResource("11_tpj62")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/RigidBody2D3"]
-position = Vector2(0, 100)
-shape = SubResource("CapsuleShape2D_epi0i")
+[node name="collision_shape" type="CollisionShape2D" parent="hotsaber/middle3"]
+shape = ExtResource("12_attt3")
+disabled = true
+
+[node name="PinJoint2D4" type="PinJoint2D" parent="hotsaber/middle3"]
+position = Vector2(0, 35)
+node_a = NodePath("..")
+node_b = NodePath("../../end")
+
+[node name="hurt_aura" type="Area2D" parent="hotsaber/middle3"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/middle3/hurt_aura"]
+position = Vector2(0, -10)
+shape = ExtResource("12_ei2dj")
+
+[node name="end" type="RigidBody2D" parent="hotsaber"]
+top_level = true
+position = Vector2(0, 255)
+collision_layer = 4
+collision_mask = 7
+mass = 0.001
+script = ExtResource("11_tpj62")
+
+[node name="collision_shape" type="CollisionShape2D" parent="hotsaber/end"]
+shape = ExtResource("12_attt3")
+disabled = true
+
+[node name="hurt_aura" type="Area2D" parent="hotsaber/end"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/end/hurt_aura"]
+position = Vector2(0, -30)
+shape = ExtResource("12_ei2dj")
+
+[node name="outer_line" type="Line2D" parent="hotsaber"]
+visible = false
+width = 15.0
+default_color = Color(1, 0.43333334, 0, 1)
+
+[node name="inner_line" type="Line2D" parent="hotsaber"]
+visible = false
+z_index = 1
+width = 5.0
+default_color = Color(1, 0.86800003, 0.33999997, 1)
 
 [node name="laser_beam" type="Node2D" parent="."]
 script = ExtResource("9_1fjy2")
@@ -321,3 +412,13 @@ show_percentage = false
 [connection signal="boosting" from="controller" to="." method="_on_controller_boosting"]
 [connection signal="boost_energy_updated" from="energy_systems" to="." method="_on_energy_systems_boost_energy_updated"]
 [connection signal="weapon_energy_updated" from="energy_systems" to="." method="_on_energy_systems_weapon_energy_updated"]
+[connection signal="body_entered" from="hotsaber/stem/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_entered"]
+[connection signal="body_exited" from="hotsaber/stem/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_exited"]
+[connection signal="body_entered" from="hotsaber/middle/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_entered"]
+[connection signal="body_exited" from="hotsaber/middle/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_exited"]
+[connection signal="body_entered" from="hotsaber/middle2/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_entered"]
+[connection signal="body_exited" from="hotsaber/middle2/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_exited"]
+[connection signal="body_entered" from="hotsaber/middle3/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_entered"]
+[connection signal="body_exited" from="hotsaber/middle3/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_exited"]
+[connection signal="body_entered" from="hotsaber/end/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_entered"]
+[connection signal="body_exited" from="hotsaber/end/hurt_aura" to="hotsaber" method="_on_hurt_aura_body_exited"]

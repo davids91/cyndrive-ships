@@ -8,12 +8,10 @@ func _on_body_entered(body: Node2D) -> void:
 	# Do not equip the aura wielder, someone who doesn't have equipment to handle mines
 	if(get_parent() == body or not "held_mine" in body): return
 
-	if ( # Only Equip friendly or neutral shipsw
+	if ( # Only Equip friendly or neutral ships
 		not get_parent().has_node("team")
-		or(
-			body.has_node("team")
-			and not get_parent().get_node("team").is_enemy(body.get_node("team"))
-		)
+		or not body.has_node("team")
+		or not get_parent().get_node("team").is_enemy(body.get_node("team"))
 	): ships_within[body] = BattleTimeline.instance.time_msec()
 
 func _process(_delta: float) -> void:

@@ -1,8 +1,8 @@
-[gd_scene load_steps=32 format=4 uid="uid://c2bembjrgkdwd"]
+[gd_scene load_steps=33 format=4 uid="uid://c2bembjrgkdwd"]
 
-[ext_resource type="Script" path="res://scripts/ui_menus/battle_gui.gd" id="1_8vxf1"]
+[ext_resource type="Script" uid="uid://d3lxvjyphmp50" path="res://scripts/ui_menus/battle_gui.gd" id="1_8vxf1"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="1_pgs3n"]
-[ext_resource type="Texture2D" uid="uid://balba014se3re" path="res://textures/ui/panel_tileset.png" id="2_8vxf1"]
+[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panel_tileset.png" id="2_8vxf1"]
 [ext_resource type="LabelSettings" uid="uid://dbv6lunqh8d5t" path="res://resources/dimmed_text_font.tres" id="3_o14dv"]
 [ext_resource type="Shader" uid="uid://dvimhyltktrda" path="res://shaders/sonar.gdshader" id="4_uxqju"]
 [ext_resource type="Script" uid="uid://bib83etyoggcu" path="res://scripts/effects/sensors_display.gd" id="5_ywr47"]
@@ -12,12 +12,13 @@
 [ext_resource type="Texture2D" uid="uid://026apoj7buxx" path="res://textures/ui/restart_button_up.png" id="10_rbv3r"]
 [ext_resource type="Texture2D" uid="uid://c2m8cwyuafmjq" path="res://textures/ui/restart_button_down.png" id="11_n1dtb"]
 [ext_resource type="Texture2D" uid="uid://dckaqcgel4xpt" path="res://textures/ui/restart_button_hover.png" id="12_73pwi"]
-[ext_resource type="Texture2D" uid="uid://f4rt3lfhwecq" path="res://textures/ui/LASER_ICON.png" id="13_a7irf"]
-[ext_resource type="Texture2D" uid="uid://ctjb6qnmprqfc" path="res://textures/ui/CHAIN_LIGHTNING_ICON.png" id="14_ts7hs"]
+[ext_resource type="Texture2D" uid="uid://o7i8sqffami5" path="res://textures/ui/LASER_ICON.png" id="13_a7irf"]
+[ext_resource type="Texture2D" uid="uid://5ffs6v6ii1g8" path="res://textures/ui/CHAIN_LIGHTNING_ICON.png" id="14_ts7hs"]
 [ext_resource type="Texture2D" uid="uid://l80grl266qqi" path="res://textures/ui/victory.png" id="15_mpuuo"]
+[ext_resource type="Texture2D" uid="uid://c5vwfxlrqmtpy" path="res://textures/ui/hotsaber_icon.png" id="15_oq75t"]
 [ext_resource type="Texture2D" uid="uid://bosgurqjrj5i7" path="res://textures/ui/replay_button_up.png" id="16_mbn67"]
 [ext_resource type="Texture2D" uid="uid://bprsxwc3kl0vm" path="res://textures/ui/replay_button_down.png" id="17_2aanm"]
-[ext_resource type="Texture2D" uid="uid://cq13s2edw8k5o" path="res://textures/ui/replay_button_hover.png" id="18_cq71w"]
+[ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/replay_button_hover.png" id="18_cq71w"]
 [ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="19_swp6i"]
 [ext_resource type="PackedScene" uid="uid://1o5og2xeefgp" path="res://scenes/UI/pause menu.tscn" id="20_1owcp"]
 
@@ -288,6 +289,11 @@ texture = ExtResource("13_a7irf")
 [node name="chain_lightning_icon" type="Sprite2D" parent="."]
 position = Vector2(79, 373)
 texture = ExtResource("14_ts7hs")
+
+[node name="hotsaber_icon" type="Sprite2D" parent="."]
+position = Vector2(81, 498.00003)
+scale = Vector2(0.59375, 0.59375)
+texture = ExtResource("15_oq75t")
 
 [node name="restart_during_replay" type="TextureButton" parent="."]
 visible = false
