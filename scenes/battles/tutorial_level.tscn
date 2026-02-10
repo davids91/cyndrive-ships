@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="3_u34vn"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="4_io4v1"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="5_6jemn"]
-[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="6_xw3hl"]
+[ext_resource type="Script" path="res://resources/battle_ship_skin.gd" id="6_xw3hl"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/battle_ship.png" id="7_0a1mf"]
 [ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/equipment/sonar_sensor.gd" id="8_3mfok"]
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="9_k4vxh"]

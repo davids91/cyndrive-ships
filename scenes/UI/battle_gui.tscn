@@ -225,6 +225,7 @@ layout_mode = 2
 label_text = "Boost"
 
 [node name="keybindings_panel" parent="." instance=ExtResource("9_6n4mw")]
+visible = false
 
 [node name="weapon_selector_panel" type="TileMapLayer" parent="."]
 modulate = Color(1, 1, 1, 0.54901963)

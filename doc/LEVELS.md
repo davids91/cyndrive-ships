@@ -29,6 +29,7 @@ Boss: Big Laser boss
 	--> Eliminate the drones
 	--> blast open the Silo doors
 	--> Victory! Laupeerium bar fills to 75%
+	--> Boss appears
 
 # Level 2 - Infiltration ( stealth campaign? )
 Scene: Team Pocket co. Universal Space base
