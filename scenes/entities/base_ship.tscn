@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=46 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_fbtwq"]
@@ -35,6 +35,7 @@
 [ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="28_uokki"]
 [ext_resource type="AudioStream" uid="uid://bokt2np2jc03c" path="res://audio/engine_booster.wav" id="29_hg731"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="30_5j1ue"]
+[ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="36_ei2dj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k8udw"]
 radius = 15.0
@@ -398,15 +399,8 @@ stream = ExtResource("29_hg731")
 script = ExtResource("30_5j1ue")
 triggers_per_second = 20
 
-[node name="mini_health_bar" type="ProgressBar" parent="."]
-modulate = Color(1, 0, 0, 1)
-top_level = true
-offset_right = 128.0
-offset_bottom = 16.0
-value = 100.0
-rounded = true
-allow_greater = true
-show_percentage = false
+[node name="state_display" parent="." node_paths=PackedStringArray("skin") instance=ExtResource("36_ei2dj")]
+skin = NodePath("../skin")
 
 [connection signal="health_changed" from="." to="." method="_on_health_changed"]
 [connection signal="boosting" from="controller" to="." method="_on_controller_boosting"]

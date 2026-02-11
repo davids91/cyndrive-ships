@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b2el5b6ucyivj"]
+[gd_scene load_steps=23 format=3 uid="uid://b2el5b6ucyivj"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_ny2j2"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="2_i8lxl"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://dglqu1ynocp45" path="res://scripts/equipment/healing_aura.gd" id="14_5fyrk"]
 [ext_resource type="Script" uid="uid://3dfit16uksc1" path="res://scripts/equipment/mine_attachement_aura.gd" id="14_a3wjc"]
 [ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="14_em532"]
+[ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="16_ciyox"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_d02ko"]
 viewport_path = NodePath("skin/layers")
@@ -123,26 +124,6 @@ script = ExtResource("14_5fyrk")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="healing_aura"]
 shape = SubResource("CircleShape2D_d02ko")
 
-[node name="mini_health_bar" type="ProgressBar" parent="."]
-modulate = Color(1, 0, 0, 1)
-z_index = 10
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 200.0
-offset_top = 50.0
-offset_right = 328.0
-offset_bottom = 82.0
-grow_horizontal = 2
-grow_vertical = 0
-rotation = -1.5707964
-value = 90.0
-rounded = true
-allow_greater = true
-show_percentage = false
-
 [node name="phase_effect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_5fyrk")
 anchors_preset = 8
@@ -156,6 +137,9 @@ offset_right = 512.0
 offset_bottom = 512.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="state_display" parent="." node_paths=PackedStringArray("skin") instance=ExtResource("16_ciyox")]
+skin = NodePath("../skin")
 
 [connection signal="body_entered" from="mine_attachement_aura" to="mine_attachement_aura" method="_on_body_entered"]
 [connection signal="body_exited" from="mine_attachement_aura" to="mine_attachement_aura" method="_on_body_exited"]
