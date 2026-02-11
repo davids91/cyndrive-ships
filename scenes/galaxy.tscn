@@ -1,12 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://6w1xfuis808w"]
+[gd_scene load_steps=15 format=3 uid="uid://6w1xfuis808w"]
 
 [ext_resource type="Script" uid="uid://wt4f85n5mn7s" path="res://scripts/ui_menus/galaxy_main.gd" id="1_m3hme"]
 [ext_resource type="Shader" uid="uid://beksqhxqmaqvw" path="res://shaders/galaxy.gdshader" id="2_i4jmc"]
 [ext_resource type="Texture2D" uid="uid://cgjeow13rx32e" path="res://textures/star-4.png" id="3_3adoa"]
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="4_x6ffi"]
-[ext_resource type="Script" uid="uid://dip5gwb4jbv3o" path="res://scripts/effects/planet_marker.gd" id="5_hnxgu"]
-[ext_resource type="Shader" uid="uid://do6odlxf3wcdl" path="res://shaders/planet_marker.gdshader" id="6_mb3ho"]
-[ext_resource type="Script" uid="uid://n8ou61jotdba" path="res://scripts/entities/orbitable.gd" id="7_ri1sr"]
+[ext_resource type="PackedScene" uid="uid://d4ak0rrpifxgt" path="res://scenes/UI/level_select_button.tscn" id="5_fmtwf"]
 
 [sub_resource type="Gradient" id="Gradient_7lfv1"]
 
@@ -35,7 +33,7 @@ frame_1/duration = 1.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4l82a"]
 shader = ExtResource("2_i4jmc")
 shader_parameter/number_of_arms = 5
-shader_parameter/radius = 30.0
+shader_parameter/radius = 25.0
 shader_parameter/center_ratio = 0.09
 shader_parameter/angle = 0.28
 shader_parameter/curvyness = 0.085
@@ -47,35 +45,45 @@ shader_parameter/wtf_am_i_doing = 400.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0u68b"]
 shader = ExtResource("4_x6ffi")
-shader_parameter/aspect_ratio = 3.0
+shader_parameter/aspect_ratio = 1.0
 shader_parameter/radius = 0.395
 shader_parameter/halo_size = 2.4
 shader_parameter/glow = 0.375
 shader_parameter/ring_radius = 3.35
-shader_parameter/z_angle_modifier = 7.135
 shader_parameter/pulse_inverse_speed = 3000
+shader_parameter/distortion_strength = 1.0
+shader_parameter/color_base = Color(0.93, 0.6, 0.3, 1)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_uwb08"]
-radius = 20.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_42txn"]
-shader = ExtResource("6_mb3ho")
-shader_parameter/aspect_ratio = 1.0
-shader_parameter/spaces = 11.03
-shader_parameter/non_spaces = 19.14
-shader_parameter/pulse_inverse_speed = 50
-shader_parameter/border_size = 0.54
-shader_parameter/ring_color = Vector4(0.9, 0.5, 0.5, 1)
-
-[node name="Node2D" type="Node2D"]
+[node name="main_menu" type="Node2D"]
 script = ExtResource("1_m3hme")
 
-[node name="Background" type="ColorRect" parent="."]
-offset_left = -5000.0
-offset_top = -5000.0
-offset_right = 5000.0
-offset_bottom = 5000.0
-color = Color(0, 0, 0, 1)
+[node name="scenes" type="Node" parent="."]
+
+[node name="dev_room_button" parent="scenes" instance=ExtResource("5_fmtwf")]
+anchors_preset = -1
+anchor_left = 0.0
+anchor_top = 0.029000001
+anchor_right = 0.0
+anchor_bottom = 0.029000001
+offset_left = 213.0
+offset_top = -199.32
+offset_right = 341.0
+offset_bottom = -71.32
+label_text = "Dev Room"
+
+[node name="tutorial_level_button" parent="scenes" instance=ExtResource("5_fmtwf")]
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -129.0
+offset_top = -230.0
+offset_right = -1.0
+offset_bottom = -102.0
+grow_horizontal = 1
+grow_vertical = 1
+label_text = "Tutorial"
 
 [node name="StarParticles" type="GPUParticles2D" parent="."]
 position = Vector2(0, 1)
@@ -86,43 +94,16 @@ randomness = 1.0
 visibility_rect = Rect2(0, 0, 0, 0)
 process_material = SubResource("ShaderMaterial_4l82a")
 
-[node name="black_hole" type="Node2D" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="black_hole"]
+[node name="black_hole" type="ColorRect" parent="."]
+z_index = -1
 material = SubResource("ShaderMaterial_0u68b")
-offset_left = -85.0
-offset_top = -53.0
-offset_right = 107.0
-offset_bottom = 11.0
-rotation = 0.238442
-
-[node name="planet_marker" type="Area2D" parent="."]
-position = Vector2(216, -79)
-script = ExtResource("5_hnxgu")
-
-[node name="planet_marker" type="CollisionShape2D" parent="planet_marker"]
-shape = SubResource("CircleShape2D_uwb08")
-
-[node name="marker_small" type="ColorRect" parent="planet_marker"]
-material = SubResource("ShaderMaterial_42txn")
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 8.0
-offset_bottom = 8.0
-
-[node name="marker_large" type="ColorRect" parent="planet_marker"]
-visible = false
-material = SubResource("ShaderMaterial_42txn")
-offset_left = -32.0
-offset_top = -32.0
-offset_right = 32.0
-offset_bottom = 32.0
-
-[node name="orbitable" type="Node2D" parent="planet_marker"]
-script = ExtResource("7_ri1sr")
-distance = 250.0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[connection signal="mouse_entered" from="planet_marker" to="planet_marker" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="planet_marker" to="planet_marker" method="_on_mouse_exited"]
+[connection signal="pressed" from="scenes/dev_room_button" to="." method="_on_dev_room_button_scene_selected"]
+[connection signal="pressed" from="scenes/tutorial_level_button" to="." method="_on_tutorial_level_button_scene_selected"]

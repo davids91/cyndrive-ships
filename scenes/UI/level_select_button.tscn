@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://d4ak0rrpifxgt"]
+
+[ext_resource type="Texture2D" uid="uid://b3sumund0u360" path="res://textures/ui/select_normal.png" id="1_ic8al"]
+[ext_resource type="Texture2D" uid="uid://bpmilk2lntuvm" path="res://textures/ui/select_selected.png" id="2_4sgma"]
+[ext_resource type="Script" uid="uid://n8ou61jotdba" path="res://scripts/entities/orbitable.gd" id="3_4sgma"]
+[ext_resource type="Texture2D" uid="uid://c44cf4lxuafkd" path="res://textures/ui/select_hover.png" id="3_mjowh"]
+[ext_resource type="Script" uid="uid://ntyulp3gc6rt" path="res://scripts/ui_menus/level_select_button.gd" id="4_4sgma"]
+
+[node name="level_select" type="TextureButton"]
+self_modulate = Color(0.29000002, 0.31366664, 1, 1)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1024.0
+offset_top = -604.0
+offset_right = -896.0
+offset_bottom = -476.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("1_ic8al")
+texture_pressed = ExtResource("2_4sgma")
+texture_hover = ExtResource("3_mjowh")
+script = ExtResource("4_4sgma")
+
+[node name="orbitable" type="Node2D" parent="."]
+script = ExtResource("3_4sgma")
+
+[node name="label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

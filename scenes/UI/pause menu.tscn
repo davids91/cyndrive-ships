@@ -95,6 +95,19 @@ theme_override_styles/normal = ExtResource("2_um83q")
 theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Restart Round"
 
+[node name="Spacer5" type="Control" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="Main_Menu_btn" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = ExtResource("2_um83q")
+theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
+text = "Back To Main"
+
 [node name="Spacer2" type="Control" parent="Panel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
@@ -111,4 +124,5 @@ text = "Quit Game"
 [connection signal="pressed" from="Panel/VBoxContainer/Resume_btn" to="." method="_on_resume_btn_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Restart_Game_btn" to="." method="_on_restart_btn_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Restart_Round_btn" to="." method="_on_restart_round_btn_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Main_Menu_btn" to="." method="_on_main_menu_btn_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Quit_btn" to="." method="_on_quit_btn_pressed"]
