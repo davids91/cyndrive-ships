@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://c2bembjrgkdwd"]
+[gd_scene load_steps=34 format=4 uid="uid://c2bembjrgkdwd"]
 
 [ext_resource type="Script" uid="uid://d3lxvjyphmp50" path="res://scripts/ui_menus/battle_gui.gd" id="1_8vxf1"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="1_pgs3n"]
@@ -15,7 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://o7i8sqffami5" path="res://textures/ui/LASER_ICON.png" id="13_a7irf"]
 [ext_resource type="Texture2D" uid="uid://5ffs6v6ii1g8" path="res://textures/ui/CHAIN_LIGHTNING_ICON.png" id="14_ts7hs"]
 [ext_resource type="Texture2D" uid="uid://l80grl266qqi" path="res://textures/ui/victory.png" id="15_mpuuo"]
-[ext_resource type="Texture2D" uid="uid://c5vwfxlrqmtpy" path="res://textures/ui/hotsaber_icon.png" id="15_oq75t"]
+[ext_resource type="Texture2D" uid="uid://773av8x75tna" path="res://textures/ui/hotsaber_icon.png" id="15_oq75t"]
+[ext_resource type="Texture2D" uid="uid://bjsmafyqmakot" path="res://textures/decoy_icon.png" id="16_8j45s"]
 [ext_resource type="Texture2D" uid="uid://bosgurqjrj5i7" path="res://textures/ui/replay_button_up.png" id="16_mbn67"]
 [ext_resource type="Texture2D" uid="uid://bprsxwc3kl0vm" path="res://textures/ui/replay_button_down.png" id="17_2aanm"]
 [ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/replay_button_hover.png" id="18_cq71w"]
@@ -294,6 +295,11 @@ texture = ExtResource("14_ts7hs")
 position = Vector2(81, 498.00003)
 scale = Vector2(0.59375, 0.59375)
 texture = ExtResource("15_oq75t")
+
+[node name="decoy_shooter_icon" type="Sprite2D" parent="."]
+position = Vector2(81, 624.00024)
+scale = Vector2(0.59375, 0.59375)
+texture = ExtResource("16_8j45s")
 
 [node name="restart_during_replay" type="TextureButton" parent="."]
 visible = false

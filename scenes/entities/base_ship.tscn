@@ -10,8 +10,8 @@
 [ext_resource type="Script" uid="uid://cdrsm7mlhnmnm" path="res://scripts/equipment/energy_systems.gd" id="7_0nsx8"]
 [ext_resource type="Script" uid="uid://co4eimc5mgx3i" path="res://scripts/equipment/weapon_slot.gd" id="8_owx80"]
 [ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://scripts/equipment/laser_beam_ray.gd" id="9_1fjy2"]
+[ext_resource type="Script" uid="uid://c8qgskcr7o3mn" path="res://scripts/equipment/decoy_shooter.gd" id="10_5doxk"]
 [ext_resource type="AudioStream" uid="uid://tlk8d7op7rfi" path="res://audio/laser_1.wav" id="10_6264f"]
-[ext_resource type="Script" uid="uid://c3plgl4d6gvx8" path="res://scripts/equipment/hotsaber.gd" id="10_epi0i"]
 [ext_resource type="Script" path="res://scripts/equipment/hotsaber.gd" id="10_epi0i"]
 [ext_resource type="Script" path="res://scripts/equipment/hotsaber_chain.gd" id="11_tpj62"]
 [ext_resource type="AudioStream" uid="uid://bnrdi8bq76v7v" path="res://audio/laser_2.wav" id="11_txnga"]
@@ -168,8 +168,12 @@ metadata/_custom_type_script = "uid://cdrsm7mlhnmnm"
 
 [node name="weapon_slot" type="Node" parent="." node_paths=PackedStringArray("weapons")]
 script = ExtResource("8_owx80")
-weapons = [NodePath("../laser_beam"), NodePath("../chain_lightning"), NodePath("../hotsaber")]
+weapons = [NodePath("../laser_beam"), NodePath("../chain_lightning"), NodePath("../hotsaber"), NodePath("../decoy_shooter")]
 metadata/_custom_type_script = "uid://co4eimc5mgx3i"
+
+[node name="decoy_shooter" type="Node2D" parent="."]
+script = ExtResource("10_5doxk")
+energy_cost = 5.0
 
 [node name="hotsaber" type="Node2D" parent="."]
 top_level = true

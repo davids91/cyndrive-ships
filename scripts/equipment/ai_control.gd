@@ -18,7 +18,7 @@ var position_moving_avg: Vector2 = get_global_position()
 var target_moving_avg: Vector2 = Vector2()
 var moving_intention: Vector2 = Vector2()
 var time_until_script_execution = 1. / runs_per_second
-var chosen_target: CharacterBody2D
+var chosen_target: Node2D
 var enabled: bool = true
 var distance_to_target: float = 0.
 var time_until_target_drop: float = goldfish_memory_sec
@@ -90,10 +90,13 @@ func _physics_process(delta: float) -> void:
 	while tries < 5 and ("in_battle" not in random_target or !random_target.in_battle()):
 		random_target = combatants.get_children().pick_random()
 		tries += 1
-	if random_target != null and random_target.has_node("team") and random_target.get_node("team").is_enemy(character.get_node("team")):
+	if random_target and random_target.has_node("team") and random_target.get_node("team").is_enemy(character.get_node("team")):
 		var vector_to_target = random_target.global_position - character.global_position
 		var candidate_distance = vector_to_target.length()
-		if (chosen_target == null or candidate_distance < distance_to_target or candidate_distance < attack_range):
+		if (
+			chosen_target == null or random_target is BattleDecoy
+			or candidate_distance < distance_to_target or candidate_distance < attack_range
+		):
 			raycast_result = space_state.intersect_ray(PhysicsRayQueryParameters2D.create(
 				character.get_global_position(),
 				character.get_global_position() + vector_to_target.normalized() * attack_range
