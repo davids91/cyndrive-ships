@@ -18,7 +18,7 @@ signal weapon_energy_updated(new_energy_level: float)
 
 var health: float = starting_health
 func _ready() -> void:
-	$mini_health_bar.set_visible(name != "player_carrier")
+	$state_display.set_visible(name != "player_carrier")
 	$team.initialize(team_id, spawn_position, color)
 	$skin.init_skin(skin_layers, $team.color)
 	if has_node("laser_beam"): $laser_beam.base_damage *= laser_strength
@@ -72,7 +72,7 @@ func phase_in(phase_in_duration_sec: float) -> void:
 	).set_ease(Tween.EASE_OUT)
 	zoom_phase_tween.tween_callback(func() :
 		$skin.set_visible(true)
-		$mini_health_bar.visible = true
+		$state_display.visible = true
 	)
 	zoom_phase_tween.chain()
 
@@ -165,13 +165,9 @@ func _physics_process(delta: float) -> void:
 @onready var is_alive: bool = true
 @onready var was_alive: bool = is_alive
 @onready var was_in_battle: bool = in_battle()
-@export var mini_health_bar_offset: Vector2 = Vector2(-64, 64)
 var ship_explosion : ShipExplosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 func _process(_delta):
-	if $mini_health_bar.top_level:
-		$mini_health_bar.set_global_position(get_global_position() + mini_health_bar_offset)
-
 	# Sync state for being alive and in battle
 	if is_alive != was_alive: was_in_battle = in_battle()
 
@@ -228,7 +224,6 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 	health_changed.emit(health / starting_health)
 	if health > low_health: explosion_shake_smooth()
 	else: explosion_shake()
-	$mini_health_bar.set_value_no_signal(health / starting_health * $mini_health_bar.max_value)
 
 	# Handle explosion when ship is destroyed
 	if !is_alive:
@@ -250,7 +245,7 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 	health = min(health + max(0., strength), max_health)
 	is_alive = 0 < health
-	$mini_health_bar.set_value_no_signal(health / starting_health * $mini_health_bar.max_value)
+	health_changed.emit(health / starting_health)
 
 func respawn():
 	if has_node("weapon_slot"): $weapon_slot.select_slot(0)
@@ -262,7 +257,7 @@ func respawn():
 	is_alive = true
 	was_alive = true
 	health = starting_health
-	$mini_health_bar.set_value_no_signal(health / starting_health * $mini_health_bar.max_value)
+	health_changed.emit(health / starting_health)
 	$controller.stop()
 	$controller.start()
 	resume_control()
@@ -326,6 +321,10 @@ var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	if not in_battle(): return # cannot process any action while not in battle
 
+	# DEBUG
+	if "action_direction" in action and action["action_direction"] == Vector2(1., 1.):
+		$state_display.angry_emote()
+
 	if "weapon_slot" in action and has_node("weapon_slot"):
 		$weapon_slot.select_slot(action["weapon_slot"])
 		action["action_released"] = true
@@ -382,6 +381,7 @@ func process_input_action(action: Dictionary) -> void:
 	if has_node("shield"): $shield.process_input_action(action)
 	if has_node("weapon_slot"): $weapon_slot.process_input_action(action)
 	if has_node("temporal_recorder"): $temporal_recorder.process_input_action(action)
+	if has_node("state_display"): $state_display.process_input_action(action)
 
 func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: int = 20) -> void:
 	if not has_node("cam"): return

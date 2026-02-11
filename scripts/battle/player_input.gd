@@ -107,6 +107,15 @@ static func get_action(input_event):
 	if input_event.is_action_pressed("activate_shield"):
 		action["switch_shield"] = true
 
+	if input_event.is_action_pressed("emote_1"):
+		action["emote_1"] = true
+
+	if input_event.is_action_pressed("emote_2"):
+		action["emote_2"] = true
+
+	if input_event.is_action_pressed("emote_3"):
+		action["emote_3"] = true
+
 	# Handle weapon selection (1-4 keys)
 	if(
 		input_event is InputEventKey and input_event.pressed and not input_event.echo
