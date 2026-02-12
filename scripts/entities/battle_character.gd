@@ -8,7 +8,6 @@ signal weapon_energy_updated(new_energy_level: float)
 
 @export var approx_size: float = 100.
 @export var team_id: int = 0
-@export var spawn_position: Vector2 = Vector2()
 @export var color: Color = Color.from_rgba8(0,0,0,0)
 @export var skin_layers: Array[BattleShipSkin] = []
 @export var starting_health: float = 10.
@@ -16,10 +15,12 @@ signal weapon_energy_updated(new_energy_level: float)
 @export var low_health: float = 3.
 @export_range(0., 1000.) var mass: float = 10.
 
+@onready var spawn_snapshot: Dictionary = get_snapshot()
+
 var health: float = starting_health
 func _ready() -> void:
 	$state_display.set_visible(name != "player_carrier")
-	$team.initialize(team_id, spawn_position, color)
+	$team.initialize(team_id, color)
 	$skin.init_skin(skin_layers, $team.color)
 	if has_node("laser_beam"): $laser_beam.base_damage *= laser_strength
 	if has_node("ai_control"): $ai_control.enabled = true
@@ -76,9 +77,21 @@ func phase_in(phase_in_duration_sec: float) -> void:
 	)
 	zoom_phase_tween.chain()
 
+func get_snapshot() -> Dictionary:
+	var snapshot = {
+		"transform": transform,
+		"velocity": velocity,
+		"health": health,
+	}
+	if held_mine: snapshot["held_mine"] = held_mine
+	if has_node("energy_systems"): snapshot["energy"] = $energy_systems.temporal_snapshot()
+	if has_node("controller"):
+		snapshot["internal_force"] = $controller.internal_force
+		if "current_impulse" in $controller: snapshot["current_impulse"] = $controller.current_impulse
+	return snapshot
 
 var debug_color: Color = Color.from_hsv(randf(), 1., 1., 1.)
-func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void:
+func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001) -> void:
 	if "held_mine" in snapshot and not null == snapshot["held_mine"]:
 		held_mine = snapshot["held_mine"]
 
@@ -86,12 +99,17 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 		was_alive = is_alive
 		health = snapshot["health"]
 		is_alive = 0 < health
-		if not was_alive and is_alive:
-			resurrect_me()
-			was_alive = is_alive
+		if not was_alive and is_alive: # resurrect character
+			set_collision_layer_value(1, true)
+			set_visible(true)
+			if null != held_mine: held_mine.set_visible(true)
+			if has_node("ai_control"): $ai_control.set_disabled(false)
+			resurrected.emit(self)
+			$controller.start()
+		was_alive = is_alive
 
 	if "energy" in snapshot and has_node("energy_systems"):
-		get_node("energy_systems").temporal_correction(snapshot["energy"])
+		$energy_systems.temporal_correction(snapshot["energy"])
 
 	var correction_length = (snapshot["transform"].get_origin() - get_transform().get_origin()).length()
 	var tween_length = max(0., over_time_msec) / 1000.;
@@ -100,7 +118,7 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 	if "current_impulse" in snapshot and "current_impulse" in $controller:
 		$controller.current_impulse = snapshot["current_impulse"] * BattleTimeline.instance.time_flow
 	if "velocity" in snapshot: velocity = snapshot["velocity"] * BattleTimeline.instance.time_flow
-	if "rotation" in snapshot: set_global_rotation(snapshot["rotation"])
+	if "transform" in snapshot: transform = (snapshot["transform"])
 
 	# Add an afterimage of the character if correction moved it from course too much, and erase it short after
 	if approx_size * 2. < correction_length:
@@ -120,7 +138,6 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void
 		# DEBUG LINES FOR MOTION CORRECTION
 
 func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
-	spawn_position = predecessor.spawn_position
 	ship_explosion = null
 	team_id = predecessor.team_id
 	skin_layers = predecessor.skin_layers # set skin from predecessor(_ready will construct the skin)
@@ -250,7 +267,7 @@ func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 func respawn():
 	if has_node("weapon_slot"): $weapon_slot.select_slot(0)
 	if has_node("shield"): $shield.shutdown()
-	set_global_position(spawn_position)
+	correct_temporal_state(spawn_snapshot)
 	set_velocity(Vector2())
 	set_collision_layer_value(1, true)
 	set_visible(true)
@@ -273,8 +290,10 @@ func respawn():
 				$replayer.msec_records.keys()[-1]
 			)
 			$replayer.usec_records.merge(records["action"])
-			$replayer.msec_records.merge(records["motion"])
-	if has_node("replayer"): $replayer.reset()
+			$replayer.msec_records.merge(records["temporal_snapshots"])
+	if has_node("replayer"):
+		$replayer.reset()
+		$replayer.start_replay()
 	if has_node("weapon_slot"): $weapon_slot.reset()
 	if has_node("ai_control"):
 		$ai_control.set_disabled(
@@ -295,14 +314,6 @@ func unalive_me():
 	if null != held_mine: held_mine.set_visible(false)
 	if has_node("ai_control"): $ai_control.set_disabled(true)
 	$controller.stop()
-
-func resurrect_me():
-	set_collision_layer_value(1, true)
-	set_visible(true)
-	if null != held_mine: held_mine.set_visible(true)
-	if has_node("ai_control"): $ai_control.set_disabled(false)
-	resurrected.emit(self)
-	$controller.start()
 
 var control_enabled = false
 func pause_control() -> void:
@@ -343,10 +354,10 @@ func process_input_action(action: Dictionary) -> void:
 				if not _infinite_boost_enabled():
 					action.erase("boost_initiated")
 			
-			if "pewpew" in action and not $energy_systems.has_weapon_energy():
+			if "action_direction" in action and not $energy_systems.has_weapon_energy():
 				if not _infinite_ammo_enabled():
-					action.erase("pewpew")
-					action["pewpew_released"] = true
+					action.erase("action_direction")
+					action["action_released"] = true
 			if "acquired_target_position" in action and not $energy_systems.has_weapon_energy():
 				action["action_released"] = true
 		

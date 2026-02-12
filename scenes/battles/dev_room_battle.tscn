@@ -28,7 +28,7 @@
 [ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="20_qgsjp"]
 [ext_resource type="Script" uid="uid://q8tuye0tisu7" path="res://scenes/battles/time_slower.gd" id="27_ib23l"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_320hu"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fws0x"]
 texture = ExtResource("7_w0t2q")
 0:0/0 = 0
 1:0/0 = 0
@@ -48,7 +48,7 @@ texture = ExtResource("7_w0t2q")
 2:1/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_fws0x"]
-sources/0 = SubResource("TileSetAtlasSource_320hu")
+sources/0 = SubResource("TileSetAtlasSource_fws0x")
 
 [sub_resource type="Resource" id="Resource_e50ek"]
 script = ExtResource("9_25tx2")
@@ -262,7 +262,6 @@ script = ExtResource("15_5bo7e")
 position = Vector2(1515, 237)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
@@ -275,7 +274,6 @@ script = ExtResource("18_54bea")
 position = Vector2(1666, 97)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
@@ -288,7 +286,6 @@ script = ExtResource("18_54bea")
 position = Vector2(1863, 95)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
@@ -301,7 +298,6 @@ script = ExtResource("18_54bea")
 position = Vector2(2056, 206)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
@@ -314,7 +310,6 @@ script = ExtResource("18_54bea")
 position = Vector2(2146, 376)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
@@ -327,7 +322,6 @@ script = ExtResource("18_54bea")
 position = Vector2(1421, 643)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
@@ -341,7 +335,6 @@ script = ExtResource("18_54bea")
 position = Vector2(1739, 568)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
@@ -355,7 +348,6 @@ script = ExtResource("18_54bea")
 position = Vector2(2045, 599)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
@@ -369,7 +361,6 @@ script = ExtResource("18_54bea")
 position = Vector2(1710, 271)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
@@ -382,7 +373,6 @@ script = ExtResource("18_54bea")
 position = Vector2(1408, 430)
 rotation = 3.14159
 team_id = 2
-spawn_position = Vector2(1000, 200)
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0

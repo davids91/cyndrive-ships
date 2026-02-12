@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=47 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_fbtwq"]
@@ -12,7 +12,8 @@
 [ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://scripts/equipment/laser_beam_ray.gd" id="9_1fjy2"]
 [ext_resource type="AudioStream" uid="uid://tlk8d7op7rfi" path="res://audio/laser_1.wav" id="10_6264f"]
 [ext_resource type="Script" uid="uid://c3plgl4d6gvx8" path="res://scripts/equipment/hotsaber.gd" id="10_epi0i"]
-[ext_resource type="Script" uid="uid://bg34ym62aq750" path="res://scripts/equipment/hotsaber_chain.gd" id="11_tpj62"]
+[ext_resource type="Script" path="res://scripts/equipment/hotsaber.gd" id="10_epi0i"]
+[ext_resource type="Script" path="res://scripts/equipment/hotsaber_chain.gd" id="11_tpj62"]
 [ext_resource type="AudioStream" uid="uid://bnrdi8bq76v7v" path="res://audio/laser_2.wav" id="11_txnga"]
 [ext_resource type="AudioStream" uid="uid://ek4nsx32wrle" path="res://audio/laser_3.wav" id="12_1fi68"]
 [ext_resource type="Shape2D" uid="uid://b57evapeybd5l" path="res://resources/hotsaber_chain_shape.tres" id="12_attt3"]
@@ -193,6 +194,8 @@ shape = SubResource("CircleShape2D_attt3")
 disabled = true
 
 [node name="hurt_aura" type="Area2D" parent="hotsaber/stem"]
+collision_layer = 0
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/stem/hurt_aura"]
 position = Vector2(0, 25)
@@ -216,6 +219,8 @@ node_a = NodePath("..")
 node_b = NodePath("../../middle2")
 
 [node name="hurt_aura" type="Area2D" parent="hotsaber/middle"]
+collision_layer = 0
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/middle/hurt_aura"]
 position = Vector2(0, 30)
@@ -239,6 +244,8 @@ node_a = NodePath("..")
 node_b = NodePath("../../middle3")
 
 [node name="hurt_aura" type="Area2D" parent="hotsaber/middle2"]
+collision_layer = 0
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/middle2/hurt_aura"]
 position = Vector2(0, 10)
@@ -262,6 +269,8 @@ node_a = NodePath("..")
 node_b = NodePath("../../end")
 
 [node name="hurt_aura" type="Area2D" parent="hotsaber/middle3"]
+collision_layer = 0
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/middle3/hurt_aura"]
 position = Vector2(0, -10)
@@ -280,6 +289,8 @@ shape = ExtResource("12_attt3")
 disabled = true
 
 [node name="hurt_aura" type="Area2D" parent="hotsaber/end"]
+collision_layer = 0
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hotsaber/end/hurt_aura"]
 position = Vector2(0, -30)

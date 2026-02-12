@@ -80,6 +80,8 @@ func _physics_process(_delta: float) -> void:
 			var victim = $raycast.get_collider()
 			if victim != get_parent() and victim.has_method("accept_damage"):
 				victim.accept_damage(base_damage * current_strength_modifier, get_parent())
+			# Uncomment the following line if laser is behaving strangely
+			# elif not victim.has_method("accept_damage"): print("ERROR: ", victim, " doesn't have `accept_damage` method!")
 		if not was_shooting and not $sound.playing:
 			$sound.play()
 		if $sound.playing:

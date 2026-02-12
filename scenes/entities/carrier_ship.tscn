@@ -110,6 +110,8 @@ stream = SubResource("AudioStreamRandomizer_d16w7")
 light_mask = 2
 visibility_layer = 3
 position = Vector2(-125, 0)
+collision_layer = 0
+collision_mask = 3
 monitorable = false
 script = ExtResource("14_a3wjc")
 
@@ -117,7 +119,7 @@ script = ExtResource("14_a3wjc")
 shape = SubResource("CapsuleShape2D_a3wjc")
 
 [node name="healing_aura" type="Area2D" parent="."]
-collision_layer = 2
+collision_layer = 0
 collision_mask = 3
 script = ExtResource("14_5fyrk")
 

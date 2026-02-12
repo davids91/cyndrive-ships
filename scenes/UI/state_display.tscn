@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cdoiin3jtjink"]
 
-[ext_resource type="Script" path="res://scripts/equipment/state_display.gd" id="1_3cnfo"]
+[ext_resource type="Script" uid="uid://dognc8keyjf2i" path="res://scripts/ui_menus/state_display.gd" id="1_3cnfo"]
 [ext_resource type="Texture2D" uid="uid://bjy0f6fe7ye6e" path="res://textures/emotes.png" id="2_a3x2t"]
 
 [node name="state_display" type="ProgressBar"]

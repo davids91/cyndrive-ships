@@ -110,7 +110,7 @@ func _physics_process(delta: float) -> void:
 	if chosen_target != null and "in_battle" in chosen_target and chosen_target.in_battle():
 		target_is_alive = true
 		distance_to_target = (chosen_target.get_global_position() - character.get_global_position()).length()
-	else: distance_to_target = (character.spawn_position - character.get_global_position()).length()
+	else: distance_to_target = (character.spawn_snapshot["transform"].origin - character.get_global_position()).length()
 
 	# Determine the speed to advance towards the target
 	var ideal_speed = lerp(
@@ -123,7 +123,7 @@ func _physics_process(delta: float) -> void:
 		moving_intention = (target_moving_avg - character.get_global_position()).normalized() * ideal_speed
 		action["movement_intent"] = moving_intention
 	else:
-		moving_intention = (character.spawn_position - character.get_global_position()).normalized() * ideal_speed
+		moving_intention = (character.spawn_snapshot["transform"].origin - character.get_global_position()).normalized() * ideal_speed
 		action["movement_intent"] = moving_intention
 
 	# See if there's anything in the way to the target

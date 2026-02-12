@@ -67,7 +67,7 @@ func _process(_delta: float) -> void:
 	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.FORWARD \
 		and last_time_flow == BattleTimeline.TimeFlow.BACKWARD \
 		and last_snapshot != null and not last_snapshot.is_empty():
-			target.correct_temporal_state(last_snapshot[last_snapshot.keys()[0]], 0.001)
+			target.correct_temporal_state(last_snapshot[last_snapshot.keys()[0]])
 	last_time_flow = BattleTimeline.instance.time_flow
 var last_triggered = 0. 
 var recording = false
@@ -86,7 +86,7 @@ func stop_recording() -> Dictionary:
 	usec_records = Dictionary()
 	msec_records = Dictionary()
 	recording = false
-	return { "action" : recorded_actions, "motion" :  recorded_motion }
+	return { "action" : recorded_actions, "temporal_snapshots" :  recorded_motion }
 
 func process_input_action(action) -> void:
 	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
@@ -131,36 +131,10 @@ func copy_marked_records(last_usec_timestamp: int, last_msec_timestamp: float) -
 			for index in range(marked_msec_index, msec_records.keys().size()):
 				var key = msec_records.keys()[index]
 				recorded_motion[key] = msec_records[key]
-	return { "action" : recorded_action, "motion" :  recorded_motion }
+	return { "action" : recorded_action, "temporal_snapshots" :  recorded_motion }
 
 func _physics_process(_delta: float) -> void:
 	if not recording or BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD \
 		or abs(BattleTimeline.instance.time_since_msec(last_triggered)) <  (1000. / triggers_per_second):
 			return
-	last_triggered = BattleTimeline.instance.time_msec()
-	var current_snapshot = {"transform": target.get_transform()}
-
-	# state relevant to moving bodies
-	if "velocity" in target: current_snapshot["velocity"] = target.get_velocity()
-	if "global_rotation" in target: current_snapshot["rotation"] = target.get_global_rotation()
-	if "linear_velocity" in target: current_snapshot["linear_velocity"] = target.get_linear_velocity()
-	if "angular_velocity" in target: current_snapshot["angular_velocity"] = target.get_angular_velocity()
-
-	# state relevant only to ships
-	if target.has_node("controller"):
-		var node = target.get_node("controller")
-		current_snapshot["internal_force"] = node.internal_force
-		if "current_impulse" in node:
-			current_snapshot["current_impulse"] = node.current_impulse
-		current_snapshot["internal_force"] = node.internal_force
-	if "health" in target: current_snapshot["health"] = target.health
-	if target.has_node("energy_systems"): current_snapshot["energy"] = target.get_node("energy_systems").temporal_snapshot()
-	if "held_mine" in target and not target.held_mine == null: current_snapshot["held_mine"] = target.held_mine
-
-	# state relevant only to mines
-	if "is_activated" in target: current_snapshot["is_activated"] = target.is_activated
-	if "is_exploded" in target: current_snapshot["is_exploded"] = target.is_exploded
-	if "attached_to" in target and not target.attached_to == null: current_snapshot["attached_to"] = target.attached_to
-
-	# Store the collected data
-	msec_records[last_triggered] = current_snapshot
+	msec_records[BattleTimeline.instance.time_msec()] = target.get_snapshot()

@@ -26,7 +26,6 @@ func _ready():
 	living_team_members[2] = 0
 	living_team_members[1] = 0
 	for combatant in $combatants.get_children():
-		combatant.spawn_position = combatant.get_global_position()
 		$timeline.connect("round_reset", combatant.respawn)
 		$timeline.connect("rewind_started", combatant.pause_control)
 		$timeline.connect("rewind_stopped", combatant.resume_control)
@@ -110,9 +109,12 @@ func restart_round(rewind_animation: bool = true) -> void:
 	player_move_tween.tween_method(
 		func(pos):
 			$combatants/character.set_global_position(pos)
-			$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", -(pos - $combatants/character.spawn_position).length() / 500.),
+			$GUI/rewind_effects.material.set_shader_parameter(
+				"rewind_amount",
+				-(pos - $combatants/character.spawn_snapshot["transform"].origin).length() / 500.
+			),
 		$combatants/character.get_global_position(),
-		$combatants/character.spawn_position,
+		$combatants/character.spawn_snapshot["transform"].origin,
 		respawn_time
 	)
 	player_move_tween.tween_callback(func():
@@ -240,7 +242,7 @@ func entangle_ship_with_player(ship: BattleCharacter) -> void:
 	replayer.set_script(preload("res://scripts/battle/temporal_replayer.gd"))
 	replayer.name = "replayer"
 	replayer.usec_records = records["action"]
-	replayer.msec_records = records["motion"]
+	replayer.msec_records = records["temporal_snapshots"]
 	replayer.temporal_scope_changed.connect(ship._on_replayer_temporal_scope_changed)
 	$timeline.connect("round_reset", replayer.reset)
 	$timeline.connect("round_reset", replayer.start_replay)
@@ -257,22 +259,23 @@ func create_new_puppet(predecessor: BattleCharacter) -> void:
 	replayer.set_script(preload("res://scripts/battle/temporal_replayer.gd"))
 	replayer.name = "replayer"
 	replayer.usec_records = records["action"]
-	replayer.msec_records = records["motion"]
+	replayer.msec_records = records["temporal_snapshots"]
 	$timeline.connect("round_reset", puppet.respawn)
 	$timeline.connect("rewind_started", puppet.pause_control)
 	$timeline.connect("rewind_stopped", puppet.resume_control)
-	$timeline.connect("round_reset", replayer.reset)
-	$timeline.connect("round_reset", replayer.start_replay)
 	replayer.reset()
 	puppet.add_child(replayer, true)
 	puppet.dead.connect(_on_battle_character_dead)
 	puppet.resurrected.connect(_on_battle_character_resurrected)
 
 	# set new spawn position for the predecessor
-	predecessor.spawn_position = (
-		$combatants/player_carrier.spawn_position
+	predecessor.spawn_snapshot["transform"].origin = (
+		$combatants/player_carrier.spawn_snapshot["transform"].origin
 		+ (
-			(predecessor.get_global_position() - $combatants/player_carrier.spawn_position).normalized()
+			(
+				predecessor.get_global_position()
+				- $combatants/player_carrier.spawn_snapshot["transform"].origin
+			).normalized()
 			* $combatants/player_carrier.approx_size
 		)
 	)

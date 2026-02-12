@@ -22,7 +22,7 @@ func get_snapshot() -> Dictionary:
 	return snapshot
 
 # Overwrites function from BattleDebris
-func correct_temporal_state(snapshot: Dictionary, over_time_msec: float) -> void:
+func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001) -> void:
 	if "is_activated" in snapshot: is_activated = snapshot["is_activated"]
 	if "is_exploded" in snapshot: is_exploded = snapshot["is_exploded"]
 	if "attached_to" in snapshot: attached_to = snapshot["attached_to"]
