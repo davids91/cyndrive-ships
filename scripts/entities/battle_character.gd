@@ -88,10 +88,14 @@ func get_snapshot() -> Dictionary:
 	if has_node("controller"):
 		snapshot["internal_force"] = $controller.internal_force
 		if "current_impulse" in $controller: snapshot["current_impulse"] = $controller.current_impulse
+	if has_node("ai_control") and $ai_control.chosen_target:
+		snapshot["ai_target"] = $ai_control.chosen_target
 	return snapshot
 
 var debug_color: Color = Color.from_hsv(randf(), 1., 1., 1.)
 func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001) -> void:
+	if "ai_target" in snapshot and has_node("ai_control"):
+		$ai_control.chosen_target = snapshot["ai_target"]
 	if "held_mine" in snapshot and not null == snapshot["held_mine"]:
 		held_mine = snapshot["held_mine"]
 
