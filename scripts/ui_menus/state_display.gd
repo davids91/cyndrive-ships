@@ -7,12 +7,44 @@ enum EMOTES {
 @export var max_health: float = 12.
 @export var mini_health_bar_offset: Vector2 = Vector2(-64, 64)
 @export var emote_offset: Vector2 = Vector2(20, -70)
+@export var speech_buble_offset: Vector2 = Vector2(128, 64)
 @export var emotes: Array[Rect2] = [
 	Rect2(0., 0., 38, 77),
 	Rect2(44., 0., 18, 77.),
 	Rect2(25., 80., 48., 48.)
 ]
 @export var skin: Node2D
+@export var speech_bubbles: Array[CompressedTexture2D] = [
+	preload("res://textures/ui/speech_bubble_1.png"),
+	preload("res://textures/ui/speech_bubble_2.png"),
+	preload("res://textures/ui/speech_bubble_3.png"),
+]
+
+@export var line_display_length_sec: float = 5.
+@export var line_appear_length_sec: float = 0.5
+func say(line: String) -> void:
+	$speech_bubble/border.texture = speech_bubbles.pick_random()
+	$speech_bubble/text.set_text("")
+	$speech_bubble.set_visible(true)
+	var speech_tween = create_tween()
+	speech_tween.set_parallel(true)
+	speech_tween.tween_method(
+		func(w): $speech_bubble/text.set_text(line.substr(0,int(w))),
+		0., float(line.length()), line_appear_length_sec
+	)
+	speech_tween.tween_method(
+		func(w):
+			$speech_bubble/border.material.set_shader_parameter("pixel_scale", w * 10.)
+			$speech_bubble/border.material.set_shader_parameter("burn_percentage", w),
+		1., 0.2, line_appear_length_sec
+	)
+	speech_tween.chain().tween_method(
+		func(w):
+			$speech_bubble/border.material.set_shader_parameter("pixel_scale", 2. + (1. - w) * 20.)
+			$speech_bubble/border.material.set_shader_parameter("burn_percentage", w),
+		0.2, 1.0, line_appear_length_sec / 2.
+	).set_delay(line_display_length_sec)
+	speech_tween.chain().tween_callback(func():$speech_bubble.set_visible(false))
 
 @export var angry_distance: float = 5.
 func angry_emote() -> void:
@@ -99,6 +131,7 @@ func process_input_action(action: Dictionary) -> void:
 func _ready() -> void:
 	max_value = max_health
 	$emote.position = emote_offset
+	$speech_bubble.position = speech_buble_offset
 
 func _process(_delta):
 	if top_level:

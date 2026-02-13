@@ -10,6 +10,14 @@ extends Node2D
 @export var stuck_sec_threshold: float = 3.
 @export var stuck_motion_threshold: float = 30.
 @export var seconds_of_bossting_after_stuck: float = 0.5
+@export var speaking_occurence_sec: float = 15.
+@export var fleeing_lines: Array[String] = [
+	"!1101 1110 1010 1101",
+	" 1111 1010 0001 0111",
+	" 0000 0000 0000 1111",
+	" 1010 1010 1010 1010"
+]
+
 
 @onready var mush: Node = get_tree().current_scene.get_node("mush")
 @onready var combatants: Node = get_tree().current_scene.get_node("combatants")
@@ -35,7 +43,9 @@ func stop() -> void:
 func resume() -> void:
 	enabled = true
 
+var time_until_speaking: float = speaking_occurence_sec
 func _process(delta: float) -> void:
+	time_until_speaking -= delta
 	if chosen_target != null:
 		target_moving_avg = lerp(
 			chosen_target.get_global_position() + chosen_target.get_velocity() * chosen_target.approx_size * delta * laser_lookahead,
@@ -184,11 +194,20 @@ func _physics_process(delta: float) -> void:
 	if 0 < mush.get_child_count(): for try in range(3):
 		var to_avoid: Node = mush.get_children().pick_random()
 		var vec_to_avoid: Vector2 = get_global_position() - to_avoid.get_global_position()
-		if vec_to_avoid.length() < attack_range:
+		raycast_result = space_state.intersect_ray(PhysicsRayQueryParameters2D.create(
+			to_avoid.get_global_position(),
+			to_avoid.get_global_position() + vec_to_avoid
+		))
+		if vec_to_avoid.length() < attack_range and "collider" in raycast_result:
 			action["movement_intent"] = lerp( # the closer it is, the more it should move!
 				action["movement_intent"], action["movement_intent"] + vec_to_avoid.normalized() * attack_range,
 				vec_to_avoid.length() / attack_range
 			)
+			if 0.55 < randf() and time_until_speaking <= 0.:
+				time_until_speaking = speaking_occurence_sec
+				action["speech"] = fleeing_lines.pick_random()
+				action["speech_length"] = min(float(action["speech"].length()) * 0.1, 3.)
+			action["emote_3"] = true
 	if 0 < seconds_left_to_boost:
 		seconds_left_to_boost -= delta
 		if 0 < seconds_left_to_boost: action["boost_released"] = true

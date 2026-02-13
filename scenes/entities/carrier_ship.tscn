@@ -141,6 +141,8 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="state_display" parent="." node_paths=PackedStringArray("skin") instance=ExtResource("16_ciyox")]
+emote_offset = Vector2(20, 0)
+speech_buble_offset = Vector2(-65, 225)
 skin = NodePath("../skin")
 
 [connection signal="body_entered" from="mine_attachement_aura" to="mine_attachement_aura" method="_on_body_entered"]

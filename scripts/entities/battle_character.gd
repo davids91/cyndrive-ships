@@ -337,13 +337,13 @@ var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	if not in_battle(): return # cannot process any action while not in battle
 
-	# DEBUG
-	if "action_direction" in action and action["action_direction"] == Vector2(1., 1.):
-		$state_display.angry_emote()
-
 	if "weapon_slot" in action and has_node("weapon_slot"):
 		$weapon_slot.select_slot(action["weapon_slot"])
 		action["action_released"] = true
+
+	if has_node("state_display"):
+		if "speech_length" in action: $state_display.line_display_length_sec = action["speech_length"]
+		if "speech" in action: $state_display.say(action["speech"])
 
 	if(control_enabled):
 		if "action_direction" in action and 0. < action["action_direction"].length() and has_node("shield"):

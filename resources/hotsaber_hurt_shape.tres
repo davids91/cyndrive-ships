@@ -1,4 +1,4 @@
-[gd_resource type="CapsuleShape2D" load_steps=0 format=3 uid="uid://7p8tur3mn7x0"]
+[gd_resource type="CapsuleShape2D" format=3 uid="uid://7p8tur3mn7x0"]
 
 [resource]
 radius = 15.0
