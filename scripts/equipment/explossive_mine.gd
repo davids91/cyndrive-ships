@@ -23,7 +23,9 @@ func get_snapshot() -> Dictionary:
 
 # Overwrites function from BattleDebris
 func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001) -> void:
-	if "is_activated" in snapshot: is_activated = snapshot["is_activated"]
+	if "is_activated" in snapshot:
+		is_activated = snapshot["is_activated"]
+		$collide_to_activate.disabled = not is_activated
 	if "is_exploded" in snapshot: is_exploded = snapshot["is_exploded"]
 	if "attached_to" in snapshot: attached_to = snapshot["attached_to"]
 	super(snapshot, over_time_msec)
@@ -80,26 +82,22 @@ func set_highlight(yesno: bool) -> void:
 func accept_damage(_strength: float, _source: BattleCharacter = null) -> void:
 	if is_activated: explode_mine()
 
-func run_deployed_tween():
-	var tween = create_tween()
-	tween.tween_property($skin, "scale", Vector2(1.3, 1.3), .5)
-	tween.tween_property($skin, "scale", Vector2(1, 1), .5)
-	tween.set_loops(0)
-
 func deploy_mine(activation_delay_msec : float = 0.0) -> void:
-	var delay_tween = create_tween()
-	delay_tween.tween_interval(activation_delay_msec)
-	delay_tween.tween_callback(
+	create_tween().tween_callback(
 		func():
 			$collide_to_activate.disabled = false
 			is_activated = true
 			attached_to = null
-			run_deployed_tween()
-	)
+			var pulsating_tween = create_tween()
+			pulsating_tween.tween_property($skin, "scale", Vector2(1.3, 1.3), .5)
+			pulsating_tween.tween_property($skin, "scale", Vector2(1, 1), .5)
+			pulsating_tween.set_loops(0)
+	).set_delay(activation_delay_msec)
 
 func attach_mine(ship: BattleCharacter, attached_length: float = ship.approx_size) -> void:
 	attached_to = ship
 	mine_drag_length = attached_length
+	$temporal_recorder.start_recording()
 
 func _on_explode_radius_body_entered(body: Node2D) -> void:
 	if body.has_node("team") and is_activated:

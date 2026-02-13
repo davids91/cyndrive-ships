@@ -19,14 +19,23 @@ func _process(_delta: float) -> void:
 
 	# attach mines to alive friendly ships when it's in contact with the aura
 	for ship in ships_within:
-		if("held_mine" in ship and ship.held_mine == null and ship.in_battle()):
+		if(
+			ship.in_battle()
+			and "held_mine" in ship and not ship.held_mine
+			and "ready_to_receive_mine" in ship and ship.ready_to_receive_mine
+		):
+			ship.ready_to_receive_mine = false
 			ship.held_mine = mine_scene.instantiate()
 			level.get_node("mush").add_child(ship.held_mine)
 			BattleTimeline.instance.round_reset.connect(ship.held_mine.respawn)
 			ship.held_mine.attach_mine(ship)
 			ship.held_mine.set_global_position(ship.get_global_position() + ship.held_mine.mount_offset)
-			ship.held_mine.set_visible(ship.visible) # TECHDEBT: make first mine attached to the ship invisible
-			ship.held_mine.spawn_snapshot = ship.held_mine.get_snapshot() # TECHDEBT: correct initial temporal snapshot of mine
+
+			# TechDebt: Mine shouldn't collide, and BattleDeris doesn't have a reliable method to initiate collision layer values
+			for i in range(32): ship.held_mine.set_collision_layer_value(i, false)
+			ship.held_mine.set_collision_layer_value(ship.held_mine.debris_collision_layer_value, true)
+
+
 
 func _on_body_exited(body: Node2D) -> void:
 	ships_within.erase(body)

@@ -157,7 +157,6 @@ func _process(delta):
 		$GUI/score.set_text("%0.3f" % init_countdown_sec)
 		if init_countdown_sec <= 0:
 			$combatants/character.set_visible(true)
-			$combatants/character.held_mine.set_visible(true) # TECHDEBT: make initial mine attached to the ship visible
 			for combatant in $combatants.get_children():
 				combatant.resume_control()
 			$timeline.reset()

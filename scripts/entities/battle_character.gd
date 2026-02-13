@@ -331,6 +331,7 @@ func resume_control() -> void:
 	if has_node("ai_control"): $ai_control.resume()
 	else: $controller.intent_direction = PlayerInput.instance.current_intent
 
+var ready_to_receive_mine: bool = false
 var held_mine: ExplosiveMine = null
 var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
@@ -349,9 +350,12 @@ func process_input_action(action: Dictionary) -> void:
 			current_action_direction = action["action_direction"]
 		else: current_action_direction = Vector2()
 
-		if not null == held_mine and "deploy_mine" in action and action["deploy_mine"]:
-			held_mine.deploy_mine()
-			held_mine = null
+		if "deploy_mine" in action and action["deploy_mine"]:
+			if held_mine:
+				held_mine.deploy_mine()
+				held_mine = null
+			else: ready_to_receive_mine = true
+		else: ready_to_receive_mine = false
 		
 		if has_node("energy_systems"):
 			if "boost_initiated" in action and not $energy_systems.has_boost_energy():
