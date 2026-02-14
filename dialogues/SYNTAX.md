@@ -20,6 +20,13 @@ The other characters enclosed by the token must always be numbers
 - emit signal: `#[s1]`
 	- Emits the signal with the given index
 	- There are a maximum of 4 signals, functionality always depend on dialog and may differ!
+- enable line based by condition: `#[e0]`
+	- Part of the current line after this token is not shown or parsed by default
+	- Text is only displayed if the dialog condition under the index given in the token is true
+	- Conditionals are exported members in the dialogue system
+- disable line based by condition: `#[d0]`
+	- Part of the current line after this token is parsed and shown by default
+	- Text is not displayed if the dialog condition under the index given in the token is true
 
 # Example
 #[c1] This is text the inventor will say! #[p500]Dialogue will pause for 500 msec before moving on to this section!

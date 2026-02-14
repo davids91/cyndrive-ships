@@ -17,13 +17,23 @@ signal dialouge_finished()
 @export var seconds_after_each_line: float = 1.5
 @export_file("*.txt") var dialog: String = ""
 @export var dialogue_signals_count: int = 0
+@export var dialogue_conditionals: Array[bool] = []
 
 @onready var dialog_lines: PackedStringArray = FileAccess.open(dialog, FileAccess.READ).get_as_text().split("\n")
 
 var line_pauses: Dictionary = {}
 var line_signal_index_values: Dictionary = {}
 var line_tempo_changes: Dictionary = {}
-func parse_token(token:String, at_index: int) -> void:
+func parse_token(token:String, at_index: int) -> bool:
+	if token[0] == 'd': # Disable line by condition
+		var condition_index: int = int(token.substr(1))
+		var condition = abs(condition_index) < dialogue_conditionals.size() and dialogue_conditionals[condition_index]
+		return not condition
+	if token[0] == 'e': # Enable line by condition
+		var condition_index: int = int(token.substr(1))
+		var condition = abs(condition_index) < dialogue_conditionals.size() and dialogue_conditionals[condition_index]
+		return condition
+
 	if token[0] == 'c': 
 		dialogIcon.texture = portraits[int(token.substr(1))]
 	elif token[0] == 't':
@@ -33,6 +43,7 @@ func parse_token(token:String, at_index: int) -> void:
 		line_pauses[at_index] =  float(token.substr(1)) / 1000.
 	elif token[0] == 's':
 		line_signal_index_values[at_index] = int(token.substr(1))
+	return true
 
 # Parses tokens from the line and sets internal state based on them
 func parse_line(line: String)-> String:
@@ -46,7 +57,10 @@ func parse_line(line: String)-> String:
 		parsed_text += remaining_text.substr(0, next_token_start)
 		remaining_text = remaining_text.substr(next_token_start + 2)
 		var token_end = remaining_text.find("]")
-		parse_token(remaining_text.substr(0, token_end), parsed_text.length() + 1)
+
+		# Do not continue with parsing the dialogue depending on the output of the tokens
+		if not parse_token(remaining_text.substr(0, token_end), parsed_text.length() + 1):
+			return parsed_text
 		remaining_text = remaining_text.substr(token_end + 1)
 		next_token_start = remaining_text.find("#[")
 	parsed_text += remaining_text
@@ -77,8 +91,11 @@ func _process(delta: float) -> void:
 
 	# Start a new line
 	if current_letter > current_line_text.length():
-		current_line += 1
 		current_letter = 0
+		current_line_text = ""
+		while current_line_text.is_empty() and abs(current_line) < dialog_lines.size():
+			current_line += 1
+			if abs(current_line) < dialog_lines.size(): current_line_text = parse_line(dialog_lines[current_line])
 		if ( # dialog completed or the last line of the dialog is empty
 			current_line >= dialog_lines.size()
 			or(current_line == dialog_lines.size() - 1 and dialog_lines[current_line].strip_edges() == "")
@@ -87,7 +104,7 @@ func _process(delta: float) -> void:
 			$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(true)
 			dialogue_finished = true
 			return
-		else: current_line_text = parse_line(dialog_lines[current_line])
+
 
 	# Set the tempo based on the tokens within the line
 	if line_tempo_changes.has(current_letter):

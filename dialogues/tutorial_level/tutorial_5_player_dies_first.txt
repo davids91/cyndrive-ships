@@ -1,10 +1,11 @@
 #[c2]AHHHHH #[t450] . . . #[t] How can I still talk?
 #[c1]Ah! That would be the Keepaliveinator module within the engine!
 You won't die until the time engine on the carrier ship is destroyed!
-Why didn't you use the shield?
-#[c2] Huh.. ? #[p150] Shield?
-#[c1]Oh, we could have mentioned it! Press Q to switch it on!#[p500] It'll block the laser though#[p0]
+#[d0]Why didn't you use the shield?
+#[d0]#[c2] Huh.. ? #[p150] Shield?
+#[d0]#[c1]Oh, we could have mentioned it! Press Q to switch it on!#[p500] It'll block the laser though..#[p1800]
+Well anyway you can still use the chain lightning thoug..#[p0]
 #[c0]STOP SPEWING our tech to candidates!
 #[c1]We kind of need him right now? Or can you pilot the prototype?
 #[c0]#[t100] . . .
-#[c1]#[t]Pilot! #[p200]Let's try this again!
+#[c1]#[t]Pilot! #[p200]Let's try this again! Triple-tap "R"!

@@ -3,4 +3,8 @@
 Pilot can you undo the destructing, please?
 #[c2] I .. uh #[p300] ..what?
 #[c1]Oh that's right! I forgot about the time engine!
-You can hold "R" to reverse time. Be frugal though! We have a limited supply of Laupeerium!
+You can hold "R" to reverse time. Be frugal though! We have a limited supply of Laupeerium!#[p1800]
+#[e0]And be careful with that thing strapped to the ship! It's another DSEAR failure waiting to happen!
+#[d0]#[c0]You can also equip a deadly explosive! Press "E" to st..#[p0]
+#[d0]#[c1]a WHAT..?
+#[d0]#[c0]Yup, like we discussed! Press "E" to strap a deadly explosive to the ship!

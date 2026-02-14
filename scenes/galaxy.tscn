@@ -4,7 +4,7 @@
 [ext_resource type="Shader" uid="uid://beksqhxqmaqvw" path="res://shaders/galaxy.gdshader" id="2_i4jmc"]
 [ext_resource type="Texture2D" uid="uid://cgjeow13rx32e" path="res://textures/star-4.png" id="3_3adoa"]
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="4_x6ffi"]
-[ext_resource type="PackedScene" uid="uid://d4ak0rrpifxgt" path="res://scenes/UI/level_select_button.tscn" id="5_fmtwf"]
+[ext_resource type="PackedScene" path="res://scenes/UI/level_select_button.tscn" id="5_fmtwf"]
 
 [sub_resource type="Gradient" id="Gradient_7lfv1"]
 
