@@ -39,7 +39,7 @@ func _ready():
 	# Connect weapon slot signal for UI updates
 	if $combatants/character.has_node("weapon_slot"):
 		$combatants/character/weapon_slot.weapon_changed.connect(_on_weapon_changed)
-	$combatants/player_carrier.phase_in(round_start_delay_sec)
+	$combatants/player_carrier.phase_in()
 
 var debug_lines = []
 func display_line(from: Vector2, to: Vector2, color: Color) -> void:
@@ -312,11 +312,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)
 
 	if event.is_action_pressed("replay") and just_pressed and 0 < current_laupeerium:
-		if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:
-			reverse_tap_count += 1
-		reverse_last_tap_at = Time.get_ticks_msec()
-		reverse_being_held = true
-		$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
+		$combatants/player_carrier.phase_in()
+		#if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:
+			#reverse_tap_count += 1
+		#reverse_last_tap_at = Time.get_ticks_msec()
+		#reverse_being_held = true
+		#$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
 	if event.is_action_released("replay"):
 		reverse_being_held = false

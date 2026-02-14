@@ -34,7 +34,9 @@ func _ready() -> void:
 @export var red_curve_phasing: Curve
 @export var green_curve_phasing: Curve
 @export var blue_curve_phasing: Curve
-func phase_in(phase_in_duration_sec: float) -> void:
+const phase_in_duration_sec: float = 2.
+func phase_in() -> void:
+	$phasing_in_sound.play(0.15)
 	$phase_effect.set_visible(true)
 	create_tween().tween_method(
 		func(w):
