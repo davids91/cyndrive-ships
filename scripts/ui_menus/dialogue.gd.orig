@@ -9,7 +9,11 @@ signal dialouge_finished()
 	preload("res://textures/entities/npc_1.png"),
 	preload("res://textures/entities/npc_2.png"),
 	preload("res://textures/entities/npc_3.png"),
+<<<<<<< HEAD
 	preload("res://textures/entities/npc_5.png"),
+=======
+	preload("res://textures/entities/tutorial_boss.png"),
+>>>>>>> 3edac64 (chore: minor bugfixes, restructuring files, polishing)
 	preload("res://textures/entities/npc_4.png")
 ]
 

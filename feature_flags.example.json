@@ -12,10 +12,6 @@
 		"enabled": false,
 		"description": "Disable all enemy AI - useful for testing weapons"
 	},
-	"dialogue": {
-		"enabled": false,
-		"description": "Enable Dialogue System - Dialogue will be disabled by default"
-	},
 	"pause_menu": {
 		"enabled": true,
 		"description": "Menu for Pausing battle"

@@ -1,7 +1,28 @@
-[gd_scene load_steps=5 format=3 uid="uid://1o5og2xeefgp"]
+[gd_scene load_steps=10 format=3 uid="uid://1o5og2xeefgp"]
 
 [ext_resource type="Script" uid="uid://br0ks3g1mac4b" path="res://scripts/ui_menus/pause_menu.gd" id="1_aa0ln"]
+[ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="2_th4ef"]
 [ext_resource type="StyleBox" uid="uid://cvq7dn2d87nav" path="res://resources/pause menu buttons.tres" id="2_um83q"]
+[ext_resource type="Script" uid="uid://cq1p7mgya1fq" path="res://scenes/UI/pause_menu_rewind_effect.gd" id="3_1ax27"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_th4ef"]
+frequency = 0.003
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1ax27"]
+noise = SubResource("FastNoiseLite_th4ef")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1ax27"]
+shader = ExtResource("2_th4ef")
+shader_parameter/screen_ratio_w_h = 1.7777778
+shader_parameter/noise = SubResource("NoiseTexture2D_1ax27")
+shader_parameter/rewind_amount = 334.2809616125069
+shader_parameter/rewind_intensity = 0.2
+shader_parameter/circle_centers = PackedVector2Array(0.58, 0.315)
+shader_parameter/circle_radiuses = PackedFloat32Array(0.32)
+shader_parameter/max_rings = 5.0
+shader_parameter/pixellize_size = 200.0
+shader_parameter/color_1 = Color(0.60800016, 0, 0.76, 1)
+shader_parameter/color_2 = Color(0, 0.6893333, 0.94, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_sbppx"]
 font_size = 64
@@ -34,15 +55,27 @@ anchor_bottom = 0.5
 offset_left = -300.0
 offset_top = -400.0
 offset_right = 300.0
-offset_bottom = 118.0
+offset_bottom = 162.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="rewind_effect" type="ColorRect" parent="Panel"]
+material = SubResource("ShaderMaterial_1ax27")
+layout_mode = 0
+offset_left = 23.0
+offset_top = 21.0
+offset_right = 576.0
+offset_bottom = 537.0
+script = ExtResource("3_1ax27")
+rewind_amount_jump_delta = 0.2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -11.0
+offset_bottom = 55.0
 grow_horizontal = 2
 grow_vertical = 2
 

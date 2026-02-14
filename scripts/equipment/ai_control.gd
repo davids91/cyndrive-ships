@@ -58,6 +58,8 @@ var boost_direction: Vector2 = Vector2()
 var target_is_acquired = false
 var target_was_acquired = false
 func _physics_process(delta: float) -> void:
+	if not character.in_battle(): return
+
 	time_until_script_execution -= delta
 
 	if(

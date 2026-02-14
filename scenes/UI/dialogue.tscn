@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=4 uid="uid://dwxo210cmq3jj"]
 
 [ext_resource type="Script" uid="uid://2v4bgsoiqlsv" path="res://scripts/ui_menus/dialogue.gd" id="1_3n4vj"]
-[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panel_tileset.png" id="2_bfpow"]
+[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="2_bfpow"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="3_bfpow"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4u087"]

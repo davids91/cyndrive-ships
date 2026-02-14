@@ -1,9 +1,14 @@
+@tool
 extends Node2D
 
 @onready var character: Node = get_parent()
 
 func _ready() -> void:
 	character = get_parent() as BattleCharacter
+
+func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		init_skin(character.skin_layers, character.color)
 
 func set_burn_percentage(percentage: float) -> void:
 	$skin_image.material.set_shader_parameter("burn_percentage", percentage)
@@ -26,7 +31,6 @@ func init_skin(skin_layers: Array[BattleShipSkin], init_team_color: Color) -> vo
 		if not c is Camera2D: c.queue_free()
 
 	# Add a Sprite for each layer of skin
-	$skin_image.material = preload("res://resources/implode_effect.tres").duplicate()
 	set_team_color(team_color)
 	for layer in skin_layers.size():
 		var layer_image = Sprite2D.new()
@@ -34,4 +38,5 @@ func init_skin(skin_layers: Array[BattleShipSkin], init_team_color: Color) -> vo
 		layer_image.scale = skin_layers[layer].scale
 		layer_image.set_rotation(skin_layers[layer].rotation)
 		layer_image.z_index = skin_layers[layer].z_index
+		layer_image.offset = skin_layers[layer].offset
 		$layers.add_child(layer_image)

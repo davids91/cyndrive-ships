@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=4 uid="uid://da65gog0rxq45"]
 
-[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panel_tileset.png" id="1_d32mj"]
+[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="1_d32mj"]
 [ext_resource type="Script" uid="uid://d25om0idyu7wl" path="res://scripts/ui_menus/keybindings_panel.gd" id="2_yqjmi"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lv4so"]

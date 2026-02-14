@@ -210,7 +210,7 @@ func _process(delta):
 			if not reverse_initiated:
 				$GUI/rewind_effects.set_visible(true)
 				create_tween().tween_method(
-					func(w): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+					func(w: float): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
 					0., 1., short_reverse_hold_time_sec * 2.
 				)
 			reverse_initiated = true
@@ -228,7 +228,7 @@ func _process(delta):
 			reverse_initiated = false
 			var rewind_hide_tween = create_tween()
 			rewind_hide_tween.tween_method(
-				func(w): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+				func(w: float): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
 				1., 0., short_reverse_hold_time_sec * 2.
 			)
 			rewind_hide_tween.tween_callback(func() : $GUI/rewind_effects.set_visible(false))

@@ -10,7 +10,7 @@ const SONAR_BLIP_SCENE = preload("res://scenes/effects/sonar_blip.tscn")
 func set_sonar_visibility(yes: bool) -> void:
 	if yes:
 		create_tween().tween_method(
-			func(w) : get_material().set_shader_parameter("sonar_width_percent", w),
+			func(w: float): get_material().set_shader_parameter("sonar_width_percent", w),
 			0., sonar_width, open_time
 		)
 		create_tween().tween_method(
@@ -19,7 +19,7 @@ func set_sonar_visibility(yes: bool) -> void:
 		)
 	else:
 		create_tween().tween_method(
-			func(w) : get_material().set_shader_parameter("sonar_width_percent", w),
+			func(w: float): get_material().set_shader_parameter("sonar_width_percent", w),
 			sonar_width, 0., open_time
 		)
 		create_tween().tween_method(

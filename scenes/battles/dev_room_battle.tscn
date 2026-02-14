@@ -7,26 +7,26 @@
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="5_osmje"]
 [ext_resource type="PackedScene" uid="uid://c2bembjrgkdwd" path="res://scenes/UI/battle_gui.tscn" id="6_b62lj"]
 [ext_resource type="PackedScene" uid="uid://dni5mwbuc6qpp" path="res://scenes/entities/meteor.tscn" id="7_0wrxa"]
-[ext_resource type="Texture2D" uid="uid://balba014se3re" path="res://textures/ui/panel_tileset.png" id="7_w0t2q"]
+[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="7_w0t2q"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="8_fe3c8"]
 [ext_resource type="Script" uid="uid://dl4dk45frpwra" path="res://scripts/equipment/minimap.gd" id="8_wb3pa"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="9_25tx2"]
-[ext_resource type="Texture2D" uid="uid://boxe2hh8ad3p8" path="res://textures/ui/map_icon.png" id="10_320hu"]
-[ext_resource type="Texture2D" uid="uid://bnb2w0fvsvdlk" path="res://textures/ui/minimap_icon_3.png" id="10_fws0x"]
-[ext_resource type="Texture2D" uid="uid://chh1l4wcbghbx" path="res://textures/player_carrier_bottom.png" id="10_pgbuj"]
-[ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/player_carrier_top.png" id="11_bhnfb"]
-[ext_resource type="Texture2D" uid="uid://d2b72dat44r2q" path="res://textures/ui/minimap_icon_4.png" id="11_ib23l"]
+[ext_resource type="Texture2D" uid="uid://bnmuvyy2lsbhk" path="res://textures/ui/icons/map_icon.png" id="10_320hu"]
+[ext_resource type="Texture2D" uid="uid://3nu76apg4ufe" path="res://textures/ui/icons/minimap_icon_3.png" id="10_fws0x"]
+[ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/entities/player_carrier_bottom.png" id="10_pgbuj"]
+[ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/entities/player_carrier_top.png" id="11_bhnfb"]
+[ext_resource type="Texture2D" uid="uid://crvtsjud0ssjq" path="res://textures/ui/icons/minimap_icon_4.png" id="11_ib23l"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="12_d7i4t"]
-[ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/battle_ship.png" id="13_qs6j5"]
+[ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/entities/battle_ship.png" id="13_qs6j5"]
 [ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/equipment/sonar_sensor.gd" id="14_f1ub4"]
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="15_5bo7e"]
 [ext_resource type="Shape2D" uid="uid://bbuubnw2b6ne4" path="res://resources/target_assist_shape.tres" id="15_pmnbd"]
-[ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/fighter-ship-base.png" id="16_f4125"]
-[ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/fighter-ship-accent.png" id="17_2y2lr"]
+[ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="16_f4125"]
+[ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="17_2y2lr"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="18_54bea"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_ickrk"]
 [ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="20_qgsjp"]
-[ext_resource type="Script" uid="uid://q8tuye0tisu7" path="res://scenes/battles/time_slower.gd" id="27_ib23l"]
+[ext_resource type="Script" uid="uid://q8tuye0tisu7" path="res://scripts/battle/time_slower.gd" id="27_ib23l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fws0x"]
 texture = ExtResource("7_w0t2q")
@@ -111,8 +111,9 @@ metadata/_custom_type_script = "uid://hldxmbsg8w6t"
 [node name="timeline" type="Node" parent="."]
 script = ExtResource("3_tlx8b")
 
-[node name="black_hole" parent="." instance=ExtResource("4_7g2yh")]
-position = Vector2(-536, -2386)
+[node name="TimeSlower" type="Node" parent="."]
+script = ExtResource("27_ib23l")
+game_speed = 0.6
 
 [node name="parallax_background" parent="." instance=ExtResource("5_osmje")]
 
@@ -155,6 +156,18 @@ self_modulate = Color(1, 1, 1, 0.3647059)
 position = Vector2(347, 198)
 scale = Vector2(0.515625, 0.515625)
 texture = ExtResource("10_320hu")
+
+[node name="dialogue" parent="." instance=ExtResource("19_ickrk")]
+dialog = "res://dialogues/tutorial_level/tutorial_4_well_be_in_touch_boss_arrives.txt"
+dialogue_signals_count = 1
+
+[node name="FeatureFlaggedNode" type="Node" parent="dialogue"]
+script = ExtResource("20_qgsjp")
+flag_name = "dialogue"
+metadata/_custom_type_script = "uid://cdy0wfjq4rl2c"
+
+[node name="black_hole" parent="." instance=ExtResource("4_7g2yh")]
+position = Vector2(-536, -2386)
 
 [node name="debris" type="Node" parent="."]
 
@@ -382,18 +395,6 @@ rotation = 3.14159
 script = ExtResource("18_54bea")
 
 [node name="mush" type="Node" parent="."]
-
-[node name="dialogue" parent="." instance=ExtResource("19_ickrk")]
-dialog = "res://dialogues/tutorial_level/tutorial_4_well_be_in_touch_boss_arrives.txt"
-dialogue_signals_count = 1
-
-[node name="FeatureFlaggedNode" type="Node" parent="dialogue"]
-script = ExtResource("20_qgsjp")
-flag_name = "dialogue"
-metadata/_custom_type_script = "uid://cdy0wfjq4rl2c"
-
-[node name="TimeSlower" type="Node" parent="."]
-script = ExtResource("27_ib23l")
 
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
 [connection signal="replay_game" from="GUI" to="." method="_on_replay_button_pressed"]

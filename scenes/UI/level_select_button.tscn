@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://d4ak0rrpifxgt"]
 
-[ext_resource type="Texture2D" uid="uid://b3sumund0u360" path="res://textures/ui/select_normal.png" id="1_ic8al"]
-[ext_resource type="Texture2D" uid="uid://bpmilk2lntuvm" path="res://textures/ui/select_selected.png" id="2_4sgma"]
+[ext_resource type="Texture2D" uid="uid://cn42r86npa81i" path="res://textures/ui/icons/select_normal.png" id="1_ic8al"]
+[ext_resource type="Texture2D" uid="uid://bpmilk2lntuvm" path="res://textures/ui/icons/select_selected.png" id="2_4sgma"]
 [ext_resource type="Script" uid="uid://n8ou61jotdba" path="res://scripts/entities/orbitable.gd" id="3_4sgma"]
-[ext_resource type="Texture2D" uid="uid://c44cf4lxuafkd" path="res://textures/ui/select_hover.png" id="3_mjowh"]
+[ext_resource type="Texture2D" uid="uid://c44cf4lxuafkd" path="res://textures/ui/icons/select_hover.png" id="3_mjowh"]
 [ext_resource type="Script" uid="uid://ntyulp3gc6rt" path="res://scripts/ui_menus/level_select_button.gd" id="4_4sgma"]
 
 [node name="level_select" type="TextureButton"]

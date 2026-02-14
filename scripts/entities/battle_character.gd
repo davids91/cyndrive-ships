@@ -39,7 +39,7 @@ func phase_in() -> void:
 	$phasing_in_sound.play(0.15)
 	$phase_effect.set_visible(true)
 	create_tween().tween_method(
-		func(w):
+		func(w: float):
 			$phase_effect.get_material().set_shader_parameter(
 				"phase_red", red_curve_phasing.sample(w)
 			),
@@ -47,21 +47,21 @@ func phase_in() -> void:
 		phase_in_duration_sec
 	)
 	create_tween().tween_method(
-		func(w):
+		func(w: float):
 			$phase_effect.get_material().set_shader_parameter("phase_green",
 			green_curve_phasing.sample(w)),
 		0., 1.,
 		phase_in_duration_sec
 	)
 	create_tween().tween_method(
-		func(w):
+		func(w: float):
 			$phase_effect.get_material().set_shader_parameter("phase_blue",
 			blue_curve_phasing.sample(w)),
 		0., 1.,
 		phase_in_duration_sec
 	)
 	create_tween().tween_method(
-		func(w):
+		func(w: float):
 			$phase_effect.get_material().set_shader_parameter("phase_green",
 			green_curve_phasing.sample(w)),
 		0., 1.,
@@ -69,7 +69,7 @@ func phase_in() -> void:
 	)
 	var zoom_phase_tween = create_tween()
 	zoom_phase_tween.tween_method(
-		func(w): $phase_effect.get_material().set_shader_parameter("zoom", w),
+		func(w: float): $phase_effect.get_material().set_shader_parameter("zoom", w),
 		0., 1.,
 		phase_in_duration_sec
 	).set_ease(Tween.EASE_OUT)
@@ -165,9 +165,6 @@ func in_battle() -> bool:
 func set_highlight(yesno: bool) -> void:
 	$target_arrow.set_visible(yesno)
 
-func get_mass() -> float:
-	return mass
-
 func apply_impulse(impulse: Vector2) -> void:
 	$controller.apply_impulse(impulse)
 
@@ -176,12 +173,12 @@ var body_in_contact: Object = null
 var contact_time: float = 0.
 func _physics_process(delta: float) -> void:
 	var collision = move_and_collide(get_velocity() * delta)
-	if collision != null and collision.get_collider().has_method("get_mass"):
+	if collision != null and "mass" in collision.get_collider():
 		if body_in_contact == collision.get_collider():
 			contact_time += delta
 		else: contact_time = 0.
 		body_in_contact = collision.get_collider()
-		var mass_ratio = get_mass() / body_in_contact.get_mass()
+		var mass_ratio = mass / body_in_contact.mass
 		body_in_contact.apply_impulse($controller.internal_force * delta * mass_ratio * 0.15)
 	else: contact_time = 0.
 
@@ -261,9 +258,15 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 			was_in_battle = false
 			$explosion_sound.play()
 			if has_node("weapon_slot"): $weapon_slot.shutdown()
+			health = 0
+			is_alive = false
+			was_alive = false
+			set_collision_layer_value(1, false)
+			set_visible(false)
+			if null != held_mine: held_mine.set_visible(false)
+			if has_node("ai_control"): $ai_control.set_disabled(true)
+			$controller.stop()
 			dead.emit(self)
-		unalive_me()
-
 
 func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 	health = min(health + max(0., strength), max_health)
@@ -310,16 +313,6 @@ func respawn():
 		$ai_control.resume()
 	extend_replayer = false
 	was_alive = true
-
-func unalive_me():
-	health = 0
-	is_alive = false
-	was_alive = false
-	set_collision_layer_value(1, false)
-	set_visible(false)
-	if null != held_mine: held_mine.set_visible(false)
-	if has_node("ai_control"): $ai_control.set_disabled(true)
-	$controller.stop()
 
 var control_enabled = false
 func pause_control() -> void:

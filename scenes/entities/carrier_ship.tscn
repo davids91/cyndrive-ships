@@ -1,12 +1,14 @@
 [gd_scene load_steps=34 format=3 uid="uid://b2el5b6ucyivj"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_ny2j2"]
+[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_8f66g"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="2_i8lxl"]
-[ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/player_carrier_bottom.png" id="2_oieim"]
+[ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/entities/player_carrier_bottom.png" id="2_oieim"]
 [ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="3_5fyrk"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="4_8jh2m"]
+[ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/entities/player_carrier_top.png" id="4_8ry8k"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="5_sti4k"]
-[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/target.png" id="7_d02ko"]
+[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="7_d02ko"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="9_xatsn"]
 [ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="10_5fyrk"]
 [ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="11_a3wjc"]
@@ -17,6 +19,100 @@
 [ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="14_em532"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="16_ciyox"]
 [ext_resource type="AudioStream" uid="uid://cch3grv1rk7ei" path="res://audio/phasing_in.wav" id="19_0uqlh"]
+
+[sub_resource type="Resource" id="Resource_0uqlh"]
+script = ExtResource("2_8f66g")
+texture = ExtResource("2_oieim")
+scale = Vector2(1, 1)
+offset = Vector2(350, 350)
+rotation = 0.0
+z_index = -5
+metadata/_custom_type_script = "uid://cud6a5voxneed"
+
+[sub_resource type="Resource" id="Resource_hsrbo"]
+script = ExtResource("2_8f66g")
+texture = ExtResource("4_8ry8k")
+scale = Vector2(1, 1)
+offset = Vector2(350, 350)
+rotation = 0.0
+metadata/_custom_type_script = "uid://cud6a5voxneed"
+
+[sub_resource type="Shader" id="Shader_xqo7t"]
+code = "shader_type canvas_item;
+
+uniform sampler2D noise;
+uniform vec4 burn_color : source_color;
+uniform vec4 team_color: source_color;
+
+uniform float burn_percentage: hint_range(0.0, 1.0) = 0.5;
+uniform sampler2D burn_curve;
+uniform float burn_threshold: hint_range(0.001, 1.0) = 0.1;
+uniform float burn_flame_supression: hint_range(0.0, 0.8) = 0.1;
+uniform float pixel_scale: hint_range(1., 100.);
+uniform float color_aberration: hint_range(0.0, 0.2) = 0.1;
+
+void fragment() {
+	if (1.0 == burn_percentage) {
+		discard;
+	}
+
+	vec2 pixel_uv = floor(UV * pixel_scale) / pixel_scale;
+	vec2 large_pixel_uv = floor(UV * pixel_scale * 4.) / pixel_scale / 4.;
+	vec4 skin_color;
+	float red_abberation_angle = texture(noise, pixel_uv).r * 2. * PI;
+	float green_abberation_angle = texture(noise, pixel_uv + vec2(0., 1.)).r * 2. * PI;
+	float blue_abberation_angle = texture(noise, pixel_uv + vec2(1., 0.)).r * 2. * PI;
+	float aberration = color_aberration * burn_percentage;
+	skin_color = vec4(
+		texture(TEXTURE, UV + vec2(cos(red_abberation_angle), sin(red_abberation_angle)) * aberration).r,
+		texture(TEXTURE, UV + vec2(cos(green_abberation_angle), sin(green_abberation_angle)) * aberration).g,
+		texture(TEXTURE, UV + vec2(cos(blue_abberation_angle), sin(blue_abberation_angle)) * aberration).b,
+		max(max(
+			texture(TEXTURE, UV + vec2(cos(red_abberation_angle), sin(red_abberation_angle)) * aberration).a,
+			texture(TEXTURE, UV + vec2(cos(green_abberation_angle), sin(green_abberation_angle)) * aberration).a),
+			texture(TEXTURE, UV + vec2(cos(blue_abberation_angle), sin(blue_abberation_angle)) * aberration).a
+		)
+	);
+	skin_color = vec4(mix(skin_color, team_color, team_color.a).rgb, skin_color.a);
+	float corrected_burn_prec = texture(burn_curve, vec2(burn_percentage, 0.)).r;
+	float skin_alpha = clamp(pow(texture(noise, large_pixel_uv).r, mix(0.001, 25., corrected_burn_prec)), 0., 1.);
+	float skin_alpha_larger = clamp(pow(texture(noise, large_pixel_uv).r, mix(0.001, 10., corrected_burn_prec)), 0., 1.);
+	vec4 burned_color = mix(burn_color, skin_color, clamp(skin_alpha / max(0.01, (burn_threshold - burn_flame_supression)), 0., 1.));
+	skin_alpha = clamp(min(skin_alpha * 4., skin_color.a), 0., 1.);
+    COLOR = vec4(burned_color.rgb, skin_alpha);
+}"
+
+[sub_resource type="Curve" id="Curve_8jh2m"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_0dpix"]
+curve = SubResource("Curve_8jh2m")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sti4k"]
+noise_type = 5
+frequency = 0.0188
+fractal_type = 2
+fractal_octaves = 2
+fractal_lacunarity = 2.525
+fractal_gain = 2.0
+domain_warp_type = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2hyy3"]
+noise = SubResource("FastNoiseLite_sti4k")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ry8k"]
+resource_local_to_scene = true
+shader = SubResource("Shader_xqo7t")
+shader_parameter/noise = SubResource("NoiseTexture2D_2hyy3")
+shader_parameter/burn_color = Color(1, 1, 0, 1)
+shader_parameter/team_color = Color(1, 1, 1, 0)
+shader_parameter/burn_percentage = 0.0
+shader_parameter/burn_curve = SubResource("CurveTexture_0dpix")
+shader_parameter/burn_threshold = 1.0
+shader_parameter/burn_flame_supression = 0.50000002375
+shader_parameter/pixel_scale = 2.0000000475
+shader_parameter/color_aberration = 0.150000007125
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_d02ko"]
 viewport_path = NodePath("skin/layers")
@@ -43,8 +139,8 @@ resource_local_to_scene = true
 shader = ExtResource("3_5fyrk")
 shader_parameter/skin = SubResource("ViewportTexture_5fyrk")
 shader_parameter/phase_red = 1.0
-shader_parameter/phase_green = 0.5
-shader_parameter/phase_blue = 0.5
+shader_parameter/phase_green = 1.0
+shader_parameter/phase_blue = 1.0
 shader_parameter/zoom = 1.00000004680148
 
 [node name="player_carrier" type="CharacterBody2D"]
@@ -53,6 +149,7 @@ motion_mode = 1
 script = ExtResource("1_ny2j2")
 approx_size = 700.0
 color = Color(1, 1, 1, 0)
+skin_layers = Array[ExtResource("2_8f66g")]([SubResource("Resource_0uqlh"), SubResource("Resource_hsrbo")])
 starting_health = 25.0
 mass = 1000.0
 
@@ -65,15 +162,12 @@ disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 oversampling = false
-size = Vector2i(850, 850)
+size = Vector2i(700, 700)
 
 [node name="cam" type="Camera2D" parent="skin/layers"]
 
-[node name="Sprite2D" type="Sprite2D" parent="skin/layers"]
-position = Vector2(400.455, 405.51)
-texture = ExtResource("2_oieim")
-
 [node name="skin_image" type="Sprite2D" parent="skin"]
+material = SubResource("ShaderMaterial_8ry8k")
 texture = SubResource("ViewportTexture_d02ko")
 
 [node name="front_collision" type="CollisionPolygon2D" parent="."]
@@ -141,10 +235,7 @@ offset_bottom = 512.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="state_display" parent="." node_paths=PackedStringArray("skin") instance=ExtResource("16_ciyox")]
-emote_offset = Vector2(20, 0)
-speech_buble_offset = Vector2(-65, 225)
-skin = NodePath("../skin")
+[node name="state_display" parent="." instance=ExtResource("16_ciyox")]
 
 [node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("19_0uqlh")

@@ -71,7 +71,7 @@ Output format is the following:
 	action["acquired_target"]: the target object to which the laser is supposed to be fired
 	action["deploy_mine"]: activate and release the attached mine ( if any )
 """
-static func get_action(input_event):
+static func get_action(input_event: InputEvent) -> Dictionary:
 	var action = Dictionary()
 	var intent_direction = Vector2(
 		(-1. if input_event.is_action_pressed("movement_left") else 0. + 1. if input_event.is_action_pressed("movement_right") else 0.),\
