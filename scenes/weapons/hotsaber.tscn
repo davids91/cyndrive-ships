@@ -1,0 +1,78 @@
+[gd_scene load_steps=5 format=3 uid="uid://dtoto6h8f44xc"]
+
+[ext_resource type="Script" uid="uid://c3plgl4d6gvx8" path="res://scripts/equipment/hotsaber.gd" id="1_2r26i"]
+[ext_resource type="Script" uid="uid://bg34ym62aq750" path="res://scripts/equipment/hotsaber_chain.gd" id="2_1hnrs"]
+[ext_resource type="PackedScene" uid="uid://bj07w5arx2von" path="res://scenes/weapons/hotsaber_chain.tscn" id="3_1hnrs"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_attt3"]
+
+[node name="hotsaber" type="Node2D"]
+top_level = true
+script = ExtResource("1_2r26i")
+base_damage = 100.0
+energy_cost = 0.0
+
+[node name="stem" type="RigidBody2D" parent="."]
+top_level = true
+collision_layer = 0
+collision_mask = 3
+mass = 10.0
+script = ExtResource("2_1hnrs")
+
+[node name="pin" type="PinJoint2D" parent="stem"]
+position = Vector2(0, 7.5)
+node_a = NodePath("..")
+node_b = NodePath("../../chain")
+
+[node name="collision_shape" type="CollisionShape2D" parent="stem"]
+shape = SubResource("CircleShape2D_attt3")
+disabled = true
+
+[node name="chain" parent="." instance=ExtResource("3_1hnrs")]
+position = Vector2(0, 40)
+
+[node name="pin" type="PinJoint2D" parent="chain"]
+position = Vector2(0, 32.5)
+node_a = NodePath("..")
+node_b = NodePath("../../chain2")
+
+[node name="chain2" parent="." instance=ExtResource("3_1hnrs")]
+position = Vector2(0, 105)
+
+[node name="pin" type="PinJoint2D" parent="chain2"]
+position = Vector2(0, 32.5)
+node_a = NodePath("..")
+node_b = NodePath("../../chain3")
+
+[node name="chain3" parent="." instance=ExtResource("3_1hnrs")]
+position = Vector2(0, 170)
+
+[node name="pin" type="PinJoint2D" parent="chain3"]
+position = Vector2(0, 32.5)
+node_a = NodePath("..")
+node_b = NodePath("../../chain4")
+
+[node name="chain4" parent="." instance=ExtResource("3_1hnrs")]
+position = Vector2(0, 235)
+
+[node name="pin" type="PinJoint2D" parent="chain4"]
+position = Vector2(0, 32.5)
+node_a = NodePath("..")
+node_b = NodePath("../../end")
+
+[node name="end" parent="." instance=ExtResource("3_1hnrs")]
+position = Vector2(0, 300)
+
+[node name="pin" type="Node2D" parent="end"]
+position = Vector2(0, 32.5)
+
+[node name="outer_line" type="Line2D" parent="."]
+visible = false
+width = 15.0
+default_color = Color(1, 0.43333334, 0, 1)
+
+[node name="inner_line" type="Line2D" parent="."]
+visible = false
+z_index = 1
+width = 5.0
+default_color = Color(1, 0.86800003, 0.33999997, 1)

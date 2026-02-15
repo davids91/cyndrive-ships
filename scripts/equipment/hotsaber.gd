@@ -1,46 +1,34 @@
 extends BattleShipWeapon
 
-@export var shutdown_time: float = 0.2
 @export var startup_time: float = 0.05
 @export var handle_speed: float = 0.6
-@export var handle_radius: float = 150.
-@export var chain_length: float = 25.
-@export var grab_length_sec: float = 0.5
+@export var chain_length: float = 70.
+@export var swing_arc_width_rad: float = PI / 2.
+@export var swing_time: float = 0.2
 
 @onready var wielder: BattleCharacter = get_parent()
 
 var display_points: Array[Vector2] = []
 func _ready() -> void:
 	for c in get_children(): if not c is Line2D:
-		display_points.push_back(c.get_global_position())
+		display_points.push_back(c.get_global_position() + c.get_node("pin").get_position())
 
-var was_shooting: bool = false
-var ships_hurting: Dictionary = {}
-var handle_pos: Vector2 = Vector2()
-var grabbing_end_until_sec: float = 0.
-func _process(delta: float) -> void:
-	# Handle hotsaber damage
-	if is_shooting: for ship in ships_hurting:
-		if ship.has_method("accept_damage"): ship.accept_damage(base_damage * delta)
-
+func _physics_process(delta: float) -> void:
 	# Hotsaber control
 	$stem.pos_to_set = wielder.get_global_position()
-	$stem.pos_over_time_sec = startup_time
-	if 0. < grabbing_end_until_sec:
-		grabbing_end_until_sec -= delta
-		$end.pos_to_set = wielder.get_global_position() + handle_pos
-		$end.pos_over_time_sec = startup_time
+	$stem.pos_over_time_sec = delta
 
+func _process(_delta: float) -> void:
 	# Handle hotsaber display
 	var i: int = 0
 	for c in get_children(): if not c is Line2D:
-		display_points[i] = c.get_global_position()
+		display_points[i] = c.get_global_position() + c.get_node("pin").get_position()
 		i += 1
 	var smooth_points = catmull_rom_spline(display_points)
 	$outer_line.points = smooth_points
 	$inner_line.points = smooth_points
 	
-	# Add after-effect of hotsabers
+	## Add after-effect of hotsabers
 	if is_shooting:
 		var after_image = [$outer_line.duplicate(), $inner_line.duplicate()]
 		var disappear_tween = create_tween()
@@ -51,41 +39,49 @@ func _process(delta: float) -> void:
 			add_child(line)
 			var modulate_to_set = line.self_modulate
 			modulate_to_set.a = 0.
-			disappear_tween.tween_property(line, "self_modulate", modulate_to_set, shutdown_time)
+			disappear_tween.tween_property(line, "self_modulate", modulate_to_set, startup_time * 3.)
 		disappear_tween.chain().tween_callback(func(): for line in after_image: line.queue_free())
 
+var was_shooting: bool = false
+var last_shot: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	was_shooting = is_shooting
-	var shoot_intent = is_shooting
 	if "action_direction" in action:
-		shoot_intent = 0. < action["action_direction"].length()
-		if shoot_intent:
-			handle_pos = lerp(handle_pos, action["action_direction"] * handle_radius, handle_speed)
-		if not was_shooting: grabbing_end_until_sec = grab_length_sec
-	if not shoot_intent and was_shooting:
-		shutdown()
+		is_shooting = 0. < action["action_direction"].length()
+		if is_shooting and action["action_direction"] != last_shot: was_shooting = false
+		last_shot = action["action_direction"]
 
-	if shoot_intent and not was_shooting:
-		var sweep_tween = create_tween()
-		sweep_tween.set_parallel(true)
+	if not is_shooting and was_shooting:
+		shutdown()
+	if is_shooting and not was_shooting:
 		var handle_len_multiplier: float = 0.
 		for c in get_children(): if not c is Line2D:
-			c.pos_to_set = wielder.get_global_position() +  handle_pos.normalized() * handle_len_multiplier * chain_length
+			c.pos_to_set = wielder.get_global_position() + action["action_direction"] * handle_len_multiplier * chain_length
 			c.pos_over_time_sec = startup_time
 			handle_len_multiplier += 1.
-		sweep_tween.chain().tween_callback(func():
+		var sweep_tween = create_tween()
+		sweep_tween.tween_callback(func():
 			for c in get_children(): 
 				if c is Line2D: c.set_visible(true)
 				else: c.get_node("collision_shape").set_deferred("disabled", false)
-		)
-		is_shooting = true
+		).set_delay(startup_time)
+		var start_angle: float = action["action_direction"].angle() - swing_arc_width_rad
+		sweep_tween.tween_method(
+			func(w: float):
+				$chain3.pos_to_set = (
+					wielder.get_global_position()
+					+ Vector2(cos(start_angle + w), sin(start_angle + w)) * float(display_points.size()) * chain_length
+				)
+				$chain3.pos_over_time_sec = startup_time,
+			0., swing_arc_width_rad, swing_time
+		).set_ease(Tween.EASE_IN_OUT)
 
 func shutdown() -> void:
 	for c in get_children(): if not c is Line2D:
 		c.pos_to_set = wielder.get_global_position()
-		c.pos_over_time_sec = shutdown_time
+		c.pos_over_time_sec = swing_time
 	var shutdown_tween = create_tween()
-	shutdown_tween.tween_interval(shutdown_time)
+	shutdown_tween.tween_interval(swing_time)
 	shutdown_tween.tween_callback(func():
 		for c in get_children(): 
 			if c is Line2D: c.set_visible(false)
@@ -130,13 +126,3 @@ func catmull_rom_spline(
 			)
 			smooth_points.append(q)
 	return smooth_points
-
-func _on_hurt_aura_body_entered(body: Node2D) -> void:
-	if(
-		not wielder.has_node("team")
-		or not body.has_node("team")
-		or get_parent().get_node("team").is_enemy(body.get_node("team"))
-	): ships_hurting[body] = BattleTimeline.instance.time_msec()
-
-func _on_hurt_aura_body_exited(body: Node2D) -> void:
-	if ships_hurting.has(body): ships_hurting.erase(body)

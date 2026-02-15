@@ -49,7 +49,7 @@ var corrected_in_this_physics_loop: bool = false
 var last_applied_usec_key: int = -1
 
 func _process(delta: float) -> void:
-	if not replay_enabled:
+	if not replay_enabled or not ship.in_battle():
 		return
 
 	# Monitor if the replayer is relevant
