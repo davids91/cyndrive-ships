@@ -65,7 +65,7 @@ func _physics_process(delta: float) -> void:
 	if(
 		FeatureFlags.is_enabled("disable_ai")
 		or time_until_script_execution >= 0
-		or BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD
+		or BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD
 	): return
 
 	if(

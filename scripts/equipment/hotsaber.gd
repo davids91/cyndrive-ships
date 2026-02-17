@@ -5,17 +5,18 @@ extends BattleShipWeapon
 @export var chain_length: float = 70.
 @export var swing_arc_width_rad: float = PI / 2.
 @export var swing_time: float = 0.2
-
-@onready var wielder: BattleCharacter = get_parent()
+@export var wielder: BattleCharacter
+@export var offset: Vector2 = Vector2.ZERO
 
 var display_points: Array[Vector2] = []
 func _ready() -> void:
+	if not wielder: wielder = get_parent()
 	for c in get_children(): if not c is Line2D:
 		display_points.push_back(c.get_global_position() + c.get_node("pin").get_position())
 
 func _physics_process(delta: float) -> void:
 	# Hotsaber control
-	$stem.pos_to_set = wielder.get_global_position()
+	$stem.pos_to_set = get_stem_position()
 	$stem.pos_over_time_sec = delta
 
 func _process(_delta: float) -> void:
@@ -41,6 +42,9 @@ func _process(_delta: float) -> void:
 			modulate_to_set.a = 0.
 			disappear_tween.tween_property(line, "self_modulate", modulate_to_set, startup_time * 3.)
 		disappear_tween.chain().tween_callback(func(): for line in after_image: line.queue_free())
+
+func get_stem_position() -> Vector2:
+	return wielder.get_global_position() + offset.rotated(wielder.get_global_rotation())
 
 var was_shooting: bool = false
 var last_shot: Vector2 = Vector2()

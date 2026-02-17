@@ -19,12 +19,11 @@ signal weapon_energy_updated(new_energy_level: float)
 
 var health: float = starting_health
 func _ready() -> void:
-	$state_display.set_visible(name != "player_carrier")
 	$team.initialize(team_id, color)
 	$skin.init_skin(skin_layers, $team.color)
 	if has_node("laser_beam"): $laser_beam.base_damage *= laser_strength
 	if has_node("ai_control"): $ai_control.enabled = true
-	else:
+	elif not self is MrMustle:
 		$controller.set_script(preload("res://scripts/equipment/player_motion_control.gd"))
 		$controller.character = self
 		$controller.last_position = get_global_position()
@@ -120,10 +119,10 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 	var correction_length = (snapshot["transform"].get_origin() - get_transform().get_origin()).length()
 	var tween_length = max(0., over_time_msec) / 1000.;
 	if "internal_force" in snapshot:
-		$controller.internal_force = snapshot["internal_force"] * BattleTimeline.instance.time_flow
+		$controller.internal_force = snapshot["internal_force"] * BattleTimeline.time_flow
 	if "current_impulse" in snapshot and "current_impulse" in $controller:
-		$controller.current_impulse = snapshot["current_impulse"] * BattleTimeline.instance.time_flow
-	if "velocity" in snapshot: velocity = snapshot["velocity"] * BattleTimeline.instance.time_flow
+		$controller.current_impulse = snapshot["current_impulse"] * BattleTimeline.time_flow
+	if "velocity" in snapshot: velocity = snapshot["velocity"] * BattleTimeline.time_flow
 	if "transform" in snapshot: transform = (snapshot["transform"])
 
 	# Add an afterimage of the character if correction moved it from course too much, and erase it short after

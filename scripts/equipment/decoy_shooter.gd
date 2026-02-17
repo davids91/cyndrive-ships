@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 
 func process_input_action(action: Dictionary) -> void:
 	if (
-		BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.FORWARD
+		BattleTimeline.time_flow == BattleTimeline.TimeFlow.FORWARD
 		and "action_direction" in action and 0. < action["action_direction"].length()
 		and time_to_shoot_again <= 0.
 	):

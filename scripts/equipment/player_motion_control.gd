@@ -68,7 +68,7 @@ func _physics_process(delta: float) -> void:
 	if pos_diff.length() > 0.05: character.set_global_rotation(pos_diff.angle())
 	character.set_velocity(
 		(internal_force + current_impulse * delta)
-		* character.approx_size * top_speed * BattleTimeline.instance.time_flow
+		* character.approx_size * top_speed * BattleTimeline.time_flow
 	)
 	
 	internal_force *= floatiness

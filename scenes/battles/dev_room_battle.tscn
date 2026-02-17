@@ -128,6 +128,13 @@ map_extent = Rect2(-500, -3000, 7500, 7500)
 monitor_nodes = [NodePath("../../debris"), NodePath("../../combatants")]
 icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
 
+[node name="MapIcon" type="Sprite2D" parent="GUI/minimap"]
+self_modulate = Color(1, 1, 1, 0.3647059)
+z_index = 5
+position = Vector2(347, 198)
+scale = Vector2(0.515625, 0.515625)
+texture = ExtResource("10_320hu")
+
 [node name="area" type="Panel" parent="GUI/minimap"]
 offset_left = 160.0
 offset_top = 193.0
@@ -150,12 +157,6 @@ offset_right = 8.0
 offset_bottom = 8.0
 texture = ExtResource("11_ib23l")
 expand_mode = 3
-
-[node name="MapIcon" type="Sprite2D" parent="GUI"]
-self_modulate = Color(1, 1, 1, 0.3647059)
-position = Vector2(347, 198)
-scale = Vector2(0.515625, 0.515625)
-texture = ExtResource("10_320hu")
 
 [node name="dialogue" parent="." instance=ExtResource("19_ickrk")]
 dialog = "res://dialogues/tutorial_level/tutorial_4_well_be_in_touch_boss_arrives.txt"

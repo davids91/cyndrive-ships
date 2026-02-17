@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=44 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_5doxk"]
@@ -9,13 +9,9 @@
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="6_33oy3"]
 [ext_resource type="Script" uid="uid://cdrsm7mlhnmnm" path="res://scripts/equipment/energy_systems.gd" id="7_0nsx8"]
 [ext_resource type="Script" uid="uid://co4eimc5mgx3i" path="res://scripts/equipment/weapon_slot.gd" id="8_owx80"]
-[ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://scripts/equipment/laser_beam_ray.gd" id="9_1fjy2"]
 [ext_resource type="Script" uid="uid://c8qgskcr7o3mn" path="res://scripts/equipment/decoy_shooter.gd" id="10_5doxk"]
-[ext_resource type="AudioStream" uid="uid://tlk8d7op7rfi" path="res://audio/laser_1.wav" id="10_6264f"]
+[ext_resource type="PackedScene" uid="uid://dg5gm8lkvhpfs" path="res://scenes/weapons/laser_beam.tscn" id="11_cy11g"]
 [ext_resource type="PackedScene" uid="uid://dtoto6h8f44xc" path="res://scenes/weapons/hotsaber.tscn" id="11_tpj62"]
-[ext_resource type="AudioStream" uid="uid://bnrdi8bq76v7v" path="res://audio/laser_2.wav" id="11_txnga"]
-[ext_resource type="AudioStream" uid="uid://ek4nsx32wrle" path="res://audio/laser_3.wav" id="12_1fi68"]
-[ext_resource type="AudioStream" uid="uid://3gxc0hqxn1re" path="res://audio/laser_4.wav" id="13_ksc2f"]
 [ext_resource type="Script" uid="uid://n2lp6a2eyw3m" path="res://scripts/equipment/chain_lightning.gd" id="14_kijp1"]
 [ext_resource type="AudioStream" uid="uid://cj2onr3cwpkuu" path="res://audio/chain_lightning_1.wav" id="15_7vd05"]
 [ext_resource type="AudioStream" uid="uid://bt6iti1d0u2bv" path="res://audio/chain_lightning_2.wav" id="16_8hsct"]
@@ -44,7 +40,7 @@ metadata/_custom_type_script = "uid://cud6a5voxneed"
 radius = 15.0
 height = 60.0
 
-[sub_resource type="Shader" id="Shader_xqo7t"]
+[sub_resource type="Shader" id="Shader_tpj62"]
 code = "shader_type canvas_item;
 
 uniform sampler2D noise;
@@ -89,14 +85,14 @@ void fragment() {
     COLOR = vec4(burned_color.rgb, skin_alpha);
 }"
 
-[sub_resource type="Curve" id="Curve_8jh2m"]
+[sub_resource type="Curve" id="Curve_tpj62"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_0dpix"]
-curve = SubResource("Curve_8jh2m")
+[sub_resource type="CurveTexture" id="CurveTexture_attt3"]
+curve = SubResource("Curve_tpj62")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_sti4k"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_attt3"]
 noise_type = 5
 frequency = 0.0188
 fractal_type = 2
@@ -105,17 +101,17 @@ fractal_lacunarity = 2.525
 fractal_gain = 2.0
 domain_warp_type = 1
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2hyy3"]
-noise = SubResource("FastNoiseLite_sti4k")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ei2dj"]
+noise = SubResource("FastNoiseLite_attt3")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5doxk"]
 resource_local_to_scene = true
-shader = SubResource("Shader_xqo7t")
-shader_parameter/noise = SubResource("NoiseTexture2D_2hyy3")
+shader = SubResource("Shader_tpj62")
+shader_parameter/noise = SubResource("NoiseTexture2D_ei2dj")
 shader_parameter/burn_color = Color(1, 1, 0, 1)
 shader_parameter/team_color = Color(0, 0, 0, 0)
 shader_parameter/burn_percentage = 0.0
-shader_parameter/burn_curve = SubResource("CurveTexture_0dpix")
+shader_parameter/burn_curve = SubResource("CurveTexture_attt3")
 shader_parameter/burn_threshold = 1.0
 shader_parameter/burn_flame_supression = 0.50000002375
 shader_parameter/pixel_scale = 2.0000000475
@@ -123,13 +119,6 @@ shader_parameter/color_aberration = 0.150000007125
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_8vsun"]
 viewport_path = NodePath("skin/layers")
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_sougf"]
-streams_count = 4
-stream_0/stream = ExtResource("10_6264f")
-stream_1/stream = ExtResource("11_txnga")
-stream_2/stream = ExtResource("12_1fi68")
-stream_3/stream = ExtResource("13_ksc2f")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_i0gp7"]
 streams_count = 6
@@ -211,32 +200,10 @@ metadata/_custom_type_script = "uid://co4eimc5mgx3i"
 script = ExtResource("10_5doxk")
 energy_cost = 5.0
 
+[node name="laser_beam" parent="." node_paths=PackedStringArray("wielder") instance=ExtResource("11_cy11g")]
+wielder = NodePath("..")
+
 [node name="hotsaber" parent="." instance=ExtResource("11_tpj62")]
-
-[node name="laser_beam" type="Node2D" parent="."]
-script = ExtResource("9_1fjy2")
-target_time_sec = 0.0
-base_damage = 0.4
-energy_cost = 0.05
-metadata/_custom_type_script = "uid://cy4bwltyfsq3g"
-
-[node name="sound" type="AudioStreamPlayer2D" parent="laser_beam"]
-stream = SubResource("AudioStreamRandomizer_sougf")
-volume_db = -30.0
-attenuation = 0.3186402
-max_polyphony = 5
-
-[node name="beam_line" type="Line2D" parent="laser_beam"]
-top_level = true
-z_index = -5
-points = PackedVector2Array(0, 0, 589, 650)
-width = 0.0
-default_color = Color(1, 0, 0, 0.78431374)
-
-[node name="raycast" type="RayCast2D" parent="laser_beam"]
-top_level = true
-target_position = Vector2(475, -32)
-collide_with_areas = true
 
 [node name="chain_lightning" type="Node2D" parent="." node_paths=PackedStringArray("wielder")]
 script = ExtResource("14_kijp1")
@@ -251,9 +218,6 @@ stream = SubResource("AudioStreamRandomizer_i0gp7")
 volume_db = -30.0
 attenuation = 0.3186402
 max_polyphony = 5
-
-[node name="thruster_sound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("23_aa58f")
 
 [node name="thruster_fx" type="CPUParticles2D" parent="."]
 position = Vector2(-45, 0)
@@ -286,6 +250,9 @@ initial_velocity_max = 400.0
 scale_amount_min = 4.0
 scale_amount_max = 4.0
 color_ramp = SubResource("Gradient_0dpix")
+
+[node name="thruster_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("23_aa58f")
 
 [node name="explosion_sound" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_7qyni")

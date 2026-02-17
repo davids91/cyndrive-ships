@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://dg5gm8lkvhpfs"]
+
+[ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://scripts/equipment/laser_beam_ray.gd" id="1_7wpsd"]
+[ext_resource type="AudioStream" uid="uid://tlk8d7op7rfi" path="res://audio/laser_1.wav" id="2_n6uf7"]
+[ext_resource type="AudioStream" uid="uid://bnrdi8bq76v7v" path="res://audio/laser_2.wav" id="3_tfpbi"]
+[ext_resource type="AudioStream" uid="uid://ek4nsx32wrle" path="res://audio/laser_3.wav" id="4_cd6mu"]
+[ext_resource type="AudioStream" uid="uid://3gxc0hqxn1re" path="res://audio/laser_4.wav" id="5_ump2f"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_xsqp8"]
+streams_count = 4
+stream_0/stream = ExtResource("2_n6uf7")
+stream_1/stream = ExtResource("3_tfpbi")
+stream_2/stream = ExtResource("4_cd6mu")
+stream_3/stream = ExtResource("5_ump2f")
+
+[node name="laser_beam" type="Node2D"]
+script = ExtResource("1_7wpsd")
+target_time_sec = 0.0
+base_damage = 0.4
+energy_cost = 0.05
+metadata/_custom_type_script = "uid://cy4bwltyfsq3g"
+
+[node name="sound" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_xsqp8")
+volume_db = -30.0
+attenuation = 0.3186402
+max_polyphony = 5
+
+[node name="beam_line" type="Line2D" parent="."]
+top_level = true
+z_index = -5
+points = PackedVector2Array(0, 0, 589, 650)
+width = 0.0
+default_color = Color(1, 0, 0, 0.78431374)
+
+[node name="raycast" type="RayCast2D" parent="."]
+visible = false
+top_level = true
+target_position = Vector2(475, -32)
+collide_with_areas = true

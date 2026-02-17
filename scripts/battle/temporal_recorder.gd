@@ -33,7 +33,7 @@ static func reverse_action_key_in_snapshot(key: String, snapshot: Dictionary) ->
 		snapshot[initiated_key] = value
 
 func _process(_delta: float) -> void:
-	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
+	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		# update stored actions
 		while not usec_records.is_empty() and usec_records.keys().back() > BattleTimeline.instance.time_usec():
 			if ( # Correct actions for reversed timeflow and apply them
@@ -64,11 +64,11 @@ func _process(_delta: float) -> void:
 				corrective_snapshot = msec_records[msec_records.keys().back()]
 				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(msec_records.keys().back()))
 			target.correct_temporal_state(corrective_snapshot, time_to_snapshot)
-	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.FORWARD \
+	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.FORWARD \
 		and last_time_flow == BattleTimeline.TimeFlow.BACKWARD \
 		and last_snapshot != null and not last_snapshot.is_empty():
 			target.correct_temporal_state(last_snapshot[last_snapshot.keys()[0]])
-	last_time_flow = BattleTimeline.instance.time_flow
+	last_time_flow = BattleTimeline.time_flow
 var last_triggered = 0. 
 var recording = false
 
@@ -89,7 +89,7 @@ func stop_recording() -> Dictionary:
 	return { "action" : recorded_actions, "temporal_snapshots" :  recorded_motion }
 
 func process_input_action(action) -> void:
-	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
+	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		return
 	usec_records[BattleTimeline.instance.time_usec()] = action
 
@@ -134,7 +134,7 @@ func copy_marked_records(last_usec_timestamp: int, last_msec_timestamp: float) -
 	return { "action" : recorded_action, "temporal_snapshots" :  recorded_motion }
 
 func _physics_process(_delta: float) -> void:
-	if not recording or BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD \
+	if not recording or BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD \
 		or abs(BattleTimeline.instance.time_since_msec(last_triggered)) <  (1000. / triggers_per_second):
 			return
 	msec_records[BattleTimeline.instance.time_msec()] = target.get_snapshot()

@@ -18,3 +18,6 @@ func _on_dev_room_button_scene_selected() -> void:
 
 func _on_tutorial_level_button_scene_selected() -> void:
 	get_tree().change_scene_to_packed(preload("res://scenes/battles/tutorial_level.tscn"))
+
+func _on_mr_mustle_battle_pressed() -> void:
+	get_tree().change_scene_to_packed(preload("res://scenes/battles/mr_mustle.tscn"))

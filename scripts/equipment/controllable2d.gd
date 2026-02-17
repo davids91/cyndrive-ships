@@ -7,10 +7,11 @@ signal boosting(is_boosting: bool)
 
 @onready var character: BattleCharacter = get_parent()
 @onready var last_position = get_global_position()
-var enabled: bool = false
+var enabled: bool = true
 var intent_direction: Vector2 = Vector2()
 var intent_force: Vector2 = Vector2()
 var internal_force: Vector2 = Vector2()
+var handle_rotation: bool = true
 
 """
 Run curve based on https://www.youtube.com/watch?v=yorTG9at90g
@@ -75,11 +76,11 @@ func calculate_rotation() -> float:
 		var pos_delta = (get_global_position() - last_position)
 		if passive_movement_rotation_threshold < pos_delta.length():
 			calculated_rotation = lerp(pos_delta.angle(), get_global_rotation(), 0.2)
-	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD: calculated_rotation -= PI
+	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD: calculated_rotation -= PI
 	return calculated_rotation
 
 func _physics_process(_delta: float) -> void:
-	if not enabled or BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD: return
+	if not enabled or BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD: return
 
 	var previous_intent = intent_force * momentum_dampener
 	var current_intent = Vector2()
@@ -116,7 +117,7 @@ func _physics_process(_delta: float) -> void:
 	intent_force = current_intent
 
 	character.set_velocity(internal_force)
-	character.set_global_rotation(calculate_rotation())
+	if handle_rotation: character.set_global_rotation(calculate_rotation())
 	last_position = get_global_position()
 
 #region temporal corrective functions

@@ -43,7 +43,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		if "transform" in snapshot_to_set:
 			state.transform = lerp(current_snapshot["transform"], snapshot_to_set["transform"], weight_in_interpolation)
 		if "linear_velocity" in snapshot_to_set:
-			state.linear_velocity = snapshot_to_set["linear_velocity"] * BattleTimeline.instance.time_flow
+			state.linear_velocity = snapshot_to_set["linear_velocity"] * BattleTimeline.time_flow
 		if "angular_velocity" in snapshot_to_set:
 			state.angular_velocity = snapshot_to_set["angular_velocity"]
 		temporal_overwrite_time_msec -= physics_interval_msec

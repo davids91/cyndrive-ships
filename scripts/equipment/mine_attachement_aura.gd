@@ -15,7 +15,7 @@ func _on_body_entered(body: Node2D) -> void:
 	): ships_within[body] = BattleTimeline.instance.time_msec()
 
 func _process(_delta: float) -> void:
-	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD: return
+	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD: return
 
 	# attach mines to alive friendly ships when it's in contact with the aura
 	for ship in ships_within:

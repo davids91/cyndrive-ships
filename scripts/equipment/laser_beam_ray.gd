@@ -6,6 +6,11 @@ class_name BattleShipLaser extends BattleShipWeapon
 @export var warmup_time_sec: float = 0.25
 @export var shutdown_time_sec: float = 0.15
 @export var target_time_sec: float = 0.01
+@export var wielder: BattleCharacter = get_parent()
+@export var offset: Vector2 = Vector2.ZERO
+
+func _ready() -> void:
+	if not wielder: wielder = get_parent()
 
 func shutdown() -> void:
 	# TECHDEBT: In case the laser is released before warmup, the tweens get in conflict, so wait until at least the warmup is finished
@@ -21,10 +26,10 @@ func shutdown() -> void:
 	laser_ray_tween.chain()
 
 func reset() -> void:
-	shutdown()
 	was_shooting = is_shooting
 	is_shooting = false
 	current_strength_modifier = 1.
+	shutdown()
 
 var current_strength_modifier: float = 1.
 var was_shooting: bool = false
@@ -41,7 +46,6 @@ func process_input_action(action: Dictionary) -> void:
 		"acquired_target_position" in action and "action_direction" in action
 		and 0. < action["action_direction"].length()
 	)
-
 	if is_shooting:
 		$sound.play()
 		if not was_shooting: # Laser alpha and width animation
@@ -64,22 +68,23 @@ func hit_position() -> Vector2:
 @export var sound_loop_end_sec: float = 2.0
 func _physics_process(_delta: float) -> void:
 	# Handle laser beam display and raycast
-	$beam_line.points[0] = get_global_position()
-	if not get_parent().in_battle():
-		$beam_line.points[1] = get_global_position()
-		$raycast.set_global_position(get_global_position())
-		$raycast.target_position = get_global_position()
+	var laser_origin = wielder.get_global_position() + offset.rotated(wielder.get_global_rotation())
+	$beam_line.points[0] = laser_origin
+	if not wielder.in_battle():
+		$beam_line.points[1] = laser_origin
+		$raycast.set_global_position(laser_origin)
+		$raycast.target_position = laser_origin
 		return
 	$beam_line.points[1] = hit_position()
-	$raycast.set_global_position(get_global_position())
-	$raycast.target_position = get_global_position() + (acquired_target - get_global_position()) * 1000.
+	$raycast.set_global_position(laser_origin)
+	$raycast.target_position = laser_origin + (acquired_target - laser_origin) * 1000.
 
 	# Handle sounds and applying damage
 	if is_shooting:
 		if null != $raycast.get_collider():
 			var victim = $raycast.get_collider()
-			if victim != get_parent() and victim.has_method("accept_damage"):
-				victim.accept_damage(base_damage * current_strength_modifier, get_parent())
+			if victim != wielder and victim.has_method("accept_damage"):
+				victim.accept_damage(base_damage * current_strength_modifier, wielder)
 			# Uncomment the following line if laser is behaving strangely
 			# elif not victim.has_method("accept_damage"): print("ERROR: ", victim, " doesn't have `accept_damage` method!")
 		if not was_shooting and not $sound.playing:
