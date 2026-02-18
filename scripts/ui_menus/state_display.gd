@@ -22,11 +22,13 @@ enum EMOTES {
 
 @export var line_display_length_sec: float = 5.
 @export var line_appear_length_sec: float = 0.5
+var speech_tween: Tween = null
 func say(line: String) -> void:
+	if speech_tween: speech_tween.kill()
 	$speech_bubble/border.texture = speech_bubbles.pick_random()
 	$speech_bubble/text.set_text("")
 	$speech_bubble.set_visible(true)
-	var speech_tween = create_tween()
+	speech_tween = create_tween()
 	speech_tween.set_parallel(true)
 	speech_tween.tween_method(
 		func(w: float): $speech_bubble/text.set_text(line.substr(0,int(w))),

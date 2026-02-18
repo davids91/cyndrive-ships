@@ -236,6 +236,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="state_display" parent="." instance=ExtResource("16_ciyox")]
+visible = false
 
 [node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("19_0uqlh")

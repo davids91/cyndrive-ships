@@ -16,8 +16,8 @@ signal weapon_energy_updated(new_energy_level: float)
 @export_range(0., 1000.) var mass: float = 10.
 
 @onready var spawn_snapshot: Dictionary = get_snapshot()
+@onready var health: float = starting_health
 
-var health: float = starting_health
 func _ready() -> void:
 	$team.initialize(team_id, color)
 	$skin.init_skin(skin_layers, $team.color)
@@ -313,14 +313,11 @@ func respawn():
 	extend_replayer = false
 	was_alive = true
 
-var control_enabled = false
 func pause_control() -> void:
-	control_enabled = false
 	$controller.stop()
 	if has_node("ai_control"): $ai_control.stop()
 
 func resume_control() -> void:
-	control_enabled = true
 	$controller.start()
 	if has_node("ai_control"): $ai_control.resume()
 	else: $controller.intent_direction = PlayerInput.instance.current_intent
@@ -339,47 +336,46 @@ func process_input_action(action: Dictionary) -> void:
 		if "speech_length" in action: $state_display.line_display_length_sec = action["speech_length"]
 		if "speech" in action: $state_display.say(action["speech"])
 
-	if(control_enabled):
-		if "action_direction" in action and 0. < action["action_direction"].length() and has_node("shield"):
-			current_action_direction = action["action_direction"]
-		else: current_action_direction = Vector2()
+	if "action_direction" in action and 0. < action["action_direction"].length() and has_node("shield"):
+		current_action_direction = action["action_direction"]
+	else: current_action_direction = Vector2()
 
-		if "deploy_mine" in action and action["deploy_mine"]:
-			if held_mine:
-				held_mine.deploy_mine()
-				held_mine = null
-			else: ready_to_receive_mine = true
-		else: ready_to_receive_mine = false
+	if "deploy_mine" in action and action["deploy_mine"]:
+		if held_mine:
+			held_mine.deploy_mine()
+			held_mine = null
+		else: ready_to_receive_mine = true
+	else: ready_to_receive_mine = false
+
+	if has_node("energy_systems"):
+		if "boost_initiated" in action and not $energy_systems.has_boost_energy():
+			if not _infinite_boost_enabled():
+				action.erase("boost_initiated")
 		
-		if has_node("energy_systems"):
-			if "boost_initiated" in action and not $energy_systems.has_boost_energy():
-				if not _infinite_boost_enabled():
-					action.erase("boost_initiated")
-			
-			if "action_direction" in action and not $energy_systems.has_weapon_energy():
-				if not _infinite_ammo_enabled():
-					action.erase("action_direction")
-					action["action_released"] = true
-			if "acquired_target_position" in action and not $energy_systems.has_weapon_energy():
+		if "action_direction" in action and not $energy_systems.has_weapon_energy():
+			if not _infinite_ammo_enabled():
+				action.erase("action_direction")
 				action["action_released"] = true
-		
-		if("action_direction" in action and has_node("target_assist") and $target_assist.is_target_locked()):
-			action["acquired_target_position"] = $target_assist.get_current_target_position()
-			action["acquired_target"] =  $target_assist.get_current_target()
-			
-		# move camera lightly on boost  
-		if "boost_initiated" in action:
-			$booster_sound.play()
-			await $booster_sound.finished.connect(func():
-				$booster_fx.visible = false
-				$thruster_fx.visible = true
-			)
-			var camera_direction = $controller.intent_direction * -1
-			var boost_tween = create_tween()
-			if has_node("cam"):
-				boost_tween.tween_property($cam, "offset", camera_direction * approx_size * 2., 0.1)
-				boost_tween.tween_property($cam, "offset", Vector2(), 0.5)
-				boost_tween.chain()
+		if "acquired_target_position" in action and not $energy_systems.has_weapon_energy():
+			action["action_released"] = true
+
+	if("action_direction" in action and has_node("target_assist") and $target_assist.is_target_locked()):
+		action["acquired_target_position"] = $target_assist.get_current_target_position()
+		action["acquired_target"] =  $target_assist.get_current_target()
+
+	# move camera lightly on boost
+	if "boost_initiated" in action:
+		$booster_sound.play()
+		await $booster_sound.finished.connect(func():
+			$booster_fx.visible = false
+			$thruster_fx.visible = true
+		)
+		var camera_direction = $controller.intent_direction * -1
+		var boost_tween = create_tween()
+		if has_node("cam"):
+			boost_tween.tween_property($cam, "offset", camera_direction * approx_size * 2., 0.1)
+			boost_tween.tween_property($cam, "offset", Vector2(), 0.5)
+			boost_tween.chain()
 
 	# For targets representing past versions ( e.g. player previous round ), positions may mismatch slightly
 	# because of the inaccuracies in the replay system and floating point inaccuracies of the physics system

@@ -61,12 +61,13 @@ offset_left = 162.0
 offset_top = 191.0
 offset_right = 801.0
 offset_bottom = 732.0
-text = "1
-2
-WASD
+text = "WASD
 SPACE
-LCLICK
-RCLICK
+ARROWS
+Q
+1 2 3 4
+E
+Space
 R(triple press)
 R(long press)
 8
@@ -80,15 +81,14 @@ offset_left = 165.0
 offset_top = 191.0
 offset_right = 796.0
 offset_bottom = 682.0
-text = "Select laser
-Select chain lightning
-Move ship
-One time boost
+text = "Move ship
+Boost
 Fire Weapon(target assisted)
-Manual Sonar
+Toggle shield
+Select Weapons
+Equip/Deploy Explosives
+Skip/Continue Dialogue
 Save Round and restart
-Rewind battle until key released
-Switch to Snappy player control
-Switch to Floaty Player control"
+Rewind battle until key released"
 label_settings = SubResource("LabelSettings_r0ctv")
 autowrap_mode = 2
