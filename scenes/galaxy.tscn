@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://wt4f85n5mn7s" path="res://scripts/ui_menus/galaxy_main.gd" id="1_m3hme"]
 [ext_resource type="Shader" uid="uid://beksqhxqmaqvw" path="res://shaders/galaxy.gdshader" id="2_i4jmc"]
-[ext_resource type="Texture2D" uid="uid://cgjeow13rx32e" path="res://textures/outer_space/star-4.png" id="3_3adoa"]
+[ext_resource type="Texture2D" uid="uid://hre3ca8je48" path="res://textures/outer_space/star-4.png" id="3_3adoa"]
 [ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="3_kdehn"]
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="4_x6ffi"]
 [ext_resource type="PackedScene" uid="uid://d4ak0rrpifxgt" path="res://scenes/UI/level_select_button.tscn" id="5_fmtwf"]

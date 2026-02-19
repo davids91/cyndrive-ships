@@ -28,4 +28,12 @@
 		"enabled": true,
 		"description": "Enable dev room to test weapons and features"
 	},
+	"dialogue": {
+		"enabled": true,
+		"description": "Enable dev room to test weapons and features"
+	},
+	"mr_mustle": {
+		"enabled": true,
+		"description": "Enable dev room to test weapons and features"
+	},
 }
