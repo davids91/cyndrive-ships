@@ -11,9 +11,13 @@ func _ready() -> void:
 
 
 func _load_flags() -> void:
+
 	if not FileAccess.file_exists("res://feature_flags.json"):
-		print("ERROR: missing feature_flags.json - every feature will be turned off!")
-		return
+		print("feature_flags.json not found: creating file with default settings...")
+		var dir = DirAccess.open("res://")
+		if dir.copy("res://feature_flags.example.json", "res://feature_flags.json") != OK:
+			print("ERROR copying file!")
+
 	var file := FileAccess.open("res://feature_flags.json", FileAccess.READ)
 	if file:
 		var json = JSON.parse_string(file.get_as_text())
