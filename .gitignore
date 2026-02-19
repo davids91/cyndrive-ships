@@ -18,8 +18,8 @@ export_credentials.cfg
 # Local project documentation
 CLAUDE.md
 
-# Feature flags (local config)
-feature_flags.json
+# Feature flags (local dev overrides)
+feature_flags.dev.json
 
 # Mono-specific ignores
 .mono/

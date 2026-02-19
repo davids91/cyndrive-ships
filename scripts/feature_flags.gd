@@ -1,7 +1,8 @@
 extends Node
 ## Feature flag system for trunk-based development.
-## Flags are loaded from feature_flags.json (gitignored) at startup.
-## All flags default to false if the file doesn't exist or flag is not defined.
+## Production flags are loaded from feature_flags.json (tracked in git).
+## In the editor, feature_flags.dev.json (gitignored) is merged on top for local overrides.
+## All flags default to false if not defined.
 
 var _flags: Dictionary = {}
 
@@ -11,18 +12,27 @@ func _ready() -> void:
 
 
 func _load_flags() -> void:
-
 	if not FileAccess.file_exists("res://feature_flags.json"):
 		print("feature_flags.json not found: creating file with default settings...")
 		var dir = DirAccess.open("res://")
 		if dir.copy("res://feature_flags.example.json", "res://feature_flags.json") != OK:
 			print("ERROR copying file!")
 
-	var file := FileAccess.open("res://feature_flags.json", FileAccess.READ)
+	var base := _parse_json_file("res://feature_flags.json")
+	_flags = base
+
+	if OS.has_feature("editor") and FileAccess.file_exists("res://feature_flags.dev.json"):
+		var overrides := _parse_json_file("res://feature_flags.dev.json")
+		_flags.merge(overrides, true)
+
+
+func _parse_json_file(path: String) -> Dictionary:
+	var file := FileAccess.open(path, FileAccess.READ)
 	if file:
 		var json = JSON.parse_string(file.get_as_text())
 		if json is Dictionary:
-			_flags = json
+			return json
+	return {}
 
 
 func is_enabled(flag_name: String) -> bool:

@@ -1,9 +1,4 @@
 {
-	"_doc": "Feature flags - copy to feature_flags.json and set enabled:true to activate",
-	"example_feature": {
-		"enabled": false,
-		"description": "Example flag - replace with your own"
-	},
 	"god_mode": {
 		"enabled": true,
 		"description": "Enable god mode toggle (F9 key) - player takes no damage"

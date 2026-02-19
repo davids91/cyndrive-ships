@@ -4,21 +4,23 @@ We use trunk-based development — push directly to main, no branches or PRs.
 
 ## Feature Flags
 
-**This system is completely optional.** If you don't create a `feature_flags.json` file, all flags default to off and the game runs normally. This is just a convenience for developing experimental features without affecting others.
+Production flags live in `feature_flags.json` (tracked in git). To override flags locally during development, create `feature_flags.dev.json` (gitignored) — it merges on top of the production config. Dev overrides are only applied when running in the Godot editor; exported builds always use production flags.
 
 ### Quick Start
 
-1. Copy `feature_flags.example.json` to `feature_flags.json` (gitignored)
-2. Set `"enabled": true` for flags you want active locally
+1. Check `feature_flags.json` for available flags and their production defaults
+2. To override locally, create `feature_flags.dev.json` with only the flags you want to change
 3. Use `FeatureFlags.is_enabled("flag_name")` in code
 
-### JSON Format
+### Dev Override Example
+
+You only need to include flags you want to change:
 
 ```json
 {
-    "my_feature": {
+    "disable_ai": {
         "enabled": true,
-        "description": "What this feature does"
+        "description": "Disable all enemy AI - useful for testing weapons"
     }
 }
 ```
@@ -45,9 +47,8 @@ If the flag is disabled, the parent node is removed at runtime.
 
 ### Adding a New Flag
 
-1. Add the flag to `feature_flags.example.json` with `"enabled": false`
-2. Commit the example file so teammates know the flag exists
-3. Enable it locally in your `feature_flags.json`
+1. Add the flag to `feature_flags.json` with the desired production default
+2. Commit the change so teammates have the flag
 
 ### Removing a Flag
 
