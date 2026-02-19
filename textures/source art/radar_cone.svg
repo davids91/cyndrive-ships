@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1080"
+   height="1920"
+   viewBox="0 0 216 384"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   sodipodi:docname="radar_cone.svg"
+   inkscape:export-filename="radar_cone_7.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#cccccc"
+     bordercolor="#cccccc"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="1"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#cccccc"
+     inkscape:document-units="px"
+     showborder="false"
+     borderlayer="false"
+     inkscape:zoom="1"
+     inkscape:cx="864.5"
+     inkscape:cy="675"
+     inkscape:window-width="1920"
+     inkscape:window-height="998"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="opacity:1;fill:#d30000;fill-opacity:0.14756447;stroke:#ff0000;stroke-width:1;stroke-opacity:1;stroke-dasharray:8, 1;stroke-dashoffset:0"
+       d="M 23.360974,131.69489 206.4404,56.522814 V 206.86696 L 23.360974,131.69489"
+       id="path3"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#d30000;fill-opacity:1;stroke:#ff0000;stroke-width:1;stroke-dasharray:12, 12;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 23.745739,132.19054 198.52891,77.702714"
+       id="path4"
+       inkscape:transform-center-x="-85.956319"
+       inkscape:transform-center-y="-25.73257" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2"
+     style="display:none">
+    <path
+       style="fill:#d30000;fill-opacity:1;stroke:#ff0000;stroke-width:1.06426;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 163.12079,174.73373 V 160.38745"
+       id="path6" />
+    <path
+       style="fill:#d30000;fill-opacity:1;stroke:#ff0000;stroke-width:1.06426;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 163.12079,146.04117 V 131.69489"
+       id="path8" />
+    <path
+       style="fill:#d30000;fill-opacity:1;stroke:#ff0000;stroke-width:1.06426;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 163.12079,117.34861 V 103.00233"
+       id="path10" />
+    <path
+       style="fill:#d30000;fill-opacity:1;stroke:#ff0000;stroke-width:1.06426;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 163.12079,88.656047 V 74.309766"
+       id="path12" />
+  </g>
+</svg>

@@ -1,23 +1,30 @@
-[gd_scene load_steps=30 format=3 uid="uid://dmn3a6pdbqk1q"]
+[gd_scene load_steps=38 format=3 uid="uid://dmn3a6pdbqk1q"]
 
 [ext_resource type="Script" uid="uid://daxgfc8sbv7ql" path="res://scripts/entities/tutorial_boss.gd" id="1_icc1o"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_at5o7"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_icc1o"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="3_icc1o"]
-[ext_resource type="Texture2D" uid="uid://d08wg3qlw4vqo" path="res://textures/entities/white ship.png" id="3_opo5f"]
+[ext_resource type="Texture2D" uid="uid://bjqh4bsj71n0y" path="res://textures/entities/white ship.png" id="3_opo5f"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="4_opo5f"]
 [ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="5_cjpna"]
 [ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="6_y7m1c"]
 [ext_resource type="AudioStream" uid="uid://dajttw71kitgt" path="res://audio/explosion_001.wav" id="7_2h7vh"]
 [ext_resource type="AudioStream" uid="uid://besa8dwtnwqwy" path="res://audio/explosion_002.wav" id="8_0ahru"]
 [ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="8_cjpna"]
-[ext_resource type="AudioStream" uid="uid://bxfkppefqurjq" path="res://audio/boss_screaming.wav" id="8_fh5k0"]
+[ext_resource type="AudioStream" uid="uid://diwj1nt0a3kx0" path="res://audio/boss_screaming.wav" id="8_fh5k0"]
 [ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="9_n7j6k"]
 [ext_resource type="AudioStream" uid="uid://bokt2np2jc03c" path="res://audio/engine_booster.wav" id="13_y7m1c"]
-[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="14_0k8by"]
+[ext_resource type="Texture2D" uid="uid://dfmfxjw5llgn0" path="res://textures/ui/target.png" id="14_0k8by"]
 [ext_resource type="PackedScene" uid="uid://dtoto6h8f44xc" path="res://scenes/weapons/hotsaber.tscn" id="14_jkui1"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="14_tqvju"]
 [ext_resource type="PackedScene" uid="uid://dg5gm8lkvhpfs" path="res://scenes/weapons/laser_beam.tscn" id="16_mcj1n"]
+[ext_resource type="Texture2D" uid="uid://c7yntewdsp6v4" path="res://textures/ui/radar_cone_1.png" id="19_xsqp8"]
+[ext_resource type="Texture2D" uid="uid://bbl7n08smblpj" path="res://textures/ui/radar_cone_2.png" id="20_hxwci"]
+[ext_resource type="Texture2D" uid="uid://8x0sgp8cyody" path="res://textures/ui/radar_cone_3.png" id="21_dvnma"]
+[ext_resource type="Texture2D" uid="uid://cr5oycs347cxb" path="res://textures/ui/radar_cone_4.png" id="22_o2p68"]
+[ext_resource type="Texture2D" uid="uid://drija0tn7letk" path="res://textures/ui/radar_cone_5.png" id="23_v3s3d"]
+[ext_resource type="Texture2D" uid="uid://sfy3jjd0xx7s" path="res://textures/ui/radar_cone_6.png" id="24_cnx6o"]
+[ext_resource type="Texture2D" uid="uid://cgffr4oksq8x5" path="res://textures/ui/radar_cone_7.png" id="25_iwqd1"]
 
 [sub_resource type="Resource" id="Resource_cjpna"]
 script = ExtResource("2_icc1o")
@@ -119,6 +126,35 @@ stream_0/stream = ExtResource("6_y7m1c")
 stream_1/stream = ExtResource("7_2h7vh")
 stream_2/stream = ExtResource("8_0ahru")
 stream_3/stream = ExtResource("9_n7j6k")
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_thtti"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_xsqp8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_hxwci")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_dvnma")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_o2p68")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_v3s3d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_cnx6o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_iwqd1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [node name="boss" type="CharacterBody2D"]
 script = ExtResource("1_icc1o")
@@ -276,6 +312,12 @@ monitorable = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="player_detection"]
 polygon = PackedVector2Array(0, 0, 15000, 5000, 15000, -5000)
+
+[node name="RadarConeVisual" type="AnimatedSprite2D" parent="."]
+position = Vector2(2354, 0)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_thtti")
+autoplay = "default"
 
 [connection signal="body_entered" from="player_detection" to="." method="_on_player_detection_body_entered"]
 [connection signal="body_exited" from="player_detection" to="." method="_on_player_detection_body_exited"]
