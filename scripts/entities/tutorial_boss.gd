@@ -140,7 +140,7 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 
 var change_target_to: Node2D = null
 func _on_player_detection_body_entered(body: Node2D) -> void:
-	if not acquired_target and body.has_node("team") and body.get_node("team").is_enemy($team):
+	if not acquired_target and "team" in body and body.team.is_enemy(team):
 		change_target_to = body
 
 func _on_player_detection_body_exited(body: Node2D) -> void:

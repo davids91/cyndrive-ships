@@ -176,9 +176,6 @@ top_speed = 5.0
 start_resistance = 5.0
 momentum_dampener = 0.95
 
-[node name="team" type="Node2D" parent="."]
-script = ExtResource("3_icc1o")
-
 [node name="skin" type="Node2D" parent="."]
 script = ExtResource("4_opo5f")
 

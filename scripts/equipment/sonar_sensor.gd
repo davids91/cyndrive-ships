@@ -32,9 +32,9 @@ func add_blip(collider: Object) -> Node2D:
 	if "in_battle" in collider and not collider.in_battle():
 		return # only add blip for objects in the current battle 
 
-	if collider.has_node("team"):
-		var coll_color = collider.get_node("team").color
-		if collider.get_node("team").team_id == 1: # team 1 is the player!
+	if "team" in collider:
+		var coll_color = collider.team.color
+		if collider.team.team_id == 1: # team 1 is the player!
 			coll_color = Color.LIME
 		return display_node.add_display_object(self, blip_radius, collider, coll_color)
 	else:

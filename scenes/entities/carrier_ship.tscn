@@ -1,11 +1,10 @@
-[gd_scene load_steps=34 format=3 uid="uid://b2el5b6ucyivj"]
+[gd_scene load_steps=33 format=3 uid="uid://b2el5b6ucyivj"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_ny2j2"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_8f66g"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="2_i8lxl"]
 [ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/entities/player_carrier_bottom.png" id="2_oieim"]
 [ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="3_5fyrk"]
-[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="4_8jh2m"]
 [ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/entities/player_carrier_top.png" id="4_8ry8k"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="5_sti4k"]
 [ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="7_d02ko"]
@@ -175,9 +174,6 @@ polygon = PackedVector2Array(38, 296, 40, -292, 255, -202, 372, 2, 264, 195)
 
 [node name="rear_collision" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(-375, -146, -240, -254, -237, 257, -371, 142)
-
-[node name="team" type="Node2D" parent="."]
-script = ExtResource("4_8jh2m")
 
 [node name="temporal_recorder" type="Node2D" parent="."]
 script = ExtResource("5_sti4k")

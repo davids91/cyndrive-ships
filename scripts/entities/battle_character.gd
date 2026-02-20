@@ -7,7 +7,7 @@ signal boost_energy_updated(new_energy_level: float)
 signal weapon_energy_updated(new_energy_level: float)
 
 @export var approx_size: float = 100.
-@export var team_id: int = 0
+@export var team: Team = preload("res://resources/player_team.tres")
 @export var color: Color = Color.from_rgba8(0,0,0,0)
 @export var skin_layers: Array[BattleShipSkin] = []
 @export var starting_health: float = 10.
@@ -19,8 +19,7 @@ signal weapon_energy_updated(new_energy_level: float)
 @onready var health: float = starting_health
 
 func _ready() -> void:
-	$team.initialize(team_id, color)
-	$skin.init_skin(skin_layers, $team.color)
+	$skin.init_skin(skin_layers, team.color)
 	if has_node("laser_beam"): $laser_beam.base_damage *= laser_strength
 	if has_node("ai_control"): $ai_control.enabled = true
 	elif not self is MrMustle:
@@ -144,7 +143,8 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 
 func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 	ship_explosion = null
-	team_id = predecessor.team_id
+	team = predecessor.team.duplicate()
+	team.color = new_color
 	skin_layers = predecessor.skin_layers # set skin from predecessor(_ready will construct the skin)
 	color = new_color
 
@@ -230,7 +230,7 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 	if FeatureFlags.is_enabled("god_mode"):
 		var battle_main = get_tree().current_scene
 		if battle_main and "god_mode_active" in battle_main and battle_main.god_mode_active:
-			if $team.team_id == 1: return
+			if team.team_id == 1: return
 
 	if( # Damage from the main controlled character may induce temporal entanglement
 		source != null and source.name == "character" and name != "characters"

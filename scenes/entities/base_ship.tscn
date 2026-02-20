@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene load_steps=45 format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_5doxk"]
@@ -30,6 +30,11 @@
 [ext_resource type="AudioStream" uid="uid://bokt2np2jc03c" path="res://audio/engine_booster.wav" id="29_hg731"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="30_5j1ue"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="36_ei2dj"]
+
+[sub_resource type="Resource" id="Resource_cy11g"]
+resource_local_to_scene = true
+script = ExtResource("6_33oy3")
+metadata/_custom_type_script = "uid://upxd16rpbdyu"
 
 [sub_resource type="Resource" id="Resource_2vmea"]
 script = ExtResource("2_5doxk")
@@ -153,6 +158,7 @@ shader_parameter/pixel_size = 8.0000003325
 [node name="character" type="CharacterBody2D" groups=["destroyables"]]
 collision_layer = 3
 script = ExtResource("1_iulgi")
+team = SubResource("Resource_cy11g")
 color = Color(0, 0, 0, 0)
 skin_layers = Array[ExtResource("2_5doxk")]([SubResource("Resource_2vmea")])
 starting_health = 500.0
@@ -164,9 +170,6 @@ shape = SubResource("CapsuleShape2D_k8udw")
 
 [node name="controller" type="Node2D" parent="."]
 script = ExtResource("2_fbtwq")
-
-[node name="team" type="Node2D" parent="."]
-script = ExtResource("6_33oy3")
 
 [node name="skin" type="Node2D" parent="."]
 script = ExtResource("4_ykdog")

@@ -22,9 +22,9 @@ func _on_hurt_aura_body_entered(body: Node2D) -> void:
 	if(
 		body != get_parent().wielder
 		and (
-			not get_parent().wielder.has_node("team")
-			or not body.has_node("team")
-			or get_parent().wielder.get_node("team").is_enemy(body.get_node("team"))
+			not "team" in get_parent().wielder
+			or not "team" in body
+			or get_parent().wielder.team.is_enemy(body.team)
 		)
 	): ships_hurting[body] = BattleTimeline.instance.time_msec()
 

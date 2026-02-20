@@ -100,7 +100,5 @@ func attach_mine(ship: BattleCharacter, attached_length: float = ship.approx_siz
 	$temporal_recorder.start_recording()
 
 func _on_explode_radius_body_entered(body: Node2D) -> void:
-	if body.has_node("team") and is_activated:
-		var body_team_id = body.get("team_id")
-		if body_team_id != 1:
-			explode_mine()
+	if "team" in body and is_activated:
+		if body.team.team_id != 1: explode_mine()

@@ -3,7 +3,6 @@ extends Node2D
 signal boosting(is_boosting: bool)
 
 @onready var character: BattleCharacter = get_parent()
-@onready var team: Node2D = get_parent().get_node("team")
 var enabled: bool = false
 var intent_direction: Vector2 = Vector2()
 var internal_force: Vector2 = Vector2()

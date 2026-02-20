@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://c6k16wfmb6gt6"]
+[gd_scene load_steps=18 format=3 uid="uid://c6k16wfmb6gt6"]
 
 [ext_resource type="Script" uid="uid://ctj8isc4n0ws8" path="res://scripts/battle/dev_room_mr_mustle.gd" id="1_846ql"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="1_jm7h5"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="2_53yun"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="3_b1gs6"]
 [ext_resource type="PackedScene" uid="uid://c2bembjrgkdwd" path="res://scenes/UI/battle_gui.tscn" id="4_vxbwu"]
+[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="8_iex6b"]
 [ext_resource type="PackedScene" uid="uid://dmn3a6pdbqk1q" path="res://scenes/entities/tutorial_boss.tscn" id="10_53yun"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="10_rvte7"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="11_ugkgi"]
@@ -12,6 +13,19 @@
 [ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/equipment/sonar_sensor.gd" id="13_0f8yj"]
 [ext_resource type="Shape2D" uid="uid://bbuubnw2b6ne4" path="res://resources/target_assist_shape.tres" id="14_dsiyf"]
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="15_60f2a"]
+
+[sub_resource type="Resource" id="Resource_iex6b"]
+script = ExtResource("8_iex6b")
+team_id = 2
+color = Color(1, 0.120000005, 0.120000005, 0)
+metadata/_custom_type_script = "uid://upxd16rpbdyu"
+
+[sub_resource type="Resource" id="Resource_wuu17"]
+resource_local_to_scene = true
+script = ExtResource("8_iex6b")
+team_id = 1
+color = Color(1, 1, 1, 0)
+metadata/_custom_type_script = "uid://upxd16rpbdyu"
 
 [sub_resource type="Resource" id="Resource_rwtbh"]
 script = ExtResource("11_ugkgi")
@@ -39,11 +53,12 @@ script = ExtResource("2_53yun")
 
 [node name="boss" parent="combatants" instance=ExtResource("10_53yun")]
 position = Vector2(890, -648)
+team = SubResource("Resource_iex6b")
 
 [node name="character" parent="combatants" instance=ExtResource("10_rvte7")]
 position = Vector2(1581, -2512)
 rotation = 1.570289
-team_id = 1
+team = SubResource("Resource_wuu17")
 skin_layers = Array[ExtResource("11_ugkgi")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0
 max_health = 22.0

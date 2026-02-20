@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://cer054lhx4edf"]
+[gd_scene load_steps=22 format=4 uid="uid://cer054lhx4edf"]
 
 [ext_resource type="Script" uid="uid://bc2ashwmpmgd5" path="res://scripts/battle/tutorial_level.gd" id="1_aby8t"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_rvnqy"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="9_k4vxh"]
 [ext_resource type="Shape2D" uid="uid://bbuubnw2b6ne4" path="res://resources/target_assist_shape.tres" id="9_rvnqy"]
 [ext_resource type="Texture2D" uid="uid://bnmuvyy2lsbhk" path="res://textures/ui/icons/map_icon.png" id="10_fh4lj"]
+[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="12_k4vxh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xxhjm"]
 texture = ExtResource("6_by8vi")
@@ -104,7 +105,7 @@ texture = ExtResource("10_fh4lj")
 [node name="character" parent="combatants" instance=ExtResource("5_6jemn")]
 position = Vector2(1581, -2512)
 rotation = 1.570289
-team_id = 1
+team = ExtResource("12_k4vxh")
 skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0
 max_health = 22.0

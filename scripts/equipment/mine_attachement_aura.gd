@@ -9,9 +9,9 @@ func _on_body_entered(body: Node2D) -> void:
 	if(get_parent() == body or not "held_mine" in body): return
 
 	if ( # Only Equip friendly or neutral ships
-		not get_parent().has_node("team")
-		or not body.has_node("team")
-		or not get_parent().get_node("team").is_enemy(body.get_node("team"))
+		not "team" in get_parent()
+		or not "team" in body
+		or not get_parent().team.is_enemy(body.team)
 	): ships_within[body] = BattleTimeline.instance.time_msec()
 
 func _process(_delta: float) -> void:
@@ -34,8 +34,6 @@ func _process(_delta: float) -> void:
 			# TechDebt: Mine shouldn't collide, and BattleDeris doesn't have a reliable method to initiate collision layer values
 			for i in range(32): ship.held_mine.set_collision_layer_value(i, false)
 			ship.held_mine.set_collision_layer_value(ship.held_mine.debris_collision_layer_value, true)
-
-
 
 func _on_body_exited(body: Node2D) -> void:
 	ships_within.erase(body)

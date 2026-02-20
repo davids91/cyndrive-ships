@@ -102,7 +102,7 @@ func _physics_process(delta: float) -> void:
 	while tries < 5 and ("in_battle" not in random_target or !random_target.in_battle()):
 		random_target = combatants.get_children().pick_random()
 		tries += 1
-	if random_target and random_target.has_node("team") and random_target.get_node("team").is_enemy(character.get_node("team")):
+	if random_target and "team" in random_target and random_target.team.is_enemy(character.team):
 		var vector_to_target = random_target.global_position - character.global_position
 		var candidate_distance = vector_to_target.length()
 		if (
@@ -151,8 +151,8 @@ func _physics_process(delta: float) -> void:
 		))
 		target_is_acquired = (
 			( # Collsiion detected at gunpoint, and the target is an enemy
-				"collider" in raycast_result and raycast_result.collider.has_node("team")
-				and raycast_result.collider.get_node("team").is_enemy(character.get_node("team"))
+				"collider" in raycast_result and "team" in raycast_result.collider
+				and raycast_result.collider.team.is_enemy(character.team)
 			) or ( # Becuase the Carriers might have more complex geometry, the raycasts don't work on them FOR SOME REASON >:C
 				null != chosen_target and chosen_target.is_in_group("complex_collision_shapes")
 				# Workaround: the chosen target is a carrier and the gunpoint points within its radius

@@ -31,7 +31,7 @@ func _ready():
 		$timeline.connect("rewind_stopped", combatant.resume_control)
 		combatant.dead.connect(_on_battle_character_dead)
 		combatant.resurrected.connect(_on_battle_character_resurrected)
-		living_team_members[combatant.get_node("team").team_id] += 1
+		living_team_members[combatant.team.team_id] += 1
 
 	for debris in $debris.get_children():
 		$timeline.connect("round_reset", debris.respawn)
@@ -84,7 +84,7 @@ func restart_round(rewind_animation: bool = true) -> void:
 	for c in $combatants.get_children():
 		if(
 			"entangled" in c and c.entangled and not c.has_node("replayer")
-			and c.has_node("team") and c.get_node("team").is_enemy($combatants/character.get_node("team"))
+			and "team" in c and c.team.is_enemy($combatants/character.team)
 		):
 			entangle_ship_with_player(c)
 
@@ -132,7 +132,7 @@ func restart_round(rewind_animation: bool = true) -> void:
 		living_team_members[2] = 0
 		for c in $combatants.get_children():
 			if "is_alive" in c and c.is_alive:
-				living_team_members[c.get_node("team").team_id] += 1
+				living_team_members[c.team.team_id] += 1
 	)
 	player_move_tween.chain()
 
@@ -355,9 +355,9 @@ var kill_score: float = 0.
 @export var resource_score_multiplier: float = 500.
 func _on_battle_character_dead(character: BattleCharacter) -> void:
 	if is_replay: return
-	var dead_character_team = character.get_node("team")
+	var dead_character_team = character.team
 	living_team_members[dead_character_team.team_id] -= 1
-	if $combatants/character/team.is_enemy(dead_character_team):
+	if $combatants/character.team.is_enemy(dead_character_team):
 		kill_score += character.starting_health
 	$GUI/score.set_text(str(
 		living_team_members[1], " vs ", living_team_members[2],
@@ -384,7 +384,7 @@ func _on_battle_character_resurrected(character: BattleCharacter) -> void:
 	if is_replay: return
 	if $combatants.has_node("character") and $combatants/character.is_alive:
 		$GUI/restart_round_panel.set_visible(false)
-	living_team_members[character.get_node("team").team_id] += 1
+	living_team_members[character.team.team_id] += 1
 	$GUI/score.set_text(str(
 		living_team_members[1], " vs ", living_team_members[2],
 		" - Score: ", int(kill_score * kill_score_multiplier)

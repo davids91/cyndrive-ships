@@ -6,6 +6,7 @@ signal resurrected(BattleCharacter)
 
 @export var seconds_per_frame: float = 0.25
 @export var max_health: float = 10.
+@export var team: Team = preload("res://resources/player_team.tres")
 
 @onready var health: float = max_health
 

@@ -1,11 +1,8 @@
-class_name Team extends Node2D
+class_name Team extends Resource
 
-var team_id: int = 0
+@export var team_id: int = 0
 var ship_id: int = 0
-var color: Color = Color()
-
-@export var  max_teammates = 10
-@export var radius = 250
+@export var color: Color = Color()
 
 func initialize_with_team(other: Team) -> void:
 	initialize(other.team_id, other.color)
@@ -13,7 +10,7 @@ func initialize_with_team(other: Team) -> void:
 func initialize(team_id__: int, color__):
 	color = color__
 	team_id = team_id__
-	ship_id = team_id__ * max_teammates
+	ship_id = team_id__
 	reassign_ship_id()
 	
 func reassign_ship_id():

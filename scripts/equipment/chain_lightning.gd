@@ -164,7 +164,7 @@ func _raycast_to_position(space_state: PhysicsDirectSpaceState2D, from: Vector2,
 
 	return space_state.intersect_ray(query)
 
-func _is_valid_chain_target(combatant: Node2D, exclude: Array, my_team: Node) -> bool:
+func _is_valid_chain_target(combatant: Node2D, exclude: Array, my_team: Team) -> bool:
 	"""Check if a combatant is a valid chain lightning target."""
 	if not combatant.has_method("accept_damage"):
 		return false
@@ -172,14 +172,14 @@ func _is_valid_chain_target(combatant: Node2D, exclude: Array, my_team: Node) ->
 		return false
 	if combatant.has_method("in_battle") and not combatant.in_battle():
 		return false
-	if my_team != null and combatant.has_node("team"):
-		if not combatant.get_node("team").is_enemy(my_team):
+	if my_team != null and "team" in combatant:
+		if not combatant.team.is_enemy(my_team):
 			return false	
 	return true
 
 func _find_next_chain_target(from_pos: Vector2, exclude: Array) -> Node2D:
 	"""Find the nearest valid chain target within radius."""
-	var my_team = wielder.get_node("team") if wielder.has_node("team") else null
+	var my_team = wielder.team if "team" in wielder else null
 	var candidates: Array[Dictionary] = []
 
 	for combatant in get_tree().get_nodes_in_group("destroyables"):

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Team" load_steps=2 format=3 uid="uid://ym7tr32c2fsa"]
+
+[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="1_m2esa"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_m2esa")
+team_id = 1
+color = Color(1, 1, 1, 0)
+metadata/_custom_type_script = "uid://upxd16rpbdyu"
