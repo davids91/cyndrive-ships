@@ -18,7 +18,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if body != character and "team" in body and not body.team.is_enemy(character.team):
 		ships_within_aura[body] = BattleTimeline.instance.time_msec()
 		if body.has_node("repair_indicator"):
-			body.get_node("repair_indicator").set_visible(true)
+			body.get_node("repair_indicator").set_visible(body.visible)
 
 func _on_body_exited(body: Node2D) -> void:
 	if body.has_node("repair_indicator"):
