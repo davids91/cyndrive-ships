@@ -13,15 +13,15 @@ const visual_lost_lines: Array[String] = [
 	"?????"
 ]
 
-@export_range(0., 1.) var difficuilty_sensor_speed: float = 0.1
-@export_range(0., 1.) var difficuilty_moving_speed: float = 0.1
-@export_range(0., 1.) var difficuilty_laser_speed: float = 0.25
-@export_range(0., 5.) var difficuilty_laser_warning_sec: float = 2.0
+@export_range(0., 1.) var difficulty_sensor_speed: float = 0.1
+@export_range(0., 1.) var difficulty_moving_speed: float = 0.1
+@export_range(0., 1.) var difficulty_laser_speed: float = 0.25
+@export_range(0., 5.) var difficulty_laser_warning_sec: float = 2.0
 @export var goldfish_memory_sec: float = 1.
 @export var search_loop_length_sec: float = 2. * PI
 @export var whirlwind_length_sec: float = 3.5
 @export var whirlwind_speed_rad_per_sec: float = 4. * PI
-@export_range(0., 5.) var difficuilty_whirlwind_warning_sec: float = 2.0
+@export_range(0., 5.) var difficulty_whirlwind_warning_sec: float = 2.0
 
 @onready var focusing_at: Vector2 = get_global_position()
 @onready var moving_to: Vector2 = get_global_position()
@@ -30,7 +30,7 @@ var acquired_target: Node2D = null
 var aiming_to: Vector2 = Vector2.ZERO
 var search_loop_progress: float = 0.
 var time_until_target_drop: float = goldfish_memory_sec
-var time_until_lasers: float = difficuilty_laser_warning_sec
+var time_until_lasers: float = difficulty_laser_warning_sec
 var whirlwind_duration_left_sec: float = 0.
 func _process(delta: float):
 	super(delta)
@@ -62,7 +62,7 @@ func _process_default_mode(delta: float) -> void:
 			focusing_at = change_target_to.get_global_position()
 			aiming_to = get_global_position()
 			$state_display.say(gothcha_lines.pick_random())
-			time_until_lasers = difficuilty_laser_warning_sec
+			time_until_lasers = difficulty_laser_warning_sec
 			if change_target_to.has_method("set_highlight"): change_target_to.set_highlight(true)
 		acquired_target = change_target_to
 	
@@ -75,7 +75,7 @@ func _process_default_mode(delta: float) -> void:
 	if acquired_target:
 		if (acquired_target.get_global_position() - get_global_position()).length() < approx_size:
 			$state_display.exclaim_emote()
-			whirlwind_duration_left_sec = whirlwind_length_sec + difficuilty_whirlwind_warning_sec
+			whirlwind_duration_left_sec = whirlwind_length_sec + difficulty_whirlwind_warning_sec
 			$controller.handle_rotation = false
 			return
 		
@@ -83,10 +83,10 @@ func _process_default_mode(delta: float) -> void:
 		moving_to = lerp(
 			moving_to,
 			(get_global_position() + acquired_target.get_global_position()) * 0.5,
-			difficuilty_moving_speed
+			difficulty_moving_speed
 		)
-		aiming_to = lerp(aiming_to, acquired_target.get_global_position(), difficuilty_laser_speed)
-		focusing_at = lerp(focusing_at, acquired_target.get_global_position(), difficuilty_sensor_speed)
+		aiming_to = lerp(aiming_to, acquired_target.get_global_position(), difficulty_laser_speed)
+		focusing_at = lerp(focusing_at, acquired_target.get_global_position(), difficulty_sensor_speed)
 		if 0. < time_until_lasers:
 			time_until_lasers -= delta
 			acquired_target.set_highlight(
@@ -120,7 +120,7 @@ func _process_default_mode(delta: float) -> void:
 	))
 
 	if approx_size < ((get_global_position() - moving_to)).length():
-		aiming_to = lerp(aiming_to, focusing_at, difficuilty_laser_speed)
+		aiming_to = lerp(aiming_to, focusing_at, difficulty_laser_speed)
 		$controller.process_input_action({
 			"movement_intent": (moving_to - get_global_position()).normalized(),
 			#"boost_intent": false

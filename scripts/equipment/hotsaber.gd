@@ -21,15 +21,17 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	# Handle hotsaber display
-	var i: int = 0
-	for c in get_children(): if not c is Line2D:
-		display_points[i] = c.get_global_position() + c.get_node("pin").get_position()
-		i += 1
-	var smooth_points = catmull_rom_spline(display_points)
-	$outer_line.points = smooth_points
-	$inner_line.points = smooth_points
+	set_visible(wielder.visible)
+	if visible:
+		var i: int = 0
+		for c in get_children(): if not c is Line2D:
+			display_points[i] = c.get_global_position() + c.get_node("pin").get_position()
+			i += 1
+		var smooth_points = catmull_rom_spline(display_points)
+		$outer_line.points = smooth_points
+		$inner_line.points = smooth_points
 	
-	## Add after-effect of hotsabers
+	# Add after-effect of hotsabers
 	if is_shooting:
 		var after_image = [$outer_line.duplicate(), $inner_line.duplicate()]
 		var disappear_tween = create_tween()

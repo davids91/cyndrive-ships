@@ -34,6 +34,7 @@ func _ready() -> void:
 @export var blue_curve_phasing: Curve
 const phase_in_duration_sec: float = 2.
 func phase_in() -> void:
+	$state_display.set_visible(false)
 	$phasing_in_sound.play(0.15)
 	$phase_effect.set_visible(true)
 	create_tween().tween_method(
@@ -42,34 +43,34 @@ func phase_in() -> void:
 				"phase_red", red_curve_phasing.sample(w)
 			),
 		0., 1.,
-		phase_in_duration_sec
+		phase_in_duration_sec * Difficuilty.gameplay_speed
 	)
 	create_tween().tween_method(
 		func(w: float):
 			$phase_effect.get_material().set_shader_parameter("phase_green",
 			green_curve_phasing.sample(w)),
 		0., 1.,
-		phase_in_duration_sec
+		phase_in_duration_sec * Difficuilty.gameplay_speed
 	)
 	create_tween().tween_method(
 		func(w: float):
 			$phase_effect.get_material().set_shader_parameter("phase_blue",
 			blue_curve_phasing.sample(w)),
 		0., 1.,
-		phase_in_duration_sec
+		phase_in_duration_sec * Difficuilty.gameplay_speed
 	)
 	create_tween().tween_method(
 		func(w: float):
 			$phase_effect.get_material().set_shader_parameter("phase_green",
 			green_curve_phasing.sample(w)),
 		0., 1.,
-		phase_in_duration_sec
+		phase_in_duration_sec * Difficuilty.gameplay_speed
 	)
 	var zoom_phase_tween = create_tween()
 	zoom_phase_tween.tween_method(
 		func(w: float): $phase_effect.get_material().set_shader_parameter("zoom", w),
 		0., 1.,
-		phase_in_duration_sec
+		phase_in_duration_sec * Difficuilty.gameplay_speed
 	).set_ease(Tween.EASE_OUT)
 	zoom_phase_tween.tween_callback(func() :
 		$skin.set_visible(true)

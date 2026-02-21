@@ -136,6 +136,7 @@ func _ready() -> void:
 	$speech_bubble.position = speech_buble_offset
 
 func _process(_delta):
+	set_visible(get_parent().visible)
 	if top_level:
 		set_global_position(get_parent().get_global_position() + mini_health_bar_offset)
 

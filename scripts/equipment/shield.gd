@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 	set_global_position(get_parent().get_global_position())
 	set_global_rotation(shield_angle)
 
-	$display.set_visible(shield_active)
+	$display.set_visible(shield_active and get_parent().visible)
 	$shield_shape.disabled =  not shield_active
 	if shield_active: # Apply shield fluctuation distortions
 		shield_angle = lerp_angle(shield_angle, shield_angle_target, shield_speed)

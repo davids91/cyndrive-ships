@@ -84,7 +84,7 @@ func _process(delta: float) -> void:
 	if dialogue_finished: return
 
 	# decide to even do anything or not based on the actual delay and line progress
-	delay_remaining -= delta
+	delay_remaining -= delta / Difficulty.gameplay_speed
 
 	if delay_remaining > 0. or abs(current_line) >= dialog_lines.size():
 		return
