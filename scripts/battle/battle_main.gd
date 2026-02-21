@@ -15,11 +15,6 @@ var infinite_ammo_active: bool = false
 var infinite_boost_active: bool = false
 
 func _ready():
-	if FeatureFlags.is_enabled("dialogue"):
-		$dialogue.connect(
-			"dialogue_signal_0",
-			func(): $GUI/keybindings_panel.set_visible(true)
-		)
 	laupeerium_bar.bars_remaining = UIEnergyBar.max_bars
 	$combatants/character/controller.stop()
 	$combatants/character/cam.make_current()
@@ -40,19 +35,6 @@ func _ready():
 	if $combatants/character.has_node("weapon_slot"):
 		$combatants/character/weapon_slot.weapon_changed.connect(_on_weapon_changed)
 	$combatants/player_carrier.phase_in()
-
-var debug_lines = []
-func display_line(from: Vector2, to: Vector2, color: Color) -> void:
-	debug_lines.push_back({"from": from, "to": to, "color": color})
-	var erasure_tween = create_tween()
-	erasure_tween.tween_interval(0.8)
-	erasure_tween.tween_callback(func() : debug_lines.pop_front())
-	erasure_tween.chain()
-	queue_redraw()
-	
-func _draw() -> void:
-	for line in debug_lines:
-		draw_line(line.from, line.to, line.color, 3.0)
 
 func reset_game() -> void:
 	for explosion in $mush.get_children():
@@ -93,7 +75,6 @@ func restart_round(rewind_animation: bool = true) -> void:
 			if "pause_control" in combatant:
 				combatant.resume_control()
 		$timeline.reset()
-		debug_lines.clear()
 		queue_redraw()
 		$GUI/defeat.set_visible(false)
 		$GUI/victory.set_visible(false)
@@ -123,7 +104,6 @@ func restart_round(rewind_animation: bool = true) -> void:
 				combatant.resume_control()
 		$GUI/rewind_effects.set_visible(false)
 		$timeline.reset()
-		debug_lines.clear()
 		queue_redraw()
 		$GUI/defeat.set_visible(false)
 		$GUI/victory.set_visible(false)
@@ -149,7 +129,7 @@ func _process(delta):
 	var display_time: float = BattleTimeline.instance.time_msec()
 	var total_seconds: int = int(display_time / 1000.0)
 	var minutes: int = int(total_seconds / 60.0)
-	$GUI/time.set_text("%d:%02d" % [minutes, total_seconds % 60])
+	$GUI.set_time(minutes, total_seconds)
 
 	# Countdown to battle start
 	if 0 < init_countdown_sec:
@@ -157,6 +137,8 @@ func _process(delta):
 		$GUI/score.set_text("%0.3f" % init_countdown_sec)
 		if init_countdown_sec <= 0:
 			$combatants/character.set_visible(true)
+			$combatants/character/temporal_recorder.start_recording()
+			$combatants/player_carrier/temporal_recorder.start_recording()
 			for combatant in $combatants.get_children():
 				combatant.resume_control()
 			$timeline.reset()
@@ -312,12 +294,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)
 
 	if event.is_action_pressed("replay") and just_pressed and 0 < current_laupeerium:
-		$combatants/player_carrier.phase_in()
-		#if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:
-			#reverse_tap_count += 1
-		#reverse_last_tap_at = Time.get_ticks_msec()
-		#reverse_being_held = true
-		#$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
+		if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:
+			reverse_tap_count += 1
+		reverse_last_tap_at = Time.get_ticks_msec()
+		reverse_being_held = true
+		$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
 	if event.is_action_released("replay"):
 		reverse_being_held = false

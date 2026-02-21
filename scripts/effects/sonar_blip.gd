@@ -1,7 +1,6 @@
 class_name SonarBlip extends Node2D
 
-const lifetime_sec: float = 1.
-
+var lifetime_sec: float = 1.
 var parent: Node2D = null
 var target: Node2D = null
 var parent_offset: int = 0
@@ -29,7 +28,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if target == null or parent == null:
-		queue_free()		
+		queue_free()
 		return
 	look_at(target.global_position)
 	lifetime_remaining -= delta

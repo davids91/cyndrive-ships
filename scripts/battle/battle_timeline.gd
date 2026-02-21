@@ -28,6 +28,15 @@ func _process(delta: float) -> void:
 		time_accrued_msec += delta * 1000.
 		time_accrued_usec += int(delta * 1000000.)
 
+# Set the current time as 0 without emitting a round reset signal
+func checkpoint() -> void:
+	time_accrued_usec = 0
+	time_accrued_msec = 0.0
+	_time_flow = TimeFlow.FORWARD
+	player_timeline_start_msec = Time.get_ticks_msec()
+	player_timeline_start_usec = Time.get_ticks_usec()
+	player_rewind_amount_sec = 0.
+
 ## Resetting sets the relative timestamp to be of the current time, and restarts the battle
 func reset() -> void:
 	time_accrued_usec = 0

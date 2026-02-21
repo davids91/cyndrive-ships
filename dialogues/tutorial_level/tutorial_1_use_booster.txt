@@ -1,2 +1,6 @@
-#[c2]I won't make it in time#[t200]. . .
-#[t]Wonder what the "booster" does?
+#[c0]Congratulations, you made it to the start.
+#[c1]This is what your best attempt's going to be yet!
+#[s0]#[c0]Huh..? Uhm.. right, the movement test..
+There will be a time limit for each mark! Are you ready?#[p1500]
+#[d0]#[c2]I won't make it in time#[t200]. . .
+#[d0]#[t]Wonder what the "booster" does?

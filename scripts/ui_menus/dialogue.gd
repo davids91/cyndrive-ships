@@ -16,15 +16,21 @@ signal dialouge_finished()
 @export var seconds_per_letter: float = 0.025
 @export var seconds_after_each_line: float = 1.5
 @export_file("*.txt") var dialog: String = ""
-@export var dialogue_signals_count: int = 0
 @export var dialogue_conditionals: Array[bool] = []
+@export var is_dialogue_active: bool = false
 
 @onready var dialog_lines: PackedStringArray = FileAccess.open(dialog, FileAccess.READ).get_as_text().split("\n")
+
+func start() -> void:
+	current_line = 0
+	current_line_text = _parse_line(dialog_lines[0])
+	dialogue_in_progress = true
+	dialogText.text = ""
 
 var line_pauses: Dictionary = {}
 var line_signal_index_values: Dictionary = {}
 var line_tempo_changes: Dictionary = {}
-func parse_token(token:String, at_index: int) -> bool:
+func _parse_token(token:String, at_index: int) -> bool:
 	if token[0] == 'd': # Disable line by condition
 		var condition_index: int = int(token.substr(1))
 		var condition = abs(condition_index) < dialogue_conditionals.size() and dialogue_conditionals[condition_index]
@@ -46,7 +52,7 @@ func parse_token(token:String, at_index: int) -> bool:
 	return true
 
 # Parses tokens from the line and sets internal state based on them
-func parse_line(line: String)-> String:
+func _parse_line(line: String)-> String:
 	line_pauses.clear()
 	line_tempo_changes.clear()
 	line_signal_index_values.clear()
@@ -59,7 +65,7 @@ func parse_line(line: String)-> String:
 		var token_end = remaining_text.find("]")
 
 		# Do not continue with parsing the dialogue depending on the output of the tokens
-		if not parse_token(remaining_text.substr(0, token_end), parsed_text.length() + 1):
+		if not _parse_token(remaining_text.substr(0, token_end), parsed_text.length() + 1):
 			return parsed_text
 		remaining_text = remaining_text.substr(token_end + 1)
 		next_token_start = remaining_text.find("#[")
@@ -72,16 +78,16 @@ func _init() -> void:
 		add_user_signal("dialogue_signal_" + str(sig))
 
 func _ready() -> void:
-	current_line_text = parse_line(dialog_lines[0])
+	current_line_text = _parse_line(dialog_lines[0])
 
-@onready var dialogue_finished: bool = false
+@onready var dialogue_in_progress: bool = false
 var current_letter: int = 0
 var current_line: int = 0
 var current_line_text: String = ""
 var current_tempo: float = seconds_per_letter
 var delay_remaining: float = 0.0
 func _process(delta: float) -> void:
-	if dialogue_finished: return
+	if not dialogue_in_progress: return
 
 	# decide to even do anything or not based on the actual delay and line progress
 	delay_remaining -= delta / Difficulty.gameplay_speed
@@ -95,14 +101,14 @@ func _process(delta: float) -> void:
 		current_line_text = ""
 		while current_line_text.is_empty() and abs(current_line) < dialog_lines.size():
 			current_line += 1
-			if abs(current_line) < dialog_lines.size(): current_line_text = parse_line(dialog_lines[current_line])
+			if abs(current_line) < dialog_lines.size(): current_line_text = _parse_line(dialog_lines[current_line])
 		if ( # dialog completed or the last line of the dialog is empty
 			current_line >= dialog_lines.size()
 			or(current_line == dialog_lines.size() - 1 and dialog_lines[current_line].strip_edges() == "")
 		):
 			$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to continue..")
 			$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(true)
-			dialogue_finished = true
+			dialogue_in_progress = false
 			return
 
 
@@ -128,15 +134,16 @@ func _process(delta: float) -> void:
 var skip_shown: bool = false
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
-		if dialogue_finished or skip_shown: _on_continue_pressed()
+		if is_dialogue_active and (not dialogue_in_progress or skip_shown): _on_continue_pressed()
 		else:
 			skip_shown = true
 			$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to skip..")
 			$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(true)
 
 func _on_continue_pressed() -> void:
+	is_dialogue_active = false
 	current_tempo = seconds_per_letter
-	dialogue_finished = true
+	dialogue_in_progress = false
 	self.visible = false
 	skip_shown = false
 	$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to continue..")

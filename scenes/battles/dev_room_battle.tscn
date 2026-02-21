@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://b3trh6sc7bkeq"]
+[gd_scene load_steps=42 format=4 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_6u6au"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_s1gvo"]
@@ -26,7 +26,7 @@
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="18_54bea"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_ickrk"]
 [ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="20_qgsjp"]
-[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="21_v2rvo"]
+[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="21_jqfa8"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="26_jqfa8"]
 [ext_resource type="Script" uid="uid://q8tuye0tisu7" path="res://scripts/battle/time_slower.gd" id="27_ib23l"]
 
@@ -82,6 +82,13 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
 
+[sub_resource type="Resource" id="Resource_snune"]
+resource_local_to_scene = true
+script = ExtResource("21_jqfa8")
+team_id = 1
+color = Color(1, 1, 1, 0)
+metadata/_custom_type_script = "uid://upxd16rpbdyu"
+
 [sub_resource type="Resource" id="Resource_rwtbh"]
 script = ExtResource("9_25tx2")
 metadata/_custom_type_script = "uid://cud6a5voxneed"
@@ -108,6 +115,7 @@ metadata/_edit_horizontal_guides_ = [426.0]
 
 [node name="player_input" type="Node2D" parent="."]
 script = ExtResource("2_s1gvo")
+input_disabled = false
 metadata/_custom_type_script = "uid://hldxmbsg8w6t"
 
 [node name="timeline" type="Node" parent="."]
@@ -161,7 +169,7 @@ expand_mode = 3
 
 [node name="dialogue" parent="." instance=ExtResource("19_ickrk")]
 dialog = "res://dialogues/tutorial_level/tutorial_4_well_be_in_touch_boss_arrives.txt"
-dialogue_signals_count = 1
+is_dialogue_active = true
 
 [node name="FeatureFlaggedNode" type="Node" parent="dialogue"]
 script = ExtResource("20_qgsjp")
@@ -247,7 +255,8 @@ blue_curve_phasing = SubResource("Curve_1rdfn")
 visible = false
 position = Vector2(1581, -2512)
 rotation = 1.570289
-team = ExtResource("21_v2rvo")
+is_player = true
+team = SubResource("Resource_snune")
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0
 max_health = 22.0

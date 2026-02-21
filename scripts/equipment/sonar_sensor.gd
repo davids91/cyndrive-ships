@@ -21,21 +21,21 @@ func _physics_process(delta: float) -> void:
 
 	# Check for node collisions
 	force_shapecast_update()
-	for i in range(get_collision_count()):	# prevent re-firing on each tick while colliding remains true
+	for i in range(get_collision_count()): # prevent re-firing on each tick while colliding remains true
 		var collider = get_collider(i)
+		# Do not show invisible objects
+		if not collider.visible or not "in_battle" in collider or not collider.in_battle(): continue
 		if not blips.has(collider.get_instance_id()) or null == blips[collider.get_instance_id()]:
 			blips[collider.get_instance_id()] = add_blip(collider)
 			continue
 		blips[collider.get_instance_id()].reinvigorate()
 
 func add_blip(collider: Object) -> Node2D:
-	if "in_battle" in collider and not collider.in_battle():
-		return # only add blip for objects in the current battle 
-
+	var blip_lifetime: float = 1. if not "sonar_blip_lifetime" in collider else collider.sonar_blip_lifetime
+	var coll_color: Color = Color.WEB_GRAY
 	if "team" in collider:
-		var coll_color = collider.team.color
-		if collider.team.team_id == 1: # team 1 is the player!
-			coll_color = Color.LIME
-		return display_node.add_display_object(self, blip_radius, collider, coll_color)
-	else:
-		return display_node.add_display_object(self, blip_radius, collider, Color.WEB_GRAY)
+		# team 1 is the player! 
+		if collider.team.team_id == 1: coll_color = Color.LIME
+		else: coll_color = collider.team.color
+	if "blip_color" in collider: coll_color = collider.blip_color
+	return display_node.add_display_object(self, blip_radius, collider, coll_color, blip_lifetime)

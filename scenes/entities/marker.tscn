@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://dh7roqtbhf7vh"]
+
+[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="1_j16y2"]
+[ext_resource type="Script" uid="uid://bip8323ol78dj" path="res://scripts/effects/marker.gd" id="1_xi422"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xi422"]
+radius = 213.51
+
+[node name="marker" type="Area2D"]
+script = ExtResource("1_xi422")
+
+[node name="target_arrow" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_j16y2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xi422")

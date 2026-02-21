@@ -21,6 +21,7 @@ func stop() -> void:
 	internal_force = Vector2()
 	last_intent = Vector2()
 	current_impulse = Vector2()
+	intent_direction = Vector2()
 
 var current_impulse: Vector2 = Vector2()
 func apply_impulse(impulse: Vector2) -> void:

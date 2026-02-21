@@ -294,6 +294,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="state_display" parent="." node_paths=PackedStringArray("skin") instance=ExtResource("36_ei2dj")]
+visible = false
 skin = NodePath("../skin")
 
 [connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]

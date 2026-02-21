@@ -5,7 +5,9 @@ signal dead(BattleCharacter)
 signal resurrected(BattleCharacter)
 signal boost_energy_updated(new_energy_level: float)
 signal weapon_energy_updated(new_energy_level: float)
+signal phased_in()
 
+@export var is_player: bool = false
 @export var approx_size: float = 100.
 @export var team: Team = preload("res://resources/player_team.tres")
 @export var color: Color = Color.from_rgba8(0,0,0,0)
@@ -75,6 +77,7 @@ func phase_in() -> void:
 	zoom_phase_tween.tween_callback(func() :
 		$skin.set_visible(true)
 		$state_display.visible = true
+		phased_in.emit()
 	)
 	zoom_phase_tween.chain()
 
@@ -138,9 +141,6 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 		var tween = create_tween()
 		tween.tween_method(func(value): clone.set_burn_percentage(value), 0.0, 1.0, 0.3)
 		tween.finished.connect(func(): clone.queue_free())
-		# DEBUG LINES FOR MOTION CORRECTION
-		get_parent().get_parent().display_line(transform.get_origin(), snapshot["transform"].get_origin(), debug_color)
-		# DEBUG LINES FOR MOTION CORRECTION
 
 func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 	ship_explosion = null

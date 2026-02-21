@@ -67,8 +67,9 @@ func set_health_percentage(percentage: float) -> void:
 		)
 	prev_health = percentage
 
-func add_display_object(parent: Node2D, parent_offset: int, target: Node2D, p_color: Color) -> Node2D:
+func add_display_object(parent: Node2D, parent_offset: int, target: Node2D, p_color: Color, lifetime_sec: float = 1.) -> Node2D:
 	if not visible: return null
 	var sonar_blip = SONAR_BLIP_SCENE.instantiate()
+	sonar_blip.lifetime_sec = lifetime_sec
 	sonar_blip.init(parent, parent_offset, target, p_color)
 	return sonar_blip

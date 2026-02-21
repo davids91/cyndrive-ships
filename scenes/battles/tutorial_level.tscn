@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://cer054lhx4edf"]
+[gd_scene load_steps=33 format=4 uid="uid://cer054lhx4edf"]
 
 [ext_resource type="Script" uid="uid://bc2ashwmpmgd5" path="res://scripts/battle/tutorial_level.gd" id="1_aby8t"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_rvnqy"]
@@ -16,7 +16,12 @@
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="9_k4vxh"]
 [ext_resource type="Shape2D" uid="uid://bbuubnw2b6ne4" path="res://resources/target_assist_shape.tres" id="9_rvnqy"]
 [ext_resource type="Texture2D" uid="uid://bnmuvyy2lsbhk" path="res://textures/ui/icons/map_icon.png" id="10_fh4lj"]
-[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="12_k4vxh"]
+[ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="11_fh4lj"]
+[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="12_by8vi"]
+[ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/entities/player_carrier_bottom.png" id="13_xxhjm"]
+[ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/entities/player_carrier_top.png" id="14_46lbi"]
+[ext_resource type="PackedScene" uid="uid://dh7roqtbhf7vh" path="res://scenes/entities/marker.tscn" id="18_2soyj"]
+[ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_2soyj"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xxhjm"]
 texture = ExtResource("6_by8vi")
@@ -40,6 +45,43 @@ texture = ExtResource("6_by8vi")
 [sub_resource type="TileSet" id="TileSet_46lbi"]
 sources/0 = SubResource("TileSetAtlasSource_xxhjm")
 
+[sub_resource type="Resource" id="Resource_e50ek"]
+script = ExtResource("6_xw3hl")
+texture = ExtResource("13_xxhjm")
+scale = Vector2(1, 1)
+rotation = 0.0
+z_index = -5
+metadata/_custom_type_script = "uid://cud6a5voxneed"
+
+[sub_resource type="Resource" id="Resource_mpb26"]
+script = ExtResource("6_xw3hl")
+texture = ExtResource("14_46lbi")
+scale = Vector2(1, 1)
+rotation = 0.0
+metadata/_custom_type_script = "uid://cud6a5voxneed"
+
+[sub_resource type="Curve" id="Curve_l3ay5"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 387.30502), 0.0, -286.33978, 0, 0, Vector2(0.62785864, 259.64706), -680.9095, -680.9095, 0, 0, Vector2(0.7546778, 9.17395), -1497.7778, -1497.7778, 0, 0, Vector2(0.8128898, 1), -3281.3196, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_g8yy2"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0.00831601, 340.0395), 0.0, -25.619877, 0, 0, Vector2(0.4760915, 345.66812), -525.49896, -525.49896, 0, 0, Vector2(0.6881497, 198.2428), 0.0, 0.0, 0, 0, Vector2(0.91268194, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.95634097, 1), -2265.3918, 198.92365, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_45v6q"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Resource" id="Resource_lhduc"]
+resource_local_to_scene = true
+script = ExtResource("12_by8vi")
+team_id = 1
+color = Color(1, 1, 1, 0)
+metadata/_custom_type_script = "uid://upxd16rpbdyu"
+
 [sub_resource type="Resource" id="Resource_rwtbh"]
 script = ExtResource("6_xw3hl")
 metadata/_custom_type_script = "uid://cud6a5voxneed"
@@ -52,7 +94,6 @@ script = ExtResource("1_aby8t")
 
 [node name="player_input" type="Node2D" parent="."]
 script = ExtResource("2_rvnqy")
-input_disabled = false
 metadata/_custom_type_script = "uid://hldxmbsg8w6t"
 
 [node name="timeline" type="Node" parent="."]
@@ -67,8 +108,8 @@ modulate = Color(1, 1, 1, 0.54901963)
 tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
 tile_set = SubResource("TileSet_46lbi")
 script = ExtResource("7_2soyj")
-map_extent = Rect2(-500, -2000, 7500, 7500)
-monitor_nodes = [NodePath("../../debris"), NodePath("../../combatants")]
+map_extent = Rect2(500, -5000, 7500, 7500)
+monitor_nodes = [NodePath("../../markers"), NodePath("../../combatants")]
 icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
 
 [node name="area" type="Panel" parent="GUI/minimap"]
@@ -102,10 +143,22 @@ texture = ExtResource("10_fh4lj")
 
 [node name="combatants" type="Node" parent="."]
 
+[node name="player_carrier" parent="combatants" groups=["complex_collision_shapes"] instance=ExtResource("11_fh4lj")]
+position = Vector2(1690, -2699)
+approx_size = 770.0
+skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_e50ek"), SubResource("Resource_mpb26")])
+starting_health = 500.0
+max_health = 500.0
+red_curve_phasing = SubResource("Curve_l3ay5")
+green_curve_phasing = SubResource("Curve_g8yy2")
+blue_curve_phasing = SubResource("Curve_45v6q")
+
 [node name="character" parent="combatants" instance=ExtResource("5_6jemn")]
+visible = false
 position = Vector2(1581, -2512)
 rotation = 1.570289
-team = ExtResource("12_k4vxh")
+is_player = true
+team = SubResource("Resource_lhduc")
 skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0
 max_health = 22.0
@@ -115,10 +168,10 @@ mass = 100.0
 zoom = Vector2(0.5, 0.5)
 
 [node name="sonar_sensor" type="ShapeCast2D" parent="combatants/character"]
-visible = false
 shape = SubResource("ConvexPolygonShape2D_fabql")
 target_position = Vector2(0, 0)
 collision_mask = 3
+collide_with_areas = true
 script = ExtResource("8_3mfok")
 rotation_speed = 0.05
 
@@ -132,6 +185,52 @@ script = ExtResource("9_k4vxh")
 
 [node name="mush" type="Node" parent="."]
 
-[node name="debris" type="Node" parent="."]
+[node name="markers" type="Node" parent="."]
+
+[node name="marker" parent="markers" instance=ExtResource("18_2soyj")]
+visible = false
+position = Vector2(1784, 461)
+
+[node name="marker2" parent="markers" instance=ExtResource("18_2soyj")]
+visible = false
+position = Vector2(15072, -5698)
+
+[node name="marker3" parent="markers" instance=ExtResource("18_2soyj")]
+visible = false
+position = Vector2(10902, -5035)
+
+[node name="marker4" parent="markers" instance=ExtResource("18_2soyj")]
+visible = false
+position = Vector2(6400, -4198)
+
+[node name="marker5" parent="markers" instance=ExtResource("18_2soyj")]
+visible = false
+position = Vector2(3189, -4111)
+
+[node name="dialogues" type="Node" parent="."]
+
+[node name="intro" parent="dialogues" instance=ExtResource("19_2soyj")]
+visible = false
+dialog = "res://dialogues/tutorial_level/tutorial_0_greeting.txt"
+is_dialogue_active = true
+
+[node name="boost" parent="dialogues" instance=ExtResource("19_2soyj")]
+visible = false
+dialog = "res://dialogues/tutorial_level/tutorial_1_use_booster.txt"
+dialogue_conditionals = Array[bool]([false])
 
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
+[connection signal="rewind_started" from="timeline" to="combatants/player_carrier" method="pause_control"]
+[connection signal="rewind_started" from="timeline" to="combatants/character" method="pause_control"]
+[connection signal="rewind_stopped" from="timeline" to="combatants/player_carrier" method="resume_control"]
+[connection signal="rewind_stopped" from="timeline" to="combatants/character" method="resume_control"]
+[connection signal="round_reset" from="timeline" to="combatants/player_carrier" method="respawn"]
+[connection signal="round_reset" from="timeline" to="combatants/character" method="respawn"]
+[connection signal="boost_energy_updated" from="combatants/character" to="." method="_on_character_boost_energy_updated"]
+[connection signal="body_entered" from="markers/marker" to="." method="_on_marker_body_entered"]
+[connection signal="body_entered" from="markers/marker2" to="." method="_on_marker_2_body_entered"]
+[connection signal="body_entered" from="markers/marker3" to="." method="_on_marker_3_body_entered"]
+[connection signal="body_entered" from="markers/marker4" to="." method="_on_marker_4_body_entered"]
+[connection signal="body_entered" from="markers/marker5" to="." method="_on_marker_5_body_entered"]
+[connection signal="dialouge_finished" from="dialogues/intro" to="." method="_on_intro_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/boost" to="." method="_on_boost_dialouge_finished"]

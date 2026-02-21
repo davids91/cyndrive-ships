@@ -69,9 +69,7 @@ Q
 E
 Space
 R(triple press)
-R(long press)
-8
-9"
+R(long press)"
 label_settings = SubResource("LabelSettings_1rdfn")
 horizontal_alignment = 2
 autowrap_mode = 2
