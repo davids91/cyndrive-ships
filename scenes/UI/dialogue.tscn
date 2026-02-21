@@ -27,6 +27,12 @@ size = Vector2(100, 100)
 
 [node name="dialogue" type="CanvasLayer"]
 script = ExtResource("1_3n4vj")
+portraits = null
+seconds_per_letter = null
+seconds_after_each_line = null
+dialog = null
+dialogue_signals_count = null
+dialogue_conditionals = null
 
 [node name="control" type="Control" parent="."]
 layout_mode = 3

@@ -115,7 +115,6 @@ script = ExtResource("3_tlx8b")
 
 [node name="TimeSlower" type="Node" parent="."]
 script = ExtResource("27_ib23l")
-game_speed = 0.6
 
 [node name="parallax_background" parent="." instance=ExtResource("5_osmje")]
 
@@ -237,7 +236,6 @@ skin_idx = 0
 [node name="player_carrier" parent="combatants" groups=["complex_collision_shapes"] instance=ExtResource("8_fe3c8")]
 position = Vector2(1690, -2699)
 approx_size = 770.0
-team = ExtResource("21_v2rvo")
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_e50ek"), SubResource("Resource_mpb26")])
 starting_health = 500.0
 max_health = 500.0

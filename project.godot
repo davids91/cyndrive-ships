@@ -19,6 +19,7 @@ config/size/mode=0
 [autoload]
 
 FeatureFlags="*res://scripts/feature_flags.gd"
+Difficuilty="*res://scripts/battle/difficuilty.gd"
 
 [display]
 

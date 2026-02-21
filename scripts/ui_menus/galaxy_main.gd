@@ -5,14 +5,14 @@ extends Node2D
 var speed = star_speed
 var angle: float = 0.
 func _process(delta_time: float) -> void:
-	angle += speed * delta_time
+	angle += speed * delta_time / Difficulty.gameplay_speed
 
 	# Update the stars
 	$StarParticles.get_process_material().set_shader_parameter("angle", angle);
 
 	# Update scene selection
 	for s in $scenes.get_children():
-		s.get_node("orbitable").angle += star_speed * delta_time
+		s.get_node("orbitable").angle += star_speed * delta_time / Difficulty.gameplay_speed
 
 func _on_dev_room_button_scene_selected() -> void:
 	get_tree().change_scene_to_packed(preload("res://scenes/battles/dev_room_battle.tscn"))
@@ -37,3 +37,7 @@ func _on_next_button_pressed() -> void:
 
 func _on_next_button_pressed_2() -> void:
 	$guides_cam.offset = $time_travel_guide.position
+
+
+func _on_difficulty_slider_value_changed(value: float) -> void:
+	Difficulty.gameplay_speed = value

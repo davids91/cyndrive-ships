@@ -7,11 +7,11 @@
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="4_x6ffi"]
 [ext_resource type="PackedScene" uid="uid://d4ak0rrpifxgt" path="res://scenes/UI/level_select_button.tscn" id="5_fmtwf"]
 [ext_resource type="Texture2D" uid="uid://d3obqqch3a2aj" path="res://textures/guides/movement.png" id="7_lwv00"]
-[ext_resource type="Texture2D" uid="uid://dotnn8onb8pvb" path="res://textures/ui/panels/arrow_left_normal.png" id="8_inn82"]
+[ext_resource type="Texture2D" uid="uid://bvtrmu41jxkg1" path="res://textures/ui/panels/arrow_left_normal.png" id="8_inn82"]
 [ext_resource type="Texture2D" uid="uid://bfvp5p5grrl11" path="res://textures/guides/time_travel.png" id="8_ntfcv"]
 [ext_resource type="Texture2D" uid="uid://bjoyf0ua6fhj8" path="res://textures/guides/weapons.png" id="9_4esuy"]
-[ext_resource type="Texture2D" uid="uid://ybpbok333pu5" path="res://textures/ui/panels/arrow_left_pressed.png" id="9_8bcf2"]
-[ext_resource type="Texture2D" uid="uid://dw0ybrnqqhi58" path="res://textures/ui/panels/arrow_left_hover.png" id="10_r47se"]
+[ext_resource type="Texture2D" uid="uid://sd8khq65nsx3" path="res://textures/ui/panels/arrow_left_pressed.png" id="9_8bcf2"]
+[ext_resource type="Texture2D" uid="uid://ds7lgrc5c7dj" path="res://textures/ui/panels/arrow_left_hover.png" id="10_r47se"]
 
 [sub_resource type="Gradient" id="Gradient_7lfv1"]
 
@@ -78,6 +78,28 @@ fill_to = Vector2(0, 0)
 script = ExtResource("1_m3hme")
 
 [node name="main_cam" type="Camera2D" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_left = 153.0
+offset_top = -294.0
+offset_right = 665.0
+offset_bottom = -271.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Difficuilty"
+vertical_alignment = 1
+
+[node name="difficulty_slider" type="HSlider" parent="HBoxContainer"]
+self_modulate = Color(0, 0.6500001, 1, 1)
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 0.001
+max_value = 1.0
+step = 0.01
+value = 0.601
 
 [node name="scenes" type="Node" parent="."]
 
@@ -252,6 +274,7 @@ position = Vector2(-1215.0005, 927)
 scale = Vector2(2.9902334, 2.9902334)
 texture = SubResource("GradientTexture2D_8bcf2")
 
+[connection signal="value_changed" from="HBoxContainer/difficulty_slider" to="." method="_on_difficulty_slider_value_changed"]
 [connection signal="pressed" from="scenes/dev_room_button" to="." method="_on_dev_room_button_scene_selected"]
 [connection signal="pressed" from="scenes/mr_mustle_battle" to="." method="_on_mr_mustle_battle_pressed"]
 [connection signal="pressed" from="scenes/tutorial_level_button" to="." method="_on_tutorial_level_button_scene_selected"]

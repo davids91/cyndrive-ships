@@ -153,7 +153,7 @@ func _process(delta):
 
 	# Countdown to battle start
 	if 0 < init_countdown_sec:
-		init_countdown_sec = max(init_countdown_sec - delta, 0)
+		init_countdown_sec = max(init_countdown_sec - delta / Difficuilty.gameplay_speed, 0)
 		$GUI/score.set_text("%0.3f" % init_countdown_sec)
 		if init_countdown_sec <= 0:
 			$combatants/character.set_visible(true)
@@ -358,7 +358,7 @@ func _on_battle_character_dead(character: BattleCharacter) -> void:
 	var dead_character_team = character.team
 	living_team_members[dead_character_team.team_id] -= 1
 	if $combatants/character.team.is_enemy(dead_character_team):
-		kill_score += character.starting_health
+		kill_score += character.starting_health * Difficuilty.gameplay_speed
 	$GUI/score.set_text(str(
 		living_team_members[1], " vs ", living_team_members[2],
 		" - Score: ", int(kill_score * kill_score_multiplier)
