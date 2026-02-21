@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://6w1xfuis808w"]
+[gd_scene load_steps=24 format=3 uid="uid://6w1xfuis808w"]
 
 [ext_resource type="Script" uid="uid://wt4f85n5mn7s" path="res://scripts/ui_menus/galaxy_main.gd" id="1_m3hme"]
 [ext_resource type="Shader" uid="uid://beksqhxqmaqvw" path="res://shaders/galaxy.gdshader" id="2_i4jmc"]
@@ -6,6 +6,12 @@
 [ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="3_kdehn"]
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="4_x6ffi"]
 [ext_resource type="PackedScene" uid="uid://d4ak0rrpifxgt" path="res://scenes/UI/level_select_button.tscn" id="5_fmtwf"]
+[ext_resource type="Texture2D" uid="uid://d3obqqch3a2aj" path="res://textures/guides/movement.png" id="7_lwv00"]
+[ext_resource type="Texture2D" uid="uid://dotnn8onb8pvb" path="res://textures/ui/panels/arrow_left_normal.png" id="8_inn82"]
+[ext_resource type="Texture2D" uid="uid://bfvp5p5grrl11" path="res://textures/guides/time_travel.png" id="8_ntfcv"]
+[ext_resource type="Texture2D" uid="uid://bjoyf0ua6fhj8" path="res://textures/guides/weapons.png" id="9_4esuy"]
+[ext_resource type="Texture2D" uid="uid://ybpbok333pu5" path="res://textures/ui/panels/arrow_left_pressed.png" id="9_8bcf2"]
+[ext_resource type="Texture2D" uid="uid://dw0ybrnqqhi58" path="res://textures/ui/panels/arrow_left_hover.png" id="10_r47se"]
 
 [sub_resource type="Gradient" id="Gradient_7lfv1"]
 
@@ -55,8 +61,23 @@ shader_parameter/pulse_inverse_speed = 3000
 shader_parameter/distortion_strength = 1.0
 shader_parameter/color_base = Color(0.93, 0.6, 0.3, 1)
 
+[sub_resource type="Gradient" id="Gradient_inn82"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.54022986, 0.5724138, 0.59770113, 0.6436782)
+colors = PackedColorArray(0.19, 0.35149997, 0.76, 0.3882353, 0.19, 0.35149997, 0.76, 1, 0.061999995, 0.13226666, 0.31, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8bcf2"]
+gradient = SubResource("Gradient_inn82")
+width = 512
+height = 512
+fill = 1
+fill_from = Vector2(0.4957265, 0.5)
+fill_to = Vector2(0, 0)
+
 [node name="main_menu" type="Node2D"]
 script = ExtResource("1_m3hme")
+
+[node name="main_cam" type="Camera2D" parent="."]
 
 [node name="scenes" type="Node" parent="."]
 
@@ -72,7 +93,7 @@ offset_right = 341.0
 offset_bottom = -71.32
 label_text = "Dev Room"
 
-[node name="Node" type="Node" parent="scenes/dev_room_button"]
+[node name="feature_flag" type="Node" parent="scenes/dev_room_button"]
 script = ExtResource("3_kdehn")
 flag_name = "dev_room"
 
@@ -88,7 +109,7 @@ offset_right = -263.0
 offset_bottom = 81.68
 label_text = "Visit Mr. Mustle"
 
-[node name="Node" type="Node" parent="scenes/mr_mustle_battle"]
+[node name="feature_flag" type="Node" parent="scenes/mr_mustle_battle"]
 script = ExtResource("3_kdehn")
 flag_name = "mr_mustle"
 
@@ -105,6 +126,20 @@ offset_bottom = -102.0
 grow_horizontal = 1
 grow_vertical = 1
 label_text = "Tutorial"
+
+[node name="guides_button" parent="scenes" instance=ExtResource("5_fmtwf")]
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -106.0
+offset_top = -133.0
+offset_right = 22.0
+offset_bottom = -5.0
+grow_horizontal = 1
+grow_vertical = 1
+label_text = "Guides"
 
 [node name="StarParticles" type="GPUParticles2D" parent="."]
 position = Vector2(0, 1)
@@ -124,8 +159,106 @@ offset_right = 64.0
 offset_bottom = 64.0
 mouse_filter = 2
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="guides_cam" type="Camera2D" parent="."]
+zoom = Vector2(0.895, 0.895)
+
+[node name="movement_guide" type="Sprite2D" parent="."]
+position = Vector2(-16384, 0)
+texture = ExtResource("7_lwv00")
+
+[node name="next_button" type="TextureButton" parent="movement_guide"]
+offset_left = -919.0
+offset_top = 432.0
+offset_right = -663.0
+offset_bottom = 576.0
+texture_normal = ExtResource("8_inn82")
+texture_pressed = ExtResource("9_8bcf2")
+texture_hover = ExtResource("10_r47se")
+
+[node name="back_button" type="TextureButton" parent="movement_guide"]
+offset_left = -1021.0
+offset_top = 358.0
+offset_right = -765.0
+offset_bottom = 502.0
+texture_normal = ExtResource("8_inn82")
+texture_pressed = ExtResource("9_8bcf2")
+texture_hover = ExtResource("10_r47se")
+flip_h = true
+flip_v = true
+
+[node name="decor" type="Sprite2D" parent="movement_guide"]
+z_index = -1
+position = Vector2(-1062.0004, 927)
+scale = Vector2(2.9902334, 2.9902334)
+texture = SubResource("GradientTexture2D_8bcf2")
+
+[node name="time_travel_guide" type="Sprite2D" parent="."]
+position = Vector2(-10000, 0)
+texture = ExtResource("8_ntfcv")
+
+[node name="next_button" type="TextureButton" parent="time_travel_guide"]
+offset_left = -898.0
+offset_top = 426.0
+offset_right = -642.0
+offset_bottom = 570.0
+texture_normal = ExtResource("8_inn82")
+texture_pressed = ExtResource("9_8bcf2")
+texture_hover = ExtResource("10_r47se")
+
+[node name="back_button" type="TextureButton" parent="time_travel_guide"]
+offset_left = -1000.0
+offset_top = 339.0
+offset_right = -744.0
+offset_bottom = 483.0
+texture_normal = ExtResource("8_inn82")
+texture_pressed = ExtResource("9_8bcf2")
+texture_hover = ExtResource("10_r47se")
+flip_h = true
+flip_v = true
+
+[node name="decor" type="Sprite2D" parent="time_travel_guide"]
+z_index = -1
+position = Vector2(-1062.0004, 927)
+scale = Vector2(2.9902334, 2.9902334)
+texture = SubResource("GradientTexture2D_8bcf2")
+
+[node name="weapons_guide" type="Sprite2D" parent="."]
+position = Vector2(-4096, 0)
+texture = ExtResource("9_4esuy")
+
+[node name="next_button" type="TextureButton" parent="weapons_guide"]
+offset_left = -1063.0
+offset_top = 434.0
+offset_right = -807.0
+offset_bottom = 578.0
+texture_normal = ExtResource("8_inn82")
+texture_pressed = ExtResource("9_8bcf2")
+texture_hover = ExtResource("10_r47se")
+
+[node name="back_button" type="TextureButton" parent="weapons_guide"]
+offset_left = -1170.0
+offset_top = 336.0
+offset_right = -914.0
+offset_bottom = 480.0
+texture_normal = ExtResource("8_inn82")
+texture_pressed = ExtResource("9_8bcf2")
+texture_hover = ExtResource("10_r47se")
+flip_h = true
+flip_v = true
+
+[node name="decor" type="Sprite2D" parent="weapons_guide"]
+z_index = -1
+position = Vector2(-1215.0005, 927)
+scale = Vector2(2.9902334, 2.9902334)
+texture = SubResource("GradientTexture2D_8bcf2")
 
 [connection signal="pressed" from="scenes/dev_room_button" to="." method="_on_dev_room_button_scene_selected"]
 [connection signal="pressed" from="scenes/mr_mustle_battle" to="." method="_on_mr_mustle_battle_pressed"]
 [connection signal="pressed" from="scenes/tutorial_level_button" to="." method="_on_tutorial_level_button_scene_selected"]
+[connection signal="pressed" from="scenes/guides_button" to="." method="_on_guides_button_pressed"]
+[connection signal="pressed" from="movement_guide/next_button" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="movement_guide/back_button" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="time_travel_guide/next_button" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="time_travel_guide/back_button" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="weapons_guide/next_button" to="." method="_on_next_button_pressed_2"]
+[connection signal="pressed" from="weapons_guide/back_button" to="." method="_on_guides_button_pressed"]
