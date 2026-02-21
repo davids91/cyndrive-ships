@@ -3,12 +3,15 @@ extends Control #enables a pause menu that completley stops the rest of the game
 var game_is_paused = false
 
 @onready var battle: Node2D = $"../.."
+@onready var pause_page: VBoxContainer = %PausePage
+@onready var options_page: VBoxContainer = %OptionsPage
 
 func _ready() -> void:	
 	self.hide()	
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause_menu") and !game_is_paused:
+		pause_page.show() ## make sure we didnt leave the options page open
 		self.show()
 		self.process_mode = Node.PROCESS_MODE_ALWAYS #keeps menu working while rest of game is paused
 		game_is_paused = true		
@@ -42,3 +45,10 @@ func _on_restart_round_btn_pressed() -> void:
 
 func _on_main_menu_btn_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/galaxy.tscn")
+
+
+func _on_options_menu_btn_pressed() -> void:
+	options_page.show()
+
+func _on_options_page_exited() -> void:
+	pause_page.show()

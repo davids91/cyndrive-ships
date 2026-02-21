@@ -224,15 +224,19 @@ color_ramp = SubResource("Gradient_akfac")
 
 [node name="screaming" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_fh5k0")
+bus = &"Ships"
 
 [node name="thruster_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_cjpna")
+bus = &"Ships"
 
 [node name="explosion_sound" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_2h7vh")
+bus = &"Weapons"
 
 [node name="booster_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("13_y7m1c")
+bus = &"Ships"
 
 [node name="target_arrow" type="Sprite2D" parent="."]
 visible = false

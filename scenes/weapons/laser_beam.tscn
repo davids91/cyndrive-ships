@@ -25,6 +25,7 @@ stream = SubResource("AudioStreamRandomizer_xsqp8")
 volume_db = -30.0
 attenuation = 0.3186402
 max_polyphony = 5
+bus = &"Weapons"
 
 [node name="beam_line" type="Line2D" parent="."]
 top_level = true

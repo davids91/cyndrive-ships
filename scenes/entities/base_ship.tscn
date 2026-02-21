@@ -221,6 +221,7 @@ stream = SubResource("AudioStreamRandomizer_i0gp7")
 volume_db = -30.0
 attenuation = 0.3186402
 max_polyphony = 5
+bus = &"Ships"
 
 [node name="thruster_fx" type="CPUParticles2D" parent="."]
 position = Vector2(-45, 0)
@@ -256,12 +257,15 @@ color_ramp = SubResource("Gradient_0dpix")
 
 [node name="thruster_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("23_aa58f")
+bus = &"Ships"
 
 [node name="explosion_sound" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_7qyni")
+bus = &"Weapons"
 
 [node name="booster_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("29_hg731")
+bus = &"Ships"
 
 [node name="temporal_recorder" type="Node2D" parent="."]
 script = ExtResource("30_5j1ue")

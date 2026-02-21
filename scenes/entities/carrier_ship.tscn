@@ -193,9 +193,11 @@ booster_strength = 50.0
 stream = ExtResource("10_5fyrk")
 pitch_scale = 0.5
 autoplay = true
+bus = &"Ships"
 
 [node name="explosion_sound" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_d16w7")
+bus = &"Weapons"
 
 [node name="mine_attachement_aura" type="Area2D" parent="."]
 light_mask = 2
@@ -237,6 +239,7 @@ visible = false
 [node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("19_0uqlh")
 volume_db = -2.0
+bus = &"Ships"
 
 [connection signal="body_entered" from="mine_attachement_aura" to="mine_attachement_aura" method="_on_body_entered"]
 [connection signal="body_exited" from="mine_attachement_aura" to="mine_attachement_aura" method="_on_body_exited"]
