@@ -88,3 +88,8 @@ script = ExtResource("15_60f2a")
 [node name="debris" type="Node" parent="."]
 
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
+[connection signal="round_reset" from="timeline" to="GUI" method="_on_timeline_round_reset"]
+[connection signal="round_reset" from="timeline" to="combatants/boss" method="respawn"]
+[connection signal="round_reset" from="timeline" to="combatants/character" method="respawn"]
+[connection signal="dead" from="combatants/boss" to="." method="_on_character_dead"]
+[connection signal="dead" from="combatants/character" to="." method="_on_character_dead"]

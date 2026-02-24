@@ -35,4 +35,4 @@ func _process(delta: float) -> void:
 	if lifetime_remaining <= 0.:
 		queue_free()
 	else:
-		modulate.a = lifetime_remaining / lifetime_sec
+		modulate.a = min(lifetime_remaining / lifetime_sec, target.modulate.a)

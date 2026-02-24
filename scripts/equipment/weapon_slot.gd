@@ -2,6 +2,7 @@ class_name WeaponSlot extends Node
 
 signal weapon_changed(slot: int)
 
+@export var disabled: bool = false
 @export var weapons: Array[BattleShipWeapon]
 var current_slot: int = 0
 
@@ -34,10 +35,12 @@ func get_energy_cost() -> float:
 	else: return 1.
 
 func process_input_action(action: Dictionary) -> void:
+	if disabled: return
 	if abs(current_slot) < weapons.size() and null != weapons[current_slot]:
 		weapons[current_slot].process_input_action(action)
 
 var is_shooting: bool = false
 func _process(_delta: float) -> void:
+	if disabled: return
 	if abs(current_slot) < weapons.size() and null != weapons[current_slot]:
 		is_shooting = weapons[current_slot].is_shooting

@@ -21,7 +21,7 @@ const visual_lost_lines: Array[String] = [
 @export var search_loop_length_sec: float = 2. * PI
 @export var whirlwind_length_sec: float = 3.5
 @export var whirlwind_speed_rad_per_sec: float = 4. * PI
-@export_range(0., 5.) var difficulty_whirlwind_warning_sec: float = 2.0
+@export_range(0., 5.) var difficulty_whirlwind_warning_sec: float = 0.5
 
 @onready var focusing_at: Vector2 = get_global_position()
 @onready var moving_to: Vector2 = get_global_position()
@@ -140,7 +140,10 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 
 var change_target_to: Node2D = null
 func _on_player_detection_body_entered(body: Node2D) -> void:
-	if not acquired_target and "team" in body and body.team.is_enemy(team):
+	if(
+		not acquired_target and "team" in body and body.team.is_enemy(team)
+		and body.has_method("in_battle") and body.in_battle()
+	):
 		change_target_to = body
 
 func _on_player_detection_body_exited(body: Node2D) -> void:

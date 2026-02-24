@@ -153,7 +153,7 @@ func _process(delta):
 	if is_replay:
 		var view_rectangle: Rect2 = Rect2()
 		var characters_in_battle = 0
-		for c: BattleCharacter in $combatants.get_children():
+		for c: Node2D in $combatants.get_children():
 			if c.in_battle():
 				view_rectangle = view_rectangle.expand(c.get_global_position())
 				characters_in_battle += 1
@@ -384,7 +384,7 @@ func _on_replay_button_pressed() -> void:
 		if c.has_node("ai_control"):
 			c.ai_fallback = false
 			c.get_node("ai_control").set_disabled(true)
-		entangle_ship_with_player(c)
+		if c is BattleCharacter: entangle_ship_with_player(c)
 		if c.has_node("target_assist"):
 			c.get_node("target_assist").set_disabled(true)
 	restart_round(false)

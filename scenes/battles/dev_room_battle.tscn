@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=4 uid="uid://b3trh6sc7bkeq"]
+[gd_scene load_steps=41 format=4 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_6u6au"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_s1gvo"]
@@ -28,7 +28,6 @@
 [ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="20_qgsjp"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="21_jqfa8"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="26_jqfa8"]
-[ext_resource type="Script" uid="uid://q8tuye0tisu7" path="res://scripts/battle/time_slower.gd" id="27_ib23l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fws0x"]
 texture = ExtResource("7_w0t2q")
@@ -121,12 +120,10 @@ metadata/_custom_type_script = "uid://hldxmbsg8w6t"
 [node name="timeline" type="Node" parent="."]
 script = ExtResource("3_tlx8b")
 
-[node name="TimeSlower" type="Node" parent="."]
-script = ExtResource("27_ib23l")
-
 [node name="parallax_background" parent="." instance=ExtResource("5_osmje")]
 
 [node name="GUI" parent="." instance=ExtResource("6_b62lj")]
+visible = false
 
 [node name="minimap" type="TileMapLayer" parent="GUI" node_paths=PackedStringArray("monitor_nodes", "icon_template")]
 modulate = Color(1, 1, 1, 0.54901963)
@@ -287,7 +284,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy"]
 rotation = 3.14159
@@ -299,7 +296,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy2"]
 rotation = 3.14159
@@ -311,7 +308,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy3"]
 rotation = 3.14159
@@ -323,7 +320,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy4"]
 rotation = 3.14159
@@ -335,7 +332,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy5"]
 rotation = 3.14159
@@ -347,7 +344,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy6"]
 position = Vector2(163.99951, 194.00041)
@@ -360,7 +357,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy7"]
 position = Vector2(-1822.9983, -665.00464)
@@ -373,7 +370,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy8"]
 position = Vector2(265.99988, 43.000675)
@@ -386,7 +383,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy9"]
 rotation = 3.14159
@@ -398,7 +395,7 @@ rotation = 3.14159
 team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 10.0
+starting_health = 20.0
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy10"]
 rotation = 3.14159

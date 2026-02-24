@@ -21,3 +21,7 @@ func _on_replay_button_pressed() -> void:
 
 func _on_reset_game_pressed() -> void:
 	reset_game.emit()
+
+
+func _on_timeline_round_reset() -> void:
+	pass # Replace with function body.

@@ -36,6 +36,7 @@ func apply_shockwave(delta: float) -> void:
 	var root = get_tree().get_root()
 
 	for container_path in ["battle/combatants", "battle/debris"]:
+		if not root.has_node(container_path): continue
 		for combatant in root.get_node(container_path).get_children():
 			var hit_normal = (combatant.get_global_position() - get_global_position())
 			var hit_distance = hit_normal.length()
@@ -49,7 +50,6 @@ func apply_shockwave(delta: float) -> void:
 				combatant.accept_damage(explosion_damage * delta)
 
 func _process(delta: float) -> void:
-
 	# grab from game time manager
 	# subtract from spawn time to get fx age
 	currentAgeSec = (BattleTimeline.instance.time_msec() / 1000.) - spawnTimestampSec

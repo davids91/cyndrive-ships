@@ -17,15 +17,21 @@ signal dialouge_finished()
 @export var seconds_after_each_line: float = 1.5
 @export_file("*.txt") var dialog: String = ""
 @export var dialogue_conditionals: Array[bool] = []
+@export var unskippable_signals: Array[int] = []
 @export var is_dialogue_active: bool = false
 
 @onready var dialog_lines: PackedStringArray = FileAccess.open(dialog, FileAccess.READ).get_as_text().split("\n")
 
+var signals_shot: Dictionary = {}
+
 func start() -> void:
+	signals_shot.clear()
 	current_line = 0
 	current_line_text = _parse_line(dialog_lines[0])
-	dialogue_in_progress = true
 	dialogText.text = ""
+	is_dialogue_active = true
+	dialogue_in_progress = true
+	set_visible(true)
 
 var line_pauses: Dictionary = {}
 var line_signal_index_values: Dictionary = {}
@@ -118,6 +124,7 @@ func _process(delta: float) -> void:
 
 	# Emit a signal based on the tokens within the line
 	if line_signal_index_values.has(current_letter):
+		signals_shot[line_signal_index_values[current_letter]] = true
 		emit_signal("dialogue_signal_" + str(line_signal_index_values[current_letter]))
 
 	# Set displayed text and prepare next letter
@@ -144,8 +151,12 @@ func _on_continue_pressed() -> void:
 	is_dialogue_active = false
 	current_tempo = seconds_per_letter
 	dialogue_in_progress = false
-	self.visible = false
+	set_visible(false)
 	skip_shown = false
 	$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to continue..")
 	$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(false)
+	for signal_idx in unskippable_signals:
+		if not signals_shot.has(signal_idx):
+			emit_signal("dialogue_signal_" + str(signal_idx))
+	signals_shot.clear()
 	dialouge_finished.emit()

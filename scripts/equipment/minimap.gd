@@ -11,7 +11,7 @@ func _process(_delta: float) -> void:
 		if (not node.in_battle() or not node.visible) and minimap_icons.has(node):
 			minimap_icons[node].queue_free()
 			minimap_icons.erase(node)
-		elif node.in_battle() and node.visible and not minimap_icons.has(node):
+		elif node.in_battle() and node.visible and 0. < node.modulate.a and not minimap_icons.has(node):
 			minimap_icons[node] = icon_template[i].duplicate()
 			if "team" in node and node.team.team_id == 1: # team 1 is the player!
 				minimap_icons[node].self_modulate = Color.LIME

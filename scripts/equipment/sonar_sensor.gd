@@ -33,6 +33,7 @@ func _physics_process(delta: float) -> void:
 func add_blip(collider: Object) -> Node2D:
 	var blip_lifetime: float = 1. if not "sonar_blip_lifetime" in collider else collider.sonar_blip_lifetime
 	var coll_color: Color = Color.WEB_GRAY
+	coll_color.a = collider.modulate.a
 	if "team" in collider:
 		# team 1 is the player! 
 		if collider.team.team_id == 1: coll_color = Color.LIME

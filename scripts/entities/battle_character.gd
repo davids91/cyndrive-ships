@@ -1,8 +1,8 @@
 class_name BattleCharacter extends CharacterBody2D
 
 signal health_changed(percentage: float)
-signal dead(BattleCharacter)
-signal resurrected(BattleCharacter)
+signal dead(itsme: BattleCharacter)
+signal resurrected(itsme: BattleCharacter)
 signal boost_energy_updated(new_energy_level: float)
 signal weapon_energy_updated(new_energy_level: float)
 signal phased_in()
@@ -98,7 +98,7 @@ func get_snapshot() -> Dictionary:
 
 var debug_color: Color = Color.from_hsv(randf(), 1., 1., 1.)
 func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001) -> void:
-	if "ai_target" in snapshot and has_node("ai_control"):
+	if "ai_target" in snapshot and snapshot["ai_target"] and has_node("ai_control"):
 		$ai_control.chosen_target = snapshot["ai_target"]
 	if "held_mine" in snapshot and not null == snapshot["held_mine"]:
 		held_mine = snapshot["held_mine"]
@@ -304,6 +304,7 @@ func respawn():
 		$replayer.reset()
 		$replayer.start_replay()
 	if has_node("weapon_slot"): $weapon_slot.reset()
+	if has_node("energy_systems"): $energy_systems.reset()
 	if has_node("ai_control"):
 		$ai_control.set_disabled(
 			(has_node("replayer") and $replayer.is_within_current_time())
@@ -352,12 +353,13 @@ func process_input_action(action: Dictionary) -> void:
 		if "boost_initiated" in action and not $energy_systems.has_boost_energy():
 			if not _infinite_boost_enabled():
 				action.erase("boost_initiated")
-		
-		if "action_direction" in action and not $energy_systems.has_weapon_energy():
-			if not _infinite_ammo_enabled():
-				action.erase("action_direction")
-				action["action_released"] = true
-		if "acquired_target_position" in action and not $energy_systems.has_weapon_energy():
+		if(
+			("action_direction" in action or "acquired_target_position" in action)
+			and not $energy_systems.has_weapon_energy()
+			and not _infinite_ammo_enabled()
+		):
+			action.erase("action_direction")
+			action.erase("acquired_target_position")
 			action["action_released"] = true
 
 	if("action_direction" in action and has_node("target_assist") and $target_assist.is_target_locked()):

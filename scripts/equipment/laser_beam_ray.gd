@@ -40,12 +40,13 @@ func process_input_action(action: Dictionary) -> void:
 			func(pos): acquired_target = pos,
 			acquired_target, action["acquired_target_position"], target_time_sec
 		)
-
 	was_shooting = is_shooting
-	is_shooting = (
-		"acquired_target_position" in action and "action_direction" in action
-		and 0. < action["action_direction"].length()
-	)
+	if "action_direction" in action:
+		is_shooting = (
+			"acquired_target_position" in action and "action_direction" in action
+			and 0. < action["action_direction"].length()
+		)
+	if "action_released" in action and action["action_released"]: is_shooting = false
 	if is_shooting:
 		$sound.play()
 		if not was_shooting: # Laser alpha and width animation

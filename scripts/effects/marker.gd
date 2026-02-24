@@ -1,4 +1,4 @@
-extends Area2D
+class_name BattleMarker extends Area2D
 
 # Minimap color
 @export var color: Color = Color.ORANGE_RED

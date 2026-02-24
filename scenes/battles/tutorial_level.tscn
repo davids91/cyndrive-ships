@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://cer054lhx4edf"]
+[gd_scene load_steps=39 format=4 uid="uid://cer054lhx4edf"]
 
 [ext_resource type="Script" uid="uid://bc2ashwmpmgd5" path="res://scripts/battle/tutorial_level.gd" id="1_aby8t"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_rvnqy"]
@@ -18,8 +18,11 @@
 [ext_resource type="Texture2D" uid="uid://bnmuvyy2lsbhk" path="res://textures/ui/icons/map_icon.png" id="10_fh4lj"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="11_fh4lj"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="12_by8vi"]
+[ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="12_g8yy2"]
 [ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/entities/player_carrier_bottom.png" id="13_xxhjm"]
+[ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="14_45v6q"]
 [ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/entities/player_carrier_top.png" id="14_46lbi"]
+[ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="15_jmtss"]
 [ext_resource type="PackedScene" uid="uid://dh7roqtbhf7vh" path="res://scenes/entities/marker.tscn" id="18_2soyj"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_2soyj"]
 
@@ -44,6 +47,20 @@ texture = ExtResource("6_by8vi")
 
 [sub_resource type="TileSet" id="TileSet_46lbi"]
 sources/0 = SubResource("TileSetAtlasSource_xxhjm")
+
+[sub_resource type="LabelSettings" id="LabelSettings_fh4lj"]
+font_size = 45
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="Resource" id="Resource_f0g0v"]
+script = ExtResource("6_xw3hl")
+texture = ExtResource("14_45v6q")
+metadata/_custom_type_script = "uid://cud6a5voxneed"
+
+[sub_resource type="Resource" id="Resource_at2n2"]
+script = ExtResource("6_xw3hl")
+texture = ExtResource("15_jmtss")
+metadata/_custom_type_script = "uid://cud6a5voxneed"
 
 [sub_resource type="Resource" id="Resource_e50ek"]
 script = ExtResource("6_xw3hl")
@@ -108,7 +125,7 @@ modulate = Color(1, 1, 1, 0.54901963)
 tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
 tile_set = SubResource("TileSet_46lbi")
 script = ExtResource("7_2soyj")
-map_extent = Rect2(500, -5000, 7500, 7500)
+map_extent = Rect2(500, -6000, 20000, 15000)
 monitor_nodes = [NodePath("../../markers"), NodePath("../../combatants")]
 icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
 
@@ -141,7 +158,41 @@ position = Vector2(347, 198)
 scale = Vector2(0.515625, 0.515625)
 texture = ExtResource("10_fh4lj")
 
+[node name="fade_to_black" type="ColorRect" parent="GUI"]
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="try_again" type="Label" parent="GUI"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -164.52002
+offset_top = -179.11499
+offset_right = 46.48059
+offset_bottom = -116.11481
+grow_horizontal = 2
+grow_vertical = 2
+text = "Try again!"
+label_settings = SubResource("LabelSettings_fh4lj")
+
 [node name="combatants" type="Node" parent="."]
+
+[node name="disabled_droid" parent="combatants" instance=ExtResource("5_6jemn")]
+visible = false
+position = Vector2(1601, -3200)
+rotation = 3.14159
+team = ExtResource("12_g8yy2")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
 
 [node name="player_carrier" parent="combatants" groups=["complex_collision_shapes"] instance=ExtResource("11_fh4lj")]
 position = Vector2(1690, -2699)
@@ -189,6 +240,7 @@ script = ExtResource("9_k4vxh")
 
 [node name="marker" parent="markers" instance=ExtResource("18_2soyj")]
 visible = false
+modulate = Color(1, 1, 1, 0)
 position = Vector2(1784, 461)
 
 [node name="marker2" parent="markers" instance=ExtResource("18_2soyj")]
@@ -205,7 +257,7 @@ position = Vector2(6400, -4198)
 
 [node name="marker5" parent="markers" instance=ExtResource("18_2soyj")]
 visible = false
-position = Vector2(3189, -4111)
+position = Vector2(2294, -3364)
 
 [node name="dialogues" type="Node" parent="."]
 
@@ -219,6 +271,18 @@ visible = false
 dialog = "res://dialogues/tutorial_level/tutorial_1_use_booster.txt"
 dialogue_conditionals = Array[bool]([false])
 
+[node name="destroy" parent="dialogues" instance=ExtResource("19_2soyj")]
+visible = false
+dialog = "res://dialogues/tutorial_level/tutorial_2_destroy_captured_droid.txt"
+dialogue_conditionals = Array[bool]([false])
+unskippable_signals = Array[int]([0])
+
+[node name="destroy_again" parent="dialogues" instance=ExtResource("19_2soyj")]
+visible = false
+dialog = "res://dialogues/tutorial_level/tutorial_3_restore_captured_drone.txt"
+dialogue_conditionals = Array[bool]([false])
+unskippable_signals = Array[int]([0])
+
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
 [connection signal="rewind_started" from="timeline" to="combatants/player_carrier" method="pause_control"]
 [connection signal="rewind_started" from="timeline" to="combatants/character" method="pause_control"]
@@ -226,6 +290,7 @@ dialogue_conditionals = Array[bool]([false])
 [connection signal="rewind_stopped" from="timeline" to="combatants/character" method="resume_control"]
 [connection signal="round_reset" from="timeline" to="combatants/player_carrier" method="respawn"]
 [connection signal="round_reset" from="timeline" to="combatants/character" method="respawn"]
+[connection signal="dead" from="combatants/disabled_droid" to="." method="_on_disabled_droid_dead"]
 [connection signal="boost_energy_updated" from="combatants/character" to="." method="_on_character_boost_energy_updated"]
 [connection signal="body_entered" from="markers/marker" to="." method="_on_marker_body_entered"]
 [connection signal="body_entered" from="markers/marker2" to="." method="_on_marker_2_body_entered"]
@@ -234,3 +299,5 @@ dialogue_conditionals = Array[bool]([false])
 [connection signal="body_entered" from="markers/marker5" to="." method="_on_marker_5_body_entered"]
 [connection signal="dialouge_finished" from="dialogues/intro" to="." method="_on_intro_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/boost" to="." method="_on_boost_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/destroy" to="." method="_on_destroy_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/destroy_again" to="." method="_on_destroy_dialouge_finished"]

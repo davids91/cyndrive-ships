@@ -1,20 +1,19 @@
-[gd_scene load_steps=38 format=3 uid="uid://dmn3a6pdbqk1q"]
+[gd_scene load_steps=37 format=3 uid="uid://dmn3a6pdbqk1q"]
 
 [ext_resource type="Script" uid="uid://daxgfc8sbv7ql" path="res://scripts/entities/tutorial_boss.gd" id="1_icc1o"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_at5o7"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_icc1o"]
-[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="3_icc1o"]
-[ext_resource type="Texture2D" uid="uid://bjqh4bsj71n0y" path="res://textures/entities/white ship.png" id="3_opo5f"]
+[ext_resource type="Texture2D" uid="uid://d08wg3qlw4vqo" path="res://textures/entities/white ship.png" id="3_opo5f"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="4_opo5f"]
 [ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="5_cjpna"]
 [ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="6_y7m1c"]
 [ext_resource type="AudioStream" uid="uid://dajttw71kitgt" path="res://audio/explosion_001.wav" id="7_2h7vh"]
 [ext_resource type="AudioStream" uid="uid://besa8dwtnwqwy" path="res://audio/explosion_002.wav" id="8_0ahru"]
 [ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="8_cjpna"]
-[ext_resource type="AudioStream" uid="uid://diwj1nt0a3kx0" path="res://audio/boss_screaming.wav" id="8_fh5k0"]
+[ext_resource type="AudioStream" uid="uid://bxfkppefqurjq" path="res://audio/boss_screaming.wav" id="8_fh5k0"]
 [ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="9_n7j6k"]
 [ext_resource type="AudioStream" uid="uid://bokt2np2jc03c" path="res://audio/engine_booster.wav" id="13_y7m1c"]
-[ext_resource type="Texture2D" uid="uid://dfmfxjw5llgn0" path="res://textures/ui/target.png" id="14_0k8by"]
+[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="14_0k8by"]
 [ext_resource type="PackedScene" uid="uid://dtoto6h8f44xc" path="res://scenes/weapons/hotsaber.tscn" id="14_jkui1"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="14_tqvju"]
 [ext_resource type="PackedScene" uid="uid://dg5gm8lkvhpfs" path="res://scenes/weapons/laser_beam.tscn" id="16_mcj1n"]
@@ -158,13 +157,12 @@ animations = [{
 
 [node name="boss" type="CharacterBody2D"]
 script = ExtResource("1_icc1o")
-difficuilty_laser_speed = 0.3
 approx_size = 512.0
 color = Color(0, 0, 0, 0)
 skin_layers = Array[ExtResource("2_icc1o")]([SubResource("Resource_cjpna")])
 starting_health = 500.0
 max_health = 500.0
-low_health = 25.0
+low_health = 10.0
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 position = Vector2(-32, 0)
@@ -320,5 +318,6 @@ scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_thtti")
 autoplay = "default"
 
+[connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]
 [connection signal="body_entered" from="player_detection" to="." method="_on_player_detection_body_entered"]
 [connection signal="body_exited" from="player_detection" to="." method="_on_player_detection_body_exited"]

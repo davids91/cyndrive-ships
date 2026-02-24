@@ -90,14 +90,14 @@ void fragment() {
     COLOR = vec4(burned_color.rgb, skin_alpha);
 }"
 
-[sub_resource type="Curve" id="Curve_tpj62"]
+[sub_resource type="Curve" id="Curve_cy11g"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_attt3"]
-curve = SubResource("Curve_tpj62")
+curve = SubResource("Curve_cy11g")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_attt3"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ce6sv"]
 noise_type = 5
 frequency = 0.0188
 fractal_type = 2
@@ -107,7 +107,7 @@ fractal_gain = 2.0
 domain_warp_type = 1
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ei2dj"]
-noise = SubResource("FastNoiseLite_attt3")
+noise = SubResource("FastNoiseLite_ce6sv")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5doxk"]
 resource_local_to_scene = true
@@ -191,6 +191,8 @@ position = Vector2(128, 0)
 
 [node name="energy_systems" type="Node" parent="." node_paths=PackedStringArray("weapon_system")]
 script = ExtResource("7_0nsx8")
+max_weapon = 100.0
+weapon_recharge_per_sec = 15.0
 weapon_system = NodePath("../weapon_slot")
 metadata/_custom_type_script = "uid://cdrsm7mlhnmnm"
 
@@ -205,6 +207,8 @@ energy_cost = 5.0
 
 [node name="laser_beam" parent="." node_paths=PackedStringArray("wielder") instance=ExtResource("11_cy11g")]
 wielder = NodePath("..")
+base_damage = 2.5
+energy_cost = 0.5
 
 [node name="hotsaber" parent="." instance=ExtResource("11_tpj62")]
 
