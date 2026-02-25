@@ -4,3 +4,4 @@
 #[c0]DUDE I decide that!
 #[c2]I can start whenever!
 #[c0]#[t500]...#[t] Thank you for your participation! We'll let you know about the next steps.
+#[c1]Didn't we forget to restore the droid before the battle? Well we might as well just #[s1]#[p0]

@@ -185,7 +185,7 @@ func _physics_process(delta: float) -> void:
 @onready var is_alive: bool = true
 @onready var was_alive: bool = is_alive
 @onready var was_in_battle: bool = in_battle()
-var ship_explosion : ShipExplosion
+var ship_explosion : Explosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 func _process(_delta):
 	# Sync state for being alive and in battle
@@ -226,7 +226,7 @@ func _process(_delta):
 @export var laser_strength: float = 1.
 @export var entanglement_chance: float = 0.05
 var entangled: bool = false
-func accept_damage(strength: float, source: BattleCharacter = null) -> void:
+func accept_damage(strength: float, source: Node = null) -> void:
 	# God mode - player team takes no damage when enabled
 	if FeatureFlags.is_enabled("god_mode"):
 		var battle_main = get_tree().current_scene
@@ -234,11 +234,10 @@ func accept_damage(strength: float, source: BattleCharacter = null) -> void:
 			if team.team_id == 1: return
 
 	if( # Damage from the main controlled character may induce temporal entanglement
-		source != null and source.name == "character" and name != "characters"
+		source != null and source.name == "character" and name != "character"
 		and entanglement_chance >= randf()
 		and not has_node("replayer")
-	):
-		entangled = true
+	): entangled = true
 	health -= max(0., strength)
 	is_alive = 0 < health
 	health_changed.emit(health / starting_health)
@@ -320,10 +319,12 @@ func pause_control() -> void:
 	if has_node("ai_control"): $ai_control.stop()
 
 func resume_control() -> void:
+	if has_node("weapon_slot"):  $weapon_slot.shutdown()
 	$controller.start()
 	if has_node("ai_control"): $ai_control.resume()
 	else: $controller.intent_direction = PlayerInput.instance.current_intent
 
+var disabled_weapons_mask: int = 0x0
 var ready_to_receive_mine: bool = false
 var held_mine: ExplosiveMine = null
 var current_action_direction: Vector2 = Vector2()
@@ -331,8 +332,11 @@ func process_input_action(action: Dictionary) -> void:
 	if not in_battle(): return # cannot process any action while not in battle
 
 	if "weapon_slot" in action and has_node("weapon_slot"):
-		$weapon_slot.select_slot(action["weapon_slot"])
-		action["action_released"] = true
+		if 0 != (disabled_weapons_mask & (0x1 << action["weapon_slot"])):
+			action.erase("weapon_slot") # Do not switch weapon if it's disabled
+		else:
+			$weapon_slot.select_slot(action["weapon_slot"])
+			action["action_released"] = true
 
 	if has_node("state_display"):
 		if "speech_length" in action: $state_display.line_display_length_sec = action["speech_length"]

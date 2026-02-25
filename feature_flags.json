@@ -7,10 +7,6 @@
 		"enabled": false,
 		"description": "Disable all enemy AI - useful for testing weapons"
 	},
-	"pause_menu": {
-		"enabled": true,
-		"description": "Menu for Pausing battle"
-	},
 	"infinite_ammo": {
 		"enabled": true,
 		"description": "Enable infinite ammo toggle (F7 key)"
@@ -23,12 +19,8 @@
 		"enabled": true,
 		"description": "Enable dev room to test weapons and features"
 	},
-	"dialogue": {
-		"enabled": true,
-		"description": "Enable dev room to test weapons and features"
-	},
 	"mr_mustle": {
 		"enabled": true,
-		"description": "Enable dev room to test weapons and features"
+		"description": "Enable dev room to fight with Mr Mustle"
 	}
 }

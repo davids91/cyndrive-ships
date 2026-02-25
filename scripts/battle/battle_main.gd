@@ -116,13 +116,6 @@ func restart_round(rewind_animation: bool = true) -> void:
 	)
 	player_move_tween.chain()
 
-const tap_interval_msec: int = 500
-const short_reverse_hold_time_sec: float = 0.15 # How long to hold down the reverse action to start reversing time
-var reverse_being_held: bool = false
-var reverse_initiated: bool = false
-var reverse_hold_time_sec: float = 0.
-var reverse_tap_count: int = 0
-var reverse_last_tap_at: int = Time.get_ticks_msec()
 var replay_viewport = Rect2()
 func _process(delta):
 	$GUI/debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
@@ -177,44 +170,15 @@ func _process(delta):
 		$combatants/character/cam.zoom.x = current_zoom_value
 		$combatants/character/cam.zoom.y = current_zoom_value
 
-	# Handling Battle restart
-	if (Time.get_ticks_msec() - reverse_last_tap_at) > tap_interval_msec and rewind_battle_laupeerium_cost < current_laupeerium:
-		reverse_tap_count = 0
-	if 2 <= reverse_tap_count:
-		reverse_tap_count = 0
-		restart_round()
-
 	# Handling Timeline reverse
-	if current_laupeerium <= 0.: reverse_being_held = false
-	if reverse_being_held:
-		reverse_hold_time_sec += delta
-		if reverse_hold_time_sec > short_reverse_hold_time_sec:
-			if not reverse_initiated:
-				$GUI/rewind_effects.set_visible(true)
-				create_tween().tween_method(
-					func(w: float): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
-					0., 1., short_reverse_hold_time_sec * 2.
-				)
-			reverse_initiated = true
-			current_laupeerium -= delta
-			laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
-			$timeline.reverse(delta)
-			$GUI/defeat.set_visible(false)
-			$GUI/victory.set_visible(false)
-			$GUI/restart_round_panel.set_visible(false)
-			$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
-	if reverse_initiated:
-		if not reverse_being_held:
-			$timeline.finish_reverse()
-			reverse_hold_time_sec = 0.
-			reverse_initiated = false
-			var rewind_hide_tween = create_tween()
-			rewind_hide_tween.tween_method(
-				func(w: float): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
-				1., 0., short_reverse_hold_time_sec * 2.
-			)
-			rewind_hide_tween.tween_callback(func() : $GUI/rewind_effects.set_visible(false))
-			rewind_hide_tween.chain()
+	if is_rewinding:
+		current_laupeerium -= delta
+		laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
+		$timeline.reverse(delta)
+		$GUI/defeat.set_visible(false)
+		$GUI/victory.set_visible(false)
+		$GUI/restart_round_panel.set_visible(false)
+		$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
 func entangle_ship_with_player(ship: BattleCharacter) -> void:
 	if ship.has_node("replayer") or ship.name == "character": return # Nothing to do when ship is already entangled
@@ -293,15 +257,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("key_bindings") and just_pressed:
 		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)
 
-	if event.is_action_pressed("replay") and just_pressed and 0 < current_laupeerium:
-		if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:
-			reverse_tap_count += 1
-		reverse_last_tap_at = Time.get_ticks_msec()
-		reverse_being_held = true
-		$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
-
-	if event.is_action_released("replay"):
-		reverse_being_held = false
+	#TODO: display rewind animation when reversing
+	#and 0 < current_laupeerium
+	#$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
 	if event.is_action_pressed("zoom_in"):
 		motion_zoom_center *= 0.95
@@ -393,3 +351,30 @@ func _on_replay_button_pressed() -> void:
 	$replay_camera.make_current()
 	$GUI/restart_during_replay.set_visible(true)
 	$GUI/score.set_visible(false)
+
+@export var rewind_animation_transition_sec: float = 0.75
+var is_rewinding: bool = false
+func _on_player_input_time_control_triggered(action: Dictionary) -> void:
+	if "rewind_toggled" in action:
+		if 0. < current_laupeerium:
+			is_rewinding = action["rewind_toggled"]
+			if is_rewinding:
+				$GUI/rewind_effects.set_visible(true)
+				create_tween().tween_method(
+					func(w: float): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+					0., 1., rewind_animation_transition_sec
+				)
+		if not action["rewind_toggled"]:
+			$timeline.finish_reverse()
+			var rewind_hide_tween = create_tween()
+			rewind_hide_tween.tween_method(
+				func(w: float): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+				1., 0., rewind_animation_transition_sec
+			)
+			rewind_hide_tween.tween_callback(func() : $GUI/rewind_effects.set_visible(false))
+			rewind_hide_tween.chain()
+		
+	if "checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]:
+		# Handling Battle restart
+		if rewind_battle_laupeerium_cost <= current_laupeerium:
+			restart_round()

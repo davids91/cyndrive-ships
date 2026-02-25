@@ -1,14 +1,9 @@
-@tool
 extends Node2D
 
 @onready var character: Node = get_parent()
 
 func _ready() -> void:
 	character = get_parent() as BattleCharacter
-
-func _process(_delta: float) -> void:
-	if Engine.is_editor_hint():
-		init_skin(character.skin_layers, character.color)
 
 func set_burn_percentage(percentage: float) -> void:
 	$skin_image.material.set_shader_parameter("burn_percentage", percentage)

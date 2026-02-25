@@ -131,7 +131,7 @@ func phase_in() -> void:
 	super()
 	$screaming.play()
 
-func accept_damage(strength: float, source: BattleCharacter = null) -> void:
+func accept_damage(strength: float, source: Node = null) -> void:
 	if whirlwind_duration_left_sec > 0.: return # Do not accept damage while a hotsaber ball
 	super(strength, source)
 	if source and not acquired_target:

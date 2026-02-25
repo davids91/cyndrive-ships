@@ -46,8 +46,7 @@ func _physics_process(delta: float) -> void:
 			# Only target neutral and enemy characters
 			collider and collider.has_method("set_highlight")
 			and ( # Either the parent doesn't have a team node
-				not "team" in get_parent()
-				or not "team" in collider
+				not "team" in get_parent() or not "team" in collider
 				or collider.team.is_enemy(get_parent().team)# Or collider is an enemy by team assignments
 			) and (
 				target == null

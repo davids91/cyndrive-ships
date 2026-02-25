@@ -35,7 +35,7 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 		health = snapshot["health"]
 		if not was_alive and 0. < health: resurrected.emit(self)
 
-func accept_damage(strength: float, _source: BattleCharacter = null) -> void:
+func accept_damage(strength: float, _source: Node = null) -> void:
 	health = max(0., health - strength)
 	health_changed.emit(health / max_health)
 	if health < 0: dead.emit(self)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://b3trh6sc7bkeq"]
+[gd_scene load_steps=39 format=4 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_6u6au"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_s1gvo"]
@@ -24,8 +24,6 @@
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="16_f4125"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="17_2y2lr"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="18_54bea"]
-[ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_ickrk"]
-[ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="20_qgsjp"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="21_jqfa8"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="26_jqfa8"]
 
@@ -113,6 +111,7 @@ metadata/_edit_horizontal_guides_ = [426.0]
 [node name="replay_camera" type="Camera2D" parent="."]
 
 [node name="player_input" type="Node2D" parent="."]
+visible = false
 script = ExtResource("2_s1gvo")
 input_disabled = false
 metadata/_custom_type_script = "uid://hldxmbsg8w6t"
@@ -123,7 +122,6 @@ script = ExtResource("3_tlx8b")
 [node name="parallax_background" parent="." instance=ExtResource("5_osmje")]
 
 [node name="GUI" parent="." instance=ExtResource("6_b62lj")]
-visible = false
 
 [node name="minimap" type="TileMapLayer" parent="GUI" node_paths=PackedStringArray("monitor_nodes", "icon_template")]
 modulate = Color(1, 1, 1, 0.54901963)
@@ -163,15 +161,6 @@ offset_right = 8.0
 offset_bottom = 8.0
 texture = ExtResource("11_ib23l")
 expand_mode = 3
-
-[node name="dialogue" parent="." instance=ExtResource("19_ickrk")]
-dialog = "res://dialogues/tutorial_level/tutorial_4_well_be_in_touch_boss_arrives.txt"
-is_dialogue_active = true
-
-[node name="FeatureFlaggedNode" type="Node" parent="dialogue"]
-script = ExtResource("20_qgsjp")
-flag_name = "dialogue"
-metadata/_custom_type_script = "uid://cdy0wfjq4rl2c"
 
 [node name="black_hole" parent="." instance=ExtResource("4_7g2yh")]
 position = Vector2(-536, -2386)
@@ -404,6 +393,7 @@ script = ExtResource("18_54bea")
 [node name="mush" type="Node" parent="."]
 
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
+[connection signal="time_control_triggered" from="player_input" to="." method="_on_player_input_time_control_triggered"]
 [connection signal="replay_game" from="GUI" to="." method="_on_replay_button_pressed"]
 [connection signal="reset_game" from="GUI" to="." method="reset_game"]
 [connection signal="restart_round" from="GUI" to="." method="restart_round"]

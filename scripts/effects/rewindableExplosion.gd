@@ -1,5 +1,5 @@
 # an explosion effect you can play forward or backward or pause
-class_name ShipExplosion
+class_name Explosion
 extends Node2D
 
 # optimization: remove from scene if the game time goes to before 
@@ -47,7 +47,7 @@ func apply_shockwave(delta: float) -> void:
 			combatant.apply_impulse(hit_normal * explosion_strength * delta)
 
 			if combatant.has_method("accept_damage"):
-				combatant.accept_damage(explosion_damage * delta)
+				combatant.accept_damage(explosion_damage * delta, self)
 
 func _process(delta: float) -> void:
 	# grab from game time manager

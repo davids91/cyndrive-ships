@@ -1,5 +1,7 @@
 extends Area2D
 
+signal equipped_ship(ship: BattleCharacter)
+
 const mine_scene: PackedScene = preload("res://scenes/weapons/explossive_mine.tscn")
 @onready var level = get_tree().current_scene
 
@@ -34,6 +36,7 @@ func _process(_delta: float) -> void:
 			# TechDebt: Mine shouldn't collide, and BattleDeris doesn't have a reliable method to initiate collision layer values
 			for i in range(32): ship.held_mine.set_collision_layer_value(i, false)
 			ship.held_mine.set_collision_layer_value(ship.held_mine.debris_collision_layer_value, true)
+			equipped_ship.emit(ship)
 
 func _on_body_exited(body: Node2D) -> void:
 	ships_within.erase(body)

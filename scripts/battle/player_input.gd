@@ -2,6 +2,7 @@ extends Node2D
 
 class_name PlayerInput
 
+signal time_control_triggered(action: Dictionary)
 signal action_triggered(action: Dictionary)
 
 static var _instance: PlayerInput = null
@@ -11,16 +12,25 @@ static var instance: PlayerInput:
 
 @export var input_disabled: bool = true
 
+const tap_interval_msec: int = 500
+const short_reverse_hold_time_sec: float = 0.15 # How long to hold down the reverse action to start reversing time
+
 var current_intent: Vector2 = Vector2()
 var current_action_direction: Vector2 = Vector2()
 var is_shooting: bool = false
 var current_acquired_target: Vector2 = Vector2()
+var reverse_being_held: bool = false
+var reverse_initiated: bool = false
+var reverse_hold_time_sec: float = 0.
+var reverse_tap_count: int = 0
+var reverse_last_tap_at: int = Time.get_ticks_msec()
 
 func set_disabled(yesno: bool) -> void:
 	input_disabled = yesno
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	var action = get_action(event)
+	var just_pressed = event.is_pressed() and not event.is_echo()
 
 	if "movement_intent" in action:
 		current_intent += action["movement_intent"]
@@ -39,13 +49,44 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if not was_shooting and is_shooting:
 		action["action_initiated"] = true
 
+	if event.is_action_pressed("replay") and just_pressed:
+		if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:
+			reverse_tap_count += 1
+		reverse_last_tap_at = Time.get_ticks_msec()
+		reverse_being_held = true
+
+	if event.is_action_released("replay"):
+		reverse_being_held = false
+
 	if not input_disabled and not action.is_empty():
 		action_triggered.emit(action)
 
-func _process(_delta: float) -> void:
-	if is_shooting: action_triggered.emit(
-		{"action_direction": current_action_direction}
-	)
+func _process(delta: float) -> void:
+	if input_disabled: return
+
+	# Handling Battle restart
+	var time_control: Dictionary = {}
+	if (Time.get_ticks_msec() - reverse_last_tap_at) > tap_interval_msec:
+		reverse_tap_count = 0
+	if 2 <= reverse_tap_count:
+		reverse_tap_count = 0
+		time_control["checkpoint_reset_triggered"] = true
+
+	# Handling Timeline reverse
+	if reverse_being_held:
+		reverse_hold_time_sec += delta
+		if reverse_hold_time_sec > short_reverse_hold_time_sec:
+			if not reverse_initiated:
+				reverse_initiated = true
+				time_control["rewind_toggled"] = true
+	if reverse_initiated:
+		if not reverse_being_held:
+			time_control["rewind_toggled"] = false
+			reverse_hold_time_sec = 0.
+			reverse_initiated = false
+
+	if not time_control.is_empty(): time_control_triggered.emit(time_control)
+	if is_shooting: action_triggered.emit({"action_direction": current_action_direction})
 
 #	_FORCE_INLINE_ real_t tdotx(const Vector2 &p_v) const { return columns[0][0] * p_v.x + columns[1][0] * p_v.y; }
 static func tdotx(mat, vec):

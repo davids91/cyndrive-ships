@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://cer054lhx4edf"]
+[gd_scene load_steps=40 format=4 uid="uid://cer054lhx4edf"]
 
 [ext_resource type="Script" uid="uid://bc2ashwmpmgd5" path="res://scripts/battle/tutorial_level.gd" id="1_aby8t"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_rvnqy"]
@@ -25,6 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="15_jmtss"]
 [ext_resource type="PackedScene" uid="uid://dh7roqtbhf7vh" path="res://scenes/entities/marker.tscn" id="18_2soyj"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_2soyj"]
+[ext_resource type="Script" uid="uid://cxw7l8tkolluc" path="res://scripts/entities/disabled_droid.gd" id="19_l3ay5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xxhjm"]
 texture = ExtResource("6_by8vi")
@@ -92,14 +93,14 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
 
-[sub_resource type="Resource" id="Resource_lhduc"]
+[sub_resource type="Resource" id="Resource_g8yy2"]
 resource_local_to_scene = true
 script = ExtResource("12_by8vi")
 team_id = 1
 color = Color(1, 1, 1, 0)
 metadata/_custom_type_script = "uid://upxd16rpbdyu"
 
-[sub_resource type="Resource" id="Resource_rwtbh"]
+[sub_resource type="Resource" id="Resource_xxhjm"]
 script = ExtResource("6_xw3hl")
 metadata/_custom_type_script = "uid://cud6a5voxneed"
 
@@ -189,14 +190,17 @@ label_settings = SubResource("LabelSettings_fh4lj")
 visible = false
 position = Vector2(1601, -3200)
 rotation = 3.14159
+script = ExtResource("19_l3ay5")
 team = ExtResource("12_g8yy2")
-color = Color(1, 0, 0, 0.5803922)
+color = null
 skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
-starting_health = 20.0
+starting_health = 10.0
+max_health = 12.0
 
 [node name="player_carrier" parent="combatants" groups=["complex_collision_shapes"] instance=ExtResource("11_fh4lj")]
 position = Vector2(1690, -2699)
 approx_size = 770.0
+color = Color(0, 0, 0, 1)
 skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_e50ek"), SubResource("Resource_mpb26")])
 starting_health = 500.0
 max_health = 500.0
@@ -209,11 +213,10 @@ visible = false
 position = Vector2(1581, -2512)
 rotation = 1.570289
 is_player = true
-team = SubResource("Resource_lhduc")
-skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_rwtbh")])
-starting_health = 20.0
-max_health = 22.0
-mass = 100.0
+team = SubResource("Resource_g8yy2")
+skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_xxhjm")])
+starting_health = 10.0
+max_health = 12.0
 
 [node name="cam" type="Camera2D" parent="combatants/character"]
 zoom = Vector2(0.5, 0.5)
@@ -231,7 +234,7 @@ visible = false
 top_level = true
 shape = ExtResource("9_rvnqy")
 target_position = Vector2(0, 0)
-collision_mask = 3
+collision_mask = 7
 script = ExtResource("9_k4vxh")
 
 [node name="mush" type="Node" parent="."]
@@ -257,7 +260,7 @@ position = Vector2(6400, -4198)
 
 [node name="marker5" parent="markers" instance=ExtResource("18_2soyj")]
 visible = false
-position = Vector2(2294, -3364)
+position = Vector2(2438, -3364)
 
 [node name="dialogues" type="Node" parent="."]
 
@@ -274,16 +277,22 @@ dialogue_conditionals = Array[bool]([false])
 [node name="destroy" parent="dialogues" instance=ExtResource("19_2soyj")]
 visible = false
 dialog = "res://dialogues/tutorial_level/tutorial_2_destroy_captured_droid.txt"
-dialogue_conditionals = Array[bool]([false])
 unskippable_signals = Array[int]([0])
 
-[node name="destroy_again" parent="dialogues" instance=ExtResource("19_2soyj")]
+[node name="restore" parent="dialogues" instance=ExtResource("19_2soyj")]
 visible = false
 dialog = "res://dialogues/tutorial_level/tutorial_3_restore_captured_drone.txt"
 dialogue_conditionals = Array[bool]([false])
 unskippable_signals = Array[int]([0])
 
+[node name="boss_arrives" parent="dialogues" instance=ExtResource("19_2soyj")]
+visible = false
+dialog = "res://dialogues/tutorial_level/tutorial_4_well_be_in_touch_boss_arrives.txt"
+dialogue_conditionals = Array[bool]([false])
+unskippable_signals = Array[int]([0])
+
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
+[connection signal="time_control_triggered" from="player_input" to="." method="_on_player_input_time_control_triggered"]
 [connection signal="rewind_started" from="timeline" to="combatants/player_carrier" method="pause_control"]
 [connection signal="rewind_started" from="timeline" to="combatants/character" method="pause_control"]
 [connection signal="rewind_stopped" from="timeline" to="combatants/player_carrier" method="resume_control"]
@@ -291,7 +300,11 @@ unskippable_signals = Array[int]([0])
 [connection signal="round_reset" from="timeline" to="combatants/player_carrier" method="respawn"]
 [connection signal="round_reset" from="timeline" to="combatants/character" method="respawn"]
 [connection signal="dead" from="combatants/disabled_droid" to="." method="_on_disabled_droid_dead"]
+[connection signal="resurrected" from="combatants/disabled_droid" to="." method="_on_disabled_droid_resurrected"]
+[connection signal="equipped_ship_with_mine" from="combatants/player_carrier" to="." method="_on_player_carrier_equipped_ship_with_mine"]
 [connection signal="boost_energy_updated" from="combatants/character" to="." method="_on_character_boost_energy_updated"]
+[connection signal="boost_energy_updated" from="combatants/character" to="GUI" method="_on_character_boost_energy_updated"]
+[connection signal="weapon_energy_updated" from="combatants/character" to="GUI" method="_on_character_weapon_energy_updated"]
 [connection signal="body_entered" from="markers/marker" to="." method="_on_marker_body_entered"]
 [connection signal="body_entered" from="markers/marker2" to="." method="_on_marker_2_body_entered"]
 [connection signal="body_entered" from="markers/marker3" to="." method="_on_marker_3_body_entered"]
@@ -300,4 +313,5 @@ unskippable_signals = Array[int]([0])
 [connection signal="dialouge_finished" from="dialogues/intro" to="." method="_on_intro_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/boost" to="." method="_on_boost_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/destroy" to="." method="_on_destroy_dialouge_finished"]
-[connection signal="dialouge_finished" from="dialogues/destroy_again" to="." method="_on_destroy_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/restore" to="." method="_on_restore_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/boss_arrives" to="." method="_on_boss_arrives_dialouge_finished"]

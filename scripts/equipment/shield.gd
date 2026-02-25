@@ -41,7 +41,7 @@ func process_input_action(action: Dictionary) -> void:
 	if "action_direction" in action and 0. < action["action_direction"].length():
 		shield_angle_target = action["action_direction"].angle()
 
-func accept_damage(strength: float, _source: BattleCharacter = null) -> void:
+func accept_damage(strength: float, _source: Node = null) -> void:
 	health = max(0., health - strength)
 	_refresh_display()
 
