@@ -1,11 +1,14 @@
-extends Node2D
+extends Control
 
 @export var star_speed: float = 0.005
 
 var speed = star_speed
 var angle: float = 0.
+var hubble_angle: float = 0.
 func _process(delta_time: float) -> void:
 	angle += speed * delta_time / Difficulty.gameplay_speed
+	hubble_angle += delta_time * speed * 100.
+	$Hubble.offset = Vector2(sin(hubble_angle), cos(hubble_angle)) * 3.
 
 	# Update the stars
 	$StarParticles.get_process_material().set_shader_parameter("angle", angle);

@@ -27,6 +27,7 @@ domain_warp_type = 1
 noise = SubResource("FastNoiseLite_sti4k")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gcdep"]
+resource_local_to_scene = true
 shader = ExtResource("2_w211o")
 shader_parameter/noise = SubResource("NoiseTexture2D_2hyy3")
 shader_parameter/burn_color = Color(1, 1, 0, 1)
@@ -84,4 +85,6 @@ visible = false
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_gcdep")
 
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="body_entered" from="explode_radius" to="." method="_on_explode_radius_body_entered"]
+[connection signal="body_exited" from="explode_radius" to="." method="_on_explode_radius_body_exited"]

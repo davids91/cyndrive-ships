@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://b3trh6sc7bkeq"]
+[gd_scene load_steps=35 format=4 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_6u6au"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_s1gvo"]
@@ -13,8 +13,6 @@
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="9_25tx2"]
 [ext_resource type="Texture2D" uid="uid://bnmuvyy2lsbhk" path="res://textures/ui/icons/map_icon.png" id="10_320hu"]
 [ext_resource type="Texture2D" uid="uid://3nu76apg4ufe" path="res://textures/ui/icons/minimap_icon_3.png" id="10_fws0x"]
-[ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/entities/player_carrier_bottom.png" id="10_pgbuj"]
-[ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/entities/player_carrier_top.png" id="11_bhnfb"]
 [ext_resource type="Texture2D" uid="uid://crvtsjud0ssjq" path="res://textures/ui/icons/minimap_icon_4.png" id="11_ib23l"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="12_d7i4t"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/entities/battle_ship.png" id="13_qs6j5"]
@@ -48,21 +46,6 @@ texture = ExtResource("7_w0t2q")
 
 [sub_resource type="TileSet" id="TileSet_fws0x"]
 sources/0 = SubResource("TileSetAtlasSource_fws0x")
-
-[sub_resource type="Resource" id="Resource_e50ek"]
-script = ExtResource("9_25tx2")
-texture = ExtResource("10_pgbuj")
-scale = Vector2(1, 1)
-rotation = 0.0
-z_index = -5
-metadata/_custom_type_script = "uid://cud6a5voxneed"
-
-[sub_resource type="Resource" id="Resource_mpb26"]
-script = ExtResource("9_25tx2")
-texture = ExtResource("11_bhnfb")
-scale = Vector2(1, 1)
-rotation = 0.0
-metadata/_custom_type_script = "uid://cud6a5voxneed"
 
 [sub_resource type="Curve" id="Curve_8a2ah"]
 _limits = [1.0, 600.0, 0.0, 1.0]
@@ -230,7 +213,6 @@ skin_idx = 0
 [node name="player_carrier" parent="combatants" groups=["complex_collision_shapes"] instance=ExtResource("8_fe3c8")]
 position = Vector2(1690, -2699)
 approx_size = 770.0
-skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_e50ek"), SubResource("Resource_mpb26")])
 starting_health = 500.0
 max_health = 500.0
 red_curve_phasing = SubResource("Curve_8a2ah")

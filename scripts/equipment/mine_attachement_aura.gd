@@ -37,6 +37,7 @@ func _process(_delta: float) -> void:
 			for i in range(32): ship.held_mine.set_collision_layer_value(i, false)
 			ship.held_mine.set_collision_layer_value(ship.held_mine.debris_collision_layer_value, true)
 			equipped_ship.emit(ship)
+			$attached_mine_sound.play()
 
 func _on_body_exited(body: Node2D) -> void:
 	ships_within.erase(body)

@@ -48,7 +48,6 @@ func restart_round(rewind_animation: bool = true) -> void:
 	# Handle resource changes with round restart
 	if not is_replay: current_laupeerium -= rewind_battle_laupeerium_cost
 	laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
-	$combatants/character/energy_systems.reset()
 
 	#TechDebt: Eliminate mine after round end
 	if not $combatants/character.held_mine == null:

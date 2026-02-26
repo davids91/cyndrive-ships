@@ -1,8 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://6w1xfuis808w"]
+[gd_scene load_steps=25 format=3 uid="uid://6w1xfuis808w"]
 
 [ext_resource type="Script" uid="uid://wt4f85n5mn7s" path="res://scripts/ui_menus/galaxy_main.gd" id="1_m3hme"]
 [ext_resource type="Shader" uid="uid://beksqhxqmaqvw" path="res://shaders/galaxy.gdshader" id="2_i4jmc"]
-[ext_resource type="Texture2D" uid="uid://hre3ca8je48" path="res://textures/outer_space/star-4.png" id="3_3adoa"]
+[ext_resource type="Texture2D" uid="uid://cgjeow13rx32e" path="res://textures/outer_space/star-4.png" id="3_3adoa"]
 [ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="3_kdehn"]
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="4_x6ffi"]
 [ext_resource type="PackedScene" uid="uid://d4ak0rrpifxgt" path="res://scenes/UI/level_select_button.tscn" id="5_fmtwf"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bjoyf0ua6fhj8" path="res://textures/guides/weapons.png" id="9_4esuy"]
 [ext_resource type="Texture2D" uid="uid://sd8khq65nsx3" path="res://textures/ui/panels/arrow_left_pressed.png" id="9_8bcf2"]
 [ext_resource type="Texture2D" uid="uid://ds7lgrc5c7dj" path="res://textures/ui/panels/arrow_left_hover.png" id="10_r47se"]
+[ext_resource type="Texture2D" uid="uid://x7exn78klmof" path="res://textures/outer_space/hubble.png" id="13_8bcf2"]
 
 [sub_resource type="Gradient" id="Gradient_7lfv1"]
 
@@ -74,12 +75,15 @@ fill = 1
 fill_from = Vector2(0.4957265, 0.5)
 fill_to = Vector2(0, 0)
 
-[node name="main_menu" type="Node2D"]
+[node name="main_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_m3hme")
 
 [node name="main_cam" type="Camera2D" parent="."]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
 offset_left = 153.0
 offset_top = -294.0
 offset_right = 665.0
@@ -175,6 +179,7 @@ process_material = SubResource("ShaderMaterial_4l82a")
 [node name="black_hole" type="ColorRect" parent="."]
 z_index = -1
 material = SubResource("ShaderMaterial_0u68b")
+layout_mode = 0
 offset_left = -64.0
 offset_top = -64.0
 offset_right = 64.0
@@ -273,6 +278,13 @@ z_index = -1
 position = Vector2(-1215.0005, 927)
 scale = Vector2(2.9902334, 2.9902334)
 texture = SubResource("GradientTexture2D_8bcf2")
+
+[node name="Hubble" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.5882353)
+z_index = -1000
+position = Vector2(-10, -1)
+scale = Vector2(1.205, 1.205)
+texture = ExtResource("13_8bcf2")
 
 [connection signal="value_changed" from="HBoxContainer/difficulty_slider" to="." method="_on_difficulty_slider_value_changed"]
 [connection signal="pressed" from="scenes/dev_room_button" to="." method="_on_dev_room_button_scene_selected"]

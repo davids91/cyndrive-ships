@@ -20,6 +20,7 @@ The other characters enclosed by the token must always be numbers
 - emit signal: `#[s1]`
 	- Emits the signal with the given index
 	- There are a maximum of 4 signals, functionality always depend on dialog and may differ!
+	- The signals are emitted always at the beginning of the line the token resides in
 - enable line based by condition: `#[e0]`
 	- Part of the current line after this token is not shown or parsed by default
 	- Text is only displayed if the dialog condition under the index given in the token is true

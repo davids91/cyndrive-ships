@@ -50,9 +50,9 @@ line_spacing = 0.0
 font_size = 25
 font_color = Color(0, 1, 1, 0.5019608)
 
-[sub_resource type="LabelSettings" id="LabelSettings_4gblq"]
+[sub_resource type="LabelSettings" id="LabelSettings_8j45s"]
 line_spacing = 0.0
-font_size = 28
+font_size = 25
 font_color = Color(0, 1.1801987, 1.1801987, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_1m01a"]
@@ -186,7 +186,7 @@ offset_right = 356.0
 offset_bottom = 166.0
 text = "Current Objective:
 Eliminate Enemy Drones"
-label_settings = SubResource("LabelSettings_4gblq")
+label_settings = SubResource("LabelSettings_8j45s")
 horizontal_alignment = 1
 vertical_alignment = 1
 

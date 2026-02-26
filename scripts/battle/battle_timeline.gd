@@ -12,6 +12,7 @@ enum TimeFlow {FORWARD = 1, BACKWARD = -1}
 signal round_reset
 signal rewind_started
 signal rewind_stopped
+signal checkpoint_triggered
 
 var _time_flow : TimeFlow = TimeFlow.FORWARD
 var player_timeline_start_msec: float
@@ -30,6 +31,7 @@ func _process(delta: float) -> void:
 
 # Set the current time as 0 without emitting a round reset signal
 func checkpoint() -> void:
+	checkpoint_triggered.emit()
 	time_accrued_usec = 0
 	time_accrued_msec = 0.0
 	_time_flow = TimeFlow.FORWARD

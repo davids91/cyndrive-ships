@@ -4,6 +4,7 @@ signal boosting(is_boosting: bool)
 
 @export var active_movement_rotation_threshold: float = 0.05
 @export var passive_movement_rotation_threshold: float = 0.15
+@export var handle_rotation: bool = true
 
 @onready var character: BattleCharacter = get_parent()
 @onready var last_position = get_global_position()
@@ -11,7 +12,6 @@ var enabled: bool = true
 var intent_direction: Vector2 = Vector2()
 var intent_force: Vector2 = Vector2()
 var internal_force: Vector2 = Vector2()
-var handle_rotation: bool = true
 
 """
 Run curve based on https://www.youtube.com/watch?v=yorTG9at90g

@@ -34,9 +34,9 @@ func _ready() -> void:
 @export var red_curve_phasing: Curve
 @export var green_curve_phasing: Curve
 @export var blue_curve_phasing: Curve
-const phase_in_duration_sec: float = 2.
+@export var phase_in_duration_sec: float = 2.
 func phase_in() -> void:
-	$state_display.set_visible(false)
+	$skin.set_visible(false)
 	$phasing_in_sound.play(0.15)
 	$phase_effect.set_visible(true)
 	create_tween().tween_method(
@@ -70,14 +70,16 @@ func phase_in() -> void:
 	)
 	var zoom_phase_tween = create_tween()
 	zoom_phase_tween.tween_method(
-		func(w: float): $phase_effect.get_material().set_shader_parameter("zoom", w),
+		func(w: float):
+			$phase_effect.get_material().set_shader_parameter("zoom", w)
+			$phase_effect.modulate.a = 1. - w,
 		0., 1.,
 		phase_in_duration_sec * Difficuilty.gameplay_speed
 	).set_ease(Tween.EASE_OUT)
-	zoom_phase_tween.tween_callback(func() :
-		$skin.set_visible(true)
-		$state_display.visible = true
+	zoom_phase_tween.tween_callback(func():
 		phased_in.emit()
+		$phase_effect.set_visible(false)
+		$skin.set_visible(true)
 	)
 	zoom_phase_tween.chain()
 
@@ -210,6 +212,9 @@ func _process(_delta):
 	if has_node("repair_indicator"):
 		$repair_indicator.set_global_position(get_global_position() - $repair_indicator.size * 0.55)
 
+	if has_node("state_display"):
+		$state_display.set_visible(visible and $skin.visible)
+
 	# Play thruster sound when ship is being steered
 	if (
 		0. < $controller.intent_direction.length() and in_battle()
@@ -255,7 +260,6 @@ func accept_damage(strength: float, source: Node = null) -> void:
 			ship_explosion.set_global_position(get_global_position())
 			was_alive = false
 			was_in_battle = false
-			$explosion_sound.play()
 			if has_node("weapon_slot"): $weapon_slot.shutdown()
 			health = 0
 			is_alive = false

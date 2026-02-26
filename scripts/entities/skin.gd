@@ -34,4 +34,7 @@ func init_skin(skin_layers: Array[BattleShipSkin], init_team_color: Color) -> vo
 		layer_image.set_rotation(skin_layers[layer].rotation)
 		layer_image.z_index = skin_layers[layer].z_index
 		layer_image.offset = skin_layers[layer].offset
+		# TechDebt: Subviewport is needed to produce the $skin_image, but this is duplicate work. There must be a better system!
+		# --> $skin_image is required for the phase_effect
 		$layers.add_child(layer_image)
+		add_child(layer_image.duplicate())

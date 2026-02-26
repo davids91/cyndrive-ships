@@ -1,7 +1,8 @@
-[gd_scene load_steps=37 format=3 uid="uid://dmn3a6pdbqk1q"]
+[gd_scene load_steps=46 format=3 uid="uid://dmn3a6pdbqk1q"]
 
 [ext_resource type="Script" uid="uid://daxgfc8sbv7ql" path="res://scripts/entities/tutorial_boss.gd" id="1_icc1o"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_at5o7"]
+[ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="2_dvnma"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_icc1o"]
 [ext_resource type="Texture2D" uid="uid://d08wg3qlw4vqo" path="res://textures/entities/white ship.png" id="3_opo5f"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="4_opo5f"]
@@ -24,6 +25,8 @@
 [ext_resource type="Texture2D" uid="uid://drija0tn7letk" path="res://textures/ui/radar_cone_5.png" id="23_v3s3d"]
 [ext_resource type="Texture2D" uid="uid://sfy3jjd0xx7s" path="res://textures/ui/radar_cone_6.png" id="24_cnx6o"]
 [ext_resource type="Texture2D" uid="uid://cgffr4oksq8x5" path="res://textures/ui/radar_cone_7.png" id="25_iwqd1"]
+[ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="25_xsqp8"]
+[ext_resource type="AudioStream" uid="uid://cch3grv1rk7ei" path="res://audio/phasing_in.wav" id="26_hxwci"]
 
 [sub_resource type="Resource" id="Resource_cjpna"]
 script = ExtResource("2_icc1o")
@@ -31,9 +34,53 @@ texture = ExtResource("3_opo5f")
 scale = Vector2(1, 1)
 metadata/_custom_type_script = "uid://cud6a5voxneed"
 
+[sub_resource type="Curve" id="Curve_8a2ah"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 387.30502), 0.0, -286.33978, 0, 0, Vector2(0.62785864, 259.64706), -680.9095, -680.9095, 0, 0, Vector2(0.7546778, 9.17395), -1497.7778, -1497.7778, 0, 0, Vector2(0.8128898, 1), -3281.3196, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_ikjs2"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0.00831601, 340.0395), 0.0, -25.619877, 0, 0, Vector2(0.4760915, 345.66812), -525.49896, -525.49896, 0, 0, Vector2(0.6881497, 198.2428), 0.0, 0.0, 0, 0, Vector2(0.91268194, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.95634097, 1), -2265.3918, 198.92365, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_1rdfn"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
+point_count = 5
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q4kwk"]
 radius = 100.0
 height = 425.6
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_thtti"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_xsqp8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_hxwci")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_dvnma")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_o2p68")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_v3s3d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_cnx6o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_iwqd1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [sub_resource type="Shader" id="Shader_xqo7t"]
 code = "shader_type canvas_item;
@@ -126,43 +173,35 @@ stream_1/stream = ExtResource("7_2h7vh")
 stream_2/stream = ExtResource("8_0ahru")
 stream_3/stream = ExtResource("9_n7j6k")
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_thtti"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("19_xsqp8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("20_hxwci")
-}, {
-"duration": 1.0,
-"texture": ExtResource("21_dvnma")
-}, {
-"duration": 1.0,
-"texture": ExtResource("22_o2p68")
-}, {
-"duration": 1.0,
-"texture": ExtResource("23_v3s3d")
-}, {
-"duration": 1.0,
-"texture": ExtResource("24_cnx6o")
-}, {
-"duration": 1.0,
-"texture": ExtResource("25_iwqd1")
-}],
-"loop": true,
-"name": &"default",
-"speed": 10.0
-}]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hxwci"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_xsqp8"]
+viewport_path = NodePath("skin/layers")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2p68"]
+resource_local_to_scene = true
+shader = ExtResource("25_xsqp8")
+shader_parameter/noise = SubResource("NoiseTexture2D_hxwci")
+shader_parameter/skin = SubResource("ViewportTexture_xsqp8")
+shader_parameter/phase_red = 1.0
+shader_parameter/phase_green = 1.0
+shader_parameter/phase_blue = 1.0
+shader_parameter/zoom = 0.50000002305148
 
 [node name="boss" type="CharacterBody2D"]
+rotation = 3.1415927
 script = ExtResource("1_icc1o")
 approx_size = 512.0
+team = ExtResource("2_dvnma")
 color = Color(0, 0, 0, 0)
 skin_layers = Array[ExtResource("2_icc1o")]([SubResource("Resource_cjpna")])
 starting_health = 500.0
 max_health = 500.0
 low_health = 10.0
+red_curve_phasing = SubResource("Curve_8a2ah")
+green_curve_phasing = SubResource("Curve_ikjs2")
+blue_curve_phasing = SubResource("Curve_1rdfn")
+laser_strength = 2.0
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 position = Vector2(-32, 0)
@@ -170,11 +209,20 @@ shape = SubResource("CapsuleShape2D_q4kwk")
 
 [node name="controller" type="Node2D" parent="."]
 script = ExtResource("2_at5o7")
+handle_rotation = false
 top_speed = 5.0
 start_resistance = 5.0
 momentum_dampener = 0.95
 
+[node name="RadarConeVisual" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(2354, 0)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_thtti")
+autoplay = "default"
+
 [node name="skin" type="Node2D" parent="."]
+visible = false
 script = ExtResource("4_opo5f")
 
 [node name="layers" type="SubViewport" parent="skin"]
@@ -185,6 +233,7 @@ handle_input_locally = false
 [node name="cam" type="Camera2D" parent="skin/layers"]
 
 [node name="skin_image" type="Sprite2D" parent="skin"]
+visible = false
 material = SubResource("ShaderMaterial_ejpcq")
 texture = SubResource("ViewportTexture_nikc3")
 
@@ -243,6 +292,7 @@ scale = Vector2(2.96875, 2.96875)
 texture = ExtResource("14_0k8by")
 
 [node name="state_display" parent="." instance=ExtResource("14_tqvju")]
+visible = false
 scale = Vector2(5, 5)
 mini_health_bar_offset = Vector2(-320, 320)
 emote_offset = Vector2(100, -70)
@@ -312,12 +362,26 @@ monitorable = false
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="player_detection"]
 polygon = PackedVector2Array(0, 0, 15000, 5000, 15000, -5000)
 
-[node name="RadarConeVisual" type="AnimatedSprite2D" parent="."]
-position = Vector2(2354, 0)
-scale = Vector2(5, 5)
-sprite_frames = SubResource("SpriteFrames_thtti")
-autoplay = "default"
+[node name="phase_effect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_o2p68")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("26_hxwci")
+volume_db = -2.0
+bus = &"Ships"
 
 [connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]
+[connection signal="phased_in" from="." to="." method="_on_phased_in"]
 [connection signal="body_entered" from="player_detection" to="." method="_on_player_detection_body_entered"]
 [connection signal="body_exited" from="player_detection" to="." method="_on_player_detection_body_exited"]

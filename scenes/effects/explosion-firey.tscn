@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://btx22762p6sdy"]
+[gd_scene load_steps=20 format=3 uid="uid://btx22762p6sdy"]
 
 [ext_resource type="Script" uid="uid://dtor5hqwh1v5n" path="res://scripts/effects/rewindableExplosion.gd" id="1_1d0c4"]
 [ext_resource type="Texture2D" uid="uid://c4mgx0clbrkr2" path="res://textures/explosions/explode1.png" id="1_db0jd"]
@@ -14,6 +14,17 @@
 [ext_resource type="Texture2D" uid="uid://dl76hb2q54gu6" path="res://textures/explosions/debris2.png" id="11_d0wfq"]
 [ext_resource type="Texture2D" uid="uid://1cmgnrdyovjv" path="res://textures/explosions/debris3.png" id="12_q23b0"]
 [ext_resource type="Texture2D" uid="uid://cmykkxcrpcybl" path="res://textures/explosions/debris4.png" id="13_xagyn"]
+[ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="15_cmoxa"]
+[ext_resource type="AudioStream" uid="uid://dajttw71kitgt" path="res://audio/explosion_001.wav" id="16_mqkiy"]
+[ext_resource type="AudioStream" uid="uid://besa8dwtnwqwy" path="res://audio/explosion_002.wav" id="17_pssoi"]
+[ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="18_6hrh2"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_vqx5f"]
+streams_count = 4
+stream_0/stream = ExtResource("15_cmoxa")
+stream_1/stream = ExtResource("16_mqkiy")
+stream_2/stream = ExtResource("17_pssoi")
+stream_3/stream = ExtResource("18_6hrh2")
 
 [node name="ExplosionFirey" type="Node2D"]
 script = ExtResource("1_1d0c4")
@@ -66,3 +77,7 @@ texture = ExtResource("12_q23b0")
 [node name="debris4" type="Sprite2D" parent="."]
 position = Vector2(-61, 108)
 texture = ExtResource("13_xagyn")
+
+[node name="explosion_sound" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_vqx5f")
+bus = &"Weapons"

@@ -1,7 +1,7 @@
 #[c0]Well He ded.
 That was all the tests we had in mind I think?
 Do you have any questions for us?
-#[c2]#[s0]Yes, about the pay and benefits..#[p0]
+#[s0]#[c2]Yes, about the pay and benefits..#[p0]
 #[c3]TREMBLE BEFORE ME PUNY BEINGS!!
 #[c0]#[t20](Oh thank god, I hate the money talk)#[t]OH NOO Who are you?
 #[c1]He's from my previous employer..

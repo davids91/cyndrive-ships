@@ -1,6 +1,6 @@
 extends Node2D
 
-enum TutorialPhases{INTRO, MOVEMENT, BOOST, DESTROY, RESTORE, EXPLODE, MUSTLE_ARRIVES}
+enum TutorialPhases{INTRO, MOVEMENT, BOOST, DESTROY, RESTORE, EXPLODE, MUSTLE_ARRIVES, MUSTLE_FIGHT}
 
 const time_to_get_to_marker: float = 5.
 
@@ -53,7 +53,25 @@ func _ready():
 			$combatants/disabled_droid.modulate.a = 0.
 			$combatants/disabled_droid.set_visible(true)
 			create_tween().tween_method(func(w: float): $combatants/disabled_droid.modulate.a = w, 0., 1., 0.8)
-			create_tween().tween_method(func(w: float): $combatants/disabled_droid.position.y = w, -3200., -3500., 0.8)
+			create_tween().tween_method(func(w: float): $combatants/disabled_droid.position.y = w, -3200., -3800., 0.8)
+	)
+
+	# Summon boss!
+	$dialogues/boss_arrives.connect(
+		"dialogue_signal_0",
+		func(): 
+			var boss = preload("res://scenes/entities/tutorial_boss.tscn").instantiate()
+			boss.name = "boss"
+			boss.set_global_position($combatants/character.get_global_position() + Vector2(1000., 0.))
+			boss.control_disabled = true
+			boss.difficulty_sensor_speed = 0.4
+			boss.difficulty_laser_speed = 0.5
+			boss.difficulty_laser_warning_sec = 0.5
+			boss.acquired_target = $combatants/character
+			boss.change_target_to = $combatants/character # TechDebt: if change_target_to differs from acquired target there's some UB
+			boss.focusing_at = $combatants/character.get_global_position()
+			boss.moving_to = $combatants/character.get_global_position() + Vector2(900., 0.)
+			$combatants.add_child(boss)
 	)
 
 var currently_failing_at_markers: bool = false
@@ -72,6 +90,8 @@ func _process(delta: float) -> void:
 			reset_tween.tween_method(func(w: float): $GUI/fade_to_black.self_modulate.a = w, 0., 1. , 0.5).set_ease(Tween.EASE_IN)
 			reset_tween.tween_callback(func():
 				$combatants/character.correct_temporal_state($combatants/character.spawn_snapshot)
+				if $combatants/character.held_mine:
+					$combatants/character.held_mine.correct_temporal_state($combatants/character.held_mine.spawn_snapshot)
 				create_tween().tween_method(func(w: float): $GUI/try_again.modulate.a = w, 1., 0., 3.)
 				if last_entered_marker: 
 					last_entered_marker.set_visible(true)
@@ -170,6 +190,21 @@ func _on_destroy_dialouge_finished() -> void:
 	$timeline.checkpoint()
 	$GUI.set_objective("Destroy\nthe prototype droid")
 
+func _on_player_carrier_equipped_ship_with_mine(_ship: BattleCharacter) -> void:
+	$dialogues/restore.dialogue_conditionals[0] = true
+
+func _on_boss_arrives_dialouge_finished() -> void:
+	current_tutorial_phase = TutorialPhases.MUSTLE_ARRIVES
+	$player_input.input_disabled = false
+	$timeline.checkpoint()
+	$combatants/character.resume_control()
+	$combatants/character/temporal_recorder.start_recording()
+	$combatants/boss.control_disabled = false
+
+func _on_restore_dialouge_finished() -> void:
+	$player_input.input_disabled = false
+	$GUI.set_objective("Hold R to rewind")
+
 func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.DESTROY: 
 		current_tutorial_phase = TutorialPhases.RESTORE
@@ -182,8 +217,14 @@ func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 		current_tutorial_phase == TutorialPhases.EXPLODE
 		and "last_source_of_damage" in itsme and itsme.last_source_of_damage is Explosion
 	):
+		current_tutorial_phase = TutorialPhases.MUSTLE_ARRIVES
 		$player_input.input_disabled = true
+		get_tree().create_timer(0.2).timeout.connect(func(): 
+			$combatants/character.velocity = Vector2.ZERO
+			$combatants/character.pause_control()
+		)
 		$dialogues/boss_arrives.start()
+		itsme.queue_free()
 
 func _on_disabled_droid_resurrected(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.RESTORE:
@@ -215,24 +256,89 @@ func _on_player_input_time_control_triggered(action: Dictionary) -> void:
 			)
 			rewind_hide_tween.tween_callback(func() : $GUI/rewind_effects.set_visible(false))
 			rewind_hide_tween.chain()
-		
-	#if "checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]:
-		## Handling Battle restart
-		#restart_round()
-		
-func _on_player_carrier_equipped_ship_with_mine(_ship: BattleCharacter) -> void:
-	$dialogues/restore.dialogue_conditionals[0] = true
+	
+	if "checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]:
+		# Handling Battle restart
+		restart_round()
 
-func _on_restore_dialouge_finished() -> void:
-	$player_input.input_disabled = false
-	$GUI.set_objective("Hold R to rewind")
+#TODO: set objective text for Mustle: "New ship who dis"
+#TODO: set objective text for Mustle: "Try not to die a lot"
+@export var respawn_time_sec: float = 1.
+func restart_round() -> void:
+	#TechDebt: Eliminate mine after round end
+	if not $combatants/character.held_mine == null:
+		$combatants/character.held_mine.queue_free()
 
-#TODO: mine doesn't blow up
-#TODO: attaching a new mine resurrecs old mines!
-#TODO: first marker erases mine somehow?!
-#TODO: mine does not remember nearby ships, so if a ship is next to it when it activates, it will not recognize it
-func _on_boss_arrives_dialouge_finished() -> void:
-	current_tutorial_phase = TutorialPhases.MUSTLE_ARRIVES
-	$player_input.input_disabled = false
-	$timeline.checkpoint()
-	$combatants/character/temporal_recorder.start_recording()
+	# Stop the fighting
+	for combatant in $combatants.get_children():
+		if "pause_control" in combatant:
+			combatant.pause_control()
+
+	## Create a clone of the ship
+	##create_new_puppet($combatants/character)
+#
+	## Set up UI for the new round
+	#$GUI/rewind_effects.set_visible(true)
+#
+	## Move the player to its spawn position
+	#var player_move_tween = create_tween()
+	#player_move_tween.tween_method(
+		#func(pos):
+			#$combatants/character.set_global_position(pos)
+			#$GUI/rewind_effects.material.set_shader_parameter(
+				#"rewind_amount",
+				#-(pos - $combatants/character.spawn_snapshot["transform"].origin).length() / 500.
+			#),
+		#$combatants/character.get_global_position(),
+		#$combatants/character.spawn_snapshot["transform"].origin,
+		#respawn_time_sec
+	#)
+	#player_move_tween.tween_callback(func():
+		#for combatant in $combatants.get_children():
+			#if "pause_control" in combatant:
+				#combatant.resume_control()
+		#$GUI/rewind_effects.set_visible(false)
+		#$timeline.reset()
+		#queue_redraw()
+		#$GUI/defeat.set_visible(false)
+		#$GUI/victory.set_visible(false)
+		#$GUI/restart_round_panel.set_visible(false)
+		#living_team_members[1] = 0
+		#living_team_members[2] = 0
+		#for c in $combatants.get_children():
+			#if "is_alive" in c and c.is_alive:
+				#living_team_members[c.team.team_id] += 1
+	#)
+	#player_move_tween.chain()
+
+func _on_timeline_checkpoint_triggered() -> void:
+	for container_path in ["combatants", "debris", "mush"]:
+		if not has_node(container_path): continue
+		for object in get_node(container_path).get_children():
+			if "spawn_snapshot" in object and object.has_method("get_snapshot"):
+				object.spawn_snapshot = object.get_snapshot()
+			if "spawn_time_msec" in object: object.spawn_time_msec = 0.
+
+func _on_player_carrier_dead(_itsme: BattleCharacter) -> void:
+	if not $combatants/character.in_battle():
+		get_tree().reload_current_scene()
+
+func _on_character_dead(_itsme: BattleCharacter) -> void:
+	if current_tutorial_phase == TutorialPhases.MUSTLE_ARRIVES and $combatants/boss:
+		$combatants/boss.difficulty_sensor_speed = 0.1
+		$combatants/boss.difficulty_laser_speed = 0.25
+		$combatants/boss.difficulty_laser_warning_sec = 2.0
+		$combatants/boss.control_disabled = true
+		$dialogues/player_dies.start()
+		current_tutorial_phase = TutorialPhases.MUSTLE_FIGHT
+	elif(
+		current_tutorial_phase == TutorialPhases.INTRO
+		or current_tutorial_phase == TutorialPhases.MOVEMENT
+		or current_tutorial_phase == TutorialPhases.BOOST
+		or current_tutorial_phase == TutorialPhases.DESTROY
+	): # No way to reverse time in these phases, restart level
+		create_tween().tween_method(
+			func(w: float): $GUI/fade_to_black.self_modulate.a = w, 0., 1. , 0.5
+		).set_ease(Tween.EASE_IN).finished.connect(func(): get_tree().reload_current_scene())
+	else: # Player is currently fighting mr Mustle, show limbo dialog
+		$GUI/restart_round_panel.set_visible(true)

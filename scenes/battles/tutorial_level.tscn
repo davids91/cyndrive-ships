@@ -283,7 +283,6 @@ unskippable_signals = Array[int]([0])
 visible = false
 dialog = "res://dialogues/tutorial_level/tutorial_3_restore_captured_drone.txt"
 dialogue_conditionals = Array[bool]([false])
-unskippable_signals = Array[int]([0])
 
 [node name="boss_arrives" parent="dialogues" instance=ExtResource("19_2soyj")]
 visible = false
@@ -291,19 +290,27 @@ dialog = "res://dialogues/tutorial_level/tutorial_4_well_be_in_touch_boss_arrive
 dialogue_conditionals = Array[bool]([false])
 unskippable_signals = Array[int]([0])
 
+[node name="player_dies" parent="dialogues" instance=ExtResource("19_2soyj")]
+visible = false
+dialog = "res://dialogues/tutorial_level/tutorial_5_player_dies_first.txt"
+
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
 [connection signal="time_control_triggered" from="player_input" to="." method="_on_player_input_time_control_triggered"]
+[connection signal="checkpoint_triggered" from="timeline" to="." method="_on_timeline_checkpoint_triggered"]
 [connection signal="rewind_started" from="timeline" to="combatants/player_carrier" method="pause_control"]
 [connection signal="rewind_started" from="timeline" to="combatants/character" method="pause_control"]
 [connection signal="rewind_stopped" from="timeline" to="combatants/player_carrier" method="resume_control"]
 [connection signal="rewind_stopped" from="timeline" to="combatants/character" method="resume_control"]
 [connection signal="round_reset" from="timeline" to="combatants/player_carrier" method="respawn"]
 [connection signal="round_reset" from="timeline" to="combatants/character" method="respawn"]
+[connection signal="restart_round" from="GUI" to="." method="restart_round"]
 [connection signal="dead" from="combatants/disabled_droid" to="." method="_on_disabled_droid_dead"]
 [connection signal="resurrected" from="combatants/disabled_droid" to="." method="_on_disabled_droid_resurrected"]
+[connection signal="dead" from="combatants/player_carrier" to="." method="_on_player_carrier_dead"]
 [connection signal="equipped_ship_with_mine" from="combatants/player_carrier" to="." method="_on_player_carrier_equipped_ship_with_mine"]
 [connection signal="boost_energy_updated" from="combatants/character" to="." method="_on_character_boost_energy_updated"]
 [connection signal="boost_energy_updated" from="combatants/character" to="GUI" method="_on_character_boost_energy_updated"]
+[connection signal="dead" from="combatants/character" to="." method="_on_character_dead"]
 [connection signal="weapon_energy_updated" from="combatants/character" to="GUI" method="_on_character_weapon_energy_updated"]
 [connection signal="body_entered" from="markers/marker" to="." method="_on_marker_body_entered"]
 [connection signal="body_entered" from="markers/marker2" to="." method="_on_marker_2_body_entered"]
@@ -315,3 +322,4 @@ unskippable_signals = Array[int]([0])
 [connection signal="dialouge_finished" from="dialogues/destroy" to="." method="_on_destroy_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/restore" to="." method="_on_restore_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/boss_arrives" to="." method="_on_boss_arrives_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/player_dies" to="." method="_on_boss_arrives_dialouge_finished"]

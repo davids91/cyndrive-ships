@@ -41,6 +41,12 @@ func _process(delta: float) -> void:
 		is_activated = false # TechDebt: Mine shouldn't be active when attached to a ship!
 		$chain.points[1] = attached_to.get_global_position()
 	else: $chain.points[1] = get_global_position()
+	
+	# Check for any ships in proximity
+	if is_activated: for body in bodies_in_range:
+		if "team" in body and body.team.team_id != 1:
+			explode_mine()
+			return
 
 func _physics_process(_delta: float) -> void:
 	# Handle dragging the attached mine behind ship
@@ -67,7 +73,7 @@ func explode_mine() -> void:
 		explosion = EXPLOSION_FIREY.instantiate()
 		explosion.explosion_damage = 15.
 		explosion.explosion_length = 3.
-		explosion.explosion_strength = 3000.
+		explosion.explosion_strength = 500.
 		explosion.explosion_range = 600.
 		explosion.scale *= 3
 		level.get_node("mush").add_child(explosion)
@@ -99,6 +105,9 @@ func attach_mine(ship: BattleCharacter, attached_length: float = ship.approx_siz
 	mine_drag_length = attached_length
 	$temporal_recorder.start_recording()
 
+var bodies_in_range: Dictionary = {}
 func _on_explode_radius_body_entered(body: Node2D) -> void:
-	if "team" in body and is_activated:
-		if body.team.team_id != 1: explode_mine()
+	bodies_in_range[body] = BattleTimeline.instance.time_msec()
+
+func _on_explode_radius_body_exited(body: Node2D) -> void:
+	if bodies_in_range.has(body): bodies_in_range.erase(body)

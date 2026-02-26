@@ -26,6 +26,11 @@ const visual_lost_lines: Array[String] = [
 @onready var focusing_at: Vector2 = get_global_position()
 @onready var moving_to: Vector2 = get_global_position()
 
+func _ready() -> void:
+	super()
+	phase_in()
+
+var control_disabled: bool = false
 var acquired_target: Node2D = null
 var aiming_to: Vector2 = Vector2.ZERO
 var search_loop_progress: float = 0.
@@ -34,6 +39,8 @@ var time_until_lasers: float = difficulty_laser_warning_sec
 var whirlwind_duration_left_sec: float = 0.
 func _process(delta: float):
 	super(delta)
+	if control_disabled: return
+	
 	$player_detection.set_global_position(get_global_position())
 	if not change_target_to and 0. < time_until_target_drop:
 		time_until_target_drop -= delta
@@ -49,7 +56,11 @@ func _process(delta: float):
 			for saber in $hotsabers.get_children():
 				saber.process_input_action({"action_direction": Vector2.UP})
 
+var focus_change_from_damage:bool = false
 func _process_default_mode(delta: float) -> void:
+	# Handle rotation
+	set_global_rotation((focusing_at - get_global_position()).angle())
+
 	# Handle target changes
 	var lost_target: Node2D = null
 	if acquired_target != change_target_to:
@@ -59,7 +70,6 @@ func _process_default_mode(delta: float) -> void:
 			$state_display.say(visual_lost_lines.pick_random())
 			for laser in $lasers.get_children(): laser.reset()
 		elif change_target_to:
-			focusing_at = change_target_to.get_global_position()
 			aiming_to = get_global_position()
 			$state_display.say(gothcha_lines.pick_random())
 			time_until_lasers = difficulty_laser_warning_sec
@@ -86,7 +96,8 @@ func _process_default_mode(delta: float) -> void:
 			difficulty_moving_speed
 		)
 		aiming_to = lerp(aiming_to, acquired_target.get_global_position(), difficulty_laser_speed)
-		focusing_at = lerp(focusing_at, acquired_target.get_global_position(), difficulty_sensor_speed)
+		if not focus_change_from_damage:
+			focusing_at = lerp(focusing_at, acquired_target.get_global_position(), difficulty_sensor_speed)
 		if 0. < time_until_lasers:
 			time_until_lasers -= delta
 			acquired_target.set_highlight(
@@ -111,7 +122,8 @@ func _process_default_mode(delta: float) -> void:
 			var lost_target_angle = (lost_target.get_global_position() + get_global_position()).angle()
 			if angle_difference(lost_target_angle, radar_angle) < angle_difference(lost_target_angle, -radar_angle):
 				radar_angle = -radar_angle
-		focusing_at = get_global_position() + Vector2(cos(radar_angle), sin(radar_angle)) * approx_size
+		if not focus_change_from_damage:
+			focusing_at = get_global_position() + Vector2(cos(radar_angle), sin(radar_angle)) * approx_size
 
 	$player_detection.set_global_rotation(clamp(
 		(focusing_at - get_global_position()).angle(),
@@ -128,15 +140,19 @@ func _process_default_mode(delta: float) -> void:
 	else: $controller.process_input_action({"movement_intent": Vector2.ZERO})
 
 func phase_in() -> void:
-	super()
 	$screaming.play()
+	super()
 
 func accept_damage(strength: float, source: Node = null) -> void:
 	if whirlwind_duration_left_sec > 0.: return # Do not accept damage while a hotsaber ball
 	super(strength, source)
 	if source and not acquired_target:
 		acquired_target = source
-		focusing_at = source.get_global_position()
+		var new_focus = source.get_global_position()
+		focus_change_from_damage = true
+		create_tween().tween_method(func(w: float): focusing_at = lerp(focusing_at, new_focus, w), 0., 1., 1.).finished.connect(
+			func(): focus_change_from_damage = false
+		)
 
 var change_target_to: Node2D = null
 func _on_player_detection_body_entered(body: Node2D) -> void:
@@ -150,3 +166,16 @@ func _on_player_detection_body_exited(body: Node2D) -> void:
 	if body == acquired_target and acquired_target:
 		if acquired_target.has_method("set_highlight"): acquired_target.set_highlight(false)
 		change_target_to = null
+
+func _on_phased_in() -> void:
+	$skin.set_visible(true)
+	$RadarConeVisual.set_visible(true)
+	$state_display.visible = true
+
+func pause_control() -> void:
+	control_disabled = true
+	super()
+
+func resume_control() -> void:
+	control_disabled = false
+	super()

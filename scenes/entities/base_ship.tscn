@@ -183,6 +183,7 @@ size = Vector2i(100, 100)
 [node name="cam" type="Camera2D" parent="skin/layers"]
 
 [node name="skin_image" type="Sprite2D" parent="skin"]
+visible = false
 material = SubResource("ShaderMaterial_5doxk")
 texture = SubResource("ViewportTexture_8vsun")
 

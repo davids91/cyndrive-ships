@@ -129,14 +129,12 @@ func process_input_action(action: Dictionary) -> void:
 	if "emote_3" in action and action["emote_3"]:
 		exclaim_emote()
 
-
 func _ready() -> void:
 	max_value = max_health
 	$emote.position = emote_offset
 	$speech_bubble.position = speech_buble_offset
 
 func _process(_delta):
-	set_visible(get_parent().visible)
 	if top_level:
 		set_global_position(get_parent().get_global_position() + mini_health_bar_offset)
 

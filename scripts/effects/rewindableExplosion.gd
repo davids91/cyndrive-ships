@@ -49,6 +49,7 @@ func apply_shockwave(delta: float) -> void:
 			if combatant.has_method("accept_damage"):
 				combatant.accept_damage(explosion_damage * delta, self)
 
+var exploded: bool = false
 func _process(delta: float) -> void:
 	# grab from game time manager
 	# subtract from spawn time to get fx age
@@ -58,7 +59,12 @@ func _process(delta: float) -> void:
 	if DELETE_IF_TIME_PRECEEDS_SPAWN && currentAgeSec < 0: 
 		# then this explosion is no longer needed
 		queue_free()
-		
+
+	# Play explosion sound once per explosion
+	if exploded != (abs(currentAgeSec) < lifespanSec * 0.1):
+		exploded = (abs(currentAgeSec) < lifespanSec * 0.1)
+		$explosion_sound.play()
+
 	var hideScale = Vector2(0,0)
 	# hide when animation completes, ready to play backwards if needed
 	if (currentAgeSec > lifespanSec):

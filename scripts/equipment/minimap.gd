@@ -3,9 +3,17 @@ extends TileMapLayer
 @export var map_extent: Rect2
 @export var monitor_nodes: Array[Node]
 @export var icon_template: Array[TextureRect]
+@export var garbage_clean_interval_sec: float = 1.
 
+var time_to_clean: float = garbage_clean_interval_sec
 var minimap_icons: Dictionary = {}
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	time_to_clean -= delta
+	if time_to_clean <= 0.:
+		time_to_clean = garbage_clean_interval_sec
+		for node in minimap_icons.keys(): if not node or not node.visible:
+			minimap_icons[node].queue_free()
+			minimap_icons.erase(node)
 	for i in range(monitor_nodes.size()): for node in monitor_nodes[i].get_children():
 		# check if still in battle, erase if not
 		if (not node.in_battle() or not node.visible) and minimap_icons.has(node):
