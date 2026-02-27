@@ -20,13 +20,23 @@ signal dialouge_finished()
 @export var unskippable_signals: Array[int] = []
 @export var is_dialogue_active: bool = false
 
-@onready var dialog_lines: PackedStringArray = FileAccess.open(dialog, FileAccess.READ).get_as_text().split("\n")
+@onready var dialog_lines: PackedStringArray = _load_dialog_lines()
+
+func _load_dialog_lines() -> PackedStringArray:
+	var file = FileAccess.open(dialog, FileAccess.READ)
+	if file == null:
+		push_error("Failed to open dialogue file: " + dialog)
+		return PackedStringArray()
+	return file.get_as_text().split("\n")
 
 var signals_shot: Dictionary = {}
 
 func start() -> void:
 	signals_shot.clear()
 	current_line = 0
+	if dialog_lines.is_empty():
+		push_error("No dialogue lines loaded for: " + dialog)
+		return
 	current_line_text = _parse_line(dialog_lines[0])
 	dialogText.text = ""
 	is_dialogue_active = true
@@ -84,7 +94,8 @@ func _init() -> void:
 		add_user_signal("dialogue_signal_" + str(sig))
 
 func _ready() -> void:
-	current_line_text = _parse_line(dialog_lines[0])
+	if not dialog_lines.is_empty():
+		current_line_text = _parse_line(dialog_lines[0])
 
 @onready var dialogue_in_progress: bool = false
 var current_letter: int = 0
