@@ -39,7 +39,7 @@ func _physics_process(delta: float) -> void:
 	# Handle targeting
 	force_shapecast_update()
 	var still_in_view: bool = false
-	for i in range(get_collision_count()):
+	for i in get_collision_count():
 		var collider = get_collider(i)
 		still_in_view = still_in_view or (collider == highligthed_body)
 		if(

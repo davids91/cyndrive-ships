@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://dmn3a6pdbqk1q"]
+[gd_scene load_steps=45 format=3 uid="uid://dmn3a6pdbqk1q"]
 
 [ext_resource type="Script" uid="uid://daxgfc8sbv7ql" path="res://scripts/entities/tutorial_boss.gd" id="1_icc1o"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_at5o7"]
@@ -26,7 +26,6 @@
 [ext_resource type="Texture2D" uid="uid://sfy3jjd0xx7s" path="res://textures/ui/radar_cone_6.png" id="24_cnx6o"]
 [ext_resource type="Texture2D" uid="uid://cgffr4oksq8x5" path="res://textures/ui/radar_cone_7.png" id="25_iwqd1"]
 [ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="25_xsqp8"]
-[ext_resource type="AudioStream" uid="uid://cch3grv1rk7ei" path="res://audio/phasing_in.wav" id="26_hxwci"]
 
 [sub_resource type="Resource" id="Resource_cjpna"]
 script = ExtResource("2_icc1o")
@@ -191,6 +190,16 @@ shader_parameter/zoom = 0.50000002305148
 [node name="boss" type="CharacterBody2D"]
 rotation = 3.1415927
 script = ExtResource("1_icc1o")
+difficulty_sensor_speed = null
+difficulty_moving_speed = null
+difficulty_laser_speed = null
+difficulty_laser_warning_sec = null
+goldfish_memory_sec = null
+search_loop_length_sec = null
+whirlwind_length_sec = null
+whirlwind_speed_rad_per_sec = null
+difficulty_whirlwind_warning_sec = null
+is_player = null
 approx_size = 512.0
 team = ExtResource("2_dvnma")
 color = Color(0, 0, 0, 0)
@@ -198,10 +207,13 @@ skin_layers = Array[ExtResource("2_icc1o")]([SubResource("Resource_cjpna")])
 starting_health = 500.0
 max_health = 500.0
 low_health = 10.0
+mass = null
 red_curve_phasing = SubResource("Curve_8a2ah")
 green_curve_phasing = SubResource("Curve_ikjs2")
 blue_curve_phasing = SubResource("Curve_1rdfn")
+phase_in_duration_sec = null
 laser_strength = 2.0
+entanglement_chance = null
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 position = Vector2(-32, 0)
@@ -377,9 +389,9 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("26_hxwci")
+stream = ExtResource("8_fh5k0")
 volume_db = -2.0
-bus = &"Ships"
+bus = &"Sfx"
 
 [connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]
 [connection signal="phased_in" from="." to="." method="_on_phased_in"]

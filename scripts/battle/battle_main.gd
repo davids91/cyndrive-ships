@@ -1,12 +1,13 @@
 extends Node2D
 
+const character_template: PackedScene = preload("res://scenes/entities/base_ship.tscn")
+const round_start_delay_sec: float = 2.
+
 @export var starting_laupeerium: float = 25.
 @export_range(0., 1.) var replay_screen_responsiveness: float = 0.05
 
-@onready var character_template = preload("res://scenes/entities/base_ship.tscn")
 @onready var laupeerium_bar: UIEnergyBar = $GUI/status_padding/battleship_status/laupeerium
 
-const round_start_delay_sec: float = 2.
 var init_countdown_sec: float = round_start_delay_sec
 var current_laupeerium: float = starting_laupeerium
 var living_team_members: Dictionary = {}
@@ -85,7 +86,7 @@ func restart_round(rewind_animation: bool = true) -> void:
 
 	# Move the player to its spawn position
 	var respawn_time = 1.
-	var player_move_tween = create_tween()
+	var player_move_tween: Tween = create_tween()
 	player_move_tween.tween_method(
 		func(pos):
 			$combatants/character.set_global_position(pos)
@@ -118,10 +119,7 @@ func restart_round(rewind_animation: bool = true) -> void:
 var replay_viewport = Rect2()
 func _process(delta):
 	$GUI/debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
-	var display_time: float = BattleTimeline.instance.time_msec()
-	var total_seconds: int = int(display_time / 1000.0)
-	var minutes: int = int(total_seconds / 60.0)
-	$GUI.set_time(minutes, total_seconds)
+	$GUI.set_time(BattleTimeline.instance.time_msec() / 1000.)
 
 	# Countdown to battle start
 	if 0 < init_countdown_sec:
@@ -365,7 +363,7 @@ func _on_player_input_time_control_triggered(action: Dictionary) -> void:
 				)
 		if not action["rewind_toggled"]:
 			$timeline.finish_reverse()
-			var rewind_hide_tween = create_tween()
+			var rewind_hide_tween: Tween = create_tween()
 			rewind_hide_tween.tween_method(
 				func(w: float): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
 				1., 0., rewind_animation_transition_sec

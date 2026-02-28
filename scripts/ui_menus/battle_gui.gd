@@ -10,8 +10,8 @@ func set_score(score: String) -> void:
 func set_objective(text: String) -> void:
 	$objective.set_text(text)
 
-func set_time(minutes: int, seconds: int) -> void:
-	$time.set_text("%d:%02d" % [minutes, seconds % 60])
+func set_time(seconds: float) -> void:
+	$time.set_text("%d:%02d" % [int(seconds / 60.0), int(seconds) % 60])
 
 func set_disabled_weapons_mask(mask: int) -> void:
 	if 0 != (mask & 0x01): $laser_icon.set_visible(false)

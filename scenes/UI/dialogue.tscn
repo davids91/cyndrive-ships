@@ -108,4 +108,4 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Press Space to continue.."
 
-[connection signal="pressed" from="control/content_container/HBoxContainer/VBoxContainer/continue/continue_button" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="control/content_container/HBoxContainer/VBoxContainer/continue/continue_button" to="." method="finish"]

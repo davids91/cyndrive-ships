@@ -94,7 +94,7 @@ func deploy_mine(activation_delay_msec : float = 0.0) -> void:
 			is_activated = true
 			attached_to = null
 			$collide_to_activate.disabled = false
-			var pulsating_tween = create_tween()
+			var pulsating_tween: Tween = create_tween()
 			pulsating_tween.tween_property($skin, "scale", Vector2(1.3, 1.3), .5)
 			pulsating_tween.tween_property($skin, "scale", Vector2(1, 1), .5)
 			pulsating_tween.set_loops(0)

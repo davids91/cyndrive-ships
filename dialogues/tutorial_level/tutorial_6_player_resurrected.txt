@@ -1,7 +1,7 @@
 #[c2]Whoah! It's when we first met this thug again!
 #[c1]Yeah, but watch out, time jumps mess with your head!
 #[c0]Is that why you're all over the place?
-#[c2]Hey who's that green fella?
+#[c2]Hey who's that other fella?
 #[c1]It's you! From before when you were muredered brutally..
 Try not to mind them though, thinking too much about them makes you go CRAZY
 #[c2]But if that's..#[p0]

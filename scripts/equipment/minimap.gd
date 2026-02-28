@@ -14,15 +14,17 @@ func _process(delta: float) -> void:
 		for node in minimap_icons.keys(): if not node or not node.visible:
 			minimap_icons[node].queue_free()
 			minimap_icons.erase(node)
-	for i in range(monitor_nodes.size()): for node in monitor_nodes[i].get_children():
+	for i in monitor_nodes.size(): for node in monitor_nodes[i].get_children():
 		# check if still in battle, erase if not
 		if (not node.in_battle() or not node.visible) and minimap_icons.has(node):
 			minimap_icons[node].queue_free()
 			minimap_icons.erase(node)
 		elif node.in_battle() and node.visible and 0. < node.modulate.a and not minimap_icons.has(node):
 			minimap_icons[node] = icon_template[i].duplicate()
-			if "team" in node and node.team.team_id == 1: # team 1 is the player!
-				minimap_icons[node].self_modulate = Color.LIME
+			if "team" in node:
+				# team 1 is the player!
+				if node.team.team_id == 1: minimap_icons[node].self_modulate = Color.LIME
+				else: minimap_icons[node].self_modulate = node.team.color
 			elif "color" in node: minimap_icons[node].self_modulate = node.color
 			minimap_icons[node].set_visible(true)
 			$area.add_child(minimap_icons[node])

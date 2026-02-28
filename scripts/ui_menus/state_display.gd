@@ -52,7 +52,7 @@ func say(line: String) -> void:
 func angry_emote() -> void:
 	$emote.self_modulate.a = 1.
 	$emote.region_rect = emotes[EMOTES.ANGRY]
-	var emote_tween = create_tween()
+	var emote_tween: Tween = create_tween()
 	emote_tween.set_parallel(true)
 	emote_tween.chain().tween_interval(0.1)
 	emote_tween.tween_method(func(w: float):
@@ -75,7 +75,7 @@ func annoyed_emote() -> void:
 	$emote.scale = Vector2(1., 1.5)
 	$emote.region_rect = emotes[EMOTES.ANNOYED]
 	$emote.position = emote_offset + Vector2(0., annoyed_distance)
-	var emote_tween = create_tween()
+	var emote_tween: Tween = create_tween()
 	emote_tween.set_parallel(true)
 	emote_tween.tween_method(
 		func(w: float): $emote.position = emote_offset + Vector2(w / 10., w),
@@ -98,7 +98,7 @@ func exclaim_emote() -> void:
 	$emote.self_modulate.a = 0.
 	$emote.scale = Vector2(1.5, 1.5)
 	$emote.region_rect = emotes[EMOTES.EXCLAIM]
-	var emote_tween = create_tween()
+	var emote_tween: Tween = create_tween()
 	emote_tween.set_parallel(true)
 	emote_tween.tween_method(
 		func(w: float): $emote.self_modulate.a = w,

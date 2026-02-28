@@ -13,7 +13,7 @@ config_version=5
 config/name="Cyndrive Ships"
 run/main_scene="uid://6w1xfuis808w"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="uid://chq70o5olbg7r"
+config/icon="uid://48168dk0ow7d"
 config/size/mode=0
 
 [autoload]

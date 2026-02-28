@@ -19,6 +19,7 @@ signal dialouge_finished()
 @export var dialogue_conditionals: Array[bool] = []
 @export var unskippable_signals: Array[int] = []
 @export var is_dialogue_active: bool = false
+@export var auto_finish: bool = false
 
 @onready var dialog_lines: PackedStringArray = _load_dialog_lines()
 
@@ -42,6 +43,20 @@ func start() -> void:
 	is_dialogue_active = true
 	dialogue_in_progress = true
 	set_visible(true)
+
+func finish() -> void:
+	current_tempo = seconds_per_letter
+	dialogue_in_progress = false
+	is_dialogue_active = false
+	skip_shown = false
+	set_visible(false)
+	$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to continue..")
+	$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(false)
+	for signal_idx in unskippable_signals:
+		if not signals_shot.has(signal_idx):
+			emit_signal("dialogue_signal_" + str(signal_idx))
+	signals_shot.clear()
+	dialouge_finished.emit()
 
 var line_pauses: Dictionary = {}
 var line_signal_index_values: Dictionary = {}
@@ -126,8 +141,8 @@ func _process(delta: float) -> void:
 			$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to continue..")
 			$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(true)
 			dialogue_in_progress = false
+			if auto_finish: finish()
 			return
-
 
 	# Set the tempo based on the tokens within the line
 	if line_tempo_changes.has(current_letter):
@@ -152,22 +167,8 @@ func _process(delta: float) -> void:
 var skip_shown: bool = false
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
-		if is_dialogue_active and (not dialogue_in_progress or skip_shown): _on_continue_pressed()
+		if is_dialogue_active and (not dialogue_in_progress or skip_shown): finish()
 		else:
 			skip_shown = true
 			$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to skip..")
 			$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(true)
-
-func _on_continue_pressed() -> void:
-	is_dialogue_active = false
-	current_tempo = seconds_per_letter
-	dialogue_in_progress = false
-	set_visible(false)
-	skip_shown = false
-	$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to continue..")
-	$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(false)
-	for signal_idx in unskippable_signals:
-		if not signals_shot.has(signal_idx):
-			emit_signal("dialogue_signal_" + str(signal_idx))
-	signals_shot.clear()
-	dialouge_finished.emit()

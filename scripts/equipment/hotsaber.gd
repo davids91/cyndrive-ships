@@ -34,7 +34,7 @@ func _process(_delta: float) -> void:
 	# Add after-effect of hotsabers
 	if is_shooting:
 		var after_image = [$outer_line.duplicate(), $inner_line.duplicate()]
-		var disappear_tween = create_tween()
+		var disappear_tween: Tween = create_tween()
 		disappear_tween.set_parallel(true)
 		for line in after_image:
 			line.points = line.points.duplicate()
@@ -65,7 +65,7 @@ func process_input_action(action: Dictionary) -> void:
 			c.pos_to_set = wielder.get_global_position() + action["action_direction"] * handle_len_multiplier * chain_length
 			c.pos_over_time_sec = startup_time
 			handle_len_multiplier += 1.
-		var sweep_tween = create_tween()
+		var sweep_tween: Tween = create_tween()
 		sweep_tween.tween_callback(func():
 			for c in get_children(): 
 				if c is Line2D: c.set_visible(true)
@@ -86,7 +86,7 @@ func shutdown() -> void:
 	for c in get_children(): if not c is Line2D:
 		c.pos_to_set = wielder.get_global_position()
 		c.pos_over_time_sec = swing_time
-	var shutdown_tween = create_tween()
+	var shutdown_tween: Tween = create_tween()
 	shutdown_tween.tween_interval(swing_time)
 	shutdown_tween.tween_callback(func():
 		for c in get_children(): 

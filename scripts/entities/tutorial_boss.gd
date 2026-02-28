@@ -30,7 +30,6 @@ func _ready() -> void:
 	super()
 	phase_in()
 
-var control_disabled: bool = false
 var acquired_target: Node2D = null
 var aiming_to: Vector2 = Vector2.ZERO
 var search_loop_progress: float = 0.
@@ -174,8 +173,7 @@ func _on_phased_in() -> void:
 
 func pause_control() -> void:
 	control_disabled = true
-	super()
-
-func resume_control() -> void:
-	control_disabled = false
+	velocity = Vector2.ZERO
+	$controller.internal_force = Vector2.ZERO
+	$controller.intent_direction = Vector2.ZERO
 	super()

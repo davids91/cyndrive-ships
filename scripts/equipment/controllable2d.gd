@@ -40,6 +40,7 @@ func get_decel_x(speed: float) -> float:
 
 func start() -> void:
 	enabled = true
+	is_boosting = false
 
 func pause() -> void:
 	enabled = false
@@ -50,6 +51,7 @@ func stop() -> void:
 	intent_force = Vector2()
 	internal_force = Vector2()
 	last_intent = Vector2()
+	is_boosting = false
 
 func apply_impulse(impulse: Vector2) -> void:
 	internal_force += impulse

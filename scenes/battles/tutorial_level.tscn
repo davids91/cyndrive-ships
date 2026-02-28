@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=4 uid="uid://cer054lhx4edf"]
+[gd_scene load_steps=41 format=4 uid="uid://cer054lhx4edf"]
 
 [ext_resource type="Script" uid="uid://bc2ashwmpmgd5" path="res://scripts/battle/tutorial_level.gd" id="1_aby8t"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_rvnqy"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://dh7roqtbhf7vh" path="res://scenes/entities/marker.tscn" id="18_2soyj"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_2soyj"]
 [ext_resource type="Script" uid="uid://cxw7l8tkolluc" path="res://scripts/entities/disabled_droid.gd" id="19_l3ay5"]
+[ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="27_45v6q"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xxhjm"]
 texture = ExtResource("6_by8vi")
@@ -166,6 +167,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="try_again" type="Label" parent="GUI"]
@@ -293,6 +295,20 @@ unskippable_signals = Array[int]([0])
 [node name="player_dies" parent="dialogues" instance=ExtResource("19_2soyj")]
 visible = false
 dialog = "res://dialogues/tutorial_level/tutorial_5_player_dies_first.txt"
+dialogue_conditionals = Array[bool]([false])
+
+[node name="player_resurrected" parent="dialogues" instance=ExtResource("19_2soyj")]
+visible = false
+dialog = "res://dialogues/tutorial_level/tutorial_6_player_resurrected.txt"
+
+[node name="boss_defeated" parent="dialogues" instance=ExtResource("19_2soyj")]
+visible = false
+dialog = "res://dialogues/tutorial_level/tutorial_6_player_resurrected.txt"
+auto_finish = true
+
+[node name="background_music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("27_45v6q")
+bus = &"Music"
 
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
 [connection signal="time_control_triggered" from="player_input" to="." method="_on_player_input_time_control_triggered"]
@@ -311,6 +327,8 @@ dialog = "res://dialogues/tutorial_level/tutorial_5_player_dies_first.txt"
 [connection signal="boost_energy_updated" from="combatants/character" to="." method="_on_character_boost_energy_updated"]
 [connection signal="boost_energy_updated" from="combatants/character" to="GUI" method="_on_character_boost_energy_updated"]
 [connection signal="dead" from="combatants/character" to="." method="_on_character_dead"]
+[connection signal="resurrected" from="combatants/character" to="." method="_on_character_resurrected"]
+[connection signal="shields_toggled" from="combatants/character" to="." method="_on_character_shields_toggled"]
 [connection signal="weapon_energy_updated" from="combatants/character" to="GUI" method="_on_character_weapon_energy_updated"]
 [connection signal="body_entered" from="markers/marker" to="." method="_on_marker_body_entered"]
 [connection signal="body_entered" from="markers/marker2" to="." method="_on_marker_2_body_entered"]
@@ -322,4 +340,6 @@ dialog = "res://dialogues/tutorial_level/tutorial_5_player_dies_first.txt"
 [connection signal="dialouge_finished" from="dialogues/destroy" to="." method="_on_destroy_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/restore" to="." method="_on_restore_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/boss_arrives" to="." method="_on_boss_arrives_dialouge_finished"]
-[connection signal="dialouge_finished" from="dialogues/player_dies" to="." method="_on_boss_arrives_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/player_dies" to="." method="_on_player_dies_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/player_resurrected" to="." method="_on_player_resurrected_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/boss_defeated" to="." method="_on_boss_defeated_dialouge_finished"]

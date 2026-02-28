@@ -37,4 +37,6 @@ func init_skin(skin_layers: Array[BattleShipSkin], init_team_color: Color) -> vo
 		# TechDebt: Subviewport is needed to produce the $skin_image, but this is duplicate work. There must be a better system!
 		# --> $skin_image is required for the phase_effect
 		$layers.add_child(layer_image)
-		add_child(layer_image.duplicate())
+		var actual_skin = layer_image.duplicate()
+		actual_skin.material = $skin_image.get_material()
+		add_child(actual_skin)

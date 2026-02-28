@@ -12,6 +12,7 @@ var internal_force: Vector2 = Vector2()
 
 func start() -> void:
 	enabled = true
+	is_boosting = false
 
 func pause() -> void:
 	enabled = false
@@ -22,6 +23,7 @@ func stop() -> void:
 	last_intent = Vector2()
 	current_impulse = Vector2()
 	intent_direction = Vector2()
+	is_boosting = false
 
 var current_impulse: Vector2 = Vector2()
 func apply_impulse(impulse: Vector2) -> void:

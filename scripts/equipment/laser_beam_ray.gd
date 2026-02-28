@@ -16,7 +16,7 @@ func shutdown() -> void:
 	# TECHDEBT: In case the laser is released before warmup, the tweens get in conflict, so wait until at least the warmup is finished
 	await get_tree().create_timer(warmup_time_sec).timeout
 	create_tween().tween_method(func(a): $beam_line.self_modulate.a = a, $beam_line.self_modulate.a, 0., shutdown_time_sec)
-	var laser_ray_tween = create_tween()
+	var laser_ray_tween: Tween = create_tween()
 	laser_ray_tween.tween_property($beam_line, "width", ray_full_width * 2., shutdown_time_sec)
 	laser_ray_tween.tween_callback(func() :
 		$beam_line.width = 0.
@@ -53,7 +53,7 @@ func process_input_action(action: Dictionary) -> void:
 			current_strength_modifier = warmup_damage_modifier
 			create_tween().tween_property(self, "current_strength_modifier", warmup_damage_modifier, 1.)
 			create_tween().tween_method(func(a): $beam_line.self_modulate.a = a, 0., 1., warmup_time_sec)
-			var laser_ray_tween = create_tween()
+			var laser_ray_tween: Tween = create_tween()
 			laser_ray_tween.tween_property($beam_line, "width", ray_warmup_width, warmup_time_sec)
 			laser_ray_tween.tween_property($beam_line, "width", ray_full_width, warmup_time_sec)
 			laser_ray_tween.chain()
@@ -64,6 +64,10 @@ func hit_position() -> Vector2:
 	if $raycast.is_colliding():
 		return $raycast.get_collision_point()
 	return $raycast.target_position
+
+func _process(_delta: float) -> void:
+	if "control_disabled" in wielder and wielder.control_disabled:
+		reset()
 
 @export var sound_loop_start_sec: float = 0.2
 @export var sound_loop_end_sec: float = 2.0

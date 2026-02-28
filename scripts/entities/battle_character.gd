@@ -6,6 +6,7 @@ signal resurrected(itsme: BattleCharacter)
 signal boost_energy_updated(new_energy_level: float)
 signal weapon_energy_updated(new_energy_level: float)
 signal phased_in()
+signal shields_toggled(turned_on: bool)
 
 @export var is_player: bool = false
 @export var approx_size: float = 100.
@@ -68,7 +69,7 @@ func phase_in() -> void:
 		0., 1.,
 		phase_in_duration_sec * Difficuilty.gameplay_speed
 	)
-	var zoom_phase_tween = create_tween()
+	var zoom_phase_tween: Tween = create_tween()
 	zoom_phase_tween.tween_method(
 		func(w: float):
 			$phase_effect.get_material().set_shader_parameter("zoom", w)
@@ -117,6 +118,7 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 			resurrected.emit(self)
 			$controller.start()
 		was_alive = is_alive
+		health_changed.emit(health / starting_health)
 
 	if "energy" in snapshot and has_node("energy_systems"):
 		$energy_systems.temporal_correction(snapshot["energy"])
@@ -318,7 +320,9 @@ func respawn():
 	extend_replayer = false
 	was_alive = true
 
+var control_disabled: bool = false
 func pause_control() -> void:
+	control_disabled = true
 	$controller.stop()
 	if has_node("ai_control"): $ai_control.stop()
 
@@ -327,13 +331,14 @@ func resume_control() -> void:
 	$controller.start()
 	if has_node("ai_control"): $ai_control.resume()
 	else: $controller.intent_direction = PlayerInput.instance.current_intent
+	control_disabled = false
 
 var disabled_weapons_mask: int = 0x0
 var ready_to_receive_mine: bool = false
 var held_mine: ExplosiveMine = null
 var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
-	if not in_battle(): return # cannot process any action while not in battle
+	if not in_battle() or control_disabled: return # cannot process any action while not in battle
 
 	if "weapon_slot" in action and has_node("weapon_slot"):
 		if 0 != (disabled_weapons_mask & (0x1 << action["weapon_slot"])):
@@ -382,7 +387,7 @@ func process_input_action(action: Dictionary) -> void:
 			$thruster_fx.visible = true
 		)
 		var camera_direction = $controller.intent_direction * -1
-		var boost_tween = create_tween()
+		var boost_tween: Tween = create_tween()
 		if has_node("cam"):
 			boost_tween.tween_property($cam, "offset", camera_direction * approx_size * 2., 0.1)
 			boost_tween.tween_property($cam, "offset", Vector2(), 0.5)
@@ -398,7 +403,9 @@ func process_input_action(action: Dictionary) -> void:
 	): action["acquired_target_position"] = action["acquired_target"].get_global_position()
 
 	$controller.process_input_action(action)
-	if has_node("shield"): $shield.process_input_action(action)
+	if has_node("shield"):
+		$shield.process_input_action(action)
+		if "switch_shield" in action: shields_toggled.emit($shield.shield_active)
 	if has_node("weapon_slot"): $weapon_slot.process_input_action(action)
 	if has_node("temporal_recorder"): $temporal_recorder.process_input_action(action)
 	if has_node("state_display"): $state_display.process_input_action(action)

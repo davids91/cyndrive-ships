@@ -113,8 +113,8 @@ shader_parameter/color_aberration = 0.150000007125
 viewport_path = NodePath("skin/layers")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a3wjc"]
-radius = 200.0
-height = 1062.0
+radius = 350.0
+height = 1000.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d02ko"]
 radius = 500.0
@@ -221,6 +221,7 @@ grow_vertical = 2
 
 [node name="state_display" parent="." instance=ExtResource("16_ciyox")]
 visible = false
+mini_health_bar_offset = Vector2(128, 0)
 
 [node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("19_0uqlh")
