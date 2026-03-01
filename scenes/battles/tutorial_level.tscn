@@ -210,6 +210,11 @@ red_curve_phasing = SubResource("Curve_l3ay5")
 green_curve_phasing = SubResource("Curve_g8yy2")
 blue_curve_phasing = SubResource("Curve_45v6q")
 
+[node name="background_music" type="AudioStreamPlayer2D" parent="combatants/player_carrier"]
+position = Vector2(-1690, 2699)
+stream = ExtResource("27_45v6q")
+bus = &"Music"
+
 [node name="character" parent="combatants" instance=ExtResource("5_6jemn")]
 visible = false
 position = Vector2(1581, -2512)
@@ -305,10 +310,6 @@ dialog = "res://dialogues/tutorial_level/tutorial_6_player_resurrected.txt"
 visible = false
 dialog = "res://dialogues/tutorial_level/tutorial_6_player_resurrected.txt"
 auto_finish = true
-
-[node name="background_music" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("27_45v6q")
-bus = &"Music"
 
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
 [connection signal="time_control_triggered" from="player_input" to="." method="_on_player_input_time_control_triggered"]

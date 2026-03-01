@@ -12,7 +12,7 @@ var boost_dialogue_showing_next_mark_tween: Tween
 var marker_time_left_secs: float = time_to_get_to_marker
 var current_tutorial_phase: TutorialPhases = TutorialPhases.INTRO
 func _ready():
-	$background_music.play()
+	$combatants/player_carrier/background_music.play()
 	$GUI.set_score("Objective:")
 	$GUI.set_objective("")
 	$GUI.set_disabled_weapons_mask(0xE)

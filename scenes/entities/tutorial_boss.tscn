@@ -190,16 +190,6 @@ shader_parameter/zoom = 0.50000002305148
 [node name="boss" type="CharacterBody2D"]
 rotation = 3.1415927
 script = ExtResource("1_icc1o")
-difficulty_sensor_speed = null
-difficulty_moving_speed = null
-difficulty_laser_speed = null
-difficulty_laser_warning_sec = null
-goldfish_memory_sec = null
-search_loop_length_sec = null
-whirlwind_length_sec = null
-whirlwind_speed_rad_per_sec = null
-difficulty_whirlwind_warning_sec = null
-is_player = null
 approx_size = 512.0
 team = ExtResource("2_dvnma")
 color = Color(0, 0, 0, 0)
@@ -207,13 +197,10 @@ skin_layers = Array[ExtResource("2_icc1o")]([SubResource("Resource_cjpna")])
 starting_health = 500.0
 max_health = 500.0
 low_health = 10.0
-mass = null
 red_curve_phasing = SubResource("Curve_8a2ah")
 green_curve_phasing = SubResource("Curve_ikjs2")
 blue_curve_phasing = SubResource("Curve_1rdfn")
-phase_in_duration_sec = null
 laser_strength = 2.0
-entanglement_chance = null
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 position = Vector2(-32, 0)

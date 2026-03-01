@@ -6,13 +6,6 @@ const gothcha_lines: Array[String] = [
 	"I SEE YOU"
 ]
 
-const visual_lost_lines: Array[String] = [
-	"HEY Where are you???",
-	"LOST VISUAL",
-	"STOP HIDING WEAKLING",
-	"?????"
-]
-
 @export_range(0., 1.) var difficulty_sensor_speed: float = 0.1
 @export_range(0., 1.) var difficulty_moving_speed: float = 0.1
 @export_range(0., 1.) var difficulty_laser_speed: float = 0.25
@@ -34,7 +27,6 @@ var acquired_target: Node2D = null
 var aiming_to: Vector2 = Vector2.ZERO
 var search_loop_progress: float = 0.
 var time_until_target_drop: float = goldfish_memory_sec
-var time_until_lasers: float = difficulty_laser_warning_sec
 var whirlwind_duration_left_sec: float = 0.
 func _process(delta: float):
 	super(delta)
@@ -48,13 +40,14 @@ func _process(delta: float):
 	else:
 		whirlwind_duration_left_sec -= delta
 		if whirlwind_duration_left_sec <= 0.:
-			$controller.handle_rotation = true
 			for saber in $hotsabers.get_children(): saber.shutdown()
 		if whirlwind_duration_left_sec < whirlwind_length_sec:
 			set_global_rotation(get_global_rotation() + whirlwind_speed_rad_per_sec * delta)
 			for saber in $hotsabers.get_children():
 				saber.process_input_action({"action_direction": Vector2.UP})
 
+var time_until_lasers: float = difficulty_laser_warning_sec
+var time_until_search_start: float = goldfish_memory_sec
 var focus_change_from_damage:bool = false
 func _process_default_mode(delta: float) -> void:
 	# Handle rotation
@@ -63,10 +56,9 @@ func _process_default_mode(delta: float) -> void:
 	# Handle target changes
 	var lost_target: Node2D = null
 	if acquired_target != change_target_to:
-		if not change_target_to and 0. >= time_until_target_drop:
+		if not change_target_to and time_until_target_drop <= 0.:
 			time_until_target_drop = goldfish_memory_sec
 			lost_target = acquired_target
-			$state_display.say(visual_lost_lines.pick_random())
 			for laser in $lasers.get_children(): laser.reset()
 		elif change_target_to:
 			aiming_to = get_global_position()
@@ -78,14 +70,18 @@ func _process_default_mode(delta: float) -> void:
 	# Shutdown lasers if target is dead
 	if acquired_target and not acquired_target.in_battle():
 		acquired_target = null
-		for laser in $lasers.get_children(): laser.reset()
+	if acquired_target == null or 0. < time_until_lasers:
+		for laser in $lasers.get_children(): if laser.is_shooting: laser.reset()
 
 	# Handle actions for targets
 	if acquired_target:
+		time_until_search_start = goldfish_memory_sec
 		if (acquired_target.get_global_position() - get_global_position()).length() < approx_size:
 			$state_display.exclaim_emote()
 			whirlwind_duration_left_sec = whirlwind_length_sec + difficulty_whirlwind_warning_sec
-			$controller.handle_rotation = false
+			create_tween().tween_callback(
+				func(): for laser in $lasers.get_children(): laser.reset()
+			).set_delay(difficulty_whirlwind_warning_sec)
 			return
 		
 		# Shoot the lasers and follow the target when it is active
@@ -110,17 +106,19 @@ func _process_default_mode(delta: float) -> void:
 					"acquired_target_position": aiming_to
 				})
 	else: 
+		time_until_search_start -= delta
 		if search_loop_progress >= search_loop_length_sec: search_loop_progress = 0.
-		moving_to = get_global_position() + Vector2(cos(search_loop_progress), sin(search_loop_progress)) * approx_size * 1.5
 		var radar_direction_center = (moving_to - get_global_position()).normalized()
 		var radar_angle = (
 			radar_direction_center.angle()
 			+ (((search_loop_progress - search_loop_length_sec / 2.) / search_loop_length_sec) * (PI / 4.))
 		)
 		if lost_target:
-			var lost_target_angle = (lost_target.get_global_position() + get_global_position()).angle()
-			if angle_difference(lost_target_angle, radar_angle) < angle_difference(lost_target_angle, -radar_angle):
-				radar_angle = -radar_angle
+			# Search loop is defined both in seconds and angles. A full search circle takes 2*PI seconds!
+			search_loop_progress = (lost_target.get_global_position() - get_global_position()).angle()
+			#if angle_difference(lost_target_angle, radar_angle) < angle_difference(lost_target_angle, -radar_angle):
+				#radar_angle = -radar_angle
+		moving_to = get_global_position() + Vector2(cos(search_loop_progress), sin(search_loop_progress)) * approx_size * 1.5
 		if not focus_change_from_damage:
 			focusing_at = get_global_position() + Vector2(cos(radar_angle), sin(radar_angle)) * approx_size
 
