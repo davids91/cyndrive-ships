@@ -7,6 +7,7 @@ func _ready() -> void:
 
 func set_burn_percentage(percentage: float) -> void:
 	$skin_image.material.set_shader_parameter("burn_percentage", percentage)
+	set_visible(percentage < 0.99)
 
 func set_team_color(color: Color) -> void:
 	$skin_image.material.set_shader_parameter("team_color", color)
@@ -17,6 +18,7 @@ func set_skins_material(mat: ShaderMaterial) -> void:
 
 var team_color: Color = Color.WHITE
 func init_skin(skin_layers: Array[BattleShipSkin], init_team_color: Color) -> void:
+	set_visible(true)
 	# set skin viewport to fit character size
 	$layers.size = Vector2(character.approx_size, character.approx_size)
 	team_color = init_team_color

@@ -17,13 +17,11 @@ func _ready() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body != character and "team" in body and not body.team.is_enemy(character.team):
 		ships_within_aura[body] = BattleTimeline.instance.time_msec()
-		if body.has_node("repair_indicator"):
-			body.get_node("repair_indicator").set_visible(body.visible)
+		if "is_being_healed" in body: body.is_being_healed = true
 
 func _on_body_exited(body: Node2D) -> void:
-	if body.has_node("repair_indicator"):
-		body.get_node("repair_indicator").set_visible(false)
 	ships_within_aura.erase(body)
+	if "is_being_healed" in body: body.is_being_healed = false
 
 func _process(delta: float) -> void:
 	for ship in ships_within_aura:

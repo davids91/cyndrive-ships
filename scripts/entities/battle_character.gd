@@ -189,6 +189,7 @@ func _physics_process(delta: float) -> void:
 @onready var is_alive: bool = true
 @onready var was_alive: bool = is_alive
 @onready var was_in_battle: bool = in_battle()
+var is_being_healed: bool = false
 var ship_explosion : Explosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 func _process(_delta):
@@ -198,9 +199,11 @@ func _process(_delta):
 	# Handle when player timeline gets different from characters timeline
 	if not in_battle() and was_in_battle:
 		create_tween().tween_method(func(value): $skin.set_burn_percentage(value), 0.0, 1.0, 0.5)
+		$skin.set_visible(false)
 		was_in_battle = false
 	elif in_battle() and not was_in_battle:
 		create_tween().tween_method(func(value): $skin.set_burn_percentage(value), 1.0, 0.0, 0.5)
+		$skin.set_visible(true)
 		was_in_battle = true
 
 	# Erase explosion if ship is alive
@@ -208,14 +211,15 @@ func _process(_delta):
 		ship_explosion.queue_free()
 		ship_explosion = null
 
-	# Do not continue if the ship is not in battle
-	if not in_battle(): return
-
 	if has_node("repair_indicator"):
 		$repair_indicator.set_global_position(get_global_position() - $repair_indicator.size * 0.55)
+		$repair_indicator.set_visible(visible and $skin.visible and is_being_healed)
 
-	if has_node("state_display"):
-		$state_display.set_visible(visible and $skin.visible)
+	if has_node("target_arrow"):
+		$target_arrow.set_visible($target_arrow.visible and visible and $skin.visible)
+
+	# Do not continue if the ship is not in battle
+	if not in_battle(): return
 
 	# Play thruster sound when ship is being steered
 	if (
@@ -319,6 +323,7 @@ func respawn():
 		$ai_control.resume()
 	extend_replayer = false
 	was_alive = true
+	$skin.set_burn_percentage(0.)
 
 var control_disabled: bool = false
 func pause_control() -> void:
