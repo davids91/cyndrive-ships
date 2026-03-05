@@ -29,4 +29,3 @@ mono_crash.*.json
 # Misc
 addons/*
 export/*
-*.import

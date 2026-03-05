@@ -1,0 +1,17 @@
+[remap]
+
+importer="VoxelVoxSceneImporter"
+type="PackedScene"
+uid="uid://cj4ppciamvrbg"
+path="res://.godot/imported/carrier-ship_v2.vox-a73635ebc4b2b1f83f8a27a82d9571e1.tscn"
+
+[deps]
+
+source_file="res://models/carrier-ship_v2.vox"
+dest_files=["res://.godot/imported/carrier-ship_v2.vox-a73635ebc4b2b1f83f8a27a82d9571e1.tscn"]
+
+[params]
+
+store_colors_in_texture=false
+scale=1.0
+enable_baked_lighting=true
