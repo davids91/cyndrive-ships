@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://cer054lhx4edf"]
+[gd_scene load_steps=37 format=4 uid="uid://cer054lhx4edf"]
 
 [ext_resource type="Script" uid="uid://bc2ashwmpmgd5" path="res://scripts/battle/tutorial_level.gd" id="1_aby8t"]
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_rvnqy"]
@@ -19,9 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="11_fh4lj"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="12_by8vi"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="12_g8yy2"]
-[ext_resource type="Texture2D" uid="uid://o42ke22r8jvm" path="res://textures/entities/player_carrier_bottom.png" id="13_xxhjm"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="14_45v6q"]
-[ext_resource type="Texture2D" uid="uid://c17117io8ilgk" path="res://textures/entities/player_carrier_top.png" id="14_46lbi"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="15_jmtss"]
 [ext_resource type="PackedScene" uid="uid://dh7roqtbhf7vh" path="res://scenes/entities/marker.tscn" id="18_2soyj"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_2soyj"]
@@ -62,21 +60,6 @@ metadata/_custom_type_script = "uid://cud6a5voxneed"
 [sub_resource type="Resource" id="Resource_at2n2"]
 script = ExtResource("6_xw3hl")
 texture = ExtResource("15_jmtss")
-metadata/_custom_type_script = "uid://cud6a5voxneed"
-
-[sub_resource type="Resource" id="Resource_e50ek"]
-script = ExtResource("6_xw3hl")
-texture = ExtResource("13_xxhjm")
-scale = Vector2(1, 1)
-rotation = 0.0
-z_index = -5
-metadata/_custom_type_script = "uid://cud6a5voxneed"
-
-[sub_resource type="Resource" id="Resource_mpb26"]
-script = ExtResource("6_xw3hl")
-texture = ExtResource("14_46lbi")
-scale = Vector2(1, 1)
-rotation = 0.0
 metadata/_custom_type_script = "uid://cud6a5voxneed"
 
 [sub_resource type="Curve" id="Curve_l3ay5"]
@@ -203,7 +186,6 @@ max_health = 12.0
 position = Vector2(1690, -2699)
 approx_size = 770.0
 color = Color(0, 0, 0, 1)
-skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_e50ek"), SubResource("Resource_mpb26")])
 starting_health = 500.0
 max_health = 500.0
 red_curve_phasing = SubResource("Curve_l3ay5")
