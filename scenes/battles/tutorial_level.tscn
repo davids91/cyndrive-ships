@@ -255,7 +255,6 @@ position = Vector2(2438, -3364)
 
 [node name="intro" parent="dialogues" instance=ExtResource("19_2soyj")]
 visible = false
-dialog = "res://dialogues/tutorial_level/tutorial_0_greeting.txt"
 is_dialogue_active = true
 
 [node name="boost" parent="dialogues" instance=ExtResource("19_2soyj")]

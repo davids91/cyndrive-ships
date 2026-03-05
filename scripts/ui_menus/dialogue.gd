@@ -2,8 +2,10 @@ extends CanvasLayer
 
 signal dialouge_finished()
 
-@onready var dialogText = %main_dialogue
-@onready var dialogIcon = %npc_icon
+@onready var dialogText: Label = %main_dialogue
+@onready var dialogIcon: TextureRect = %npc_icon
+@onready var continue_panel: HBoxContainer = %continue
+@onready var continue_button: Button = continue_panel.get_node("continue_button")
 
 @export var portraits: Array = [
 	preload("res://textures/entities/npc_1.png"),
@@ -14,12 +16,11 @@ signal dialouge_finished()
 ]
 
 @export var seconds_per_letter: float = 0.025
-@export var seconds_after_each_line: float = 1.5
+@export var seconds_after_each_line: float = 30.
 @export_file("*.txt") var dialog: String = ""
 @export var dialogue_conditionals: Array[bool] = []
 @export var unskippable_signals: Array[int] = []
 @export var is_dialogue_active: bool = false
-@export var auto_finish: bool = false
 
 @onready var dialog_lines: PackedStringArray = _load_dialog_lines()
 
@@ -43,15 +44,13 @@ func start() -> void:
 	is_dialogue_active = true
 	dialogue_in_progress = true
 	set_visible(true)
+	$control.call_deferred("grab_focus")
 
 func finish() -> void:
 	current_tempo = seconds_per_letter
 	dialogue_in_progress = false
 	is_dialogue_active = false
-	skip_shown = false
 	set_visible(false)
-	$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to continue..")
-	$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(false)
 	for signal_idx in unskippable_signals:
 		if not signals_shot.has(signal_idx):
 			emit_signal("dialogue_signal_" + str(signal_idx))
@@ -112,6 +111,20 @@ func _ready() -> void:
 	if not dialog_lines.is_empty():
 		current_line_text = _parse_line(dialog_lines[0])
 
+func start_new_line() -> void:
+	delay_remaining = 0.
+	current_letter = 0
+	current_line_text = ""
+	while current_line_text.is_empty() and abs(current_line) < dialog_lines.size():
+		current_line += 1
+		if abs(current_line) < dialog_lines.size(): current_line_text = _parse_line(dialog_lines[current_line])
+	if ( # dialog completed or the last line of the dialog is empty
+		current_line >= dialog_lines.size()
+		or(current_line == dialog_lines.size() - 1 and dialog_lines[current_line].strip_edges() == "")
+	):
+		dialogue_in_progress = false
+		finish()
+
 @onready var dialogue_in_progress: bool = false
 var current_letter: int = 0
 var current_line: int = 0
@@ -129,20 +142,7 @@ func _process(delta: float) -> void:
 
 	# Start a new line
 	if current_letter > current_line_text.length():
-		current_letter = 0
-		current_line_text = ""
-		while current_line_text.is_empty() and abs(current_line) < dialog_lines.size():
-			current_line += 1
-			if abs(current_line) < dialog_lines.size(): current_line_text = _parse_line(dialog_lines[current_line])
-		if ( # dialog completed or the last line of the dialog is empty
-			current_line >= dialog_lines.size()
-			or(current_line == dialog_lines.size() - 1 and dialog_lines[current_line].strip_edges() == "")
-		):
-			$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to continue..")
-			$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(true)
-			dialogue_in_progress = false
-			if auto_finish: finish()
-			return
+		start_new_line()
 
 	# Set the tempo based on the tokens within the line
 	if line_tempo_changes.has(current_letter):
@@ -162,13 +162,5 @@ func _process(delta: float) -> void:
 		delay_remaining = line_pauses[current_letter]
 	elif current_letter > current_line_text.length():
 		delay_remaining = seconds_after_each_line
+		
 	else: delay_remaining = current_tempo
-
-var skip_shown: bool = false
-func _unhandled_key_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept"):
-		if is_dialogue_active and (not dialogue_in_progress or skip_shown): finish()
-		else:
-			skip_shown = true
-			$control/content_container/HBoxContainer/VBoxContainer/continue/continue_button.set_text("Press Space to skip..")
-			$control/content_container/HBoxContainer/VBoxContainer/continue.set_visible(true)

@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=4 uid="uid://dwxo210cmq3jj"]
+[gd_scene load_steps=8 format=4 uid="uid://dwxo210cmq3jj"]
 
 [ext_resource type="Script" uid="uid://2v4bgsoiqlsv" path="res://scripts/ui_menus/dialogue.gd" id="1_3n4vj"]
 [ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="2_bfpow"]
+[ext_resource type="Script" uid="uid://bkr2v5nh6w6ml" path="res://scripts/ui_menus/dialogue_control.gd" id="2_cnjl0"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="3_bfpow"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4u087"]
@@ -27,6 +28,7 @@ size = Vector2(100, 100)
 
 [node name="dialogue" type="CanvasLayer"]
 script = ExtResource("1_3n4vj")
+dialog = "res://dialogues/tutorial_level/tutorial_0_greeting.txt"
 
 [node name="control" type="Control" parent="."]
 layout_mode = 3
@@ -40,6 +42,14 @@ offset_top = -150.0
 offset_right = 528.0
 grow_horizontal = 2
 grow_vertical = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 2
+script = ExtResource("2_cnjl0")
 
 [node name="Panel" type="Panel" parent="control"]
 layout_mode = 0
@@ -99,7 +109,7 @@ autowrap_mode = 2
 clip_text = true
 
 [node name="continue" type="HBoxContainer" parent="control/content_container/HBoxContainer/VBoxContainer"]
-visible = false
+unique_name_in_owner = true
 layout_mode = 2
 alignment = 2
 
@@ -108,4 +118,4 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Press Space to continue.."
 
-[connection signal="pressed" from="control/content_container/HBoxContainer/VBoxContainer/continue/continue_button" to="." method="finish"]
+[connection signal="pressed" from="control/content_container/HBoxContainer/VBoxContainer/continue/continue_button" to="." method="start_new_line"]

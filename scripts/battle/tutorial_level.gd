@@ -445,7 +445,7 @@ func _on_boss_dies(_itsme: BattleCharacter) -> void:
 		get_tree().change_scene_to_file("res://scenes/galaxy.tscn")
 	)
 
-func _on_boss_defeated_dialouge_finished(_itsme: BattleCharacter) -> void:
+func _on_boss_defeated_dialouge_finished() -> void:
 	get_tree().change_scene_to_file("res://scenes/galaxy.tscn")
 
 func _on_player_dies_dialouge_finished() -> void:
