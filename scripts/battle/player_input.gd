@@ -31,16 +31,13 @@ func set_disabled(yesno: bool) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	var action = get_action(event)
 	var just_pressed = event.is_pressed() and not event.is_echo()
+	var was_shooting = is_shooting
 
 	if "movement_intent" in action:
-		current_intent += action["movement_intent"]
-		action["movement_intent"] = current_intent
+		current_intent = action["movement_intent"]
 
-	var was_shooting = is_shooting
 	if "action_direction" in action:
-		action["action_direction"] = action["action_direction"]
-		current_action_direction += action["action_direction"]
-		action["action_direction"] = current_action_direction
+		current_action_direction = action["action_direction"]
 		is_shooting = 0 < action["action_direction"].length()
 
 	if was_shooting and not is_shooting:
@@ -98,6 +95,7 @@ static func tdoty(mat, vec):
 
 static func xform(mat, vec):
 	return Vector2(tdotx(mat, vec), tdoty(mat, vec)) + mat.get_origin()
+	
 """
 Provides the processed control output in a form of a dictionary from the provided data and user input events
 Output format is the following:
@@ -114,27 +112,39 @@ Output format is the following:
 """
 static func get_action(input_event: InputEvent) -> Dictionary:
 	var action = Dictionary()
-	var intent_direction = Vector2(
-		(-1. if input_event.is_action_pressed("movement_left") else 0. + 1. if input_event.is_action_pressed("movement_right") else 0.),\
-		(1. if input_event.is_action_pressed("movement_down") else 0. + -1. if input_event.is_action_pressed("movement_up") else 0.)
-	)
-	intent_direction -= Vector2(
-		(-1. if input_event.is_action_released("movement_left") else 0. + 1. if input_event.is_action_released("movement_right") else 0.),\
-		(1. if input_event.is_action_released("movement_down") else 0. + -1. if input_event.is_action_released("movement_up") else 0.)
-	)
-	if 0. < intent_direction.length():
-		action["movement_intent"] = intent_direction
+	
+	var intent_direction = Vector2(0,0)
+	var action_direction = Vector2(0,0)
+	
+	if input_event.is_action_pressed("movement_left"):
+		intent_direction.x = -1
+		
+	if input_event.is_action_pressed("movement_right"):
+		intent_direction.x = 1
+		
+	if input_event.is_action_pressed("movement_down"):
+		intent_direction.y = 1
 
-	var action_direction = Vector2(
-		(-1. if input_event.is_action_pressed("action_left") else 0. + 1. if input_event.is_action_pressed("action_right") else 0.),\
-		(1. if input_event.is_action_pressed("action_down") else 0. + -1. if input_event.is_action_pressed("action_up") else 0.)
-	)
-	action_direction -= Vector2(
-		(-1. if input_event.is_action_released("action_left") else 0. + 1. if input_event.is_action_released("action_right") else 0.),\
-		(1. if input_event.is_action_released("action_down") else 0. + -1. if input_event.is_action_released("action_up") else 0.)
-	)
-	if 0. < action_direction.length():
-		action["action_direction"] = action_direction
+	if input_event.is_action_pressed("movement_up"):
+		intent_direction.y = -1
+
+	#if intent_direction.length():
+	action["movement_intent"] = intent_direction
+
+	if input_event.is_action_pressed("action_left"):
+		action_direction.x = -1
+	
+	if input_event.is_action_pressed("action_right"):
+		action_direction.x = 1
+
+	if input_event.is_action_pressed("action_down"):
+		action_direction.y = 1
+
+	if input_event.is_action_pressed("action_up"):
+		action_direction.y = -1
+
+	#if action_direction.length():
+	action["action_direction"] = action_direction
 
 	if input_event.is_action_pressed("boost"):
 		action["boost_initiated"] = true
@@ -163,6 +173,7 @@ static func get_action(input_event: InputEvent) -> Dictionary:
 		and input_event.physical_keycode >= KEY_1 and input_event.physical_keycode <= KEY_4
 	):
 		action["weapon_slot"] = input_event.physical_keycode - KEY_1
+		
 	return action
 
 func _enter_tree() -> void:
