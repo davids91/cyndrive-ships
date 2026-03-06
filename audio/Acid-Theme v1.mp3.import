@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://l8abnhstyv07"
+path="res://.godot/imported/Acid-Theme v1.mp3-a71d6f6f7a62298f132cfe6c91bed21e.mp3str"
+
+[deps]
+
+source_file="res://audio/Acid-Theme v1.mp3"
+dest_files=["res://.godot/imported/Acid-Theme v1.mp3-a71d6f6f7a62298f132cfe6c91bed21e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
