@@ -44,6 +44,9 @@ func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 	health = min(max_health, health + strength)
 	health_changed.emit(health / max_health)
 
+func set_highlight(yesno: bool) -> void:
+	$target_arrow.set_visible(yesno)
+
 func get_velocity() -> Vector2: return get_linear_velocity()
 func set_velocity(vel: Vector2) -> void: correct_temporal_state({"linear_velocity": vel})
 func pause_control() -> void: pass

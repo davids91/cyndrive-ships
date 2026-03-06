@@ -1,15 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://dvq1avar0lm3j"]
+[gd_scene format=3 uid="uid://dvq1avar0lm3j"]
 
 [ext_resource type="Script" uid="uid://dqtg8btrj5uax" path="res://scripts/entities/decoy.gd" id="1_xx7ms"]
 [ext_resource type="Material" uid="uid://hwlaracobxoh" path="res://resources/implode_effect.tres" id="2_35gy4"]
 [ext_resource type="Texture2D" uid="uid://cly2gtcj3qict" path="res://textures/entities/decoy_skin.png" id="3_e3qjj"]
 [ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/entities/simple_skin.gd" id="4_uwnbq"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="5_0hc3n"]
+[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="6_xx7ms"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3ylto"]
 radius = 25.0
 
-[node name="decoy" type="RigidBody2D"]
+[node name="decoy" type="RigidBody2D" unique_id=1437992623]
 collision_mask = 0
 mass = 0.1
 script = ExtResource("1_xx7ms")
@@ -17,10 +18,10 @@ max_health = 1.0
 debris_collision_layer_value = 0
 approx_size = 25.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1381577884]
 shape = SubResource("CircleShape2D_3ylto")
 
-[node name="skin" type="Sprite2D" parent="."]
+[node name="skin" type="Sprite2D" parent="." unique_id=340232942]
 material = ExtResource("2_35gy4")
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_e3qjj")
@@ -28,6 +29,11 @@ region_enabled = true
 region_rect = Rect2(0, 0, 128, 128)
 script = ExtResource("4_uwnbq")
 
-[node name="temporal_recorder" type="Node2D" parent="."]
+[node name="temporal_recorder" type="Node2D" parent="." unique_id=1798049926]
 script = ExtResource("5_0hc3n")
 triggers_per_second = 20
+
+[node name="target_arrow" type="Sprite2D" parent="." unique_id=1019782406]
+visible = false
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_xx7ms")

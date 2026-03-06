@@ -13,7 +13,7 @@ const gothcha_lines: Array[String] = [
 @export var goldfish_memory_sec: float = 1.
 @export var search_loop_length_sec: float = 2. * PI
 @export var whirlwind_length_sec: float = 3.5
-@export var whirlwind_speed_rad_per_sec: float = 4. * PI
+@export var whirlwind_speed_rad_per_sec: float = 3 * PI
 @export_range(0., 5.) var difficulty_whirlwind_warning_sec: float = 0.5
 
 @onready var focusing_at: Vector2 = get_global_position()
@@ -38,13 +38,16 @@ func _process(delta: float):
 	if not acquired_target: search_loop_progress += delta
 	if whirlwind_duration_left_sec <= 0.: _process_default_mode(delta)
 	else:
+		var still_warning: bool = whirlwind_duration_left_sec < whirlwind_length_sec
 		whirlwind_duration_left_sec -= delta
 		if whirlwind_duration_left_sec <= 0.:
 			for saber in $hotsabers.get_children(): saber.shutdown()
 		if whirlwind_duration_left_sec < whirlwind_length_sec:
 			set_global_rotation(get_global_rotation() + whirlwind_speed_rad_per_sec * delta)
-			for saber in $hotsabers.get_children():
-				saber.process_input_action({"action_direction": Vector2.UP})
+			if still_warning: for saber in $hotsabers.get_children():
+				saber.process_input_action({
+					"action_direction": (get_global_position() - saber.get_stem_position()).normalized() * 2.
+				})
 
 var time_until_lasers: float = difficulty_laser_warning_sec
 var time_until_search_start: float = goldfish_memory_sec
@@ -164,10 +167,10 @@ func _on_player_detection_body_exited(body: Node2D) -> void:
 		if acquired_target.has_method("set_highlight"): acquired_target.set_highlight(false)
 		change_target_to = null
 
-func _on_phased_in() -> void:
-	$skin.set_visible(true)
-	$RadarConeVisual.set_visible(true)
-	$state_display.visible = true
+func _on_phased(phased_in: bool) -> void:
+	$skin.set_visible(phased_in)
+	$RadarConeVisual.set_visible(phased_in)
+	$state_display.visible = phased_in
 
 func pause_control() -> void:
 	control_disabled = true

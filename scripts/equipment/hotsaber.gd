@@ -48,12 +48,13 @@ func _process(_delta: float) -> void:
 func get_stem_position() -> Vector2:
 	return wielder.get_global_position() + offset.rotated(wielder.get_global_rotation())
 
+@export var stays_on: bool = false
 var was_shooting: bool = false
 var last_shot: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	was_shooting = is_shooting
 	if "action_direction" in action:
-		is_shooting = 0. < action["action_direction"].length()
+		is_shooting = 0. < action["action_direction"].length() or(stays_on and is_shooting)
 		if is_shooting and action["action_direction"] != last_shot: was_shooting = false
 		last_shot = action["action_direction"]
 

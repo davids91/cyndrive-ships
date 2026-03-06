@@ -16,7 +16,6 @@ signal dialouge_finished()
 ]
 
 @export var seconds_per_letter: float = 0.025
-@export var seconds_after_each_line: float = 15.
 @export_file("*.txt") var dialog: String = ""
 @export var dialogue_conditionals: Array[bool] = []
 @export var unskippable_signals: Array[int] = []
@@ -43,6 +42,7 @@ func start() -> void:
 	dialogText.text = ""
 	is_dialogue_active = true
 	dialogue_in_progress = true
+	line_in_progress = true
 	set_visible(true)
 	$control.call_deferred("grab_focus")
 
@@ -111,11 +111,23 @@ func _ready() -> void:
 	if not dialog_lines.is_empty():
 		current_line_text = _parse_line(dialog_lines[0])
 
+@export var skip_line_interval_sec: float = 0.6
+@export var skip_line_count_for_finish: int = 4
+var lines_skipped_quickly: int = 0
+var previous_line_started_at: float = 0.
 func start_new_line() -> void:
+	if not dialogue_in_progress: return
+	if abs(Time.get_ticks_msec() - previous_line_started_at)/ 1000. < skip_line_interval_sec:
+		lines_skipped_quickly += 1
+		if lines_skipped_quickly >= skip_line_count_for_finish:
+			finish()
+	else: lines_skipped_quickly = 0
+	previous_line_started_at = Time.get_ticks_msec()
 	continue_panel.set_visible(false)
 	delay_remaining = 0.
 	current_letter = 0
 	current_line_text = ""
+	line_in_progress = true
 	var max_pos_of_tempo_change: int = 0
 	for i in line_tempo_changes.keys(): if i > max_pos_of_tempo_change:
 		max_pos_of_tempo_change = i
@@ -132,6 +144,7 @@ func start_new_line() -> void:
 		finish()
 
 @onready var dialogue_in_progress: bool = false
+@onready var line_in_progress: bool = false
 var current_letter: int = 0
 var current_line: int = 0
 var current_line_text: String = ""
@@ -143,12 +156,8 @@ func _process(delta: float) -> void:
 	# decide to even do anything or not based on the actual delay and line progress
 	delay_remaining -= delta / Difficulty.gameplay_speed
 
-	if delay_remaining > 0. or abs(current_line) >= dialog_lines.size():
+	if(not line_in_progress or delay_remaining > 0. or abs(current_line) >= dialog_lines.size()):
 		return
-
-	# Start a new line
-	if current_letter > current_line_text.length():
-		start_new_line()
 
 	# Set the tempo based on the tokens within the line
 	if line_tempo_changes.has(current_letter):
@@ -167,6 +176,6 @@ func _process(delta: float) -> void:
 	if line_pauses.has(current_letter):
 		delay_remaining = line_pauses[current_letter]
 	elif current_letter > current_line_text.length():
-		delay_remaining = seconds_after_each_line
+		line_in_progress = false
 		continue_panel.set_visible(true)
 	else: delay_remaining = current_tempo

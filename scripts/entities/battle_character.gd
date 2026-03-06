@@ -5,7 +5,7 @@ signal dead(itsme: BattleCharacter)
 signal resurrected(itsme: BattleCharacter)
 signal boost_energy_updated(new_energy_level: float)
 signal weapon_energy_updated(new_energy_level: float)
-signal phased_in()
+signal phased(phased_in: bool)
 signal shields_toggled(turned_on: bool)
 
 @export var is_player: bool = false
@@ -78,9 +78,56 @@ func phase_in() -> void:
 		phase_in_duration_sec * Difficuilty.gameplay_speed
 	).set_ease(Tween.EASE_OUT)
 	zoom_phase_tween.tween_callback(func():
-		phased_in.emit()
+		phased.emit(true)
 		$phase_effect.set_visible(false)
 		$skin.set_visible(true)
+	)
+	zoom_phase_tween.chain()
+
+func phase_out() -> void:
+	$phasing_in_sound.play(0.15)
+	$phase_effect.set_visible(true)
+	create_tween().tween_method(
+		func(w: float):
+			$phase_effect.get_material().set_shader_parameter(
+				"phase_red", red_curve_phasing.sample(w)
+			),
+		1., 0.,
+		phase_in_duration_sec * Difficuilty.gameplay_speed
+	)
+	create_tween().tween_method(
+		func(w: float):
+			$phase_effect.get_material().set_shader_parameter("phase_green",
+			green_curve_phasing.sample(w)),
+		1., 0.,
+		phase_in_duration_sec * Difficuilty.gameplay_speed
+	)
+	create_tween().tween_method(
+		func(w: float):
+			$phase_effect.get_material().set_shader_parameter("phase_blue",
+			blue_curve_phasing.sample(w)),
+		1., 0.,
+		phase_in_duration_sec * Difficuilty.gameplay_speed
+	)
+	create_tween().tween_method(
+		func(w: float):
+			$phase_effect.get_material().set_shader_parameter("phase_green",
+			green_curve_phasing.sample(w)),
+		1., 0.,
+		phase_in_duration_sec * Difficuilty.gameplay_speed
+	)
+	var zoom_phase_tween: Tween = create_tween()
+	zoom_phase_tween.tween_method(
+		func(w: float):
+			$phase_effect.get_material().set_shader_parameter("zoom", w)
+			$phase_effect.modulate.a = 1. - w,
+		1., 0.,
+		phase_in_duration_sec * Difficuilty.gameplay_speed
+	).set_ease(Tween.EASE_OUT)
+	zoom_phase_tween.tween_callback(func():
+		phased.emit(false)
+		$phase_effect.set_visible(false)
+		$skin.set_visible(false)
 	)
 	zoom_phase_tween.chain()
 

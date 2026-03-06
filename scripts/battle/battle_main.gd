@@ -132,7 +132,7 @@ func _process(delta):
 			for combatant in $combatants.get_children():
 				combatant.resume_control()
 			$timeline.reset()
-			$player_input.set_disabled(false)
+			$player_input.input_disabled = false
 			$GUI/score.set_text(str(
 				living_team_members[1], " vs ", living_team_members[2],
 				" - Score: ", int(kill_score * kill_score_multiplier)
@@ -343,7 +343,7 @@ func _on_replay_button_pressed() -> void:
 		if c.has_node("target_assist"):
 			c.get_node("target_assist").set_disabled(true)
 	restart_round(false)
-	$player_input.set_disabled(true)
+	$player_input.input_disabled = true
 	$combatants/character.queue_free()
 	$replay_camera.make_current()
 	$GUI/restart_during_replay.set_visible(true)

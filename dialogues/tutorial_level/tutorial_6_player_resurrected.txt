@@ -3,9 +3,9 @@
 #[c0]Is that why you're all over the place?
 #[c2]Hey who's that other fella?
 #[c1]It's you! From before when you were muredered brutally..
-Try not to mind them though, thinking too much about them makes you go CRAZY
+Try not to mind them though, thinking too much about all this makes you go CRAZY
 #[c2]But if that's..#[p0]
-#[c0]EYES FRONT SOLIDER
+#[c0]EYES FRONT SOLDIER
 #[c3]HA HAAA! AS YOU CAN SEE YOUR TIME TRICKERY HASN'T AFFECTED ME ONE BIT!
 #[c2]You mean your health isn't restored?
-#[c3]#[t450] . . .#[t] NO WAIT#[p0]
+#[c3]#[t250] . . .#[t] NO WAIT#[p0]

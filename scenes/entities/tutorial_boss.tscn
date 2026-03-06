@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://dmn3a6pdbqk1q"]
+[gd_scene format=3 uid="uid://dmn3a6pdbqk1q"]
 
 [ext_resource type="Script" uid="uid://daxgfc8sbv7ql" path="res://scripts/entities/tutorial_boss.gd" id="1_icc1o"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_at5o7"]
@@ -187,7 +187,7 @@ shader_parameter/phase_green = 1.0
 shader_parameter/phase_blue = 1.0
 shader_parameter/zoom = 0.50000002305148
 
-[node name="boss" type="CharacterBody2D"]
+[node name="boss" type="CharacterBody2D" unique_id=598623427]
 rotation = 3.1415927
 script = ExtResource("1_icc1o")
 approx_size = 512.0
@@ -202,41 +202,41 @@ green_curve_phasing = SubResource("Curve_ikjs2")
 blue_curve_phasing = SubResource("Curve_1rdfn")
 laser_strength = 2.0
 
-[node name="collision_shape" type="CollisionShape2D" parent="."]
+[node name="collision_shape" type="CollisionShape2D" parent="." unique_id=1442351323]
 position = Vector2(-32, 0)
 shape = SubResource("CapsuleShape2D_q4kwk")
 
-[node name="controller" type="Node2D" parent="."]
+[node name="controller" type="Node2D" parent="." unique_id=1993400127]
 script = ExtResource("2_at5o7")
 handle_rotation = false
 top_speed = 5.0
 start_resistance = 5.0
 momentum_dampener = 0.95
 
-[node name="RadarConeVisual" type="AnimatedSprite2D" parent="."]
+[node name="RadarConeVisual" type="AnimatedSprite2D" parent="." unique_id=1374163051]
 visible = false
 position = Vector2(2354, 0)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_thtti")
 autoplay = "default"
 
-[node name="skin" type="Node2D" parent="."]
+[node name="skin" type="Node2D" parent="." unique_id=186782862]
 visible = false
 script = ExtResource("4_opo5f")
 
-[node name="layers" type="SubViewport" parent="skin"]
+[node name="layers" type="SubViewport" parent="skin" unique_id=188810637]
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 
-[node name="cam" type="Camera2D" parent="skin/layers"]
+[node name="cam" type="Camera2D" parent="skin/layers" unique_id=497782412]
 
-[node name="skin_image" type="Sprite2D" parent="skin"]
+[node name="skin_image" type="Sprite2D" parent="skin" unique_id=736788169]
 visible = false
 material = SubResource("ShaderMaterial_ejpcq")
 texture = SubResource("ViewportTexture_nikc3")
 
-[node name="thruster_fx" type="CPUParticles2D" parent="."]
+[node name="thruster_fx" type="CPUParticles2D" parent="." unique_id=1351348937]
 position = Vector2(-45, 0)
 rotation = 3.1415925
 emitting = false
@@ -252,7 +252,7 @@ scale_amount_max = 4.0
 color_ramp = SubResource("Gradient_akfac")
 script = ExtResource("5_cjpna")
 
-[node name="booster_fx" type="CPUParticles2D" parent="."]
+[node name="booster_fx" type="CPUParticles2D" parent="." unique_id=1103387592]
 visible = false
 show_behind_parent = true
 position = Vector2(-45, 0)
@@ -268,100 +268,117 @@ scale_amount_min = 4.0
 scale_amount_max = 4.0
 color_ramp = SubResource("Gradient_akfac")
 
-[node name="screaming" type="AudioStreamPlayer2D" parent="."]
+[node name="screaming" type="AudioStreamPlayer2D" parent="." unique_id=784985360]
 stream = ExtResource("8_fh5k0")
 bus = &"Ships"
 
-[node name="thruster_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="thruster_sound" type="AudioStreamPlayer2D" parent="." unique_id=273026603]
 stream = ExtResource("8_cjpna")
 bus = &"Ships"
 
-[node name="explosion_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="explosion_sound" type="AudioStreamPlayer2D" parent="." unique_id=1201621508]
 stream = SubResource("AudioStreamRandomizer_2h7vh")
 bus = &"Weapons"
 
-[node name="booster_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="booster_sound" type="AudioStreamPlayer2D" parent="." unique_id=1183222295]
 stream = ExtResource("13_y7m1c")
 bus = &"Ships"
 
-[node name="target_arrow" type="Sprite2D" parent="."]
+[node name="target_arrow" type="Sprite2D" parent="." unique_id=131495817]
 visible = false
 position = Vector2(4, 0)
 scale = Vector2(2.96875, 2.96875)
 texture = ExtResource("14_0k8by")
 
-[node name="state_display" parent="." instance=ExtResource("14_tqvju")]
+[node name="state_display" parent="." unique_id=1225455586 instance=ExtResource("14_tqvju")]
 visible = false
 scale = Vector2(5, 5)
 mini_health_bar_offset = Vector2(-320, 320)
 emote_offset = Vector2(100, -70)
 
-[node name="lasers" type="Node" parent="."]
+[node name="lasers" type="Node" parent="." unique_id=405017701]
 
-[node name="laser_beam" parent="lasers" node_paths=PackedStringArray("wielder") instance=ExtResource("16_mcj1n")]
+[node name="laser_beam" parent="lasers" unique_id=1706586322 node_paths=PackedStringArray("wielder") instance=ExtResource("16_mcj1n")]
 position = Vector2(215, -200)
 wielder = NodePath("../..")
 offset = Vector2(215, -200)
 
-[node name="laser_beam2" parent="lasers" node_paths=PackedStringArray("wielder") instance=ExtResource("16_mcj1n")]
+[node name="laser_beam2" parent="lasers" unique_id=1919807068 node_paths=PackedStringArray("wielder") instance=ExtResource("16_mcj1n")]
 position = Vector2(215, -200)
 wielder = NodePath("../..")
 offset = Vector2(50, -60)
 
-[node name="laser_beam3" parent="lasers" node_paths=PackedStringArray("wielder") instance=ExtResource("16_mcj1n")]
+[node name="laser_beam3" parent="lasers" unique_id=693146062 node_paths=PackedStringArray("wielder") instance=ExtResource("16_mcj1n")]
 position = Vector2(215, -200)
 wielder = NodePath("../..")
 offset = Vector2(60, 50)
 
-[node name="laser_beam4" parent="lasers" node_paths=PackedStringArray("wielder") instance=ExtResource("16_mcj1n")]
+[node name="laser_beam4" parent="lasers" unique_id=493129728 node_paths=PackedStringArray("wielder") instance=ExtResource("16_mcj1n")]
 position = Vector2(215, -200)
 wielder = NodePath("../..")
 offset = Vector2(215, 200)
 
-[node name="hotsabers" type="Node" parent="."]
+[node name="hotsabers" type="Node" parent="." unique_id=368116709]
 
-[node name="hotsaber" parent="hotsabers" node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+[node name="hotsaber" parent="hotsabers" unique_id=1245679943 node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+swing_arc_width_rad = 0.1
 wielder = NodePath("../..")
 offset = Vector2(-175, 200)
+stays_on = true
+base_damage = 1000.0
 
-[node name="hotsaber2" parent="hotsabers" node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+[node name="hotsaber2" parent="hotsabers" unique_id=2007454554 node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+swing_arc_width_rad = 0.1
 wielder = NodePath("../..")
 offset = Vector2(-65, 200)
+stays_on = true
 
-[node name="hotsaber3" parent="hotsabers" node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+[node name="hotsaber3" parent="hotsabers" unique_id=1424965221 node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+swing_arc_width_rad = 0.1
 wielder = NodePath("../..")
 offset = Vector2(45, 200)
+stays_on = true
 
-[node name="hotsaber4" parent="hotsabers" node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+[node name="hotsaber4" parent="hotsabers" unique_id=755616796 node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+swing_arc_width_rad = 0.1
 wielder = NodePath("../..")
 offset = Vector2(155, 200)
+stays_on = true
 
-[node name="hotsaber5" parent="hotsabers" node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+[node name="hotsaber5" parent="hotsabers" unique_id=1170716525 node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+swing_arc_width_rad = 0.1
 wielder = NodePath("../..")
 offset = Vector2(-175, -195)
+stays_on = true
 
-[node name="hotsaber6" parent="hotsabers" node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+[node name="hotsaber6" parent="hotsabers" unique_id=1796144747 node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+swing_arc_width_rad = 0.1
 wielder = NodePath("../..")
 offset = Vector2(-65, -195)
+stays_on = true
 
-[node name="hotsaber7" parent="hotsabers" node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+[node name="hotsaber7" parent="hotsabers" unique_id=194791281 node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+swing_arc_width_rad = 0.1
 wielder = NodePath("../..")
 offset = Vector2(45, -195)
+stays_on = true
 
-[node name="hotsaber8" parent="hotsabers" node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+[node name="hotsaber8" parent="hotsabers" unique_id=240797421 node_paths=PackedStringArray("wielder") instance=ExtResource("14_jkui1")]
+swing_arc_width_rad = 0.1
 wielder = NodePath("../..")
 offset = Vector2(155, -195)
+stays_on = true
 
-[node name="player_detection" type="Area2D" parent="."]
+[node name="player_detection" type="Area2D" parent="." unique_id=1345584538]
 top_level = true
 light_mask = 2
 collision_layer = 0
 monitorable = false
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="player_detection"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="player_detection" unique_id=1318158544]
 polygon = PackedVector2Array(0, 0, 15000, 5000, 15000, -5000)
 
-[node name="phase_effect" type="ColorRect" parent="."]
+[node name="phase_effect" type="ColorRect" parent="." unique_id=1525451113]
 material = SubResource("ShaderMaterial_o2p68")
 anchors_preset = 8
 anchor_left = 0.5
@@ -375,12 +392,12 @@ offset_bottom = 512.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="." unique_id=1676223605]
 stream = ExtResource("8_fh5k0")
 volume_db = -2.0
 bus = &"Sfx"
 
 [connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]
-[connection signal="phased_in" from="." to="." method="_on_phased_in"]
+[connection signal="phased" from="." to="." method="_on_phased"]
 [connection signal="body_entered" from="player_detection" to="." method="_on_player_detection_body_entered"]
 [connection signal="body_exited" from="player_detection" to="." method="_on_player_detection_body_exited"]

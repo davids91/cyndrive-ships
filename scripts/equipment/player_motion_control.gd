@@ -30,14 +30,14 @@ func apply_impulse(impulse: Vector2) -> void:
 	current_impulse += impulse
 
 var last_intent: Vector2 = Vector2()
-var last_movement_input: Vector2 = Vector2()
 var is_boosting: bool = false
 @export_range(0., 1.) var angle_response: float = 0.5
-@export_range(0., 1.) var speed_response: float = 0.45
-@export_range(0., 1.) var floatiness: float = 0.965
+@export_range(0., 1.) var speed_response: float = 0.2
+@export_range(0., 1.) var max_speed_response: float = 0.4
+@export_range(0., 1.) var floatiness: float = 0.9
+@export var max_speed_response_fi: float = 1.
 func process_input_action(action: Dictionary) -> void:
 	if "movement_intent" in action:
-		last_movement_input = action["movement_intent"]
 		if intent_direction.length() < 0.1:
 			intent_direction = action["movement_intent"]
 		elif action["movement_intent"].length() < 0.1:
@@ -54,14 +54,23 @@ func process_input_action(action: Dictionary) -> void:
 	if was_boosting != is_boosting: boosting.emit(is_boosting)
 
 @onready var last_position = get_global_position()
+var actual_speed_response: float = speed_response
+var speed_response_fi: float = 0.
 func _physics_process(delta: float) -> void:
 	if 0 < intent_direction.length():
-		internal_force = lerp(internal_force, intent_direction, speed_response)
+		speed_response_fi = min(speed_response_fi + delta, max_speed_response_fi)
+		actual_speed_response = lerp(
+			speed_response, max_speed_response,
+			pow(speed_response_fi, 2.) / pow(max_speed_response_fi, 2.)
+		)
+		internal_force = lerp(internal_force, intent_direction, actual_speed_response)
 		if is_boosting:
 			internal_force += intent_direction * booster_strength
+	else: speed_response_fi = 0.
 
 	if intent_direction.length() < 0.15:
 		intent_direction = Vector2()
+		actual_speed_response = speed_response
 
 	if not enabled: return
 

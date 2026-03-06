@@ -71,6 +71,7 @@ func _process(_delta: float) -> void:
 
 @export var sound_loop_start_sec: float = 0.2
 @export var sound_loop_end_sec: float = 2.0
+@export var hits: Node # Debug variable 
 func _physics_process(_delta: float) -> void:
 	# Handle laser beam display and raycast
 	var laser_origin = wielder.get_global_position() + offset.rotated(wielder.get_global_rotation())
@@ -87,11 +88,10 @@ func _physics_process(_delta: float) -> void:
 	# Handle sounds and applying damage
 	if is_shooting:
 		if null != $raycast.get_collider():
+			hits = $raycast.get_collider()
 			var victim = $raycast.get_collider()
 			if victim != wielder and victim.has_method("accept_damage"):
 				victim.accept_damage(base_damage * current_strength_modifier, wielder)
-			# Uncomment the following line if laser is behaving strangely
-			# elif not victim.has_method("accept_damage"): print("ERROR: ", victim, " doesn't have `accept_damage` method!")
 		if not was_shooting and not $sound.playing:
 			$sound.play()
 		if $sound.playing:

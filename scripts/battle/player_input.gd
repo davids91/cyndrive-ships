@@ -10,7 +10,12 @@ static var instance: PlayerInput:
 	get:
 		return _instance
 
-@export var input_disabled: bool = true
+@export var input_disabled: bool = true:
+	set(value):
+		input_disabled = value
+		is_shooting = false
+		reverse_being_held = false
+		current_action_direction = Vector2.ZERO
 
 const tap_interval_msec: int = 500
 const short_reverse_hold_time_sec: float = 0.15 # How long to hold down the reverse action to start reversing time
@@ -24,9 +29,6 @@ var reverse_initiated: bool = false
 var reverse_hold_time_sec: float = 0.
 var reverse_tap_count: int = 0
 var reverse_last_tap_at: int = Time.get_ticks_msec()
-
-func set_disabled(yesno: bool) -> void:
-	input_disabled = yesno
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	var action = get_action(event)

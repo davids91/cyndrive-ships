@@ -13,14 +13,6 @@ var intent_direction: Vector2 = Vector2()
 var intent_force: Vector2 = Vector2()
 var internal_force: Vector2 = Vector2()
 
-"""
-Run curve based on https://www.youtube.com/watch?v=yorTG9at90g
-	--> Run curve is based on speed x time
-	--> 3 phases: 
-		- acceleration is based on the function x^2
-		- speed is capped to: top_speed
-		- deceleration: x^2
-"""
 @export_range(0.001, 200) var top_speed: float = 20.
 @export_range(0., 100) var start_resistance: float = 0.
 @export_range(0.1, 10.) var booster_strength: float = 2.

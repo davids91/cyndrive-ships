@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://dwxo210cmq3jj"]
+[gd_scene format=4 uid="uid://dwxo210cmq3jj"]
 
 [ext_resource type="Script" uid="uid://2v4bgsoiqlsv" path="res://scripts/ui_menus/dialogue.gd" id="1_3n4vj"]
 [ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="2_bfpow"]
@@ -26,11 +26,11 @@ sources/0 = SubResource("TileSetAtlasSource_4u087")
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_3n4vj"]
 size = Vector2(100, 100)
 
-[node name="dialogue" type="CanvasLayer"]
+[node name="dialogue" type="CanvasLayer" unique_id=286697342]
 script = ExtResource("1_3n4vj")
 dialog = "res://dialogues/tutorial_level/tutorial_0_greeting.txt"
 
-[node name="control" type="Control" parent="."]
+[node name="control" type="Control" parent="." unique_id=114419938]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -51,10 +51,10 @@ focus_previous = NodePath(".")
 focus_mode = 2
 script = ExtResource("2_cnjl0")
 
-[node name="Panel" type="Panel" parent="control"]
+[node name="Panel" type="Panel" parent="control" unique_id=1256162238]
 layout_mode = 0
 
-[node name="background_container" type="MarginContainer" parent="control"]
+[node name="background_container" type="MarginContainer" parent="control" unique_id=994534666]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -63,43 +63,43 @@ offset_top = -40.0
 offset_right = 40.0
 grow_vertical = 0
 
-[node name="dialogue_panel" type="TileMapLayer" parent="control/background_container"]
+[node name="dialogue_panel" type="TileMapLayer" parent="control/background_container" unique_id=221295557]
 tile_map_data = PackedByteArray("AAD8//f/AAABAAAAAAD8/wEAAAABAAMAAAD5//f/AAAAAAAAAAD5//j/AAAAAAEAAAD5//n/AAADAAEAAAD5//r/AAACAAMAAAD5//7/AAAAAAIAAAD5////AAADAAEAAAD5/wAAAAADAAIAAAD5/wEAAAAAAAMAAAD6//f/AAABAAMAAAD6/wEAAAABAAMAAAD7//f/AAABAAMAAAD7/wEAAAABAAMAAAApAPf/AAABAAMAAAApAAEAAAABAAMAAAAqAPf/AAABAAMAAAAqAAEAAAABAAMAAAArAPf/AAADAAAAAAArAAEAAAADAAMAAAAoAPf/AAABAAMAAAAoAAEAAAACAAAAAAArAPj/AAADAAEAAAArAPn/AAADAAEAAAArAPr/AAADAAEAAAArAP7/AAAAAAIAAAArAP//AAADAAEAAAArAAAAAAADAAEAAAD9/wEAAAABAAMAAAD+/wEAAAABAAAAAAAkAPf/AAACAAAAAAAlAPf/AAABAAMAAAAmAPf/AAABAAMAAAAnAPf/AAABAAMAAAA=")
 tile_set = SubResource("TileSet_fqtyt")
 
-[node name="content_container" type="MarginContainer" parent="control"]
+[node name="content_container" type="MarginContainer" parent="control" unique_id=821837569]
 layout_mode = 0
 offset_left = -86.0
 offset_top = -13.0
 offset_right = 678.0
 offset_bottom = 125.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="control/content_container"]
+[node name="HBoxContainer" type="HBoxContainer" parent="control/content_container" unique_id=290276915]
 layout_mode = 2
 
-[node name="npc_icon" type="TextureRect" parent="control/content_container/HBoxContainer"]
+[node name="npc_icon" type="TextureRect" parent="control/content_container/HBoxContainer" unique_id=340020180]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 texture = SubResource("PlaceholderTexture2D_3n4vj")
 expand_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="control/content_container/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="control/content_container/HBoxContainer" unique_id=557305657]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="icon_controls" type="HBoxContainer" parent="control/content_container/HBoxContainer/VBoxContainer"]
+[node name="icon_controls" type="HBoxContainer" parent="control/content_container/HBoxContainer/VBoxContainer" unique_id=1047637009]
 layout_mode = 2
 alignment = 2
 
-[node name="Button" type="Button" parent="control/content_container/HBoxContainer/VBoxContainer/icon_controls"]
+[node name="Button" type="Button" parent="control/content_container/HBoxContainer/VBoxContainer/icon_controls" unique_id=2001250930]
 layout_mode = 2
 
-[node name="Button2" type="Button" parent="control/content_container/HBoxContainer/VBoxContainer/icon_controls"]
+[node name="Button2" type="Button" parent="control/content_container/HBoxContainer/VBoxContainer/icon_controls" unique_id=879464330]
 layout_mode = 2
 
-[node name="main_dialogue" type="Label" parent="control/content_container/HBoxContainer/VBoxContainer"]
+[node name="main_dialogue" type="Label" parent="control/content_container/HBoxContainer/VBoxContainer" unique_id=1300074130]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(385, 90)
 layout_mode = 2
@@ -108,12 +108,12 @@ label_settings = ExtResource("3_bfpow")
 autowrap_mode = 2
 clip_text = true
 
-[node name="continue" type="HBoxContainer" parent="control/content_container/HBoxContainer/VBoxContainer"]
+[node name="continue" type="HBoxContainer" parent="control/content_container/HBoxContainer/VBoxContainer" unique_id=1511631408]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 2
 
-[node name="continue_button" type="Button" parent="control/content_container/HBoxContainer/VBoxContainer/continue"]
+[node name="continue_button" type="Button" parent="control/content_container/HBoxContainer/VBoxContainer/continue" unique_id=1037506185]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Press Space to continue.."

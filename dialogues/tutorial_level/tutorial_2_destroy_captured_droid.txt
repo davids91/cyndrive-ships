@@ -1,12 +1,8 @@
 #[c0]Congratulations on passing the navigation test!
 #[c1]Do not scratch the ship!
-#[c0]We're in outer space! There's literally nothing here to scratch the ship!
-#[c1]#[s0]There's that droid!
-#[c0]Yes, but  that's .. #[p400]That's #[t250] . . #[t]*sigh*
-Did you quarrel with the nanobots again?
+#[c0]#[t250] . . #[t]*sigh* Did you quarrel with the nanobots again?
 #[c1] ..hmph!
-#[c0]Pilot! Don't worry about minor hull damage, we have nanobots fixing the ship when it's close enough!#[p1500] Now..
-We captured that deactivated `Team Pocket Co. Universal Battle Droid` for uh..
-Your next test is to destroy it.
-#[c1]Wait what..?#[p0]
-#[c0]ELIMINATE THE DROID! DO IT!
+#[c0]Pilot! Don't worry about minor hull damage!
+we have nanobots fixing the ship when it's close enough!#[p1500] Now..
+#[s0]We captured that deactivated `Team Pocket Co. Universal Battle Droid` for uh..
+Your next test is to destroy it. Use the arrow keys to shoot!

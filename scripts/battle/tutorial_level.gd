@@ -17,14 +17,9 @@ func _ready():
 	$GUI.set_disabled_weapons_mask(0xE)
 	$GUI.set_laupeerium_indicator(UIEnergyBar.max_bars / 4.)
 	$combatants/disabled_droid/skin.set_visible(false)
-	$combatants/character.disabled_weapons_mask = 0xE
-	$combatants/character/weapon_slot.disabled = true
-	$combatants/player_carrier.phased_in.connect(func():
-		$dialogues/intro.start()
-		$combatants/character.set_visible(true)
-		$player_input.input_disabled = false
-	)
-	$combatants/player_carrier.phase_in()
+	%character.disabled_weapons_mask = 0xE
+	%character/weapon_slot.disabled = true
+	%player_carrier.phase_in()
 
 	# Show keybindings
 	$dialogues/intro.connect(
@@ -46,8 +41,8 @@ func _ready():
 		$markers/marker2.set_visible(true)
 		boost_dialogue_showing_next_mark_tween = create_tween()
 		boost_dialogue_showing_next_mark_tween.tween_method(
-			func(w: float): $combatants/character/cam.set_global_position(lerp(
-				$combatants/character/cam.get_global_position(),
+			func(w: float): %character/cam.set_global_position(lerp(
+				%character/cam.get_global_position(),
 				$markers/marker2.get_position(),
 				w
 			)),
@@ -55,7 +50,7 @@ func _ready():
 		)
 		boost_dialogue_showing_next_mark_tween.tween_interval(1.)
 		boost_dialogue_showing_next_mark_tween.tween_method(
-			func(w: float): $combatants/character/cam.position *= w,
+			func(w: float): %character/cam.position *= w,
 			1., 0., 1. * Difficulty.gameplay_speed
 		)
 	)
@@ -77,22 +72,21 @@ func _ready():
 		func(): 
 			var boss = preload("res://scenes/entities/tutorial_boss.tscn").instantiate()
 			boss.name = "boss"
-			boss.set_global_position($combatants/character.get_global_position() + Vector2(1000., 0.))
+			boss.set_global_position(%character.get_global_position() + Vector2(1000., 0.))
 			boss.control_disabled = true
 			boss.difficulty_sensor_speed = 0.4
 			boss.difficulty_laser_speed = 0.5
 			boss.time_until_lasers = 0.5
-			boss.acquired_target = $combatants/character
-			boss.change_target_to = $combatants/character # TechDebt: if change_target_to differs from acquired target there's some UB
-			boss.focusing_at = $combatants/character.get_global_position()
-			boss.moving_to = $combatants/character.get_global_position() + Vector2(900., 0.)
-			boss.connect("dead", _on_boss_dies)
+			boss.acquired_target = %character
+			boss.change_target_to = %character # TechDebt: if change_target_to differs from acquired target there's some UB
+			boss.focusing_at = %character.get_global_position()
+			boss.moving_to = %character.get_global_position() + Vector2(900., 0.)
+			boss.connect("health_changed", _on_boss_health_changed)
 			$combatants.add_child(boss)
 			$GUI.set_objective("New ship\nwho dis?")
 	)
 
 var currently_failing_at_markers: bool = false
-var last_entered_marker: BattleMarker
 func _process(delta: float) -> void:
 	$GUI/debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
 	if(
@@ -113,13 +107,10 @@ func _process(delta: float) -> void:
 			var reset_tween: Tween = create_tween()
 			reset_tween.tween_method(func(w: float): $GUI/fade_to_black.self_modulate.a = w, 0., 1. , 0.5).set_ease(Tween.EASE_IN)
 			reset_tween.tween_callback(func():
-				$combatants/character.correct_temporal_state($combatants/character.spawn_snapshot)
-				if $combatants/character.held_mine:
-					$combatants/character.held_mine.correct_temporal_state($combatants/character.held_mine.spawn_snapshot)
+				%character.correct_temporal_state(%character.spawn_snapshot)
+				if %character.held_mine:
+					%character.held_mine.correct_temporal_state(%character.held_mine.spawn_snapshot)
 				create_tween().tween_method(func(w: float): $GUI/try_again.modulate.a = w, 1., 0., 3.)
-				if last_entered_marker: 
-					last_entered_marker.set_visible(true)
-					create_tween().tween_method(func(w: float): last_entered_marker.modulate.a = w, 1., 0., 0.5)
 			)
 			reset_tween.tween_method(func(w: float): $GUI/fade_to_black.self_modulate.a = w, 1., 0. , 0.3).set_ease(Tween.EASE_OUT).finished.connect(
 				func(): currently_failing_at_markers = false
@@ -131,6 +122,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("key_bindings") and just_pressed:
 		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)
 
+func _on_player_carrier_phased(phased_in: bool) -> void:
+	$dialogues/intro.start()
+	%character.set_visible(phased_in)
+
 func _on_marker_body_entered(body: Node2D) -> void:
 	if "is_player" in body and body.is_player and current_tutorial_phase == TutorialPhases.MOVEMENT:
 		$player_input.input_disabled = true
@@ -138,7 +133,6 @@ func _on_marker_body_entered(body: Node2D) -> void:
 		$dialogues/boost.start()
 		body.pause_control()
 		body.velocity = Vector2.ZERO
-		last_entered_marker = $markers/marker
 
 func _on_character_boost_energy_updated(new_energy_level: float) -> void:
 	if new_energy_level < 8.: # TechDebt: This should be provided by the character energy systems
@@ -146,6 +140,7 @@ func _on_character_boost_energy_updated(new_energy_level: float) -> void:
 
 @export var info_highlight_blink_length_sec: float = 0.4
 func _on_intro_dialouge_finished() -> void:
+	$player_input.input_disabled = false
 	current_tutorial_phase = TutorialPhases.MOVEMENT
 	create_tween().tween_method(func(w: float): $GUI/marks_progress.modulate.a = w, 0., 1., 0.5)
 	$GUI/keybindings_panel.set_visible(false)
@@ -160,50 +155,47 @@ func _on_boost_dialouge_finished() -> void:
 	$GUI.set_time(marker_time_left_secs)
 	$markers/marker2.set_visible(true)
 	$player_input.input_disabled = false
-	$combatants/character/cam.position = Vector2.ZERO
-	$combatants/character/sonar_sensor.add_blip($markers/marker2)
-	$combatants/character.spawn_snapshot = $combatants/character.get_snapshot()
+	%character/cam.position = Vector2.ZERO
+	%character/sonar_sensor.add_blip($markers/marker2)
+	%character.spawn_snapshot = %character.get_snapshot()
 	$timeline.checkpoint()
-	$combatants/character.resume_control()
-	$combatants/character/temporal_recorder.start_recording()
+	%character.resume_control()
+	%character/temporal_recorder.start_recording()
 
 func _on_marker_2_body_entered(_body: Node2D) -> void:
 	if currently_failing_at_markers or not $markers/marker2.visible: return
 	create_tween().tween_property(%marks_progress, "value", 100. / 4., 0.6)
 	if $markers/marker: $markers/marker.queue_free()
-	last_entered_marker = $markers/marker2
-	$combatants/character.spawn_snapshot = $combatants/character.get_snapshot()
+	%character.spawn_snapshot = %character.get_snapshot()
 	create_tween().tween_method(func(w: float): $markers/marker2.modulate.a = w, 1., 0., 0.5).finished.connect(
 		func(): $markers/marker2.set_visible(false)
 	)
 	$markers/marker3.set_visible(true)
-	$combatants/character/sonar_sensor.add_blip($markers/marker3)
+	%character/sonar_sensor.add_blip($markers/marker3)
 	marker_time_left_secs = time_to_get_to_marker
 
 func _on_marker_3_body_entered(_body: Node2D) -> void:
 	if currently_failing_at_markers or not $markers/marker3.visible: return
 	create_tween().tween_property(%marks_progress, "value", 200. / 4., 0.6)
 	if $markers/marker2: $markers/marker2.queue_free()
-	last_entered_marker = $markers/marker3
-	$combatants/character.spawn_snapshot = $combatants/character.get_snapshot()
+	%character.spawn_snapshot = %character.get_snapshot()
 	create_tween().tween_method(func(w: float): $markers/marker3.modulate.a = w, 1., 0., 0.5).finished.connect(
 		func(): $markers/marker3.set_visible(false)
 	)
 	$markers/marker4.set_visible(true)
-	$combatants/character/sonar_sensor.add_blip($markers/marker4)
+	%character/sonar_sensor.add_blip($markers/marker4)
 	marker_time_left_secs = time_to_get_to_marker
 
 func _on_marker_4_body_entered(_body: Node2D) -> void:
 	if currently_failing_at_markers or not $markers/marker4.visible: return
 	create_tween().tween_property(%marks_progress, "value", 300. / 4., 0.6)
 	if $markers/marker3: $markers/marker3.queue_free()
-	last_entered_marker = $markers/marker4
-	$combatants/character.spawn_snapshot = $combatants/character.get_snapshot()
+	%character.spawn_snapshot = %character.get_snapshot()
 	create_tween().tween_method(func(w: float): $markers/marker4.modulate.a = w, 1., 0., 0.5).finished.connect(
 		func(): $markers/marker4.set_visible(false)
 	)
 	$markers/marker5.set_visible(true)
-	$combatants/character/sonar_sensor.add_blip($markers/marker5)
+	%character/sonar_sensor.add_blip($markers/marker5)
 	marker_time_left_secs = time_to_get_to_marker
 
 func _on_marker_5_body_entered(_body: Node2D) -> void:
@@ -212,22 +204,21 @@ func _on_marker_5_body_entered(_body: Node2D) -> void:
 	create_tween().tween_method(func(w: float): $GUI/marks_progress.modulate.a = w, 1., 0., 0.5)
 	current_tutorial_phase = TutorialPhases.DESTROY
 	$markers/marker4.queue_free()
-	last_entered_marker = $markers/marker5
-	$combatants/character.spawn_snapshot = $combatants/character.get_snapshot()
+	%character.spawn_snapshot = %character.get_snapshot()
 	create_tween().tween_method(func(w: float): $markers/marker5.modulate.a = w, 1., 0., 0.5).finished.connect(
 		func(): $markers/marker5.queue_free()
 	)
 	$player_input.input_disabled = true
-	$combatants/character.pause_control()
-	$combatants/character.velocity = Vector2.ZERO
+	%character.pause_control()
+	%character.velocity = Vector2.ZERO
 	$dialogues/destroy.start()
 
 func _on_destroy_dialouge_finished() -> void:
 	$player_input.input_disabled = false
-	$combatants/character/weapon_slot.disabled = false
-	$combatants/character.resume_control()
+	%character/weapon_slot.disabled = false
+	%character.resume_control()
 	$combatants/disabled_droid/temporal_recorder.start_recording()
-	$combatants/character/temporal_recorder.start_recording()
+	%character/temporal_recorder.start_recording()
 	$timeline.checkpoint()
 	$GUI.set_objective("Destroy\nthe prototype droid")
 
@@ -236,22 +227,26 @@ func _on_player_carrier_equipped_ship_with_mine(_ship: BattleCharacter) -> void:
 
 func _on_boss_arrives_dialouge_finished() -> void:
 	current_tutorial_phase = TutorialPhases.MUSTLE_ARRIVES
-	$player_input.input_disabled = false
 	$timeline.checkpoint()
-	$combatants/character.resume_control()
-	$combatants/character/temporal_recorder.start_recording()
+	%character/controller.process_input_action({
+		"movement_intent": (%character.get_global_position() - %player_carrier.get_global_position()).normalized()
+	})
+	%character.resume_control()
+	%character/temporal_recorder.start_recording()
 	$combatants/boss.control_disabled = false
 	$GUI.set_objective("Try not to die a lot")
 
 func _on_restore_dialouge_finished() -> void:
 	$player_input.input_disabled = false
-	$GUI.set_objective("Hold R to rewind")
+	%character.resume_control()
+	$GUI.set_objective("Hold R to rewind\n(resurrect dummy droid)")
 
 func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.DESTROY: 
 		current_tutorial_phase = TutorialPhases.RESTORE
-		$combatants/character/weapon_slot.shutdown()
-		$combatants/character.velocity = Vector2.ZERO
+		%character/weapon_slot.shutdown()
+		%character.pause_control()
+		%character.velocity = Vector2.ZERO
 		$dialogues/restore.start()
 		$GUI.set_objective("WHAT HAVE YOU DONE")
 		$player_input.input_disabled = true
@@ -260,20 +255,27 @@ func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 		and "last_source_of_damage" in itsme and itsme.last_source_of_damage is Explosion
 	):
 		await get_tree().create_timer(0.5).timeout # wait a bit, maybe player was caught in mine explosion
-		if not $combatants/character.in_battle(): return
+		if not %character.in_battle(): return
 		current_tutorial_phase = TutorialPhases.MUSTLE_ARRIVES
 		$player_input.input_disabled = true
+		$GUI.set_objective("mmmm!\nCrisp!")
 		for obj in $mush.get_children(): # TechDebt: explosion may kill the player during dialogue
 			if "explosion_damage" in obj: obj.explosion_damage = 0.
 		get_tree().create_timer(0.8).timeout.connect(func(): 
-			$combatants/character.velocity = Vector2.ZERO
-			$combatants/character.pause_control()
+			%character.velocity = Vector2.ZERO
+			%character.pause_control()
+			# Move the player next to the ship if it's outside
+			var player_carrier_position_ratio: float = 0.3
+			if( # Move the player outside the ship if it's insie
+				%player_carrier.approx_size 
+				< (%player_carrier.get_global_position() - %character.get_global_position()).length()
+			): player_carrier_position_ratio = 1.7
 			create_tween().tween_property(
-				$combatants/character, "global_position",
+				%character, "global_position",
 				lerp(
-					$combatants/player_carrier.get_global_position(),
-					$combatants/character.get_global_position(),
-					0.3
+					%player_carrier.get_global_position(),
+					%character.get_global_position(),
+					player_carrier_position_ratio
 				),
 				0.2
 			)
@@ -330,8 +332,8 @@ func _on_player_input_time_control_triggered(action: Dictionary) -> void:
 @export var respawn_time_sec: float = 1.
 func restart_round(call_on_restart: Callable = func(): pass) -> void:
 	#TechDebt: Eliminate mine after round end
-	if not $combatants/character.held_mine == null:
-		$combatants/character.held_mine.queue_free()
+	if not %character.held_mine == null:
+		%character.held_mine.queue_free()
 
 	# Stop the fighting ( respawn will resume control )
 	for combatant in $combatants.get_children():
@@ -339,7 +341,7 @@ func restart_round(call_on_restart: Callable = func(): pass) -> void:
 			combatant.pause_control()
 
 	 # Create a clone of the ship
-	create_new_puppet($combatants/character)
+	create_new_puppet(%character)
 
 	# Set up UI for the new round
 	$GUI/rewind_effects.set_visible(true)
@@ -348,13 +350,13 @@ func restart_round(call_on_restart: Callable = func(): pass) -> void:
 	var player_move_tween: Tween = create_tween()
 	player_move_tween.tween_method(
 		func(pos):
-			$combatants/character.set_global_position(pos)
+			%character.set_global_position(pos)
 			$GUI/rewind_effects.material.set_shader_parameter(
 				"rewind_amount",
-				-(pos - $combatants/character.spawn_snapshot["transform"].origin).length() / 500.
+				-(pos - %character.spawn_snapshot["transform"].origin).length() / 500.
 			),
-		$combatants/character.get_global_position(),
-		$combatants/character.spawn_snapshot["transform"].origin,
+		%character.get_global_position(),
+		%character.spawn_snapshot["transform"].origin,
 		respawn_time_sec
 	)
 	player_move_tween.tween_callback(func():
@@ -387,13 +389,13 @@ func create_new_puppet(predecessor: BattleCharacter) -> void:
 
 	# set new spawn position for the predecessor
 	predecessor.spawn_snapshot["transform"].origin = (
-		$combatants/player_carrier.spawn_snapshot["transform"].origin
+		%player_carrier.spawn_snapshot["transform"].origin
 		+ (
 			(
 				predecessor.get_global_position()
-				- $combatants/player_carrier.spawn_snapshot["transform"].origin
+				- %player_carrier.spawn_snapshot["transform"].origin
 			).normalized()
-			* $combatants/player_carrier.approx_size
+			* %player_carrier.approx_size
 		)
 	)
 
@@ -411,7 +413,7 @@ func _on_timeline_checkpoint_triggered() -> void:
 			if "spawn_time_msec" in object: object.spawn_time_msec = -50000.
 
 func _on_player_carrier_dead(_itsme: BattleCharacter) -> void:
-	if not $combatants/character.in_battle():
+	if not %character.in_battle():
 		get_tree().reload_current_scene()
 
 func _on_character_dead(_itsme: BattleCharacter) -> void:
@@ -419,8 +421,8 @@ func _on_character_dead(_itsme: BattleCharacter) -> void:
 		$combatants/boss.difficulty_sensor_speed = 0.1
 		$combatants/boss.difficulty_laser_speed = 0.25
 		$combatants/boss.pause_control()
-		$combatants/character.pause_control()
-		$combatants/character.velocity = Vector2.ZERO
+		%character.pause_control()
+		%character.velocity = Vector2.ZERO
 		$dialogues/player_dies.start()
 		$GUI.set_objective("Good job")
 		current_tutorial_phase = TutorialPhases.ROUND_RESET
@@ -456,13 +458,20 @@ func _on_player_resurrected_dialouge_finished() -> void:
 	$player_input.input_disabled = false
 	for combatant in $combatants.get_children():
 		combatant.resume_control()
-	$combatants/character/temporal_recorder.start_recording()
+	%character/temporal_recorder.start_recording()
 	$timeline.reset()
 
-func _on_boss_dies(_itsme: BattleCharacter) -> void:
-	$dialogues/boss_defeated.start()
+func _on_boss_health_changed(percentage: float) -> void:
+	if percentage < 0.2:
+		$player_input.input_disabled = true
+		%character.pause_control()
+		%character.velocity = Vector2.ZERO
+		$combatants/boss.phase_out()
+		$dialogues/boss_defeated.start()
+		$GUI.set_objective("Completed")
 
 func _on_boss_defeated_dialouge_finished() -> void:
+	$GUI/restart_round_panel.set_visible(false)
 	$GUI/victory.set_visible(true)
 	$GUI/victory/replay_button.set_visible(false)
 	$GUI/victory/restart_button.set_visible(false)
@@ -471,6 +480,7 @@ func _on_boss_defeated_dialouge_finished() -> void:
 	)
 
 func _on_player_dies_dialouge_finished() -> void:
+	$player_input.input_disabled = false
 	$GUI.set_objective("Triple-Tap R\nto try again")
 
 func _on_character_resurrected(_itsme: BattleCharacter) -> void:

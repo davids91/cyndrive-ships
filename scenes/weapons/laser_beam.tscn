@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dg5gm8lkvhpfs"]
+[gd_scene format=3 uid="uid://dg5gm8lkvhpfs"]
 
 [ext_resource type="Script" uid="uid://biil32ytxamuc" path="res://scripts/equipment/laser_beam_ray.gd" id="1_7wpsd"]
 [ext_resource type="AudioStream" uid="uid://tlk8d7op7rfi" path="res://audio/laser_1.wav" id="2_n6uf7"]
@@ -13,28 +13,28 @@ stream_1/stream = ExtResource("3_tfpbi")
 stream_2/stream = ExtResource("4_cd6mu")
 stream_3/stream = ExtResource("5_ump2f")
 
-[node name="laser_beam" type="Node2D"]
+[node name="laser_beam" type="Node2D" unique_id=1730683071]
 script = ExtResource("1_7wpsd")
 target_time_sec = 0.0
 base_damage = 0.4
 energy_cost = 0.05
 metadata/_custom_type_script = "uid://cy4bwltyfsq3g"
 
-[node name="sound" type="AudioStreamPlayer2D" parent="."]
+[node name="sound" type="AudioStreamPlayer2D" parent="." unique_id=787261789]
 stream = SubResource("AudioStreamRandomizer_xsqp8")
 volume_db = -30.0
 attenuation = 0.3186402
 max_polyphony = 5
 bus = &"Weapons"
 
-[node name="beam_line" type="Line2D" parent="."]
+[node name="beam_line" type="Line2D" parent="." unique_id=885678435]
 top_level = true
 z_index = -5
 points = PackedVector2Array(0, 0, 589, 650)
 width = 0.0
 default_color = Color(1, 0, 0, 0.78431374)
 
-[node name="raycast" type="RayCast2D" parent="."]
+[node name="raycast" type="RayCast2D" parent="." unique_id=463912553]
 visible = false
 top_level = true
 target_position = Vector2(475, -32)
