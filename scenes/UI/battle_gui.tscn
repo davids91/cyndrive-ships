@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://c2bembjrgkdwd"]
+[gd_scene load_steps=36 format=4 uid="uid://c2bembjrgkdwd"]
 
 [ext_resource type="Script" uid="uid://d3lxvjyphmp50" path="res://scripts/ui_menus/battle_gui.gd" id="1_8vxf1"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="1_pgs3n"]
@@ -22,6 +22,17 @@
 [ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/panels/replay_button_hover.png" id="18_cq71w"]
 [ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="19_swp6i"]
 [ext_resource type="PackedScene" uid="uid://1o5og2xeefgp" path="res://scenes/UI/pause menu.tscn" id="20_1owcp"]
+
+[sub_resource type="Gradient" id="Gradient_8j45s"]
+offsets = PackedFloat32Array(0.7495935, 0.7642276, 0.8097561, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0.18333316, 1, 1, 0.110000014, 0.7033332, 1, 1, 0.25, 0.25, 0.25, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_a8p6b"]
+gradient = SubResource("Gradient_8j45s")
+width = 512
+height = 256
+fill = 2
+fill_from = Vector2(0.4871795, 0.51282054)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qg2gn"]
 texture = ExtResource("2_8vxf1")
@@ -110,6 +121,15 @@ font_color = Color(0, 1, 1, 1)
 
 [node name="GUI" type="CanvasLayer"]
 script = ExtResource("1_8vxf1")
+
+[node name="info_highlight" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = 555.0
+offset_top = -6.0
+offset_right = 1067.0
+offset_bottom = 250.0
+scale = Vector2(0.885, 0.885)
+texture = SubResource("GradientTexture2D_a8p6b")
 
 [node name="debug_stats" type="HBoxContainer" parent="."]
 offset_left = 6.565

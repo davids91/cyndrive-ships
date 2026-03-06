@@ -12,7 +12,6 @@ var boost_dialogue_showing_next_mark_tween: Tween
 var marker_time_left_secs: float = time_to_get_to_marker
 var current_tutorial_phase: TutorialPhases = TutorialPhases.INTRO
 func _ready():
-	$combatants/player_carrier/background_music.play()
 	$GUI.set_score("Objective:")
 	$GUI.set_objective("")
 	$GUI.set_disabled_weapons_mask(0xE)
@@ -31,6 +30,15 @@ func _ready():
 	$dialogues/intro.connect(
 		"dialogue_signal_0",
 		func(): $GUI/keybindings_panel.set_visible(true)
+	)
+	
+	# Display start mark
+	$dialogues/intro.connect(
+		"dialogue_signal_1",
+		func():
+			$markers/marker.set_visible(true)
+			create_tween().tween_method(func(w: float): $markers/marker.modulate.a = w, 0., 1., 0.5)
+			$GUI.set_objective("Follow the\nred arrows")
 	)
 
 	# Show booster marker
@@ -118,6 +126,11 @@ func _process(delta: float) -> void:
 			)
 		$GUI.set_time(marker_time_left_secs)
 
+func _unhandled_input(event: InputEvent) -> void:
+	var just_pressed = event.is_pressed() and not event.is_echo()
+	if event.is_action_pressed("key_bindings") and just_pressed:
+		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)
+
 func _on_marker_body_entered(body: Node2D) -> void:
 	if "is_player" in body and body.is_player and current_tutorial_phase == TutorialPhases.MOVEMENT:
 		$player_input.input_disabled = true
@@ -131,11 +144,15 @@ func _on_character_boost_energy_updated(new_energy_level: float) -> void:
 	if new_energy_level < 8.: # TechDebt: This should be provided by the character energy systems
 		$dialogues/boost.dialogue_conditionals[0] = true
 
+@export var info_highlight_blink_length_sec: float = 0.4
 func _on_intro_dialouge_finished() -> void:
 	current_tutorial_phase = TutorialPhases.MOVEMENT
-	$markers/marker.set_visible(true)
-	create_tween().tween_method(func(w: float): $markers/marker.modulate.a = w, 0., 1., 0.5)
-	$GUI.set_objective("Follow the\nred arrows")
+	create_tween().tween_method(func(w: float): $GUI/marks_progress.modulate.a = w, 0., 1., 0.5)
+	$GUI/keybindings_panel.set_visible(false)
+	var blink_info_tween = create_tween()
+	for _i in 3:
+		blink_info_tween.tween_method(func(w: float): $GUI/info_highlight.modulate.a = w, 0., 1., info_highlight_blink_length_sec)
+	blink_info_tween.tween_method(func(w: float): $GUI/info_highlight.modulate.a = w, 1., 0., info_highlight_blink_length_sec)
 
 func _on_boost_dialouge_finished() -> void:
 	current_tutorial_phase = TutorialPhases.BOOST
@@ -152,6 +169,7 @@ func _on_boost_dialouge_finished() -> void:
 
 func _on_marker_2_body_entered(_body: Node2D) -> void:
 	if currently_failing_at_markers or not $markers/marker2.visible: return
+	create_tween().tween_property(%marks_progress, "value", 100. / 4., 0.6)
 	if $markers/marker: $markers/marker.queue_free()
 	last_entered_marker = $markers/marker2
 	$combatants/character.spawn_snapshot = $combatants/character.get_snapshot()
@@ -164,6 +182,7 @@ func _on_marker_2_body_entered(_body: Node2D) -> void:
 
 func _on_marker_3_body_entered(_body: Node2D) -> void:
 	if currently_failing_at_markers or not $markers/marker3.visible: return
+	create_tween().tween_property(%marks_progress, "value", 200. / 4., 0.6)
 	if $markers/marker2: $markers/marker2.queue_free()
 	last_entered_marker = $markers/marker3
 	$combatants/character.spawn_snapshot = $combatants/character.get_snapshot()
@@ -176,6 +195,7 @@ func _on_marker_3_body_entered(_body: Node2D) -> void:
 
 func _on_marker_4_body_entered(_body: Node2D) -> void:
 	if currently_failing_at_markers or not $markers/marker4.visible: return
+	create_tween().tween_property(%marks_progress, "value", 300. / 4., 0.6)
 	if $markers/marker3: $markers/marker3.queue_free()
 	last_entered_marker = $markers/marker4
 	$combatants/character.spawn_snapshot = $combatants/character.get_snapshot()
@@ -188,6 +208,8 @@ func _on_marker_4_body_entered(_body: Node2D) -> void:
 
 func _on_marker_5_body_entered(_body: Node2D) -> void:
 	if currently_failing_at_markers or not $markers/marker5.visible: return
+	create_tween().tween_property(%marks_progress, "value", 400. / 4., 0.6)
+	create_tween().tween_method(func(w: float): $GUI/marks_progress.modulate.a = w, 1., 0., 0.5)
 	current_tutorial_phase = TutorialPhases.DESTROY
 	$markers/marker4.queue_free()
 	last_entered_marker = $markers/marker5
@@ -438,6 +460,9 @@ func _on_player_resurrected_dialouge_finished() -> void:
 	$timeline.reset()
 
 func _on_boss_dies(_itsme: BattleCharacter) -> void:
+	$dialogues/boss_defeated.start()
+
+func _on_boss_defeated_dialouge_finished() -> void:
 	$GUI/victory.set_visible(true)
 	$GUI/victory/replay_button.set_visible(false)
 	$GUI/victory/restart_button.set_visible(false)
@@ -445,12 +470,15 @@ func _on_boss_dies(_itsme: BattleCharacter) -> void:
 		get_tree().change_scene_to_file("res://scenes/galaxy.tscn")
 	)
 
-func _on_boss_defeated_dialouge_finished() -> void:
-	get_tree().change_scene_to_file("res://scenes/galaxy.tscn")
-
 func _on_player_dies_dialouge_finished() -> void:
 	$GUI.set_objective("Triple-Tap R\nto try again")
 
 func _on_character_resurrected(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.EXPLODE:
 		$GUI.set_objective("E to equip mine\n within carrier;\nE to deploy it!")
+
+func _on_timeline_rewind_started() -> void:
+	%background_music.pitch_scale = -1.
+
+func _on_timeline_rewind_stopped() -> void:
+	%background_music.pitch_scale = 1.

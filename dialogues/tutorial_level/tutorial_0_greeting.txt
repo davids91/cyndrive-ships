@@ -10,5 +10,5 @@ We also have support from technical side of the interview.
 #[c0]#[t15] WELL ANYHOW #[p200]#[t] Your first test is all about navigating to marks..
 #[s0]Have you read the user manuals?
 #[c2]I have.. #[p250]But were they for the same ship? I see no WASD keys, only switches and joysticks..
-#[c0]Your first test is hitting the marks we placed. Hit the first mark to start!
+#[s1]#[c0]Your first test is hitting the marks we placed. Hit the first mark to start!
 You can refer to the little arrows around the ship you're piloting for locating the marks.

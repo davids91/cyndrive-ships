@@ -218,6 +218,9 @@ func _process(_delta):
 	if has_node("target_arrow"):
 		$target_arrow.set_visible($target_arrow.visible and visible and $skin.visible)
 
+	if has_node("state_display"):
+		$state_display.set_visible(visible and $skin.visible and 0. < $skin.modulate.a)
+
 	# Do not continue if the ship is not in battle
 	if not in_battle(): return
 
@@ -226,8 +229,7 @@ func _process(_delta):
 		0. < $controller.intent_direction.length() and in_battle()
 		and not has_node("ai_control") and not has_node("replayer")
 		and not $thruster_sound.playing
-	):
-		$thruster_sound.play(randf())
+	): $thruster_sound.play(randf())
 	elif 0. == $controller.intent_direction.length() and $thruster_sound.playing: 
 		var stop_fnc = create_tween()
 		stop_fnc.tween_interval(0.5)
@@ -352,10 +354,6 @@ func process_input_action(action: Dictionary) -> void:
 			$weapon_slot.select_slot(action["weapon_slot"])
 			action["action_released"] = true
 
-	if has_node("state_display"):
-		if "speech_length" in action: $state_display.line_display_length_sec = action["speech_length"]
-		if "speech" in action: $state_display.say(action["speech"])
-
 	if "action_direction" in action and 0. < action["action_direction"].length() and has_node("shield"):
 		current_action_direction = action["action_direction"]
 	else: current_action_direction = Vector2()
@@ -413,7 +411,10 @@ func process_input_action(action: Dictionary) -> void:
 		if "switch_shield" in action: shields_toggled.emit($shield.shield_active)
 	if has_node("weapon_slot"): $weapon_slot.process_input_action(action)
 	if has_node("temporal_recorder"): $temporal_recorder.process_input_action(action)
-	if has_node("state_display"): $state_display.process_input_action(action)
+	if has_node("state_display"):
+		if "speech_length" in action: $state_display.line_display_length_sec = action["speech_length"]
+		if "speech" in action: $state_display.say(action["speech"])
+		$state_display.process_input_action(action)
 
 func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: int = 20) -> void:
 	if not has_node("cam"): return

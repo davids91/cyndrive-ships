@@ -16,7 +16,7 @@ signal dialouge_finished()
 ]
 
 @export var seconds_per_letter: float = 0.025
-@export var seconds_after_each_line: float = 30.
+@export var seconds_after_each_line: float = 15.
 @export_file("*.txt") var dialog: String = ""
 @export var dialogue_conditionals: Array[bool] = []
 @export var unskippable_signals: Array[int] = []
@@ -112,9 +112,15 @@ func _ready() -> void:
 		current_line_text = _parse_line(dialog_lines[0])
 
 func start_new_line() -> void:
+	continue_panel.set_visible(false)
 	delay_remaining = 0.
 	current_letter = 0
 	current_line_text = ""
+	var max_pos_of_tempo_change: int = 0
+	for i in line_tempo_changes.keys(): if i > max_pos_of_tempo_change:
+		max_pos_of_tempo_change = i
+	if line_tempo_changes.has(max_pos_of_tempo_change):
+		current_tempo = line_tempo_changes[max_pos_of_tempo_change]
 	while current_line_text.is_empty() and abs(current_line) < dialog_lines.size():
 		current_line += 1
 		if abs(current_line) < dialog_lines.size(): current_line_text = _parse_line(dialog_lines[current_line])
@@ -162,5 +168,5 @@ func _process(delta: float) -> void:
 		delay_remaining = line_pauses[current_letter]
 	elif current_letter > current_line_text.length():
 		delay_remaining = seconds_after_each_line
-		
+		continue_panel.set_visible(true)
 	else: delay_remaining = current_tempo

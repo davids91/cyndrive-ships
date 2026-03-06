@@ -169,6 +169,27 @@ grow_vertical = 2
 text = "Try again!"
 label_settings = SubResource("LabelSettings_fh4lj")
 
+[node name="marks_progress" type="CenterContainer" parent="GUI"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -64.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="marks_progress" type="ProgressBar" parent="GUI/marks_progress"]
+unique_name_in_owner = true
+modulate = Color(1, 0.50133336, 0.32, 1)
+custom_minimum_size = Vector2(500, 35)
+layout_mode = 2
+show_percentage = false
+
+[node name="Label" type="Label" parent="GUI/marks_progress"]
+layout_mode = 2
+text = "NAVIGATION PROGRESS"
+
 [node name="combatants" type="Node" parent="."]
 
 [node name="disabled_droid" parent="combatants" instance=ExtResource("5_6jemn")]
@@ -192,11 +213,6 @@ red_curve_phasing = SubResource("Curve_l3ay5")
 green_curve_phasing = SubResource("Curve_g8yy2")
 blue_curve_phasing = SubResource("Curve_45v6q")
 
-[node name="background_music" type="AudioStreamPlayer2D" parent="combatants/player_carrier"]
-position = Vector2(-1690, 2699)
-stream = ExtResource("27_45v6q")
-bus = &"Music"
-
 [node name="character" parent="combatants" instance=ExtResource("5_6jemn")]
 visible = false
 position = Vector2(1581, -2512)
@@ -209,6 +225,14 @@ max_health = 12.0
 
 [node name="cam" type="Camera2D" parent="combatants/character"]
 zoom = Vector2(0.5, 0.5)
+
+[node name="background_music" type="AudioStreamPlayer2D" parent="combatants/character/cam"]
+unique_name_in_owner = true
+position = Vector2(-186.94458, -109.09485)
+rotation = -1.570289
+stream = ExtResource("27_45v6q")
+autoplay = true
+bus = &"Music"
 
 [node name="sonar_sensor" type="ShapeCast2D" parent="combatants/character"]
 shape = SubResource("ConvexPolygonShape2D_fabql")
@@ -237,7 +261,8 @@ position = Vector2(1784, 461)
 
 [node name="marker2" parent="markers" instance=ExtResource("18_2soyj")]
 visible = false
-position = Vector2(15072, -5698)
+position = Vector2(15072, -5000)
+scale = Vector2(3, 3)
 
 [node name="marker3" parent="markers" instance=ExtResource("18_2soyj")]
 visible = false
@@ -289,14 +314,16 @@ dialog = "res://dialogues/tutorial_level/tutorial_6_player_resurrected.txt"
 
 [node name="boss_defeated" parent="dialogues" instance=ExtResource("19_2soyj")]
 visible = false
-dialog = "res://dialogues/tutorial_level/tutorial_6_player_resurrected.txt"
-auto_finish = true
+dialog = "res://dialogues/tutorial_level/tutorial_7_boss_defeated.txt"
 
 [connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
 [connection signal="time_control_triggered" from="player_input" to="." method="_on_player_input_time_control_triggered"]
 [connection signal="checkpoint_triggered" from="timeline" to="." method="_on_timeline_checkpoint_triggered"]
+[connection signal="rewind_started" from="timeline" to="." method="_on_timeline_rewind_started"]
 [connection signal="rewind_started" from="timeline" to="combatants/player_carrier" method="pause_control"]
 [connection signal="rewind_started" from="timeline" to="combatants/character" method="pause_control"]
+[connection signal="rewind_stopped" from="timeline" to="." method="_on_timeline_rewind_stopped"]
+[connection signal="rewind_stopped" from="timeline" to="player_input" method="_on_timeline_rewind_stopped"]
 [connection signal="rewind_stopped" from="timeline" to="combatants/player_carrier" method="resume_control"]
 [connection signal="rewind_stopped" from="timeline" to="combatants/character" method="resume_control"]
 [connection signal="round_reset" from="timeline" to="combatants/player_carrier" method="respawn"]

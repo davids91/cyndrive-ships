@@ -172,3 +172,6 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	if instance == self:
 		_instance = null
+
+func _on_timeline_rewind_stopped() -> void:
+	is_shooting = false
