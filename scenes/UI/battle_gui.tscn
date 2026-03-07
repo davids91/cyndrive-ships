@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://c2bembjrgkdwd"]
+[gd_scene format=4 uid="uid://c2bembjrgkdwd"]
 
 [ext_resource type="Script" uid="uid://d3lxvjyphmp50" path="res://scripts/ui_menus/battle_gui.gd" id="1_8vxf1"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="1_pgs3n"]
@@ -119,10 +119,10 @@ shader_parameter/color_2 = Color(0.17234308, 0.00012254089, 0.5416377, 1)
 font_size = 50
 font_color = Color(0, 1, 1, 1)
 
-[node name="GUI" type="CanvasLayer"]
+[node name="GUI" type="CanvasLayer" unique_id=34407094]
 script = ExtResource("1_8vxf1")
 
-[node name="info_highlight" type="TextureRect" parent="."]
+[node name="info_highlight" type="TextureRect" parent="." unique_id=494592121]
 modulate = Color(1, 1, 1, 0)
 offset_left = 555.0
 offset_top = -6.0
@@ -131,34 +131,34 @@ offset_bottom = 250.0
 scale = Vector2(0.885, 0.885)
 texture = SubResource("GradientTexture2D_a8p6b")
 
-[node name="debug_stats" type="HBoxContainer" parent="."]
+[node name="debug_stats" type="HBoxContainer" parent="." unique_id=106575922]
 offset_left = 6.565
 offset_right = 231.565
 offset_bottom = 40.0
 
-[node name="fps" type="Label" parent="debug_stats"]
+[node name="fps" type="Label" parent="debug_stats" unique_id=2111126606]
 layout_mode = 2
 text = "666 fps"
 
-[node name="god_mode_label" type="Label" parent="debug_stats"]
+[node name="god_mode_label" type="Label" parent="debug_stats" unique_id=1601307708]
 visible = false
 modulate = Color(1, 0.8, 0, 0.7)
 layout_mode = 2
 text = "GOD MODE"
 
-[node name="infinite_ammo_label" type="Label" parent="debug_stats"]
+[node name="infinite_ammo_label" type="Label" parent="debug_stats" unique_id=1250850545]
 visible = false
 modulate = Color(1, 0.07058824, 0.08235294, 1)
 layout_mode = 2
 text = "INFINITE AMMO"
 
-[node name="infinite_boost_label" type="Label" parent="debug_stats"]
+[node name="infinite_boost_label" type="Label" parent="debug_stats" unique_id=1607520850]
 visible = false
 modulate = Color(1, 0.07058824, 0.08235294, 1)
 layout_mode = 2
 text = "INFINITE BOOST"
 
-[node name="score" type="Label" parent="."]
+[node name="score" type="Label" parent="." unique_id=669310811]
 offset_left = 12.0
 offset_top = 44.0
 offset_right = 98.0
@@ -166,7 +166,7 @@ offset_bottom = 81.0
 text = "1 vs 1"
 label_settings = ExtResource("1_pgs3n")
 
-[node name="time" type="Label" parent="."]
+[node name="time" type="Label" parent="." unique_id=669570408]
 offset_left = 702.0
 offset_top = 29.0
 offset_right = 923.0
@@ -175,12 +175,12 @@ text = "0xDEAD//BEEF"
 label_settings = ExtResource("1_pgs3n")
 vertical_alignment = 1
 
-[node name="objective_panel" type="TileMapLayer" parent="."]
+[node name="objective_panel" type="TileMapLayer" parent="." unique_id=967048435]
 modulate = Color(1, 1, 1, 0.54901963)
 tile_map_data = PackedByteArray("AAAAAAIAAAAAAAAAAAAAAAMAAAADAAIAAAABAAIAAAABAAMAAAAAAAkAAAADAAEAAAAAAAoAAAAAAAMAAAABAAoAAAABAAMAAAAVAAIAAAABAAMAAAAVAAoAAAABAAMAAAAWAAIAAAADAAAAAAAWAAMAAAADAAEAAAAWAAkAAAADAAEAAAAWAAoAAAADAAMAAAA=")
 tile_set = SubResource("TileSet_eivww")
 
-[node name="time_label" type="Label" parent="."]
+[node name="time_label" type="Label" parent="." unique_id=1715204428]
 offset_left = 604.0
 offset_top = 25.0
 offset_right = 1061.0
@@ -188,18 +188,18 @@ offset_bottom = 166.0
 text = "Time:"
 label_settings = ExtResource("3_o14dv")
 
-[node name="info_label2" type="Label" parent="."]
+[node name="info_label2" type="Label" parent="." unique_id=353632813]
 offset_left = 604.0
 offset_top = 25.0
 offset_right = 1061.0
 offset_bottom = 174.0
 text = "Press 'R' to rewind battle
-Triple-tap 'R' to restart battle
+Ctrl + 'R' to restart battle
 Press 'K' for keybindings"
 label_settings = SubResource("LabelSettings_ikjs2")
 vertical_alignment = 2
 
-[node name="objective" type="Label" parent="."]
+[node name="objective" type="Label" parent="." unique_id=374281671]
 offset_left = 14.0
 offset_top = 73.0
 offset_right = 356.0
@@ -210,11 +210,11 @@ label_settings = SubResource("LabelSettings_8j45s")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="sensors_display" type="Node2D" parent="."]
+[node name="sensors_display" type="Node2D" parent="." unique_id=540082983]
 material = SubResource("ShaderMaterial_th0af")
 script = ExtResource("5_ywr47")
 
-[node name="rewind_effects" type="ColorRect" parent="."]
+[node name="rewind_effects" type="ColorRect" parent="." unique_id=1216906585]
 visible = false
 material = SubResource("ShaderMaterial_saiin")
 anchors_preset = 15
@@ -225,7 +225,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="status_padding" type="MarginContainer" parent="."]
+[node name="status_padding" type="MarginContainer" parent="." unique_id=1109486210]
 offset_left = 366.0
 offset_top = 24.0
 offset_right = 952.0
@@ -234,32 +234,32 @@ scale = Vector2(0.825, 0.8)
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 10
 
-[node name="battleship_status" type="VBoxContainer" parent="status_padding"]
+[node name="battleship_status" type="VBoxContainer" parent="status_padding" unique_id=1962651625]
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="laupeerium" parent="status_padding/battleship_status" instance=ExtResource("8_gxw16")]
+[node name="laupeerium" parent="status_padding/battleship_status" unique_id=1684494399 instance=ExtResource("8_gxw16")]
 layout_mode = 2
 label_text = "Time Fuel"
 
-[node name="boost_energy" parent="status_padding/battleship_status" instance=ExtResource("8_gxw16")]
+[node name="boost_energy" parent="status_padding/battleship_status" unique_id=617040416 instance=ExtResource("8_gxw16")]
 layout_mode = 2
 label_text = "Boost"
 
-[node name="keybindings_panel" parent="." instance=ExtResource("9_6n4mw")]
+[node name="keybindings_panel" parent="." unique_id=1889784637 instance=ExtResource("9_6n4mw")]
 visible = false
 
-[node name="weapon_selector_panel" type="TileMapLayer" parent="."]
+[node name="weapon_selector_panel" type="TileMapLayer" parent="." unique_id=1359590394]
 modulate = Color(1, 1, 1, 0.54901963)
 tile_map_data = PackedByteArray("AAABABEAAAAAAAEAAAABABIAAAAAAAMAAAAIAAwAAAADAAEAAAACABIAAAABAAMAAAAIAAsAAAADAAAAAAABABkAAAAAAAEAAAABABoAAAAAAAMAAAACABoAAAABAAMAAAAHABMAAAABAAMAAAAIABMAAAADAAAAAAAIABQAAAADAAEAAAABACEAAAAAAAEAAAABACIAAAAAAAMAAAACACIAAAABAAMAAAAHABsAAAABAAMAAAAIABsAAAADAAAAAAAIABwAAAADAAEAAAABACkAAAAAAAEAAAABACoAAAAAAAMAAAACACoAAAABAAMAAAAHACMAAAABAAMAAAAIACMAAAADAAAAAAAIACQAAAADAAEAAAAHAAsAAAABAAMAAAA=")
 tile_set = SubResource("TileSet_eivww")
 
-[node name="selected_weapon_panel" type="TileMapLayer" parent="."]
+[node name="selected_weapon_panel" type="TileMapLayer" parent="." unique_id=17286148]
 modulate = Color(1, 1, 1, 0.54901963)
 tile_map_data = PackedByteArray("AAABAAsAAAAAAAAAAAABAAwAAAAAAAEAAAAHABIAAAACAAAAAAAIABEAAAADAAIAAAAIABIAAAADAAMAAAACAAsAAAABAAMAAAADAAsAAAABAAAAAAA=")
 tile_set = SubResource("TileSet_eivww")
 
-[node name="weapon_energy" parent="selected_weapon_panel" instance=ExtResource("8_gxw16")]
+[node name="weapon_energy" parent="selected_weapon_panel" unique_id=667993478 instance=ExtResource("8_gxw16")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -271,13 +271,13 @@ grow_horizontal = 1
 grow_vertical = 1
 scale = Vector2(0.4, 0.4)
 
-[node name="restart_round_panel" type="TileMapLayer" parent="."]
+[node name="restart_round_panel" type="TileMapLayer" parent="." unique_id=2098873890]
 visible = false
 self_modulate = Color(1, 1, 1, 0.5019608)
 tile_map_data = PackedByteArray("AAAJAAsAAAAAAAAAAAAJAAwAAAADAAEAAAAJAA0AAAADAAEAAAAJAA4AAAADAAEAAAAJAA8AAAADAAEAAAAJABAAAAADAAEAAAAJABEAAAADAAEAAAAJABIAAAADAAEAAAAJABMAAAADAAEAAAAJABQAAAADAAEAAAAJABUAAAADAAEAAAAJABYAAAADAAEAAAAJABcAAAADAAEAAAAJABgAAAADAAEAAAAJABkAAAADAAEAAAAJABoAAAADAAEAAAAJABsAAAADAAEAAAAJABwAAAADAAEAAAAJAB0AAAADAAEAAAAJAB4AAAADAAEAAAAJAB8AAAADAAEAAAAJACAAAAADAAEAAAAKAAsAAAABAAMAAAALAAsAAAABAAMAAAAMAAsAAAABAAMAAAANAAsAAAABAAMAAAAOAAsAAAABAAMAAAAPAAsAAAABAAMAAAAQAAsAAAABAAMAAAARAAsAAAABAAMAAAASAAsAAAABAAMAAAATAAsAAAABAAMAAAAUAAsAAAABAAMAAAAVAAsAAAABAAMAAAAWAAsAAAABAAMAAAAYAAsAAAABAAMAAAAZAAsAAAABAAMAAAAaAAsAAAABAAMAAAAbAAsAAAABAAMAAAAcAAsAAAABAAMAAAAdAAsAAAABAAMAAAAeAAsAAAABAAMAAAAfAAsAAAABAAMAAAAgAAsAAAABAAMAAAAhAAsAAAABAAMAAAAiAAsAAAABAAMAAAAjAAsAAAABAAMAAAAkAAsAAAABAAMAAAAlAAsAAAABAAMAAAAmAAsAAAABAAMAAAAnAAsAAAABAAMAAAAoAAsAAAABAAMAAAApAAsAAAABAAMAAAAqAAsAAAABAAMAAAArAAsAAAABAAMAAAAsAAsAAAABAAMAAAAtAAsAAAABAAMAAAAuAAsAAAABAAMAAAAvAAsAAAABAAMAAAAXAAsAAAABAAMAAAAwAAsAAAABAAMAAAAxAAsAAAABAAMAAAAyAAsAAAABAAMAAAAzAAsAAAABAAMAAAA0AAsAAAABAAMAAAA1AAsAAAABAAMAAAA2AAsAAAADAAAAAAA2AAwAAAAAAAEAAAA2AA0AAAADAAEAAAA2AA4AAAAAAAEAAAA2AA8AAAADAAEAAAA2ABAAAAADAAEAAAA2ABEAAAADAAEAAAA2ABIAAAADAAEAAAA2ABMAAAADAAEAAAA2ABQAAAADAAEAAAA2ABUAAAADAAEAAAA2ABYAAAADAAEAAAA2ABcAAAADAAEAAAA2ABgAAAADAAEAAAA2ABkAAAADAAEAAAA2ABoAAAADAAEAAAA2ABsAAAADAAEAAAA2ABwAAAADAAEAAAA2AB0AAAADAAEAAAA2AB4AAAADAAEAAAA2AB8AAAADAAEAAAA2ACAAAAADAAEAAAAJACEAAAAAAAMAAAA2ACEAAAADAAMAAAAKACEAAAABAAMAAAALACEAAAABAAMAAAAMACEAAAABAAMAAAANACEAAAABAAMAAAAOACEAAAABAAMAAAAPACEAAAABAAMAAAAQACEAAAABAAMAAAARACEAAAABAAMAAAASACEAAAABAAMAAAATACEAAAABAAMAAAAUACEAAAABAAMAAAAVACEAAAABAAMAAAAWACEAAAABAAMAAAAXACEAAAABAAMAAAAYACEAAAABAAMAAAAZACEAAAABAAMAAAAaACEAAAABAAMAAAAbACEAAAABAAMAAAAcACEAAAABAAMAAAAdACEAAAABAAMAAAAeACEAAAABAAMAAAAfACEAAAABAAMAAAAgACEAAAABAAMAAAAhACEAAAABAAMAAAAiACEAAAABAAMAAAAjACEAAAABAAMAAAAkACEAAAABAAMAAAAlACEAAAABAAMAAAAmACEAAAABAAMAAAAnACEAAAABAAMAAAAoACEAAAABAAMAAAApACEAAAABAAMAAAAqACEAAAABAAMAAAArACEAAAABAAMAAAAsACEAAAABAAMAAAAtACEAAAABAAMAAAAuACEAAAABAAMAAAAvACEAAAABAAMAAAAwACEAAAABAAMAAAAxACEAAAABAAMAAAAyACEAAAABAAMAAAAzACEAAAABAAMAAAA0ACEAAAABAAMAAAA1ACEAAAABAAMAAAA=")
 tile_set = SubResource("TileSet_eivww")
 
-[node name="restart_round_text" type="Label" parent="restart_round_panel"]
+[node name="restart_round_text" type="Label" parent="restart_round_panel" unique_id=1907475811]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -293,7 +293,7 @@ label_settings = SubResource("LabelSettings_rwtbh")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureButton" type="TextureButton" parent="restart_round_panel"]
+[node name="TextureButton" type="TextureButton" parent="restart_round_panel" unique_id=961674327]
 offset_left = 256.0
 offset_top = 377.0
 offset_right = 768.0
@@ -303,25 +303,25 @@ texture_pressed = ExtResource("11_n1dtb")
 texture_hover = ExtResource("12_73pwi")
 stretch_mode = 4
 
-[node name="laser_icon" type="Sprite2D" parent="."]
+[node name="laser_icon" type="Sprite2D" parent="." unique_id=2108124820]
 position = Vector2(75, 235)
 texture = ExtResource("13_a7irf")
 
-[node name="chain_lightning_icon" type="Sprite2D" parent="."]
+[node name="chain_lightning_icon" type="Sprite2D" parent="." unique_id=1849093875]
 position = Vector2(79, 373)
 texture = ExtResource("14_ts7hs")
 
-[node name="hotsaber_icon" type="Sprite2D" parent="."]
+[node name="hotsaber_icon" type="Sprite2D" parent="." unique_id=745848340]
 position = Vector2(81, 498.00003)
 scale = Vector2(0.59375, 0.59375)
 texture = ExtResource("15_oq75t")
 
-[node name="decoy_shooter_icon" type="Sprite2D" parent="."]
+[node name="decoy_shooter_icon" type="Sprite2D" parent="." unique_id=892168881]
 position = Vector2(81, 624.00024)
 scale = Vector2(0.59375, 0.59375)
 texture = ExtResource("16_8j45s")
 
-[node name="restart_during_replay" type="TextureButton" parent="."]
+[node name="restart_during_replay" type="TextureButton" parent="." unique_id=631921032]
 visible = false
 offset_left = 164.0
 offset_top = 178.0
@@ -333,13 +333,13 @@ texture_pressed = ExtResource("11_n1dtb")
 texture_hover = ExtResource("12_73pwi")
 stretch_mode = 4
 
-[node name="victory" type="Sprite2D" parent="."]
+[node name="victory" type="Sprite2D" parent="." unique_id=903696840]
 visible = false
 position = Vector2(499, 278)
 scale = Vector2(0.45237273, 0.46296296)
 texture = ExtResource("15_mpuuo")
 
-[node name="replay_button" type="TextureButton" parent="victory"]
+[node name="replay_button" type="TextureButton" parent="victory" unique_id=961351499]
 offset_left = 128.21284
 offset_top = 187.91998
 offset_right = 640.2128
@@ -349,7 +349,7 @@ texture_pressed = ExtResource("17_2aanm")
 texture_hover = ExtResource("18_cq71w")
 stretch_mode = 4
 
-[node name="restart_button" type="TextureButton" parent="victory"]
+[node name="restart_button" type="TextureButton" parent="victory" unique_id=1966637802]
 offset_left = -744.9609
 offset_top = 196.56004
 offset_right = -232.96088
@@ -359,13 +359,13 @@ texture_pressed = ExtResource("11_n1dtb")
 texture_hover = ExtResource("12_73pwi")
 stretch_mode = 4
 
-[node name="defeat" type="Sprite2D" parent="."]
+[node name="defeat" type="Sprite2D" parent="." unique_id=1679350562]
 visible = false
 position = Vector2(517, 276.99997)
 scale = Vector2(0.5305556, 0.5305556)
 texture = ExtResource("19_swp6i")
 
-[node name="TextureButton" type="TextureButton" parent="defeat"]
+[node name="TextureButton" type="TextureButton" parent="defeat" unique_id=1958984566]
 offset_left = -345.0
 offset_top = 135.0
 offset_right = 167.0
@@ -375,7 +375,7 @@ texture_pressed = ExtResource("11_n1dtb")
 texture_hover = ExtResource("12_73pwi")
 stretch_mode = 4
 
-[node name="Pause Menu2" parent="." instance=ExtResource("20_1owcp")]
+[node name="pause_menu" parent="." unique_id=592024043 instance=ExtResource("20_1owcp")]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5

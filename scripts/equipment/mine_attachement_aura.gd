@@ -30,7 +30,7 @@ func _process(_delta: float) -> void:
 			ship.held_mine = mine_scene.instantiate()
 			level.get_node("mush").add_child(ship.held_mine)
 			BattleTimeline.instance.round_reset.connect(ship.held_mine.respawn)
-			ship.held_mine.attach_mine(ship)
+			ship.held_mine.spawn_mine_attached_to(ship)
 			ship.held_mine.set_global_position(ship.get_global_position() + ship.held_mine.mount_offset)
 
 			# TechDebt: Mine shouldn't collide, and BattleDeris doesn't have a reliable method to initiate collision layer values

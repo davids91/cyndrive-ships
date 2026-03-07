@@ -20,15 +20,13 @@ static var instance: PlayerInput:
 const tap_interval_msec: int = 500
 const short_reverse_hold_time_sec: float = 0.15 # How long to hold down the reverse action to start reversing time
 
-var current_intent: Vector2 = Vector2()
+var movement_intent: Vector2 = Vector2()
 var current_action_direction: Vector2 = Vector2()
 var is_shooting: bool = false
 var current_acquired_target: Vector2 = Vector2()
 var reverse_being_held: bool = false
 var reverse_initiated: bool = false
 var reverse_hold_time_sec: float = 0.
-var reverse_tap_count: int = 0
-var reverse_last_tap_at: int = Time.get_ticks_msec()
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	var action = get_action(event)
@@ -36,7 +34,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	var was_shooting = is_shooting
 
 	if "movement_intent" in action:
-		current_intent = action["movement_intent"]
+		movement_intent = action["movement_intent"]
 
 	if "action_direction" in action:
 		current_action_direction = action["action_direction"]
@@ -49,27 +47,20 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		action["action_initiated"] = true
 
 	if event.is_action_pressed("replay") and just_pressed:
-		if (Time.get_ticks_msec() - reverse_last_tap_at) < tap_interval_msec:
-			reverse_tap_count += 1
-		reverse_last_tap_at = Time.get_ticks_msec()
 		reverse_being_held = true
 
 	if event.is_action_released("replay"):
 		reverse_being_held = false
+
+	if event.is_action_pressed("reset_round") and just_pressed:
+		time_control_triggered.emit({"checkpoint_reset_triggered": true})
 
 	if not input_disabled and not action.is_empty():
 		action_triggered.emit(action)
 
 func _process(delta: float) -> void:
 	if input_disabled: return
-
-	# Handling Battle restart
 	var time_control: Dictionary = {}
-	if (Time.get_ticks_msec() - reverse_last_tap_at) > tap_interval_msec:
-		reverse_tap_count = 0
-	if 2 <= reverse_tap_count:
-		reverse_tap_count = 0
-		time_control["checkpoint_reset_triggered"] = true
 
 	# Handling Timeline reverse
 	if reverse_being_held:

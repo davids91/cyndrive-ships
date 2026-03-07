@@ -24,6 +24,8 @@
 [ext_resource type="PackedScene" uid="uid://dh7roqtbhf7vh" path="res://scenes/entities/marker.tscn" id="18_2soyj"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_2soyj"]
 [ext_resource type="Script" uid="uid://cxw7l8tkolluc" path="res://scripts/entities/disabled_droid.gd" id="19_l3ay5"]
+[ext_resource type="AudioStream" uid="uid://0oqoh37hsp4w" path="res://audio/music_big_beat_longer.ogg" id="21_g8yy2"]
+[ext_resource type="AudioStream" uid="uid://l8abnhstyv07" path="res://audio/Acid-Theme v1.mp3" id="22_45v6q"]
 [ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="27_45v6q"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xxhjm"]
@@ -77,7 +79,7 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
 
-[sub_resource type="Resource" id="Resource_l3ay5"]
+[sub_resource type="Resource" id="Resource_45v6q"]
 resource_local_to_scene = true
 script = ExtResource("12_by8vi")
 team_id = 1
@@ -87,6 +89,12 @@ metadata/_custom_type_script = "uid://upxd16rpbdyu"
 [sub_resource type="Resource" id="Resource_xxhjm"]
 script = ExtResource("6_xw3hl")
 metadata/_custom_type_script = "uid://cud6a5voxneed"
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jmtss"]
+streams_count = 3
+stream_0/stream = ExtResource("27_45v6q")
+stream_1/stream = ExtResource("21_g8yy2")
+stream_2/stream = ExtResource("22_45v6q")
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_fabql"]
 points = PackedVector2Array(0, 50, 0, -50, 1000000, -5000, 1000000, 5000)
@@ -178,6 +186,7 @@ offset_top = -64.0
 offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="marks_progress" type="ProgressBar" parent="GUI/marks_progress" unique_id=2012581993]
 unique_name_in_owner = true
@@ -220,7 +229,7 @@ visible = false
 position = Vector2(1581, -2512)
 rotation = 1.570289
 is_player = true
-team = SubResource("Resource_l3ay5")
+team = SubResource("Resource_45v6q")
 skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_xxhjm")])
 starting_health = 10.0
 max_health = 12.0
@@ -232,8 +241,8 @@ zoom = Vector2(0.5, 0.5)
 unique_name_in_owner = true
 position = Vector2(-186.94458, -109.09485)
 rotation = -1.570289
-stream = ExtResource("27_45v6q")
-volume_db = -5.0
+stream = SubResource("AudioStreamRandomizer_jmtss")
+volume_db = -10.0
 autoplay = true
 bus = &"Music"
 

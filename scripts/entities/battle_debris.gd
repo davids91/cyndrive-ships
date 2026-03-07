@@ -21,7 +21,10 @@ func get_snapshot() -> Dictionary:
 
 func _process(_delta: float) -> void:
 	# Erase from the map if time preceeds spawn time
-	if BattleTimeline.instance.time_msec() < spawn_time_msec: queue_free()
+	if BattleTimeline.instance.time_msec() < spawn_time_msec:
+		create_tween().tween_method(func(w: float): $skin.set_burn_percentage(w), 0., 1., 0.5).finished.connect(
+			func(): queue_free()
+		)
 
 	# Set battle presence state
 	if not in_battle() and was_in_battle:

@@ -16,6 +16,7 @@ func _ready():
 	$GUI.set_objective("")
 	$GUI.set_disabled_weapons_mask(0xE)
 	$GUI.set_laupeerium_indicator(UIEnergyBar.max_bars / 4.)
+	$GUI/pause_menu.restart_round_button_visible(false)
 	$combatants/disabled_droid/skin.set_visible(false)
 	%character.disabled_weapons_mask = 0xE
 	%character/weapon_slot.disabled = true
@@ -70,9 +71,11 @@ func _ready():
 	$dialogues/boss_arrives.connect(
 		"dialogue_signal_0",
 		func(): 
+			var to_player: Vector2 = (%character.get_global_position() - %player_carrier.get_global_position())
 			var boss = preload("res://scenes/entities/tutorial_boss.tscn").instantiate()
 			boss.name = "boss"
-			boss.set_global_position(%character.get_global_position() + Vector2(1000., 0.))
+			boss.set_global_position(%character.get_global_position() + to_player.normalized() * 1000.)
+			boss.look_at(%character.get_global_position())
 			boss.control_disabled = true
 			boss.difficulty_sensor_speed = 0.4
 			boss.difficulty_laser_speed = 0.5
@@ -259,7 +262,7 @@ func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 		current_tutorial_phase = TutorialPhases.MUSTLE_ARRIVES
 		$player_input.input_disabled = true
 		$GUI.set_objective("mmmm!\nCrisp!")
-		for obj in $mush.get_children(): # TechDebt: explosion may kill the player during dialogue
+		for obj: Node2D in $mush.get_children(): # TechDebt: explosion may kill the player during dialogue
 			if "explosion_damage" in obj: obj.explosion_damage = 0.
 		get_tree().create_timer(0.8).timeout.connect(func(): 
 			%character.velocity = Vector2.ZERO
@@ -278,6 +281,14 @@ func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 					player_carrier_position_ratio
 				),
 				0.2
+			).finished.connect(func():
+				var to_player: Vector2 = (%player_carrier.get_global_position() - %character.get_global_position())
+				if %player_carrier.approx_size < to_player.length():
+					var new_pos: Vector2 =(
+						%player_carrier.get_global_position()
+						+ to_player.normalized() * %player_carrier.approx_size * 1.2
+					)
+					create_tween().tween_property(%character, "global_position", new_pos, 0.5)
 			)
 		)
 		$dialogues/boss_arrives.start()
@@ -328,6 +339,9 @@ func _on_player_input_time_control_triggered(action: Dictionary) -> void:
 				$dialogues/player_resurrected.start()
 			)
 		else: restart_round()
+
+func reset_game() -> void:
+	get_tree().reload_current_scene()
 
 @export var respawn_time_sec: float = 1.
 func restart_round(call_on_restart: Callable = func(): pass) -> void:
@@ -414,7 +428,7 @@ func _on_timeline_checkpoint_triggered() -> void:
 
 func _on_player_carrier_dead(_itsme: BattleCharacter) -> void:
 	if not %character.in_battle():
-		get_tree().reload_current_scene()
+		reset_game()
 
 func _on_character_dead(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.MUSTLE_ARRIVES and $combatants/boss:
@@ -439,13 +453,12 @@ func _on_character_dead(_itsme: BattleCharacter) -> void:
 	): # No way to reverse time in these phases, restart level
 		var failed_level_tween: Tween = create_tween()
 		failed_level_tween.tween_method(
-			func(w: float): $GUI/try_again.modulate.a = w,
-			0., 1., 1.
-		).set_ease(Tween.EASE_IN).finished.connect(func(): get_tree().reload_current_scene())
+			func(w: float): $GUI/try_again.modulate.a = w, 0., 1., 1.
+		).set_ease(Tween.EASE_IN)
 		failed_level_tween.tween_method(
 			func(w: float): $GUI/fade_to_black.self_modulate.a = w,
 			0., 1., 0.5
-		).set_ease(Tween.EASE_IN).finished.connect(func(): get_tree().reload_current_scene())
+		).set_ease(Tween.EASE_IN).finished.connect(func(): reset_game())
 	else: $GUI.set_objective("Rewind to try again")
 
 func _on_character_shields_toggled(turned_on: bool) -> void:
@@ -455,11 +468,13 @@ func _on_character_shields_toggled(turned_on: bool) -> void:
 func _on_player_resurrected_dialouge_finished() -> void:
 	current_tutorial_phase = TutorialPhases.MUSTLE_FIGHT
 	$GUI.set_objective("Defeat Mr Mustle")
+	$GUI/pause_menu.restart_round_button_visible(true)
 	$player_input.input_disabled = false
 	for combatant in $combatants.get_children():
 		combatant.resume_control()
 	%character/temporal_recorder.start_recording()
 	$timeline.reset()
+
 
 func _on_boss_health_changed(percentage: float) -> void:
 	if percentage < 0.2:
@@ -481,7 +496,7 @@ func _on_boss_defeated_dialouge_finished() -> void:
 
 func _on_player_dies_dialouge_finished() -> void:
 	$player_input.input_disabled = false
-	$GUI.set_objective("Triple-Tap R\nto try again")
+	$GUI.set_objective("Ctrl+R\nto try again")
 
 func _on_character_resurrected(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.EXPLODE:

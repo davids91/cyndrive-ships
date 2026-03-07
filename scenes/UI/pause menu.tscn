@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://1o5og2xeefgp"]
+[gd_scene format=3 uid="uid://1o5og2xeefgp"]
 
 [ext_resource type="Script" uid="uid://br0ks3g1mac4b" path="res://scripts/ui_menus/pause_menu.gd" id="1_aa0ln"]
 [ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="2_th4ef"]
@@ -20,8 +20,8 @@ noise = SubResource("FastNoiseLite_th4ef")
 shader = ExtResource("2_th4ef")
 shader_parameter/screen_ratio_w_h = 1.7777778
 shader_parameter/noise = SubResource("NoiseTexture2D_1ax27")
-shader_parameter/rewind_amount = 132.97857439445627
-shader_parameter/rewind_intensity = 0.2
+shader_parameter/rewind_amount = 642.92246515898
+shader_parameter/rewind_intensity = 1.0
 shader_parameter/circle_centers = PackedVector2Array(0.58, 0.315)
 shader_parameter/circle_radiuses = PackedFloat32Array(0.32)
 shader_parameter/max_rings = 5.0
@@ -42,7 +42,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="Pause Menu" type="Control"]
+[node name="Pause Menu" type="Control" unique_id=572867419]
 z_index = 1000
 layout_mode = 3
 anchors_preset = 15
@@ -52,7 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_aa0ln")
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=301218727]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -67,30 +67,30 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_1ax27")
 
-[node name="rewind_effect" type="ColorRect" parent="Panel"]
+[node name="rewind_effect" type="ColorRect" parent="Panel" unique_id=2015388360]
 material = SubResource("ShaderMaterial_1ax27")
 layout_mode = 2
 script = ExtResource("3_1ax27")
 rewind_amount_jump_delta = 0.2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=557975585]
 layout_mode = 2
 
-[node name="Pause_lbl" type="Label" parent="Panel/VBoxContainer"]
+[node name="Pause_lbl" type="Label" parent="Panel/VBoxContainer" unique_id=1729217256]
 layout_mode = 2
 text = "Pause Menu"
 label_settings = SubResource("LabelSettings_sbppx")
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer" unique_id=2023952868]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Spacer1" type="Control" parent="Panel/VBoxContainer"]
+[node name="Spacer1" type="Control" parent="Panel/VBoxContainer" unique_id=464903759]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="TabContainer" type="TabContainer" parent="Panel/VBoxContainer"]
+[node name="TabContainer" type="TabContainer" parent="Panel/VBoxContainer" unique_id=1056376598]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_67wsm")
 current_tab = 0
@@ -98,13 +98,13 @@ tabs_position = 1
 tabs_visible = false
 use_hidden_tabs_for_min_size = true
 
-[node name="PausePage" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer"]
+[node name="PausePage" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer" unique_id=190621437]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 24
 metadata/_tab_index = 0
 
-[node name="Resume_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage"]
+[node name="Resume_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage" unique_id=606717737]
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -113,7 +113,7 @@ theme_override_styles/normal = ExtResource("2_um83q")
 theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Resume"
 
-[node name="Options_Menu_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage"]
+[node name="Options_Menu_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage" unique_id=1488848620]
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -122,7 +122,7 @@ theme_override_styles/normal = ExtResource("2_um83q")
 theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Options"
 
-[node name="Restart_Game_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage"]
+[node name="Restart_Game_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage" unique_id=458179828]
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -131,7 +131,8 @@ theme_override_styles/normal = ExtResource("2_um83q")
 theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Restart Game"
 
-[node name="Restart_Round_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage"]
+[node name="Restart_Round_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage" unique_id=965898991]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -140,7 +141,7 @@ theme_override_styles/normal = ExtResource("2_um83q")
 theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Restart Round"
 
-[node name="Main_Menu_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage"]
+[node name="Main_Menu_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage" unique_id=2049443179]
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -149,7 +150,7 @@ theme_override_styles/normal = ExtResource("2_um83q")
 theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Back To Main"
 
-[node name="Quit_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage"]
+[node name="Quit_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage" unique_id=789642824]
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -158,7 +159,7 @@ theme_override_styles/normal = ExtResource("2_um83q")
 theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Quit Game"
 
-[node name="OptionsPage" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer"]
+[node name="OptionsPage" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer" unique_id=1742230278]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -166,32 +167,32 @@ theme = ExtResource("5_1glx7")
 script = ExtResource("5_67wsm")
 metadata/_tab_index = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage" unique_id=1804408979]
 editor_description = "If the options page ever got big enough this is set up to add a scroll wheel."
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer" unique_id=1303428049]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Audio" type="PanelContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer"]
+[node name="Audio" type="PanelContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer" unique_id=1311081650]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio" unique_id=1496679473]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer"]
+[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer" unique_id=1063206154]
 layout_mode = 2
 text = "Audio Settings"
 label_settings = ExtResource("6_hsxpq")
 horizontal_alignment = 1
 
-[node name="MasterVol" type="HBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer"]
+[node name="MasterVol" type="HBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer" unique_id=1354299270]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MasterVol"]
+[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MasterVol" unique_id=635870412]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.6
@@ -199,7 +200,7 @@ text = "Output"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MasterVolHSlider" type="HSlider" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MasterVol"]
+[node name="MasterVolHSlider" type="HSlider" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MasterVol" unique_id=1893853813]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -210,7 +211,7 @@ tick_count = 6
 ticks_on_borders = true
 ticks_position = 3
 
-[node name="MasterVolPercentLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MasterVol"]
+[node name="MasterVolPercentLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MasterVol" unique_id=106481513]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -219,7 +220,7 @@ text = "100%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MasterVolDbLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MasterVol"]
+[node name="MasterVolDbLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MasterVol" unique_id=1322177507]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -228,10 +229,10 @@ text = "0.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SfxVol" type="HBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer"]
+[node name="SfxVol" type="HBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer" unique_id=1315869847]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SfxVol"]
+[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SfxVol" unique_id=1635824651]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.6
@@ -239,7 +240,7 @@ text = "SFX"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SfxVolHSlider" type="HSlider" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SfxVol"]
+[node name="SfxVolHSlider" type="HSlider" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SfxVol" unique_id=586703922]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -250,7 +251,7 @@ tick_count = 6
 ticks_on_borders = true
 ticks_position = 3
 
-[node name="SfxVolPercentLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SfxVol"]
+[node name="SfxVolPercentLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SfxVol" unique_id=1259470848]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -259,7 +260,7 @@ text = "100%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SfxVolDbLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SfxVol"]
+[node name="SfxVolDbLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SfxVol" unique_id=1881519714]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -268,10 +269,10 @@ text = "0.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MusicVol" type="HBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer"]
+[node name="MusicVol" type="HBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer" unique_id=133710269]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MusicVol"]
+[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MusicVol" unique_id=228240355]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.6
@@ -279,7 +280,7 @@ text = "Music"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MusicVolHSlider" type="HSlider" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MusicVol"]
+[node name="MusicVolHSlider" type="HSlider" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MusicVol" unique_id=599909649]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -290,7 +291,7 @@ tick_count = 6
 ticks_on_borders = true
 ticks_position = 3
 
-[node name="MusicVolPercentLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MusicVol"]
+[node name="MusicVolPercentLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MusicVol" unique_id=1711409583]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -299,7 +300,7 @@ text = "100%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MusicVolDbLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MusicVol"]
+[node name="MusicVolDbLabel" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Audio/VBoxContainer/MusicVol" unique_id=2098977283]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -308,29 +309,29 @@ text = "0.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer" unique_id=1694954003]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Game" type="PanelContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer"]
+[node name="Game" type="PanelContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer" unique_id=556851458]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Game"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Game" unique_id=224357674]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Game/VBoxContainer"]
+[node name="Label" type="Label" parent="Panel/VBoxContainer/TabContainer/OptionsPage/ScrollContainer/VBoxContainer/Game/VBoxContainer" unique_id=127526894]
 layout_mode = 2
 text = "Game"
 label_settings = ExtResource("6_hsxpq")
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer/TabContainer/OptionsPage"]
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer/TabContainer/OptionsPage" unique_id=1226690412]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Options_Back_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/OptionsPage"]
+[node name="Options_Back_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/OptionsPage" unique_id=982592402]
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 size_flags_horizontal = 4

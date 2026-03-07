@@ -384,7 +384,7 @@ func resume_control() -> void:
 	if has_node("weapon_slot"):  $weapon_slot.shutdown()
 	$controller.start()
 	if has_node("ai_control"): $ai_control.resume()
-	else: $controller.intent_direction = PlayerInput.instance.current_intent
+	else: $controller.intent_direction = PlayerInput.instance.movement_intent
 	control_disabled = false
 
 var disabled_weapons_mask: int = 0x0

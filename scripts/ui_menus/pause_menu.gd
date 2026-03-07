@@ -18,7 +18,10 @@ func _input(event: InputEvent) -> void:
 		get_tree().paused = true
 	elif event.is_action_pressed("pause_menu") and game_is_paused:
 		unpause_game()
-		
+
+func restart_round_button_visible(yesno: bool) -> void:
+	%Restart_Round_btn.set_visible(yesno)
+
 func unpause_game():
 	game_is_paused = false
 	get_tree().paused = false

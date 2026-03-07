@@ -32,7 +32,15 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 		is_activated = snapshot["is_activated"]
 		$collide_to_activate.disabled = not is_activated
 	if "is_exploded" in snapshot: is_exploded = snapshot["is_exploded"]
-	if "attached_to" in snapshot: attached_to = snapshot["attached_to"]
+	if "attached_to" in snapshot:
+		if ( # The mine should belong to the object in the snapshot
+			snapshot["attached_to"] and "held_mine" in snapshot["attached_to"]
+			and not snapshot["attached_to"].held_mine
+		): attached_to = snapshot["attached_to"]
+		if snapshot["attached_to"] and not attached_to: # Couldn't re-attach mine to the ship it used to belong to, bye!
+			create_tween().tween_method(func(w: float): $skin.set_burn_percentage(w), 0., 1., 0.5).finished.connect(
+				func(): queue_free()
+			)
 	super(snapshot, over_time_msec)
 
 # Overwrites function from BattleDebris
@@ -62,6 +70,15 @@ func _process(delta: float) -> void:
 			to_ship.normalized() * seeking_speed * clamp(seeking_since_msec / seeking_warmup_msec, 0., 1.),
 			seek_responsiveness
 		)
+
+		# Check for any friendly ships to attach back to
+		for ship in friendlies_in_proximity:
+			if (
+				"held_mine" in ship and not ship.held_mine
+				and "ready_to_receive_mine" in ship and ship.ready_to_receive_mine
+			):
+				attached_to = ship
+				ship.held_mine = self
 
 	# Check for any ships in explosion proximity
 	if is_activated and not enemies_in_proximity.is_empty():
@@ -119,14 +136,15 @@ func deploy_mine(activation_delay_msec : float = 0.0) -> void:
 			pulsating_tween.set_loops(0)
 	).set_delay(activation_delay_msec)
 
-func attach_mine(ship: BattleCharacter, attached_length: float = ship.approx_size) -> void:
+func spawn_mine_attached_to(ship: BattleCharacter, attached_length: float = ship.approx_size) -> void:
 	attached_to = ship
 	mine_drag_length = attached_length
 	$temporal_recorder.start_recording()
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	super(state)
-	state.linear_velocity = lerp(state.linear_velocity, seek_velocity, seek_responsiveness)
+	if 0.1 < seek_velocity.length():
+		state.linear_velocity = lerp(state.linear_velocity, seek_velocity, seek_responsiveness)
 
 var friendlies_in_proximity: Dictionary[Node2D, float] = {}
 var enemies_in_proximity: Dictionary[Node2D, float] = {}
