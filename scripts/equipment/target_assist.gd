@@ -35,7 +35,6 @@ func _physics_process(delta: float) -> void:
 			highligthed_body.set_highlight(false)
 		highligthed_body = null
 		return
-
 	# Handle targeting
 	force_shapecast_update()
 	var still_in_view: bool = false
@@ -48,6 +47,7 @@ func _physics_process(delta: float) -> void:
 			and ( # Either the parent doesn't have a team node
 				not "team" in get_parent() or not "team" in collider
 				or collider.team.is_enemy(get_parent().team)# Or collider is an enemy by team assignments
+				or collider is ExplosiveMine # We can also shoot mines
 			) and (
 				target == null
 				or (

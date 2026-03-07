@@ -5,6 +5,11 @@ const EXPLOSION_FIREY = preload("res://scenes/effects/explosion-firey.tscn")
 @export var mine_drag_strength: float = 50.
 @export var mine_drag_length: float = 25.
 @export var fault_chance: float = 0.005
+@export var seeking_speed: float = 2000.
+@export var seeking_warmup_msec: float = 5000.
+@export var seek_responsiveness: float = 0.75
+#TechDebt: Mines are actually seeking the team they are assigned to
+@export var team: Team = preload("res://resources/player_team.tres")
 
 @onready var level = get_tree().current_scene
 
@@ -34,6 +39,7 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 func in_battle() -> bool:
 	return super() and not is_exploded
 
+var seek_velocity: Vector2 = Vector2.ZERO
 func _process(delta: float) -> void:
 	super(delta)
 	$chain.points[0] = get_global_position()
@@ -41,12 +47,25 @@ func _process(delta: float) -> void:
 		is_activated = false # TechDebt: Mine shouldn't be active when attached to a ship!
 		$chain.points[1] = attached_to.get_global_position()
 	else: $chain.points[1] = get_global_position()
-	
-	# Check for any ships in proximity
-	if is_activated: for body in bodies_in_range:
-		if "team" in body and body.team.team_id != 1:
-			explode_mine()
-			return
+
+	if is_activated: # Mine is deployed!
+		# Check for any ships to seek out
+		var to_ship: Vector2
+		var seeking_since_msec: float = 0.
+		for ship in enemies_to_seek:
+			var to_ship_: Vector2 = (ship.global_position - global_position)
+			if not to_ship or to_ship.length() > to_ship_.length():
+				seeking_since_msec = BattleTimeline.instance.time_since_msec(enemies_to_seek[ship])
+				to_ship = to_ship_
+		if to_ship: seek_velocity = lerp(
+			linear_velocity,
+			to_ship.normalized() * seeking_speed * clamp(seeking_since_msec / seeking_warmup_msec, 0., 1.),
+			seek_responsiveness
+		)
+
+	# Check for any ships in explosion proximity
+	if is_activated and not enemies_in_proximity.is_empty():
+		explode_mine()
 
 func _physics_process(_delta: float) -> void:
 	# Handle dragging the attached mine behind ship
@@ -105,9 +124,26 @@ func attach_mine(ship: BattleCharacter, attached_length: float = ship.approx_siz
 	mine_drag_length = attached_length
 	$temporal_recorder.start_recording()
 
-var bodies_in_range: Dictionary = {}
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	super(state)
+	state.linear_velocity = lerp(state.linear_velocity, seek_velocity, seek_responsiveness)
+
+var friendlies_in_proximity: Dictionary[Node2D, float] = {}
+var enemies_in_proximity: Dictionary[Node2D, float] = {}
 func _on_explode_radius_body_entered(body: Node2D) -> void:
-	bodies_in_range[body] = BattleTimeline.instance.time_msec()
+	if "team" in body and team.is_enemy(body.team):
+		enemies_in_proximity[body] = BattleTimeline.instance.time_msec()
+	elif "team" in body and not team.is_enemy(body.team):
+		friendlies_in_proximity[body] = BattleTimeline.instance.time_msec()
 
 func _on_explode_radius_body_exited(body: Node2D) -> void:
-	if bodies_in_range.has(body): bodies_in_range.erase(body)
+	if enemies_in_proximity.has(body): enemies_in_proximity.erase(body)
+	if friendlies_in_proximity.has(body): friendlies_in_proximity.erase(body)
+
+var enemies_to_seek: Dictionary[Node2D, float] = {}
+func _on_seeking_aura_body_entered(body: Node2D) -> void:
+	if "team" in body and team.is_enemy(body.team):
+		enemies_to_seek[body] = BattleTimeline.instance.time_msec()
+
+func _on_seeking_aura_body_exited(body: Node2D) -> void:
+	if enemies_to_seek.has(body): enemies_to_seek.erase(body)

@@ -80,7 +80,7 @@ visible = false
 top_level = true
 shape = ExtResource("14_dsiyf")
 target_position = Vector2(0, 0)
-collision_mask = 3
+collision_mask = 7
 script = ExtResource("15_60f2a")
 
 [node name="mush" type="Node" parent="." unique_id=222397579]

@@ -3,17 +3,11 @@ extends Area2D
 @export var healing_power: float = 0.5
 @export var strength_over_time: float = 0.005
 
-var player_input
-var battle_ref 
-
-var ships_within_aura: Dictionary = {}
+@onready var battle_ref: Node2D = get_tree().get_root().get_node("battle")
+@onready var player_input: PlayerInput = battle_ref.get_node("player_input")
 @onready var character: BattleCharacter = get_parent()
 
-
-func _ready() -> void:
-	battle_ref= get_tree().get_root().get_node("battle")
-	player_input =  battle_ref.get_node("player_input")
-
+var ships_within_aura: Dictionary = {}
 func _on_body_entered(body: Node2D) -> void:
 	if body != character and "team" in body and not body.team.is_enemy(character.team):
 		ships_within_aura[body] = BattleTimeline.instance.time_msec()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dtxyjqq5vc8hv"]
+[gd_scene format=3 uid="uid://dtxyjqq5vc8hv"]
 
 [ext_resource type="Texture2D" uid="uid://dlqpywsislhsh" path="res://models & sprites/mines & traps/Mine_Explossive-0001.png" id="1_3uwok"]
 [ext_resource type="Script" uid="uid://deblvxmkkv8c8" path="res://scripts/equipment/explossive_mine.gd" id="1_egrcn"]
@@ -45,46 +45,57 @@ radius = 20.396078
 [sub_resource type="CircleShape2D" id="CircleShape2D_egrcn"]
 radius = 5.0
 
-[node name="ExplossiveMine" type="RigidBody2D" groups=["destroyables"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_gcdep"]
+radius = 2000.0
+
+[node name="ExplossiveMine" type="RigidBody2D" unique_id=1656721058 groups=["destroyables"]]
 z_index = -1
 script = ExtResource("1_egrcn")
 debris_collision_layer_value = 3
 approx_size = 5.0
 
-[node name="skin" type="Sprite2D" parent="."]
+[node name="skin" type="Sprite2D" parent="." unique_id=1157025149]
 material = SubResource("ShaderMaterial_gcdep")
 texture = ExtResource("1_3uwok")
 script = ExtResource("4_gcdep")
 
-[node name="collide_to_activate" type="CollisionShape2D" parent="."]
+[node name="collide_to_activate" type="CollisionShape2D" parent="." unique_id=1571836523]
 scale = Vector2(2, 2)
 shape = SubResource("CircleShape2D_jshdd")
 disabled = true
 
-[node name="explode_radius" type="Area2D" parent="."]
+[node name="explode_radius" type="Area2D" parent="." unique_id=1950077097]
 collision_layer = 2
 collision_mask = 3
 monitorable = false
 
-[node name="explosion_radius_collision" type="CollisionShape2D" parent="explode_radius"]
+[node name="explosion_radius_collision" type="CollisionShape2D" parent="explode_radius" unique_id=498816565]
 scale = Vector2(75, 75)
 shape = SubResource("CircleShape2D_egrcn")
 debug_color = Color(0.80673623, 0.31795433, 0.33591256, 0.41960785)
 
-[node name="temporal_recorder" type="Node2D" parent="."]
+[node name="temporal_recorder" type="Node2D" parent="." unique_id=139389919]
 script = ExtResource("3_jshdd")
 
-[node name="chain" type="Line2D" parent="."]
+[node name="chain" type="Line2D" parent="." unique_id=967834057]
 top_level = true
 z_index = -5
 points = PackedVector2Array(0, 0, 0, 0)
 default_color = Color(0.17193, 0.22, 0.16939999, 1)
 
-[node name="target_arrow" type="Sprite2D" parent="."]
+[node name="target_arrow" type="Sprite2D" parent="." unique_id=1683664192]
 visible = false
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_gcdep")
 
+[node name="seeking_aura" type="Area2D" parent="." unique_id=439778999]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="seeking_aura" unique_id=108106801]
+shape = SubResource("CircleShape2D_gcdep")
+
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="body_entered" from="explode_radius" to="." method="_on_explode_radius_body_entered"]
 [connection signal="body_exited" from="explode_radius" to="." method="_on_explode_radius_body_exited"]
+[connection signal="body_entered" from="seeking_aura" to="." method="_on_seeking_aura_body_entered"]
+[connection signal="body_exited" from="seeking_aura" to="." method="_on_seeking_aura_body_exited"]
