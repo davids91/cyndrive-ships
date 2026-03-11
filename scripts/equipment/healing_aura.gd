@@ -3,8 +3,6 @@ extends Area2D
 @export var healing_power: float = 0.5
 @export var strength_over_time: float = 0.005
 
-@onready var battle_ref: Node2D = get_tree().get_root().get_node("battle")
-@onready var player_input: PlayerInput = battle_ref.get_node("player_input")
 @onready var character: BattleCharacter = get_parent()
 
 var ships_within_aura: Dictionary = {}

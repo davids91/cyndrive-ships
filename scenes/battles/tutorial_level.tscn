@@ -1,11 +1,9 @@
 [gd_scene format=4 uid="uid://cer054lhx4edf"]
 
 [ext_resource type="Script" uid="uid://bc2ashwmpmgd5" path="res://scripts/battle/tutorial_level.gd" id="1_aby8t"]
-[ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_rvnqy"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="3_u34vn"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="4_io4v1"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="5_6jemn"]
-[ext_resource type="PackedScene" uid="uid://c2bembjrgkdwd" path="res://scenes/UI/battle_gui.tscn" id="5_k4vxh"]
 [ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="6_by8vi"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="6_xw3hl"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/entities/battle_ship.png" id="7_0a1mf"]
@@ -28,7 +26,11 @@
 [ext_resource type="AudioStream" uid="uid://l8abnhstyv07" path="res://audio/Acid-Theme v1.mp3" id="22_45v6q"]
 [ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="27_45v6q"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xxhjm"]
+[sub_resource type="LabelSettings" id="LabelSettings_fh4lj"]
+font_size = 45
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g8yy2"]
 texture = ExtResource("6_by8vi")
 0:0/0 = 0
 1:0/0 = 0
@@ -47,12 +49,8 @@ texture = ExtResource("6_by8vi")
 2:2/0 = 0
 2:1/0 = 0
 
-[sub_resource type="TileSet" id="TileSet_46lbi"]
-sources/0 = SubResource("TileSetAtlasSource_xxhjm")
-
-[sub_resource type="LabelSettings" id="LabelSettings_fh4lj"]
-font_size = 45
-font_color = Color(1, 0, 0, 1)
+[sub_resource type="TileSet" id="TileSet_45v6q"]
+sources/0 = SubResource("TileSetAtlasSource_g8yy2")
 
 [sub_resource type="Resource" id="Resource_f0g0v"]
 script = ExtResource("6_xw3hl")
@@ -79,7 +77,7 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
 
-[sub_resource type="Resource" id="Resource_45v6q"]
+[sub_resource type="Resource" id="Resource_l3ay5"]
 resource_local_to_scene = true
 script = ExtResource("12_by8vi")
 team_id = 1
@@ -102,56 +100,14 @@ points = PackedVector2Array(0, 50, 0, -50, 1000000, -5000, 1000000, 5000)
 [node name="battle" type="Node2D" unique_id=254046485]
 script = ExtResource("1_aby8t")
 
-[node name="player_input" type="Node2D" parent="." unique_id=2132893176]
-script = ExtResource("2_rvnqy")
-metadata/_custom_type_script = "uid://hldxmbsg8w6t"
-
 [node name="timeline" type="Node" parent="." unique_id=1585561361]
 script = ExtResource("3_u34vn")
 
 [node name="parallax_background" parent="." unique_id=960543933 instance=ExtResource("4_io4v1")]
 
-[node name="GUI" parent="." unique_id=1399450097 instance=ExtResource("5_k4vxh")]
+[node name="level_ui" type="CanvasLayer" parent="." unique_id=1973720173]
 
-[node name="minimap" type="TileMapLayer" parent="GUI" unique_id=25936069 node_paths=PackedStringArray("monitor_nodes", "icon_template")]
-modulate = Color(1, 1, 1, 0.54901963)
-tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
-tile_set = SubResource("TileSet_46lbi")
-script = ExtResource("7_2soyj")
-map_extent = Rect2(500, -6000, 20000, 15000)
-monitor_nodes = [NodePath("../../markers"), NodePath("../../combatants")]
-icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
-
-[node name="area" type="Panel" parent="GUI/minimap" unique_id=769893992]
-offset_left = 160.0
-offset_top = 193.0
-offset_right = 352.0
-offset_bottom = 336.0
-
-[node name="icon_combatants" type="TextureRect" parent="GUI/minimap/area" unique_id=282285383]
-visible = false
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("8_lhduc")
-expand_mode = 3
-
-[node name="icon_debris" type="TextureRect" parent="GUI/minimap/area" unique_id=719802657]
-visible = false
-self_modulate = Color(1, 0.97400004, 0.74, 1)
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("9_5pomm")
-expand_mode = 3
-
-[node name="MapIcon" type="Sprite2D" parent="GUI" unique_id=1603509907]
-self_modulate = Color(1, 1, 1, 0.3647059)
-position = Vector2(347, 198)
-scale = Vector2(0.515625, 0.515625)
-texture = ExtResource("10_fh4lj")
-
-[node name="fade_to_black" type="ColorRect" parent="GUI" unique_id=1055236901]
+[node name="fade_to_black" type="ColorRect" parent="level_ui" unique_id=1055236901]
 self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -161,7 +117,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="try_again" type="Label" parent="GUI" unique_id=1316071860]
+[node name="try_again" type="Label" parent="level_ui" unique_id=1316071860]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
@@ -177,7 +133,7 @@ grow_vertical = 2
 text = "Try again!"
 label_settings = SubResource("LabelSettings_fh4lj")
 
-[node name="marks_progress" type="CenterContainer" parent="GUI" unique_id=236279460]
+[node name="marks_progress" type="CenterContainer" parent="level_ui" unique_id=236279460]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -188,16 +144,54 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="marks_progress" type="ProgressBar" parent="GUI/marks_progress" unique_id=2012581993]
+[node name="marks_progress" type="ProgressBar" parent="level_ui/marks_progress" unique_id=2012581993]
 unique_name_in_owner = true
 modulate = Color(1, 0.50133336, 0.32, 1)
 custom_minimum_size = Vector2(500, 35)
 layout_mode = 2
 show_percentage = false
 
-[node name="Label" type="Label" parent="GUI/marks_progress" unique_id=2114978835]
+[node name="Label" type="Label" parent="level_ui/marks_progress" unique_id=2114978835]
 layout_mode = 2
 text = "NAVIGATION PROGRESS"
+
+[node name="minimap" type="TileMapLayer" parent="level_ui" unique_id=1338846631 node_paths=PackedStringArray("monitor_nodes", "icon_template")]
+modulate = Color(1, 1, 1, 0.54901963)
+tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
+tile_set = SubResource("TileSet_45v6q")
+script = ExtResource("7_2soyj")
+map_extent = Rect2(500, -6000, 20000, 15000)
+monitor_nodes = [NodePath("../../markers"), NodePath("../../combatants")]
+icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
+
+[node name="MapIcon" type="Sprite2D" parent="level_ui/minimap" unique_id=1094368202]
+self_modulate = Color(1, 1, 1, 0.3647059)
+position = Vector2(347, 198)
+scale = Vector2(0.515625, 0.515625)
+texture = ExtResource("10_fh4lj")
+
+[node name="area" type="Panel" parent="level_ui/minimap" unique_id=2024670023]
+offset_left = 160.0
+offset_top = 193.0
+offset_right = 352.0
+offset_bottom = 336.0
+
+[node name="icon_combatants" type="TextureRect" parent="level_ui/minimap/area" unique_id=1943859511]
+visible = false
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("8_lhduc")
+expand_mode = 3
+
+[node name="icon_debris" type="TextureRect" parent="level_ui/minimap/area" unique_id=1331971977]
+visible = false
+self_modulate = Color(1, 0.97400004, 0.74, 1)
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("9_5pomm")
+expand_mode = 3
 
 [node name="combatants" type="Node" parent="." unique_id=330691034]
 
@@ -229,7 +223,7 @@ visible = false
 position = Vector2(1581, -2512)
 rotation = 1.570289
 is_player = true
-team = SubResource("Resource_45v6q")
+team = SubResource("Resource_l3ay5")
 skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_xxhjm")])
 starting_health = 10.0
 max_health = 12.0
@@ -329,30 +323,24 @@ dialog = "res://dialogues/tutorial_level/tutorial_6_player_resurrected.txt"
 visible = false
 dialog = "res://dialogues/tutorial_level/tutorial_7_boss_defeated.txt"
 
-[connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
-[connection signal="time_control_triggered" from="player_input" to="." method="_on_player_input_time_control_triggered"]
 [connection signal="checkpoint_triggered" from="timeline" to="." method="_on_timeline_checkpoint_triggered"]
 [connection signal="rewind_started" from="timeline" to="." method="_on_timeline_rewind_started"]
 [connection signal="rewind_started" from="timeline" to="combatants/player_carrier" method="pause_control"]
 [connection signal="rewind_started" from="timeline" to="combatants/character" method="pause_control"]
 [connection signal="rewind_stopped" from="timeline" to="." method="_on_timeline_rewind_stopped"]
-[connection signal="rewind_stopped" from="timeline" to="player_input" method="_on_timeline_rewind_stopped"]
 [connection signal="rewind_stopped" from="timeline" to="combatants/player_carrier" method="resume_control"]
 [connection signal="rewind_stopped" from="timeline" to="combatants/character" method="resume_control"]
 [connection signal="round_reset" from="timeline" to="combatants/player_carrier" method="respawn"]
 [connection signal="round_reset" from="timeline" to="combatants/character" method="respawn"]
-[connection signal="restart_round" from="GUI" to="." method="restart_round"]
 [connection signal="dead" from="combatants/disabled_droid" to="." method="_on_disabled_droid_dead"]
 [connection signal="resurrected" from="combatants/disabled_droid" to="." method="_on_disabled_droid_resurrected"]
 [connection signal="dead" from="combatants/player_carrier" to="." method="_on_player_carrier_dead"]
 [connection signal="equipped_ship_with_mine" from="combatants/player_carrier" to="." method="_on_player_carrier_equipped_ship_with_mine"]
 [connection signal="phased" from="combatants/player_carrier" to="." method="_on_player_carrier_phased"]
 [connection signal="boost_energy_updated" from="combatants/character" to="." method="_on_character_boost_energy_updated"]
-[connection signal="boost_energy_updated" from="combatants/character" to="GUI" method="_on_character_boost_energy_updated"]
 [connection signal="dead" from="combatants/character" to="." method="_on_character_dead"]
 [connection signal="resurrected" from="combatants/character" to="." method="_on_character_resurrected"]
 [connection signal="shields_toggled" from="combatants/character" to="." method="_on_character_shields_toggled"]
-[connection signal="weapon_energy_updated" from="combatants/character" to="GUI" method="_on_character_weapon_energy_updated"]
 [connection signal="body_entered" from="markers/marker" to="." method="_on_marker_body_entered"]
 [connection signal="body_entered" from="markers/marker2" to="." method="_on_marker_2_body_entered"]
 [connection signal="body_entered" from="markers/marker3" to="." method="_on_marker_3_body_entered"]

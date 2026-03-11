@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://btx22762p6sdy"]
+[gd_scene format=3 uid="uid://btx22762p6sdy"]
 
 [ext_resource type="Script" uid="uid://dtor5hqwh1v5n" path="res://scripts/effects/rewindableExplosion.gd" id="1_1d0c4"]
 [ext_resource type="Texture2D" uid="uid://c4mgx0clbrkr2" path="res://textures/explosions/explode1.png" id="1_db0jd"]
@@ -26,58 +26,58 @@ stream_1/stream = ExtResource("16_mqkiy")
 stream_2/stream = ExtResource("17_pssoi")
 stream_3/stream = ExtResource("18_6hrh2")
 
-[node name="ExplosionFirey" type="Node2D"]
+[node name="ExplosionFirey" type="Node2D" unique_id=816696934]
 script = ExtResource("1_1d0c4")
 
-[node name="smoke1" type="Sprite2D" parent="."]
+[node name="smoke1" type="Sprite2D" parent="." unique_id=827817709]
 position = Vector2(29, -25)
 texture = ExtResource("6_cmoxa")
 
-[node name="fire1" type="Sprite2D" parent="."]
+[node name="fire1" type="Sprite2D" parent="." unique_id=819365635]
 texture = ExtResource("1_db0jd")
 
-[node name="fire2" type="Sprite2D" parent="."]
+[node name="fire2" type="Sprite2D" parent="." unique_id=770420673]
 position = Vector2(14, -23)
 texture = ExtResource("2_1d0c4")
 
-[node name="fire3" type="Sprite2D" parent="."]
+[node name="fire3" type="Sprite2D" parent="." unique_id=1350979013]
 position = Vector2(29, 5)
 texture = ExtResource("3_ynadh")
 
-[node name="fire4" type="Sprite2D" parent="."]
+[node name="fire4" type="Sprite2D" parent="." unique_id=1977940783]
 position = Vector2(-14, 35)
 texture = ExtResource("4_cetrs")
 
-[node name="fire5" type="Sprite2D" parent="."]
+[node name="fire5" type="Sprite2D" parent="." unique_id=280352113]
 position = Vector2(-20, -18)
 texture = ExtResource("5_05w1h")
 
-[node name="shockwave1" type="Sprite2D" parent="."]
+[node name="shockwave1" type="Sprite2D" parent="." unique_id=1056237747]
 scale = Vector2(2, 2)
 texture = ExtResource("7_mqkiy")
 
-[node name="spikes1" type="Sprite2D" parent="."]
+[node name="spikes1" type="Sprite2D" parent="." unique_id=239376628]
 texture = ExtResource("8_pssoi")
 
-[node name="burst1" type="Sprite2D" parent="."]
+[node name="burst1" type="Sprite2D" parent="." unique_id=122465201]
 texture = ExtResource("9_6hrh2")
 
-[node name="debris1" type="Sprite2D" parent="."]
+[node name="debris1" type="Sprite2D" parent="." unique_id=1384298390]
 position = Vector2(107, -43)
 texture = ExtResource("10_vqx5f")
 
-[node name="debris2" type="Sprite2D" parent="."]
+[node name="debris2" type="Sprite2D" parent="." unique_id=1742782895]
 position = Vector2(85, 32)
 texture = ExtResource("11_d0wfq")
 
-[node name="debris3" type="Sprite2D" parent="."]
+[node name="debris3" type="Sprite2D" parent="." unique_id=2026099490]
 position = Vector2(-147, -85)
 texture = ExtResource("12_q23b0")
 
-[node name="debris4" type="Sprite2D" parent="."]
+[node name="debris4" type="Sprite2D" parent="." unique_id=1887414889]
 position = Vector2(-61, 108)
 texture = ExtResource("13_xagyn")
 
-[node name="explosion_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="explosion_sound" type="AudioStreamPlayer2D" parent="." unique_id=2049348023]
 stream = SubResource("AudioStreamRandomizer_vqx5f")
 bus = &"Weapons"

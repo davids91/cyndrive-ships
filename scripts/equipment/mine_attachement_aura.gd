@@ -3,7 +3,7 @@ extends Area2D
 signal equipped_ship(ship: BattleCharacter)
 
 const mine_scene: PackedScene = preload("res://scenes/weapons/explossive_mine.tscn")
-@onready var level = get_tree().current_scene
+@onready var level = get_node("/root/Main/LevelContainer/battle")
 
 var ships_within: Dictionary = {}
 func _on_body_entered(body: Node2D) -> void:
@@ -34,7 +34,7 @@ func _process(_delta: float) -> void:
 			ship.held_mine.set_global_position(ship.get_global_position() + ship.held_mine.mount_offset)
 
 			# TechDebt: Mine shouldn't collide, and BattleDeris doesn't have a reliable method to initiate collision layer values
-			for i in range(32): ship.held_mine.set_collision_layer_value(i, false)
+			for i in range(1, 32): ship.held_mine.set_collision_layer_value(i, false)
 			ship.held_mine.set_collision_layer_value(ship.held_mine.debris_collision_layer_value, true)
 			equipped_ship.emit(ship)
 			$attached_mine_sound.play()

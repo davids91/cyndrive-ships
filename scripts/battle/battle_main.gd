@@ -3,10 +3,14 @@ extends Node2D
 const character_template: PackedScene = preload("res://scenes/entities/base_ship.tscn")
 const round_start_delay_sec: float = 2.
 
+
+@export var gui_visible: bool = true
 @export var starting_laupeerium: float = 25.
 @export_range(0., 1.) var replay_screen_responsiveness: float = 0.05
 
-@onready var laupeerium_bar: UIEnergyBar = $GUI/status_padding/battleship_status/laupeerium
+@onready var laupeerium_bar: UIEnergyBar = get_node("/root/Main/GUI/%laupeerium_bar")
+@onready var GUI: BattleShipGUI = get_node("/root/Main/GUI")
+@onready var player_input: PlayerInput = get_node("/root/Main/player_input")
 
 var init_countdown_sec: float = round_start_delay_sec
 var current_laupeerium: float = starting_laupeerium
@@ -43,7 +47,7 @@ func reset_game() -> void:
 	get_tree().call_deferred("reload_current_scene")
 
 @export var rewind_battle_laupeerium_cost: float = 1.
-func restart_round(rewind_animation: bool = true) -> void:
+func replay_round(rewind_animation: bool = true) -> void:
 	if current_laupeerium < rewind_battle_laupeerium_cost: return
 
 	# Handle resource changes with round restart
@@ -76,13 +80,13 @@ func restart_round(rewind_animation: bool = true) -> void:
 				combatant.resume_control()
 		$timeline.reset()
 		queue_redraw()
-		$GUI/defeat.set_visible(false)
-		$GUI/victory.set_visible(false)
-		$GUI/restart_round_panel.set_visible(false)
+		GUI.get_node("defeat").set_visible(false)
+		GUI.get_node("victory").set_visible(false)
+		GUI.get_node("restart_round_panel").set_visible(false)
 		return
 
 	# Set up UI for the new round
-	$GUI/rewind_effects.set_visible(true)
+	GUI.get_node("rewind_effects").set_visible(true)
 
 	# Move the player to its spawn position
 	var respawn_time = 1.
@@ -90,7 +94,7 @@ func restart_round(rewind_animation: bool = true) -> void:
 	player_move_tween.tween_method(
 		func(pos):
 			$combatants/character.set_global_position(pos)
-			$GUI/rewind_effects.material.set_shader_parameter(
+			GUI.get_node("rewind_effects").material.set_shader_parameter(
 				"rewind_amount",
 				-(pos - $combatants/character.spawn_snapshot["transform"].origin).length() / 500.
 			),
@@ -102,12 +106,12 @@ func restart_round(rewind_animation: bool = true) -> void:
 		for combatant in $combatants.get_children():
 			if "pause_control" in combatant:
 				combatant.resume_control()
-		$GUI/rewind_effects.set_visible(false)
+		GUI.get_node("rewind_effects").set_visible(false)
 		$timeline.reset()
 		queue_redraw()
-		$GUI/defeat.set_visible(false)
-		$GUI/victory.set_visible(false)
-		$GUI/restart_round_panel.set_visible(false)
+		GUI.get_node("defeat").set_visible(false)
+		GUI.get_node("victory").set_visible(false)
+		GUI.get_node("restart_round_panel").set_visible(false)
 		living_team_members[1] = 0
 		living_team_members[2] = 0
 		for c in $combatants.get_children():
@@ -118,13 +122,13 @@ func restart_round(rewind_animation: bool = true) -> void:
 
 var replay_viewport = Rect2()
 func _process(delta):
-	$GUI/debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
-	$GUI.set_time(BattleTimeline.instance.time_msec() / 1000.)
+	GUI.get_node("debug_stats/fps").set_text("%s fps" % Engine.get_frames_per_second())
+	GUI.set_time(BattleTimeline.instance.time_msec() / 1000.)
 
 	# Countdown to battle start
 	if 0 < init_countdown_sec:
 		init_countdown_sec = max(init_countdown_sec - delta / Difficuilty.gameplay_speed, 0)
-		$GUI/score.set_text("%0.3f" % init_countdown_sec)
+		GUI.get_node("score").set_text("%0.3f" % init_countdown_sec)
 		if init_countdown_sec <= 0:
 			$combatants/character.set_visible(true)
 			$combatants/character/temporal_recorder.start_recording()
@@ -132,8 +136,8 @@ func _process(delta):
 			for combatant in $combatants.get_children():
 				combatant.resume_control()
 			$timeline.reset()
-			$player_input.input_disabled = false
-			$GUI/score.set_text(str(
+			player_input.input_disabled = false
+			GUI.get_node("score").set_text(str(
 				living_team_members[1], " vs ", living_team_members[2],
 				" - Score: ", int(kill_score * kill_score_multiplier)
 			))
@@ -172,10 +176,10 @@ func _process(delta):
 		current_laupeerium -= delta
 		laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
 		$timeline.reverse(delta)
-		$GUI/defeat.set_visible(false)
-		$GUI/victory.set_visible(false)
-		$GUI/restart_round_panel.set_visible(false)
-		$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
+		GUI.get_node("defeat").set_visible(false)
+		GUI.get_node("victory").set_visible(false)
+		GUI.get_node("restart_round_panel").set_visible(false)
+		GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
 func entangle_ship_with_player(ship: BattleCharacter) -> void:
 	if ship.has_node("replayer") or ship.name == "character": return # Nothing to do when ship is already entangled
@@ -237,26 +241,22 @@ func _unhandled_input(event: InputEvent) -> void:
 	if FeatureFlags.is_enabled("infinite_ammo"):
 		if event is InputEventKey and event.physical_keycode == KEY_F7 and just_pressed:
 			infinite_ammo_active = !infinite_ammo_active
-			$GUI/debug_stats/infinite_ammo_label.visible = infinite_ammo_active
+			GUI.get_node("debug_stats/infinite_ammo_label").visible = infinite_ammo_active
 			
 	# Infinite boost toggle (F8)
 	if FeatureFlags.is_enabled("infinite_boost"):
 		if event is InputEventKey and event.physical_keycode == KEY_F8 and just_pressed:
 			infinite_boost_active = !infinite_boost_active
-			$GUI/debug_stats/infinite_boost_label.visible = infinite_boost_active
+			GUI.get_node("debug_stats/infinite_boost_label").visible = infinite_boost_active
 	
 	# God mode toggle (F9)
 	if FeatureFlags.is_enabled("god_mode"):
 		if event is InputEventKey and event.physical_keycode == KEY_F9 and just_pressed:
 			god_mode_active = !god_mode_active
-			$GUI/debug_stats/god_mode_label.visible = god_mode_active
+			GUI.get_node("debug_stats/god_mode_label").visible = god_mode_active
 
 	if event.is_action_pressed("key_bindings") and just_pressed:
-		$GUI/keybindings_panel.set_visible(not $GUI/keybindings_panel.visible)
-
-	#TODO: display rewind animation when reversing
-	#and 0 < current_laupeerium
-	#$GUI/rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
+		GUI.keybindings_panel.set_visible(not GUI.keybindings_panel.visible)
 
 	if event.is_action_pressed("zoom_in"):
 		motion_zoom_center *= 0.95
@@ -295,43 +295,43 @@ func _on_battle_character_dead(character: BattleCharacter) -> void:
 	living_team_members[dead_character_team.team_id] -= 1
 	if $combatants/character.team.is_enemy(dead_character_team):
 		kill_score += character.starting_health * Difficuilty.gameplay_speed
-	$GUI/score.set_text(str(
+	GUI.get_node("score").set_text(str(
 		living_team_members[1], " vs ", living_team_members[2],
 		" - Score: ", int(kill_score * kill_score_multiplier)
 	))
 	if player_defeated():
-		$GUI/victory.set_visible(false)
-		$GUI/restart_round_panel.set_visible(false)
-		$GUI/defeat.set_visible(true)
+		GUI.get_node("victory").set_visible(false)
+		GUI.get_node("restart_round_panel").set_visible(false)
+		GUI.get_node("defeat").set_visible(true)
 	elif are_you_winning_son():
-		$GUI/restart_round_panel.set_visible(false)
-		$GUI/defeat.set_visible(false)
-		$GUI/victory.set_visible(true)
-		$GUI/score.set_text(str(
+		GUI.get_node("restart_round_panel").set_visible(false)
+		GUI.get_node("defeat").set_visible(false)
+		GUI.get_node("victory").set_visible(true)
+		GUI.get_node("score").set_text(str(
 			living_team_members[1], " vs ", living_team_members[2],
 			" - Score: ", int(kill_score * kill_score_multiplier + current_laupeerium * resource_score_multiplier)
 		))
 	elif $combatants.has_node("character") and not $combatants/character.is_alive:
-		$GUI/victory.set_visible(false)
-		$GUI/defeat.set_visible(false)
-		$GUI/restart_round_panel.set_visible(true)
+		GUI.get_node("victory").set_visible(false)
+		GUI.get_node("defeat").set_visible(false)
+		GUI.get_node("restart_round_panel").set_visible(true)
 
 func _on_battle_character_resurrected(character: BattleCharacter) -> void:
 	if is_replay: return
 	if $combatants.has_node("character") and $combatants/character.is_alive:
-		$GUI/restart_round_panel.set_visible(false)
+		GUI.get_node("restart_round_panel").set_visible(false)
 	living_team_members[character.team.team_id] += 1
-	$GUI/score.set_text(str(
+	GUI.get_node("score").set_text(str(
 		living_team_members[1], " vs ", living_team_members[2],
 		" - Score: ", int(kill_score * kill_score_multiplier)
 	))
 
 const one_weapon_slot_width_with_padding: float = 128.5
 func _on_weapon_changed(slot: int) -> void:
-	$GUI/selected_weapon_panel.transform.origin.y = float(slot) * one_weapon_slot_width_with_padding
+	GUI.selected_weapon_panel.transform.origin.y = float(slot) * one_weapon_slot_width_with_padding
 
 var is_replay = false
-func _on_replay_button_pressed() -> void:
+func replay_game() -> void:
 	is_replay = true
 	replay_viewport = Rect2()
 	for c in $combatants.get_children():
@@ -342,36 +342,36 @@ func _on_replay_button_pressed() -> void:
 		if c is BattleCharacter: entangle_ship_with_player(c)
 		if c.has_node("target_assist"):
 			c.get_node("target_assist").set_disabled(true)
-	restart_round(false)
-	$player_input.input_disabled = true
+	replay_round(false)
+	player_input.input_disabled = true
 	$combatants/character.queue_free()
 	$replay_camera.make_current()
-	$GUI/restart_during_replay.set_visible(true)
-	$GUI/score.set_visible(false)
+	GUI.restart_during_replay.set_visible(true)
+	GUI.get_node("score").set_visible(false)
 
 @export var rewind_animation_transition_sec: float = 0.75
 var is_rewinding: bool = false
-func _on_player_input_time_control_triggered(action: Dictionary) -> void:
+func time_control_triggered(action: Dictionary) -> void:
 	if "rewind_toggled" in action:
 		if 0. < current_laupeerium:
 			is_rewinding = action["rewind_toggled"]
 			if is_rewinding:
-				$GUI/rewind_effects.set_visible(true)
+				GUI.get_node("rewind_effects").set_visible(true)
 				create_tween().tween_method(
-					func(w: float): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+					func(w: float): GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_intensity", w),
 					0., 1., rewind_animation_transition_sec
 				)
 		if not action["rewind_toggled"]:
 			$timeline.finish_reverse()
 			var rewind_hide_tween: Tween = create_tween()
 			rewind_hide_tween.tween_method(
-				func(w: float): $GUI/rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+				func(w: float): GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_intensity", w),
 				1., 0., rewind_animation_transition_sec
 			)
-			rewind_hide_tween.tween_callback(func() : $GUI/rewind_effects.set_visible(false))
+			rewind_hide_tween.tween_callback(func() : GUI.get_node("rewind_effects").set_visible(false))
 			rewind_hide_tween.chain()
 		
 	if "checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]:
 		# Handling Battle restart
 		if rewind_battle_laupeerium_cost <= current_laupeerium:
-			restart_round()
+			replay_round()

@@ -1,11 +1,9 @@
 [gd_scene format=4 uid="uid://b3trh6sc7bkeq"]
 
 [ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_6u6au"]
-[ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="2_s1gvo"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="3_tlx8b"]
 [ext_resource type="PackedScene" uid="uid://blkx4xohejd2i" path="res://scenes/effects/black_hole.tscn" id="4_7g2yh"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="5_osmje"]
-[ext_resource type="PackedScene" uid="uid://c2bembjrgkdwd" path="res://scenes/UI/battle_gui.tscn" id="6_b62lj"]
 [ext_resource type="PackedScene" uid="uid://dni5mwbuc6qpp" path="res://scenes/entities/meteor.tscn" id="7_0wrxa"]
 [ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="7_w0t2q"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="8_fe3c8"]
@@ -25,28 +23,6 @@
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="21_jqfa8"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="26_jqfa8"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fws0x"]
-texture = ExtResource("7_w0t2q")
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-0:1/0 = 0
-3:1/0 = 0
-0:2/0 = 0
-3:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-1:2/0 = 0
-1:1/0 = 0
-2:2/0 = 0
-2:1/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_fws0x"]
-sources/0 = SubResource("TileSetAtlasSource_fws0x")
-
 [sub_resource type="Curve" id="Curve_8a2ah"]
 _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 387.30502), 0.0, -286.33978, 0, 0, Vector2(0.62785864, 259.64706), -680.9095, -680.9095, 0, 0, Vector2(0.7546778, 9.17395), -1497.7778, -1497.7778, 0, 0, Vector2(0.8128898, 1), -3281.3196, 0.0, 0, 0]
@@ -62,7 +38,7 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
 
-[sub_resource type="Resource" id="Resource_wb3pa"]
+[sub_resource type="Resource" id="Resource_f22mk"]
 resource_local_to_scene = true
 script = ExtResource("21_jqfa8")
 team_id = 1
@@ -86,64 +62,39 @@ script = ExtResource("9_25tx2")
 texture = ExtResource("17_2y2lr")
 metadata/_custom_type_script = "uid://cud6a5voxneed"
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pmnbd"]
+texture = ExtResource("7_w0t2q")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+1:2/0 = 0
+1:1/0 = 0
+2:2/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_f22mk"]
+sources/0 = SubResource("TileSetAtlasSource_pmnbd")
+
 [node name="battle" type="Node2D" unique_id=471580]
 script = ExtResource("1_6u6au")
 metadata/_edit_vertical_guides_ = [788.0, 163.0]
 metadata/_edit_horizontal_guides_ = [426.0]
 
-[node name="replay_camera" type="Camera2D" parent="." unique_id=80633180]
-
-[node name="player_input" type="Node2D" parent="." unique_id=1263538444]
-visible = false
-script = ExtResource("2_s1gvo")
-input_disabled = false
-metadata/_custom_type_script = "uid://hldxmbsg8w6t"
-
-[node name="timeline" type="Node" parent="." unique_id=1309939964]
+[node name="timeline" type="Node" parent="." unique_id=1475911727]
 script = ExtResource("3_tlx8b")
 
+[node name="replay_camera" type="Camera2D" parent="." unique_id=80633180]
+
 [node name="parallax_background" parent="." unique_id=816731710 instance=ExtResource("5_osmje")]
-
-[node name="GUI" parent="." unique_id=232765051 instance=ExtResource("6_b62lj")]
-
-[node name="minimap" type="TileMapLayer" parent="GUI" unique_id=1498287249 node_paths=PackedStringArray("monitor_nodes", "icon_template")]
-modulate = Color(1, 1, 1, 0.54901963)
-tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
-tile_set = SubResource("TileSet_fws0x")
-script = ExtResource("8_wb3pa")
-map_extent = Rect2(-500, -3000, 7500, 7500)
-monitor_nodes = [NodePath("../../debris"), NodePath("../../combatants")]
-icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
-
-[node name="MapIcon" type="Sprite2D" parent="GUI/minimap" unique_id=253217337]
-self_modulate = Color(1, 1, 1, 0.3647059)
-z_index = 5
-position = Vector2(347, 198)
-scale = Vector2(0.515625, 0.515625)
-texture = ExtResource("10_320hu")
-
-[node name="area" type="Panel" parent="GUI/minimap" unique_id=1061107707]
-offset_left = 160.0
-offset_top = 193.0
-offset_right = 352.0
-offset_bottom = 336.0
-
-[node name="icon_combatants" type="TextureRect" parent="GUI/minimap/area" unique_id=760118595]
-visible = false
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("10_fws0x")
-expand_mode = 3
-
-[node name="icon_debris" type="TextureRect" parent="GUI/minimap/area" unique_id=577824481]
-visible = false
-self_modulate = Color(1, 0.97400004, 0.74, 1)
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("11_ib23l")
-expand_mode = 3
 
 [node name="black_hole" parent="." unique_id=323372783 instance=ExtResource("4_7g2yh")]
 position = Vector2(-536, -2386)
@@ -220,11 +171,12 @@ green_curve_phasing = SubResource("Curve_ikjs2")
 blue_curve_phasing = SubResource("Curve_1rdfn")
 
 [node name="character" parent="combatants" unique_id=676021937 instance=ExtResource("12_d7i4t")]
+unique_name_in_owner = true
 visible = false
 position = Vector2(1581, -2512)
 rotation = 1.570289
 is_player = true
-team = SubResource("Resource_wb3pa")
+team = SubResource("Resource_f22mk")
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0
 max_health = 22.0
@@ -374,10 +326,40 @@ script = ExtResource("18_54bea")
 
 [node name="mush" type="Node" parent="." unique_id=737214258]
 
-[connection signal="action_triggered" from="player_input" to="combatants/character" method="process_input_action"]
-[connection signal="time_control_triggered" from="player_input" to="." method="_on_player_input_time_control_triggered"]
-[connection signal="replay_game" from="GUI" to="." method="_on_replay_button_pressed"]
-[connection signal="reset_game" from="GUI" to="." method="reset_game"]
-[connection signal="restart_round" from="GUI" to="." method="restart_round"]
-[connection signal="boost_energy_updated" from="combatants/character" to="GUI" method="_on_character_boost_energy_updated"]
-[connection signal="weapon_energy_updated" from="combatants/character" to="GUI" method="_on_character_weapon_energy_updated"]
+[node name="minimap" type="TileMapLayer" parent="." unique_id=616457367 node_paths=PackedStringArray("monitor_nodes", "icon_template")]
+modulate = Color(1, 1, 1, 0.54901963)
+tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
+tile_set = SubResource("TileSet_f22mk")
+script = ExtResource("8_wb3pa")
+map_extent = Rect2(500, -6000, 20000, 15000)
+monitor_nodes = [NodePath("../debris"), NodePath("../combatants")]
+icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
+
+[node name="MapIcon" type="Sprite2D" parent="minimap" unique_id=505907446]
+self_modulate = Color(1, 1, 1, 0.3647059)
+position = Vector2(347, 198)
+scale = Vector2(0.515625, 0.515625)
+texture = ExtResource("10_320hu")
+
+[node name="area" type="Panel" parent="minimap" unique_id=150730760]
+offset_left = 160.0
+offset_top = 193.0
+offset_right = 352.0
+offset_bottom = 336.0
+
+[node name="icon_combatants" type="TextureRect" parent="minimap/area" unique_id=2031764954]
+visible = false
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("10_fws0x")
+expand_mode = 3
+
+[node name="icon_debris" type="TextureRect" parent="minimap/area" unique_id=836663822]
+visible = false
+self_modulate = Color(1, 0.97400004, 0.74, 1)
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("11_ib23l")
+expand_mode = 3

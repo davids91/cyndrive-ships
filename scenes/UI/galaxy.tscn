@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://6w1xfuis808w"]
+[gd_scene format=3 uid="uid://6w1xfuis808w"]
 
 [ext_resource type="Script" uid="uid://wt4f85n5mn7s" path="res://scripts/ui_menus/galaxy_main.gd" id="1_m3hme"]
 [ext_resource type="Shader" uid="uid://beksqhxqmaqvw" path="res://shaders/galaxy.gdshader" id="2_i4jmc"]
@@ -75,14 +75,14 @@ fill = 1
 fill_from = Vector2(0.4957265, 0.5)
 fill_to = Vector2(0, 0)
 
-[node name="main_menu" type="Control"]
+[node name="main_menu" type="Control" unique_id=1687943681]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_m3hme")
 
-[node name="main_cam" type="Camera2D" parent="."]
+[node name="main_cam" type="Camera2D" parent="." unique_id=1839790455]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1413322784]
 layout_mode = 0
 offset_left = 153.0
 offset_top = -294.0
@@ -90,12 +90,12 @@ offset_right = 665.0
 offset_bottom = -271.0
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1678045989]
 layout_mode = 2
 text = "Difficuilty"
 vertical_alignment = 1
 
-[node name="difficulty_slider" type="HSlider" parent="HBoxContainer"]
+[node name="difficulty_slider" type="HSlider" parent="HBoxContainer" unique_id=2017574813]
 self_modulate = Color(0, 0.6500001, 1, 1)
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
@@ -105,9 +105,9 @@ max_value = 1.0
 step = 0.01
 value = 0.601
 
-[node name="scenes" type="Node" parent="."]
+[node name="scenes" type="Node" parent="." unique_id=1465689480]
 
-[node name="dev_room_button" parent="scenes" instance=ExtResource("5_fmtwf")]
+[node name="dev_room_button" parent="scenes" unique_id=1352765500 instance=ExtResource("5_fmtwf")]
 anchors_preset = -1
 anchor_left = 0.0
 anchor_top = 0.029000001
@@ -119,11 +119,11 @@ offset_right = 341.0
 offset_bottom = -71.32
 label_text = "Dev Room"
 
-[node name="feature_flag" type="Node" parent="scenes/dev_room_button"]
+[node name="feature_flag" type="Node" parent="scenes/dev_room_button" unique_id=2010192829]
 script = ExtResource("3_kdehn")
 flag_name = "dev_room"
 
-[node name="mr_mustle_battle" parent="scenes" instance=ExtResource("5_fmtwf")]
+[node name="mr_mustle_battle" parent="scenes" unique_id=1748839115 instance=ExtResource("5_fmtwf")]
 anchors_preset = -1
 anchor_left = 0.0
 anchor_top = 0.029000001
@@ -135,11 +135,11 @@ offset_right = -263.0
 offset_bottom = 81.68
 label_text = "Visit Mr. Mustle"
 
-[node name="feature_flag" type="Node" parent="scenes/mr_mustle_battle"]
+[node name="feature_flag" type="Node" parent="scenes/mr_mustle_battle" unique_id=1391025861]
 script = ExtResource("3_kdehn")
 flag_name = "mr_mustle"
 
-[node name="tutorial_level_button" parent="scenes" instance=ExtResource("5_fmtwf")]
+[node name="tutorial_level_button" parent="scenes" unique_id=504111091 instance=ExtResource("5_fmtwf")]
 anchors_preset = 0
 anchor_left = 0.0
 anchor_top = 0.0
@@ -153,7 +153,7 @@ grow_horizontal = 1
 grow_vertical = 1
 label_text = "Tutorial"
 
-[node name="guides_button" parent="scenes" instance=ExtResource("5_fmtwf")]
+[node name="guides_button" parent="scenes" unique_id=216305623 instance=ExtResource("5_fmtwf")]
 anchors_preset = 0
 anchor_left = 0.0
 anchor_top = 0.0
@@ -167,7 +167,7 @@ grow_horizontal = 1
 grow_vertical = 1
 label_text = "Guides"
 
-[node name="StarParticles" type="GPUParticles2D" parent="."]
+[node name="StarParticles" type="GPUParticles2D" parent="." unique_id=1350833213]
 position = Vector2(0, 1)
 amount = 5000
 texture = ExtResource("3_3adoa")
@@ -176,7 +176,7 @@ randomness = 1.0
 visibility_rect = Rect2(0, 0, 0, 0)
 process_material = SubResource("ShaderMaterial_4l82a")
 
-[node name="black_hole" type="ColorRect" parent="."]
+[node name="black_hole" type="ColorRect" parent="." unique_id=1095594719]
 z_index = -1
 material = SubResource("ShaderMaterial_0u68b")
 layout_mode = 0
@@ -186,14 +186,14 @@ offset_right = 64.0
 offset_bottom = 64.0
 mouse_filter = 2
 
-[node name="guides_cam" type="Camera2D" parent="."]
+[node name="guides_cam" type="Camera2D" parent="." unique_id=609192043]
 zoom = Vector2(0.895, 0.895)
 
-[node name="movement_guide" type="Sprite2D" parent="."]
+[node name="movement_guide" type="Sprite2D" parent="." unique_id=1218886450]
 position = Vector2(-16384, 0)
 texture = ExtResource("7_lwv00")
 
-[node name="next_button" type="TextureButton" parent="movement_guide"]
+[node name="next_button" type="TextureButton" parent="movement_guide" unique_id=389799256]
 offset_left = -919.0
 offset_top = 432.0
 offset_right = -663.0
@@ -202,7 +202,7 @@ texture_normal = ExtResource("8_inn82")
 texture_pressed = ExtResource("9_8bcf2")
 texture_hover = ExtResource("10_r47se")
 
-[node name="back_button" type="TextureButton" parent="movement_guide"]
+[node name="back_button" type="TextureButton" parent="movement_guide" unique_id=1796292839]
 offset_left = -1021.0
 offset_top = 358.0
 offset_right = -765.0
@@ -213,17 +213,17 @@ texture_hover = ExtResource("10_r47se")
 flip_h = true
 flip_v = true
 
-[node name="decor" type="Sprite2D" parent="movement_guide"]
+[node name="decor" type="Sprite2D" parent="movement_guide" unique_id=152151907]
 z_index = -1
 position = Vector2(-1062.0004, 927)
 scale = Vector2(2.9902334, 2.9902334)
 texture = SubResource("GradientTexture2D_8bcf2")
 
-[node name="time_travel_guide" type="Sprite2D" parent="."]
+[node name="time_travel_guide" type="Sprite2D" parent="." unique_id=1407522196]
 position = Vector2(-10000, 0)
 texture = ExtResource("8_ntfcv")
 
-[node name="next_button" type="TextureButton" parent="time_travel_guide"]
+[node name="next_button" type="TextureButton" parent="time_travel_guide" unique_id=377206443]
 offset_left = -898.0
 offset_top = 426.0
 offset_right = -642.0
@@ -232,7 +232,7 @@ texture_normal = ExtResource("8_inn82")
 texture_pressed = ExtResource("9_8bcf2")
 texture_hover = ExtResource("10_r47se")
 
-[node name="back_button" type="TextureButton" parent="time_travel_guide"]
+[node name="back_button" type="TextureButton" parent="time_travel_guide" unique_id=1174679055]
 offset_left = -1000.0
 offset_top = 339.0
 offset_right = -744.0
@@ -243,17 +243,17 @@ texture_hover = ExtResource("10_r47se")
 flip_h = true
 flip_v = true
 
-[node name="decor" type="Sprite2D" parent="time_travel_guide"]
+[node name="decor" type="Sprite2D" parent="time_travel_guide" unique_id=1823088430]
 z_index = -1
 position = Vector2(-1062.0004, 927)
 scale = Vector2(2.9902334, 2.9902334)
 texture = SubResource("GradientTexture2D_8bcf2")
 
-[node name="weapons_guide" type="Sprite2D" parent="."]
+[node name="weapons_guide" type="Sprite2D" parent="." unique_id=579623450]
 position = Vector2(-4096, 0)
 texture = ExtResource("9_4esuy")
 
-[node name="next_button" type="TextureButton" parent="weapons_guide"]
+[node name="next_button" type="TextureButton" parent="weapons_guide" unique_id=356594237]
 offset_left = -1063.0
 offset_top = 434.0
 offset_right = -807.0
@@ -262,7 +262,7 @@ texture_normal = ExtResource("8_inn82")
 texture_pressed = ExtResource("9_8bcf2")
 texture_hover = ExtResource("10_r47se")
 
-[node name="back_button" type="TextureButton" parent="weapons_guide"]
+[node name="back_button" type="TextureButton" parent="weapons_guide" unique_id=1690831401]
 offset_left = -1170.0
 offset_top = 336.0
 offset_right = -914.0
@@ -273,13 +273,13 @@ texture_hover = ExtResource("10_r47se")
 flip_h = true
 flip_v = true
 
-[node name="decor" type="Sprite2D" parent="weapons_guide"]
+[node name="decor" type="Sprite2D" parent="weapons_guide" unique_id=2067579385]
 z_index = -1
 position = Vector2(-1215.0005, 927)
 scale = Vector2(2.9902334, 2.9902334)
 texture = SubResource("GradientTexture2D_8bcf2")
 
-[node name="Hubble" type="Sprite2D" parent="."]
+[node name="Hubble" type="Sprite2D" parent="." unique_id=1757575581]
 modulate = Color(1, 1, 1, 0.5882353)
 z_index = -1000
 position = Vector2(-10, -1)

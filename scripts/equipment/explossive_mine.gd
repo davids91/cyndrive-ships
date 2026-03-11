@@ -11,7 +11,7 @@ const EXPLOSION_FIREY = preload("res://scenes/effects/explosion-firey.tscn")
 #TechDebt: Mines are actually seeking the team they are assigned to
 @export var team: Team = preload("res://resources/player_team.tres")
 
-@onready var level = get_tree().current_scene
+@onready var level = get_node("/root/Main/LevelContainer/battle")
 
 var is_activated: bool = false
 var is_exploded: bool = false
@@ -116,7 +116,7 @@ func explode_mine() -> void:
 	explosion.global_position = get_global_position()
 	explosion.reinit()
 	is_exploded = true
-	await get_tree().create_timer(.2).timeout #give lightning time to draw
+	await get_tree().create_timer(.2).timeout # give lightning time to draw
 
 func set_highlight(yesno: bool) -> void:
 	$target_arrow.set_visible(yesno)

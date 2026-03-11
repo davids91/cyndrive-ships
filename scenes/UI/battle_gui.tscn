@@ -238,11 +238,13 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="laupeerium" parent="status_padding/battleship_status" unique_id=1684494399 instance=ExtResource("8_gxw16")]
+[node name="laupeerium_bar" parent="status_padding/battleship_status" unique_id=1684494399 instance=ExtResource("8_gxw16")]
+unique_name_in_owner = true
 layout_mode = 2
 label_text = "Time Fuel"
 
-[node name="boost_energy" parent="status_padding/battleship_status" unique_id=617040416 instance=ExtResource("8_gxw16")]
+[node name="boost_energy_bar" parent="status_padding/battleship_status" unique_id=617040416 instance=ExtResource("8_gxw16")]
+unique_name_in_owner = true
 layout_mode = 2
 label_text = "Boost"
 
@@ -387,3 +389,4 @@ anchor_bottom = 0.5
 [connection signal="pressed" from="restart_during_replay" to="." method="_on_reset_game_pressed"]
 [connection signal="pressed" from="victory/replay_button" to="." method="_on_replay_button_pressed"]
 [connection signal="pressed" from="victory/restart_button" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="defeat/TextureButton" to="." method="_on_reset_game_pressed"]

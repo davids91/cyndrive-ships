@@ -35,7 +35,7 @@ func reinit(msec_delay: float = 0.) -> void:
 func apply_shockwave(delta: float) -> void:
 	var root = get_tree().get_root()
 
-	for container_path in ["battle/combatants", "battle/debris"]:
+	for container_path in ["/root/Main/LevelContainer/battle/combatants", "/root/Main/LevelContainer/battle/debris"]:
 		if not root.has_node(container_path): continue
 		for combatant in root.get_node(container_path).get_children():
 			var hit_normal = (combatant.get_global_position() - get_global_position())

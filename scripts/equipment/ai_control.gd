@@ -19,8 +19,8 @@ extends Node2D
 ]
 
 
-@onready var mush: Node = get_tree().current_scene.get_node("mush")
-@onready var combatants: Node = get_tree().current_scene.get_node("combatants")
+@onready var mush: Node = get_node("/root/Main/LevelContainer/battle/mush")
+@onready var combatants: Node = get_node("/root/Main/LevelContainer/battle/combatants")
 @onready var character: BattleCharacter = get_parent()
 var position_moving_avg: Vector2 = get_global_position()
 var target_moving_avg: Vector2 = Vector2()

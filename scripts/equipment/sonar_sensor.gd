@@ -4,7 +4,7 @@ extends ShapeCast2D
 @export var blip_radius: float = 100.
 @export var tics_per_sec: float = 10.
 
-@onready var display_node: Node2D = get_node("/root/battle/GUI/sensors_display")
+@onready var display_node: Node2D = get_node("/root/Main/%GUI/sensors_display")
 @onready var last_checked: float = 0.
 
 var blips: Dictionary = {}

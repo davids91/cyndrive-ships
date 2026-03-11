@@ -4,6 +4,8 @@ var god_mode_active: bool = false
 var infinite_ammo_active: bool = false
 var infinite_boost_active: bool = false
 
+
+@export var gui_visible: bool = true
 @export var spawn_position: Vector2 = Vector2()
 @export var spawn_radius: float = 500
 
@@ -32,6 +34,12 @@ func create_new_puppet(predecessor: BattleCharacter) -> void:
 	# Add the new puppet to battle
 	$combatants.add_child(puppet)
 	predecessor.get_node("temporal_recorder").start_recording()
+
+ # Dummy functions as there is no time travel here yet
+func time_control_triggered() -> void: pass
+func replay_game() -> void: pass
+func reset_game() -> void: pass
+func replay_round() -> void: pass
 
 func _on_character_dead(_itsme: BattleCharacter) -> void:
 	create_new_puppet($combatants/character)

@@ -47,8 +47,14 @@ func _on_restart_round_btn_pressed() -> void:
 
 
 func _on_main_menu_btn_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/galaxy.tscn")
+	var GUI: BattleShipGUI = get_node("/root/Main/GUI")
+	var level_container: Node2D = get_node("/root/Main/LevelContainer")
+	var level = load("res://scenes/UI/galaxy.tscn").instantiate()
 
+	level.get_node("main_cam").make_current()
+	for n in level_container.get_children(): n.queue_free()
+	GUI.set_visible(false)
+	level_container.add_child(level)
 
 func _on_options_menu_btn_pressed() -> void:
 	options_page.show()

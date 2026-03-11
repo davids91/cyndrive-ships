@@ -7,7 +7,7 @@ const decoy_template = preload("res://scenes/entities/decoy.tscn")
 @export var launch_radius: float = 50.
 @export var launch_velocity: float = 750.
 
-@onready var combatants: Node = get_tree().current_scene.get_node("combatants")
+@onready var combatants: Node = get_node("/root/Main/LevelContainer/battle/combatants")
 @onready var wielder: BattleCharacter = get_parent()
 
 var time_to_shoot_again: float = reload_time_sec
