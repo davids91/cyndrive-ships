@@ -34,10 +34,12 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	var was_shooting = is_shooting
 
 	if "movement_intent" in action:
-		movement_intent = action["movement_intent"]
+		movement_intent += action["movement_intent"]
+		action["movement_intent"] = movement_intent
 
 	if "action_direction" in action:
-		current_action_direction = action["action_direction"]
+		current_action_direction += action["action_direction"]
+		action["action_direction"] = current_action_direction
 		is_shooting = 0 < action["action_direction"].length()
 
 	if was_shooting and not is_shooting:
@@ -111,32 +113,40 @@ static func get_action(input_event: InputEvent) -> Dictionary:
 	
 	if input_event.is_action_pressed("movement_left"):
 		intent_direction.x = -1
-		
 	if input_event.is_action_pressed("movement_right"):
 		intent_direction.x = 1
-		
 	if input_event.is_action_pressed("movement_down"):
 		intent_direction.y = 1
-
 	if input_event.is_action_pressed("movement_up"):
 		intent_direction.y = -1
+	if input_event.is_action_released("movement_left"):
+		intent_direction.x = 1
+	if input_event.is_action_released("movement_right"):
+		intent_direction.x = -1
+	if input_event.is_action_released("movement_down"):
+		intent_direction.y = -1
+	if input_event.is_action_released("movement_up"):
+		intent_direction.y = 1
 
-	#if intent_direction.length():
 	action["movement_intent"] = intent_direction
 
 	if input_event.is_action_pressed("action_left"):
 		action_direction.x = -1
-	
 	if input_event.is_action_pressed("action_right"):
 		action_direction.x = 1
-
 	if input_event.is_action_pressed("action_down"):
 		action_direction.y = 1
-
 	if input_event.is_action_pressed("action_up"):
 		action_direction.y = -1
+	if input_event.is_action_released("action_left"):
+		action_direction.x = 1
+	if input_event.is_action_released("action_right"):
+		action_direction.x = -1
+	if input_event.is_action_released("action_down"):
+		action_direction.y = -1
+	if input_event.is_action_released("action_up"):
+		action_direction.y = 1
 
-	#if action_direction.length():
 	action["action_direction"] = action_direction
 
 	if input_event.is_action_pressed("boost"):
