@@ -195,6 +195,15 @@ func _physics_process(delta: float) -> void:
 	# Look into 3 random targets within the mush, and if any of them is close, try to avoid!
 	if 0 < mush.get_child_count(): for try in range(3):
 		var to_avoid: Node = mush.get_children().pick_random()
+		if(
+			(
+				"currentAgeSec" in to_avoid and "explosion_length" in to_avoid
+				and(
+					to_avoid.currentAgeSec > to_avoid.explosion_length
+					or to_avoid.currentAgeSec < 0.
+				)
+			)or( to_avoid.has_method("in_battle") and not to_avoid.in_battle() )
+		): continue # Only avoid actual threats within time scope
 		var vec_to_avoid: Vector2 = get_global_position() - to_avoid.get_global_position()
 		raycast_result = space_state.intersect_ray(PhysicsRayQueryParameters2D.create(
 			to_avoid.get_global_position(),

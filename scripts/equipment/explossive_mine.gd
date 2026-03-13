@@ -56,7 +56,7 @@ func _process(delta: float) -> void:
 		$chain.points[1] = attached_to.get_global_position()
 	else: $chain.points[1] = get_global_position()
 
-	if is_activated: # Mine is deployed!
+	if is_activated and not is_exploded: # Mine is deployed!
 		# Check for any ships to seek out
 		var to_ship: Vector2
 		var seeking_since_msec: float = 0.
@@ -116,6 +116,7 @@ func explode_mine() -> void:
 	explosion.global_position = get_global_position()
 	explosion.reinit()
 	is_exploded = true
+	correct_temporal_state({"linear_velocity": Vector2.ZERO})
 	await get_tree().create_timer(.2).timeout # give lightning time to draw
 
 func set_highlight(yesno: bool) -> void:

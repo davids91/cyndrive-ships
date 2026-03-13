@@ -394,6 +394,11 @@ var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	if not in_battle() or control_disabled: return # cannot process any action while not in battle
 
+	if "zoom" in action:
+		$cam.zoom.x = action["zoom"]
+		$cam.zoom.y = action["zoom"]
+		action.erase("zoom") # It's useless to store this in temporal records
+
 	if "weapon_slot" in action and has_node("weapon_slot"):
 		if 0 != (disabled_weapons_mask & (0x1 << action["weapon_slot"])):
 			action.erase("weapon_slot") # Do not switch weapon if it's disabled

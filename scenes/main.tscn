@@ -21,5 +21,3 @@ visible = false
 unique_name_in_owner = true
 
 [node name="main_menu" parent="LevelContainer" unique_id=1872464580 instance=ExtResource("9_85g3d")]
-star_speed = null
-gui_visible = null

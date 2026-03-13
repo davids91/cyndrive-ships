@@ -19,13 +19,15 @@ func _process(delta_time: float) -> void:
 	for s in $scenes.get_children():
 		s.get_node("orbitable").angle += star_speed * delta_time / Difficulty.gameplay_speed
 
+@onready var level_container: Node2D = get_node("/root/Main/LevelContainer")
+@onready var player_input: PlayerInput = get_node("/root/Main/player_input")
 func load_level(level_name: String) -> void:
-	for n in %LevelContainer.get_children(): n.queue_free()
+	for n in level_container.get_children(): n.queue_free()
 	var level = load("res://scenes/battles/" + level_name + ".tscn").instantiate()
 	var player = level.get_node("%character")
 	var GUI: BattleShipGUI = get_node("/root/Main/GUI")
-	GUI.configure(%player_input, level, player)
-	%LevelContainer.add_child(level)
+	GUI.configure(player_input, level, player)
+	level_container.add_child(level)
 
 func _on_dev_room_button_scene_selected() -> void:
 	load_level("dev_room_battle")
@@ -34,7 +36,7 @@ func _on_tutorial_level_button_scene_selected() -> void:
 	load_level("tutorial_level")
 
 func _on_mr_mustle_battle_pressed() -> void:
-	load_level("mr_mustle")
+	load_level("mr_mustle_battle")
 
 func _on_guides_button_pressed() -> void:
 	speed = 0.

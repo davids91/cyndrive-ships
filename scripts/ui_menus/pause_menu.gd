@@ -39,12 +39,10 @@ func _on_restart_btn_pressed() -> void:
 	get_tree().paused = false
 	battle.reset_game()
 
-
 func _on_restart_round_btn_pressed() -> void:
 	get_tree().paused = false
 	self.hide()
 	battle.restart_round()
-
 
 func _on_main_menu_btn_pressed() -> void:
 	var GUI: BattleShipGUI = get_node("/root/Main/GUI")

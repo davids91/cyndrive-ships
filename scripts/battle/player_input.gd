@@ -28,7 +28,10 @@ var reverse_being_held: bool = false
 var reverse_initiated: bool = false
 var reverse_hold_time_sec: float = 0.
 
-func _unhandled_key_input(event: InputEvent) -> void:
+@export var zoom_range: float = 0.25
+@export var zoom_center: float = 0.4
+var current_zoom_value: float = zoom_center
+func _unhandled_input(event: InputEvent) -> void:
 	var action = get_action(event)
 	var just_pressed = event.is_pressed() and not event.is_echo()
 	var was_shooting = is_shooting
@@ -56,6 +59,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("reset_round") and just_pressed:
 		time_control_triggered.emit({"checkpoint_reset_triggered": true})
+
+	if event.is_action_pressed("zoom_in"):
+		current_zoom_value = max(current_zoom_value * 0.95, zoom_center * (1. - zoom_range))
+		action["zoom"] = current_zoom_value
+	elif event.is_action_pressed("zoom_out"):
+		current_zoom_value = min(current_zoom_value * 1.05, zoom_center * (1. + zoom_range))
+		action["zoom"] = current_zoom_value
 
 	if not input_disabled and not action.is_empty():
 		action_triggered.emit(action)
@@ -104,6 +114,7 @@ Output format is the following:
 	action["action_released"]: boolean value for weapon deactivation
 	action["acquired_target"]: the target object to which the laser is supposed to be fired
 	action["deploy_mine"]: activate and release the attached mine ( if any )
+	action["zoom"]: set camera zoom level(not stored in temporal records)
 """
 static func get_action(input_event: InputEvent) -> Dictionary:
 	var action = Dictionary()

@@ -69,7 +69,8 @@ Q
 E
 Space
 CTRL + R
-R(long press)"
+R(long press)
+-/+"
 label_settings = SubResource("LabelSettings_1rdfn")
 horizontal_alignment = 2
 autowrap_mode = 2
@@ -87,6 +88,7 @@ Select Weapons
 Equip/Deploy Explosives
 Skip/Continue Dialogue
 Save Round and restart
-Rewind battle until key released"
+Rewind battle until key released
+Zoom in/out"
 label_settings = SubResource("LabelSettings_r0ctv")
 autowrap_mode = 2

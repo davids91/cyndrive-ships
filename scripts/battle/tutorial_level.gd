@@ -479,8 +479,10 @@ func _on_player_resurrected_dialouge_finished() -> void:
 	%character/temporal_recorder.start_recording()
 	$timeline.reset()
 
+var final_dialogue_started: bool = false
 func _on_boss_health_changed(percentage: float) -> void:
-	if percentage < 0.2:
+	if percentage < 0.2 and not final_dialogue_started:
+		final_dialogue_started = true
 		player_input.input_disabled = true
 		%character.pause_control()
 		%character.velocity = Vector2.ZERO
@@ -494,7 +496,13 @@ func _on_boss_defeated_dialouge_finished() -> void:
 	GUI.get_node("victory/replay_button").set_visible(false)
 	GUI.get_node("victory/restart_button").set_visible(false)
 	get_tree().create_timer(5.).timeout.connect(func():
-		get_tree().change_scene_to_file("res://scenes/galaxy.tscn")
+		var level_container: Node2D = get_node("/root/Main/LevelContainer")
+		var level = load("res://scenes/UI/galaxy.tscn").instantiate()
+
+		level.get_node("main_cam").make_current()
+		for n in level_container.get_children(): n.queue_free()
+		GUI.set_visible(false)
+		level_container.add_child(level)
 	)
 
 func _on_player_dies_dialouge_finished() -> void:
@@ -505,10 +513,8 @@ func _on_character_resurrected(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.EXPLODE:
 		GUI.set_objective("E to equip mine\n within carrier;\nE to deploy it!")
 
-func _on_timeline_rewind_started() -> void:
-	%background_music.pitch_scale = -1.
+func _on_timeline_rewind_started() -> void: pass
 
-func _on_timeline_rewind_stopped() -> void:
-	%background_music.pitch_scale = 1.
+func _on_timeline_rewind_stopped() -> void: pass
 
 func replay_game() -> void: pass # Dummy function as there is no replay on this level
