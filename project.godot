@@ -188,6 +188,7 @@ pointing/emulate_touch_from_mouse=true
 
 [physics]
 
+2d/physics_engine="Rapier2D"
 2d/default_gravity_vector=Vector2(0, 0)
 
 [rendering]
