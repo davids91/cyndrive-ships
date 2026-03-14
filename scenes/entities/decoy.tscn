@@ -7,8 +7,9 @@
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="5_0hc3n"]
 [ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="6_xx7ms"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_3ylto"]
-radius = 25.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xx7ms"]
+radius = 15.0
+height = 50.0
 
 [node name="decoy" type="RigidBody2D" unique_id=1437992623]
 collision_mask = 0
@@ -19,14 +20,15 @@ debris_collision_layer_value = 0
 approx_size = 25.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1381577884]
-shape = SubResource("CircleShape2D_3ylto")
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_xx7ms")
 
 [node name="skin" type="Sprite2D" parent="." unique_id=340232942]
 material = ExtResource("2_35gy4")
-scale = Vector2(0.5, 0.5)
+rotation = 1.5707964
+scale = Vector2(0.065, 0.065)
 texture = ExtResource("3_e3qjj")
-region_enabled = true
-region_rect = Rect2(0, 0, 128, 128)
+region_rect = Rect2(0, 0, 809.0437, 923.4238)
 script = ExtResource("4_uwnbq")
 
 [node name="temporal_recorder" type="Node2D" parent="." unique_id=1798049926]
