@@ -16,6 +16,26 @@ func configure(player_input: PlayerInput, level: Node2D, player: BattleCharacter
 	if "GUI" in level: level.GUI = self
 	set_visible("gui_visible" in level and level.gui_visible)
 
+func fade_to(color: Color, duration_sec: float = 0.5) -> PropertyTweener:
+		return (
+			create_tween()
+			.tween_property($fade_to_black, "self_modulate", color, duration_sec)
+			.set_ease(Tween.EASE_IN)
+		)
+
+var fade_radius: float = 0.0
+func set_fade_radius(radius: float) -> void:
+	$fade_to_black.get_material().set_shader_parameter("fade_radius", radius)
+
+func transform_fade_radius(radius: float = 2., duration_sec: float = 0.5) -> MethodTweener:
+	var old_radius = fade_radius
+	fade_radius = radius
+	return(
+		create_tween()
+		.tween_method(func(w: float): set_fade_radius(w), old_radius, fade_radius, duration_sec)
+		.set_ease(Tween.EASE_IN)
+	)
+
 func set_score(score: String) -> void:
 	$score.set_text(score)
 

@@ -25,8 +25,10 @@ var current_action_direction: Vector2 = Vector2()
 var is_shooting: bool = false
 var current_acquired_target: Vector2 = Vector2()
 var reverse_being_held: bool = false
+var slowdown_being_held: bool = false
 var reverse_initiated: bool = false
 var reverse_hold_time_sec: float = 0.
+var accumulated_slowdown_value_sec: float = 0.
 
 @export var zoom_range: float = 0.25
 @export var zoom_center: float = 0.4
@@ -51,14 +53,21 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not was_shooting and is_shooting:
 		action["action_initiated"] = true
 
-	if event.is_action_pressed("replay") and just_pressed:
-		reverse_being_held = true
+	if event.is_action_pressed("slowdown") and just_pressed:
+		slowdown_being_held = !slowdown_being_held
 
+	if event.is_action_pressed("replay") and just_pressed and not slowdown_being_held:
+		reverse_being_held = true
 	if event.is_action_released("replay"):
 		reverse_being_held = false
 
 	if event.is_action_pressed("reset_round") and just_pressed:
-		time_control_triggered.emit({"checkpoint_reset_triggered": true})
+		slowdown_being_held = false
+		accumulated_slowdown_value_sec = 0.
+		time_control_triggered.emit({
+			"checkpoint_reset_triggered": true,
+			"slowdown": 1.
+		})
 
 	if event.is_action_pressed("zoom_in"):
 		current_zoom_value = max(current_zoom_value * 0.95, zoom_center * (1. - zoom_range))
@@ -70,17 +79,37 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not input_disabled and not action.is_empty():
 		action_triggered.emit(action)
 
+@export var slowdown_max_subtract_value: float = Difficulty.gameplay_speed * 0.9
+@export var slowdown_max_hold_sec: float = 3.
+@export var slowdown_regenerate_speed: float = 0.5
 func _process(delta: float) -> void:
 	if input_disabled: return
 	var time_control: Dictionary = {}
 
+	# Handling slowdown:
+	if slowdown_being_held: accumulated_slowdown_value_sec += delta
+	elif 0. < accumulated_slowdown_value_sec:
+		accumulated_slowdown_value_sec = max(
+			0., accumulated_slowdown_value_sec - delta * slowdown_regenerate_speed
+		)
+	if 0. < accumulated_slowdown_value_sec:
+		time_control["slowdown"] = 1. - min(
+			slowdown_max_subtract_value,
+			(
+				pow(min(accumulated_slowdown_value_sec, slowdown_max_hold_sec), 2.) 
+				/ (slowdown_max_hold_sec * slowdown_max_hold_sec)
+			)
+		)
+
 	# Handling Timeline reverse
-	if reverse_being_held:
+	if reverse_being_held and not slowdown_being_held:
 		reverse_hold_time_sec += delta
 		if reverse_hold_time_sec > short_reverse_hold_time_sec:
 			if not reverse_initiated:
 				reverse_initiated = true
 				time_control["rewind_toggled"] = true
+				slowdown_being_held = false
+				accumulated_slowdown_value_sec = 0.
 	if reverse_initiated:
 		if not reverse_being_held:
 			time_control["rewind_toggled"] = false

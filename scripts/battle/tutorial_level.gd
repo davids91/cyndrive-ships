@@ -111,16 +111,15 @@ func _process(delta: float) -> void:
 		if marker_time_left_secs <= 0.:
 			currently_failing_at_markers = true
 			marker_time_left_secs = time_to_get_to_marker
-			var reset_tween: Tween = create_tween()
-			reset_tween.tween_method(func(w: float): $level_ui/fade_to_black.self_modulate.a = w, 0., 1. , 0.5).set_ease(Tween.EASE_IN)
-			reset_tween.tween_callback(func():
-				%character.correct_temporal_state(%character.spawn_snapshot)
-				if %character.held_mine:
-					%character.held_mine.correct_temporal_state(%character.held_mine.spawn_snapshot)
-				create_tween().tween_method(func(w: float): $level_ui/try_again.modulate.a = w, 1., 0., 3.)
-			)
-			reset_tween.tween_method(func(w: float): $level_ui/fade_to_black.self_modulate.a = w, 1., 0. , 0.3).set_ease(Tween.EASE_OUT).finished.connect(
-				func(): currently_failing_at_markers = false
+			GUI.fade_to(Color.BLACK).finished.connect(func():
+				create_tween().tween_callback(func():
+					%character.correct_temporal_state(%character.spawn_snapshot)
+					if %character.held_mine:
+						%character.held_mine.correct_temporal_state(%character.held_mine.spawn_snapshot)
+					create_tween().tween_method(func(w: float): $level_ui/try_again.modulate.a = w, 1., 0., 3.)
+				).finished.connect(func():GUI.fade_to(Color.TRANSPARENT, 0.3).finished.connect(
+						func(): currently_failing_at_markers = false
+				))
 			)
 		GUI.set_time(marker_time_left_secs)
 
@@ -459,10 +458,9 @@ func _on_character_dead(_itsme: BattleCharacter) -> void:
 		failed_level_tween.tween_method(
 			func(w: float): $level_ui/try_again.modulate.a = w, 0., 1., 1.
 		).set_ease(Tween.EASE_IN)
-		failed_level_tween.tween_method(
-			func(w: float): $level_ui/fade_to_black.self_modulate.a = w,
-			0., 1., 0.5
-		).set_ease(Tween.EASE_IN).finished.connect(func(): reset_game())
+		failed_level_tween.tween_callback(
+			func():GUI.fade_to(Color.BLACK).finished.connect(func(): reset_game())
+		)
 	else: GUI.set_objective("Rewind to try again")
 
 func _on_character_shields_toggled(turned_on: bool) -> void:

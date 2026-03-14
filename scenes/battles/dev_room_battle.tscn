@@ -84,7 +84,7 @@ texture = ExtResource("7_w0t2q")
 [sub_resource type="TileSet" id="TileSet_f22mk"]
 sources/0 = SubResource("TileSetAtlasSource_pmnbd")
 
-[node name="battle2" type="Node2D" unique_id=471580]
+[node name="battle" type="Node2D" unique_id=471580]
 script = ExtResource("1_6u6au")
 metadata/_edit_vertical_guides_ = [788.0, 163.0]
 metadata/_edit_horizontal_guides_ = [426.0]

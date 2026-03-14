@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://bxvkgl6pp7mn0"]
+[gd_scene format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_5doxk"]
@@ -155,7 +155,7 @@ shader_parameter/wave_count = 6.1630002452425
 shader_parameter/wave_spacing = 0.23300000780762
 shader_parameter/pixel_size = 8.0000003325
 
-[node name="character" type="CharacterBody2D" groups=["destroyables"]]
+[node name="character" type="CharacterBody2D" unique_id=138634092 groups=["destroyables"]]
 collision_layer = 3
 script = ExtResource("1_iulgi")
 team = SubResource("Resource_cy11g")
@@ -164,56 +164,56 @@ skin_layers = Array[ExtResource("2_5doxk")]([SubResource("Resource_2vmea")])
 starting_health = 500.0
 max_health = 500.0
 
-[node name="collision_shape" type="CollisionShape2D" parent="."]
+[node name="collision_shape" type="CollisionShape2D" parent="." unique_id=2034315278]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_k8udw")
 
-[node name="controller" type="Node2D" parent="."]
+[node name="controller" type="Node2D" parent="." unique_id=1834137534]
 script = ExtResource("2_fbtwq")
 
-[node name="skin" type="Node2D" parent="."]
+[node name="skin" type="Node2D" parent="." unique_id=1876036470]
 script = ExtResource("4_ykdog")
 
-[node name="layers" type="SubViewport" parent="skin"]
+[node name="layers" type="SubViewport" parent="skin" unique_id=418464243]
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(100, 100)
 
-[node name="cam" type="Camera2D" parent="skin/layers"]
+[node name="cam" type="Camera2D" parent="skin/layers" unique_id=1084235475]
 
-[node name="skin_image" type="Sprite2D" parent="skin"]
+[node name="skin_image" type="Sprite2D" parent="skin" unique_id=376491413]
 visible = false
 material = SubResource("ShaderMaterial_5doxk")
 texture = SubResource("ViewportTexture_8vsun")
 
-[node name="shield" parent="." instance=ExtResource("21_hynoq")]
+[node name="shield" parent="." unique_id=967055025 instance=ExtResource("21_hynoq")]
 position = Vector2(128, 0)
 
-[node name="energy_systems" type="Node" parent="." node_paths=PackedStringArray("weapon_system")]
+[node name="energy_systems" type="Node" parent="." unique_id=1105979253 node_paths=PackedStringArray("weapon_system")]
 script = ExtResource("7_0nsx8")
 max_weapon = 100.0
 weapon_recharge_per_sec = 15.0
 weapon_system = NodePath("../weapon_slot")
 metadata/_custom_type_script = "uid://cdrsm7mlhnmnm"
 
-[node name="weapon_slot" type="Node" parent="." node_paths=PackedStringArray("weapons")]
+[node name="weapon_slot" type="Node" parent="." unique_id=691233118 node_paths=PackedStringArray("weapons")]
 script = ExtResource("8_owx80")
 weapons = [NodePath("../laser_beam"), NodePath("../chain_lightning"), NodePath("../hotsaber"), NodePath("../decoy_shooter")]
 metadata/_custom_type_script = "uid://co4eimc5mgx3i"
 
-[node name="decoy_shooter" type="Node2D" parent="."]
+[node name="decoy_shooter" type="Node2D" parent="." unique_id=1043209663]
 script = ExtResource("10_5doxk")
 energy_cost = 5.0
 
-[node name="laser_beam" parent="." node_paths=PackedStringArray("wielder") instance=ExtResource("11_cy11g")]
+[node name="laser_beam" parent="." unique_id=1841506215 node_paths=PackedStringArray("wielder") instance=ExtResource("11_cy11g")]
 wielder = NodePath("..")
-base_damage = 2.5
+base_damage = 0.8
 energy_cost = 0.5
 
-[node name="hotsaber" parent="." instance=ExtResource("11_tpj62")]
+[node name="hotsaber" parent="." unique_id=1252353179 instance=ExtResource("11_tpj62")]
 
-[node name="chain_lightning" type="Node2D" parent="." node_paths=PackedStringArray("wielder")]
+[node name="chain_lightning" type="Node2D" parent="." unique_id=2009394250 node_paths=PackedStringArray("wielder")]
 script = ExtResource("14_kijp1")
 wielder = NodePath("..")
 chain_radius = 750.0
@@ -221,14 +221,14 @@ base_damage = 0.05
 energy_cost = 0.1
 metadata/_custom_type_script = "uid://cy4bwltyfsq3g"
 
-[node name="sound" type="AudioStreamPlayer2D" parent="chain_lightning"]
+[node name="sound" type="AudioStreamPlayer2D" parent="chain_lightning" unique_id=1712443941]
 stream = SubResource("AudioStreamRandomizer_i0gp7")
 volume_db = -30.0
 attenuation = 0.3186402
 max_polyphony = 5
 bus = &"Ships"
 
-[node name="thruster_fx" type="CPUParticles2D" parent="."]
+[node name="thruster_fx" type="CPUParticles2D" parent="." unique_id=578531408]
 position = Vector2(-45, 0)
 rotation = -3.1415927
 emitting = false
@@ -244,7 +244,7 @@ scale_amount_max = 4.0
 color_ramp = SubResource("Gradient_0dpix")
 script = ExtResource("24_axo4l")
 
-[node name="booster_fx" type="CPUParticles2D" parent="."]
+[node name="booster_fx" type="CPUParticles2D" parent="." unique_id=716985478]
 visible = false
 show_behind_parent = true
 position = Vector2(-45, 0)
@@ -260,28 +260,28 @@ scale_amount_min = 4.0
 scale_amount_max = 4.0
 color_ramp = SubResource("Gradient_0dpix")
 
-[node name="thruster_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="thruster_sound" type="AudioStreamPlayer2D" parent="." unique_id=1106682369]
 stream = ExtResource("23_aa58f")
 bus = &"Ships"
 
-[node name="explosion_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="explosion_sound" type="AudioStreamPlayer2D" parent="." unique_id=1571153209]
 stream = SubResource("AudioStreamRandomizer_7qyni")
 bus = &"Weapons"
 
-[node name="booster_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="booster_sound" type="AudioStreamPlayer2D" parent="." unique_id=2061855568]
 stream = ExtResource("29_hg731")
 bus = &"Ships"
 
-[node name="temporal_recorder" type="Node2D" parent="."]
+[node name="temporal_recorder" type="Node2D" parent="." unique_id=1211937507]
 script = ExtResource("30_5j1ue")
 triggers_per_second = 20
 
-[node name="target_arrow" type="Sprite2D" parent="."]
+[node name="target_arrow" type="Sprite2D" parent="." unique_id=435393122]
 visible = false
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("22_hm7ac")
 
-[node name="repair_indicator" type="ColorRect" parent="."]
+[node name="repair_indicator" type="ColorRect" parent="." unique_id=640690271]
 visible = false
 top_level = true
 z_index = -5
@@ -298,7 +298,7 @@ offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="state_display" parent="." node_paths=PackedStringArray("skin") instance=ExtResource("36_ei2dj")]
+[node name="state_display" parent="." unique_id=1321293095 node_paths=PackedStringArray("skin") instance=ExtResource("36_ei2dj")]
 visible = false
 skin = NodePath("../skin")
 

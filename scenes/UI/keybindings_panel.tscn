@@ -26,12 +26,12 @@ texture = ExtResource("1_d32mj")
 sources/0 = SubResource("TileSetAtlasSource_lv4so")
 
 [sub_resource type="LabelSettings" id="LabelSettings_1rdfn"]
-line_spacing = 15.0
+line_spacing = 9.0
 font_size = 25
 font_color = Color(0, 1.1801987, 1.1801987, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_r0ctv"]
-line_spacing = 15.0
+line_spacing = 9.0
 font_size = 25
 font_color = Color(0, 1.1801987, 1.1801987, 1)
 
@@ -62,15 +62,17 @@ offset_top = 191.0
 offset_right = 801.0
 offset_bottom = 732.0
 text = "WASD
-SPACE
 ARROWS
 Q
 1 2 3 4
 E
 Space
 CTRL + R
+(hold)SHIFT + R
 R(long press)
--/+"
+-/+
+SPACE
+"
 label_settings = SubResource("LabelSettings_1rdfn")
 horizontal_alignment = 2
 autowrap_mode = 2
@@ -86,9 +88,11 @@ Fire Weapon(target assisted)
 Toggle shield
 Select Weapons
 Equip/Deploy Explosives
-Skip/Continue Dialogue
 Save Round and restart
+Slow down time
 Rewind battle until key released
-Zoom in/out"
+Zoom in/out
+Skip/Continue Dialogue
+"
 label_settings = SubResource("LabelSettings_r0ctv")
 autowrap_mode = 2

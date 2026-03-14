@@ -20,7 +20,9 @@ var infinite_ammo_active: bool = false
 var infinite_boost_active: bool = false
 
 func _ready():
-	laupeerium_bar.bars_remaining = UIEnergyBar.max_bars
+	GUI.fade_to(Color.from_rgba8(0, 255,255, 200))
+	GUI.set_fade_radius(4.)
+	update_laupeerium_bar()
 	$combatants/character/controller.stop()
 	$combatants/character/cam.make_current()
 	living_team_members[2] = 0
@@ -47,12 +49,13 @@ func reset_game() -> void:
 	get_tree().call_deferred("reload_current_scene")
 
 @export var rewind_battle_laupeerium_cost: float = 1.
+@export var slowdown_battle_laupeerium_cost: float = 0.1
 func replay_round(rewind_animation: bool = true) -> void:
 	if current_laupeerium < rewind_battle_laupeerium_cost: return
 
 	# Handle resource changes with round restart
 	if not is_replay: current_laupeerium -= rewind_battle_laupeerium_cost
-	laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
+	update_laupeerium_bar()
 
 	#TechDebt: Eliminate mine after round end
 	if not $combatants/character.held_mine == null:
@@ -71,8 +74,7 @@ func replay_round(rewind_animation: bool = true) -> void:
 		if(
 			"entangled" in c and c.entangled and not c.has_node("replayer")
 			and "team" in c and c.team.is_enemy($combatants/character.team)
-		):
-			entangle_ship_with_player(c)
+		): entangle_ship_with_player(c)
 
 	if not rewind_animation:
 		for combatant in $combatants.get_children():
@@ -124,6 +126,7 @@ var replay_viewport = Rect2()
 func _process(delta):
 	GUI.get_node("debug_stats/fps").set_text("%s fps" % Engine.get_frames_per_second())
 	GUI.set_time(BattleTimeline.instance.time_msec() / 1000.)
+	GUI.set_fade_radius(4. * Difficulty.slowdown_multiplier)
 
 	# Countdown to battle start
 	if 0 < init_countdown_sec:
@@ -165,12 +168,20 @@ func _process(delta):
 	# Handling Timeline reverse
 	if is_rewinding:
 		current_laupeerium -= delta
-		laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
+		update_laupeerium_bar()
 		$timeline.reverse(delta)
 		GUI.get_node("defeat").set_visible(false)
 		GUI.get_node("victory").set_visible(false)
 		GUI.get_node("restart_round_panel").set_visible(false)
 		GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
+
+	# Handling Slowdown
+	if Difficulty.slowdown_multiplier < 1.:
+		current_laupeerium = max(
+			0., current_laupeerium - (1. - Difficulty.slowdown_multiplier) * delta * slowdown_battle_laupeerium_cost
+		)
+		if 0. == current_laupeerium: Difficuilty.slowdown_multiplier = 1.
+		update_laupeerium_bar()
 
 func entangle_ship_with_player(ship: BattleCharacter) -> void:
 	if ship.has_node("replayer") or ship.name == "character": return # Nothing to do when ship is already entangled
@@ -309,7 +320,7 @@ func _on_battle_character_resurrected(character: BattleCharacter) -> void:
 
 const one_weapon_slot_width_with_padding: float = 128.5
 func _on_weapon_changed(slot: int) -> void:
-	GUI.selected_weapon_panel.transform.origin.y = float(slot) * one_weapon_slot_width_with_padding
+	GUI.get_node("selected_weapon_panel").transform.origin.y = float(slot) * one_weapon_slot_width_with_padding
 
 var is_replay = false
 func replay_game() -> void:
@@ -333,6 +344,9 @@ func replay_game() -> void:
 @export var rewind_animation_transition_sec: float = 0.75
 var is_rewinding: bool = false
 func time_control_triggered(action: Dictionary) -> void:
+	if "slowdown" in action and 0 < current_laupeerium:
+		Difficuilty.slowdown_multiplier = action["slowdown"]
+
 	if "rewind_toggled" in action:
 		if 0. < current_laupeerium:
 			is_rewinding = action["rewind_toggled"]
@@ -356,3 +370,6 @@ func time_control_triggered(action: Dictionary) -> void:
 		# Handling Battle restart
 		if rewind_battle_laupeerium_cost <= current_laupeerium:
 			replay_round()
+
+func update_laupeerium_bar() -> void:
+	laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))

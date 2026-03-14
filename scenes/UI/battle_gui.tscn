@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/panels/replay_button_hover.png" id="18_cq71w"]
 [ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="19_swp6i"]
 [ext_resource type="PackedScene" uid="uid://1o5og2xeefgp" path="res://scenes/UI/pause menu.tscn" id="20_1owcp"]
+[ext_resource type="Shader" uid="uid://dkoreljmu6vd4" path="res://shaders/slowdown.gdshader" id="23_a8p6b"]
 
 [sub_resource type="Gradient" id="Gradient_8j45s"]
 offsets = PackedFloat32Array(0.7495935, 0.7642276, 0.8097561, 1)
@@ -118,6 +119,10 @@ shader_parameter/color_2 = Color(0.17234308, 0.00012254089, 0.5416377, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_rwtbh"]
 font_size = 50
 font_color = Color(0, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7d241"]
+shader = ExtResource("23_a8p6b")
+shader_parameter/fade_radius = 2.0
 
 [node name="GUI" type="CanvasLayer" unique_id=34407094]
 script = ExtResource("1_8vxf1")
@@ -384,6 +389,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+
+[node name="fade_to_black" type="ColorRect" parent="." unique_id=679578357]
+self_modulate = Color(1, 1, 1, 0)
+material = SubResource("ShaderMaterial_7d241")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [connection signal="pressed" from="restart_round_panel/TextureButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="restart_during_replay" to="." method="_on_reset_game_pressed"]
