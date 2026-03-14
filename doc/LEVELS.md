@@ -21,15 +21,17 @@ The boss is defeated by restarting the battle multiple times with multiple versi
 VICTORY
 
 # Level 1 - Badly guarded Team Pocket Co. Laupeerium Silo Heist
-Scene: Team Pocket Co. Silo
-Purpose: Gather More Laupeerium
-Objective: Destroy Enemy drones, Blast open Silo door
-Boss: Big Laser boss
-	--> Base is surrounded by asteroids, drones guard it
-	--> Eliminate the drones
-	--> blast open the Silo doors
-	--> Victory! Laupeerium bar fills to 75%
-	--> Boss appears
+## Scene: Team Pocket Co. Silo
+## Purpose: Steal Laupeerium
+## Objective: Destroy Enemy drones, Blast open Silo door
+## Boss: Fast boss, zaps ships close by
+Carrier ship appears, camera moves to the silo and back.
+The pilot is just being told that this is a heist.
+The drones and the silo doors can be destroyed simultaniously, both is required for level success
+Upon destroying the drones and the silo doors; entering into the silo
+Laupeerium bar fills to 75%, some dialog about how crime pays off or sth
+Big speedy boss appears, threatens the heroes
+FIGHT FIGHT FIGHT
 
 # Level 2 - Infiltration ( stealth campaign? )
 Scene: Team Pocket co. Universal Space base

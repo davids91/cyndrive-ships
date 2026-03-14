@@ -85,3 +85,13 @@ The player is the hot shot pilot who has been hired to fight these battles flyin
 
 13 Dec 2025 Update:
 The Archvillain (who the villain duo work for) is very secretive, yet bad at remembering important details. He often sets elaborate passwords and then forgets the passwords. This means that his Chief Advisor must contract hackers to come in and re-gain access to his email for him - but they will see company secrets in the process, so the Chief Advisor goes through the arduous process of having the hackers' memories wiped. The Chief Advisor has to get a new hacker each time, because the mind-wiping process also scrambles and resets the hackers' skills; the hackers are kept in a pen for safe keeping. The Leader managed to sneak in and liberate a bunch of the mind-wiped hackers some years ago, and that is where the Miner/Extractors came from. The process of wiping their memories left gaps i their minds that makes them a good candidate for interfacing with Ancient technology, because it is so alien to the present-day's sensibilities of how technology should be built. This is also why they are a bit weird, and why the Leader will be fiercely protective of them.
+
+
+# Charater notes
+
+Inventor has problems with object permanence, often information from another timeline leaks into his current conciousness,
+Main motivation is to get back an important person from the time accident long ago
+
+Pilot: blank character, mainly to be aeasy fror anyone to rpoject themselves to
+
+Leader: very self motivated, likes to disregard safety rules, but not not careless: likes shortcuts
