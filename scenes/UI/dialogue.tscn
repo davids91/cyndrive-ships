@@ -3,7 +3,12 @@
 [ext_resource type="Script" uid="uid://2v4bgsoiqlsv" path="res://scripts/ui_menus/dialogue.gd" id="1_3n4vj"]
 [ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="2_bfpow"]
 [ext_resource type="Script" uid="uid://bkr2v5nh6w6ml" path="res://scripts/ui_menus/dialogue_control.gd" id="2_cnjl0"]
+[ext_resource type="Texture2D" uid="uid://c1bqngenhkki4" path="res://textures/entities/npc_4.png" id="2_rgose"]
 [ext_resource type="LabelSettings" uid="uid://cihvmag3ppi8c" path="res://resources/highlighted_text_font.tres" id="3_bfpow"]
+[ext_resource type="Texture2D" uid="uid://cotaijnvbx8x1" path="res://textures/entities/npc_2.png" id="3_cpovq"]
+[ext_resource type="Texture2D" uid="uid://cmkb5g4mqod2i" path="res://textures/entities/npc_3.png" id="4_68xmj"]
+[ext_resource type="Texture2D" uid="uid://vn4wxoxo1ni" path="res://textures/entities/npc_5.png" id="5_u6dtt"]
+[ext_resource type="Texture2D" uid="uid://ck7f4jntag8mn" path="res://textures/entities/npc_6.png" id="6_ypox6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4u087"]
 texture = ExtResource("2_bfpow")
@@ -28,6 +33,7 @@ size = Vector2(100, 100)
 
 [node name="dialogue" type="CanvasLayer" unique_id=286697342]
 script = ExtResource("1_3n4vj")
+portraits = [ExtResource("2_rgose"), ExtResource("3_cpovq"), ExtResource("4_68xmj"), ExtResource("5_u6dtt"), ExtResource("6_ypox6")]
 dialog = "res://dialogues/tutorial_level/tutorial_0_greeting.txt"
 
 [node name="control" type="Control" parent="." unique_id=114419938]

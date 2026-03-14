@@ -33,7 +33,7 @@ func _load_dialog_lines() -> PackedStringArray:
 var signals_shot: Dictionary = {}
 
 func start() -> void:
-	signals_shot.clear()
+	signals_shot.clear()#[c0]
 	current_line = 0
 	if dialog_lines.is_empty():
 		push_error("No dialogue lines loaded for: " + dialog)
@@ -107,9 +107,11 @@ func _init() -> void:
 	for sig in range(signals_probably_enough):
 		add_user_signal("dialogue_signal_" + str(sig))
 
+@export var autostart: bool = false
 func _ready() -> void:
 	if not dialog_lines.is_empty():
 		current_line_text = _parse_line(dialog_lines[0])
+	if autostart: start()
 
 @export var skip_line_interval_sec: float = 0.6
 @export var skip_line_count_for_finish: int = 4
