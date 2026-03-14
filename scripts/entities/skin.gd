@@ -1,9 +1,8 @@
 extends Node2D
 
-@onready var character: Node = get_parent()
+@export_range(0., 1.) var color_mix: float = 1.
 
-func _ready() -> void:
-	character = get_parent() as BattleCharacter
+@onready var character: BattleCharacter = get_parent()
 
 func set_burn_percentage(percentage: float) -> void:
 	$skin_image.material.set_shader_parameter("burn_percentage", percentage)
@@ -16,12 +15,12 @@ func set_skins_material(mat: ShaderMaterial) -> void:
 	$skin_image.material = mat.duplicate()
 	$skin_image.material.set_shader_parameter("team_color", team_color)
 
-var team_color: Color = Color.WHITE
+var team_color: Color = Color.TRANSPARENT
 func init_skin(skin_layers: Array[BattleShipSkin], init_team_color: Color) -> void:
 	set_visible(true)
 	# set skin viewport to fit character size
 	$layers.size = Vector2(character.approx_size, character.approx_size)
-	team_color = init_team_color
+	team_color = lerp(team_color, init_team_color, color_mix)
 
 	# Remove placeholders
 	for c in $layers.get_children():
