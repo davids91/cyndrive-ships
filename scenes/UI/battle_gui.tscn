@@ -122,7 +122,7 @@ font_color = Color(0, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7d241"]
 shader = ExtResource("23_a8p6b")
-shader_parameter/fade_radius = 2.0
+shader_parameter/fade_radius = 4.0
 
 [node name="GUI" type="CanvasLayer" unique_id=34407094]
 script = ExtResource("1_8vxf1")

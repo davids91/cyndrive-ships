@@ -200,9 +200,11 @@ func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 	skin_layers = predecessor.skin_layers # set skin from predecessor(_ready will construct the skin)
 	color = new_color
 
+@export var manually_exclude_from_battle: bool = false
 func in_battle() -> bool:
 	return (
-		is_alive
+		not manually_exclude_from_battle
+		and is_alive
 		and (
 			# Only player or AI controlled characters don't have a replayer
 			not has_node("replayer")
@@ -233,12 +235,15 @@ func _physics_process(delta: float) -> void:
 		body_in_contact.apply_impulse($controller.internal_force * delta * mass_ratio * 0.15)
 	else: contact_time = 0.
 
+@export var carrier_ship: BattleCharacter
+@export var docked_radius_percent: float = 0.3
 @onready var is_alive: bool = true
 @onready var was_alive: bool = is_alive
 @onready var was_in_battle: bool = in_battle()
 var is_being_healed: bool = false
 var ship_explosion : Explosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
+var docked: bool = false
 func _process(_delta):
 	# Sync state for being alive and in battle
 	if is_alive != was_alive: was_in_battle = in_battle()
@@ -282,6 +287,10 @@ func _process(_delta):
 		stop_fnc.tween_interval(0.5)
 		stop_fnc.tween_callback(func() : $thruster_sound.stop())
 		stop_fnc.chain()
+
+	if carrier_ship:
+		docked = (carrier_ship.global_position - global_position).length() < carrier_ship.approx_size * docked_radius_percent
+		if docked: needs_docking_support = false
 
 @export var laser_strength: float = 1.
 @export var entanglement_chance: float = 0.05
@@ -387,8 +396,14 @@ func resume_control() -> void:
 	else: $controller.intent_direction = PlayerInput.instance.movement_intent
 	control_disabled = false
 
+func display_dock_message(should_be_visible: bool) -> void:
+	if has_node("state_display"):
+		if should_be_visible: $state_display.say("Press E to dock")
+		else: $state_display.shutup()
+
 var disabled_weapons_mask: int = 0x0
 var ready_to_receive_mine: bool = false
+var needs_docking_support: bool = false
 var held_mine: ExplosiveMine = null
 var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
@@ -411,10 +426,13 @@ func process_input_action(action: Dictionary) -> void:
 	else: current_action_direction = Vector2()
 
 	if "deploy_mine" in action and action["deploy_mine"]:
+		if not docked:
+			needs_docking_support = true
+			get_tree().create_timer(1.).timeout.connect(func(): needs_docking_support = false)
 		if held_mine:
 			held_mine.deploy_mine()
 			held_mine = null
-		else: ready_to_receive_mine = true
+		elif docked: ready_to_receive_mine = true
 	else: ready_to_receive_mine = false
 
 	if has_node("energy_systems"):

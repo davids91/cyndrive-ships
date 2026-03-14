@@ -48,6 +48,15 @@ func say(line: String) -> void:
 	).set_delay(line_display_length_sec)
 	speech_tween.chain().tween_callback(func():$speech_bubble.set_visible(false))
 
+func shutup() -> void:
+	if speech_tween: speech_tween.kill()
+	create_tween().chain().tween_method(
+		func(w: float):
+			$speech_bubble/border.material.set_shader_parameter("pixel_scale", 2. + (1. - w) * 20.)
+			$speech_bubble/border.material.set_shader_parameter("burn_percentage", w),
+		0.2, 1.0, line_appear_length_sec / 2.
+	).finished.connect(func():$speech_bubble.set_visible(false))
+
 @export var angry_distance: float = 5.
 func angry_emote() -> void:
 	$emote.self_modulate.a = 1.

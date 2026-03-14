@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b2el5b6ucyivj"]
+[gd_scene format=3 uid="uid://b2el5b6ucyivj"]
 
 [ext_resource type="Script" uid="uid://looat8o6nb3" path="res://scripts/entities/player_carrier.gd" id="1_nmp2x"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="2_i8lxl"]
@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://deopad1715evr" path="res://audio/mine_attached.wav" id="12_ciyox"]
 [ext_resource type="Script" uid="uid://dglqu1ynocp45" path="res://scripts/equipment/healing_aura.gd" id="14_5fyrk"]
 [ext_resource type="Script" uid="uid://3dfit16uksc1" path="res://scripts/equipment/mine_attachement_aura.gd" id="14_a3wjc"]
+[ext_resource type="Script" uid="uid://lvforto1fsav" path="res://scripts/equipment/dock_assistant.gd" id="16_8f66g"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="16_ciyox"]
 [ext_resource type="AudioStream" uid="uid://cch3grv1rk7ei" path="res://audio/phasing_in.wav" id="19_0uqlh"]
 
@@ -131,57 +132,60 @@ shader_parameter/phase_green = 1.0
 shader_parameter/phase_blue = 1.0
 shader_parameter/zoom = 1.00000004680148
 
-[node name="player_carrier" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_nmp2x"]
+radius = 450.0
+
+[node name="player_carrier" type="CharacterBody2D" unique_id=956278995]
 collision_layer = 3
 motion_mode = 1
 script = ExtResource("1_nmp2x")
 skin_layers = Array[ExtResource("2_nmp2x")]([SubResource("Resource_e50ek"), SubResource("Resource_mpb26")])
 
-[node name="skin" type="Node2D" parent="."]
+[node name="skin" type="Node2D" parent="." unique_id=996370363]
 visible = false
 script = ExtResource("2_i8lxl")
 
-[node name="layers" type="SubViewport" parent="skin"]
+[node name="layers" type="SubViewport" parent="skin" unique_id=623048559]
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 oversampling = false
 size = Vector2i(700, 700)
 
-[node name="cam" type="Camera2D" parent="skin/layers"]
+[node name="cam" type="Camera2D" parent="skin/layers" unique_id=2057127888]
 
-[node name="skin_image" type="Sprite2D" parent="skin"]
+[node name="skin_image" type="Sprite2D" parent="skin" unique_id=1496537103]
 visible = false
 material = SubResource("ShaderMaterial_8ry8k")
 texture = SubResource("ViewportTexture_d02ko")
 
-[node name="front_collision" type="CollisionPolygon2D" parent="."]
+[node name="front_collision" type="CollisionPolygon2D" parent="." unique_id=172468247]
 polygon = PackedVector2Array(38, 296, 40, -292, 255, -202, 372, 2, 264, 195)
 
-[node name="rear_collision" type="CollisionPolygon2D" parent="."]
+[node name="rear_collision" type="CollisionPolygon2D" parent="." unique_id=1757746654]
 polygon = PackedVector2Array(-375, -146, -240, -254, -237, 257, -371, 142)
 
-[node name="temporal_recorder" type="Node2D" parent="."]
+[node name="temporal_recorder" type="Node2D" parent="." unique_id=489631156]
 script = ExtResource("5_sti4k")
 
-[node name="target_arrow" type="Sprite2D" parent="."]
+[node name="target_arrow" type="Sprite2D" parent="." unique_id=1949206645]
 visible = false
 position = Vector2(4, 0)
 scale = Vector2(2.96875, 2.96875)
 texture = ExtResource("7_d02ko")
 
-[node name="controller" type="Node2D" parent="."]
+[node name="controller" type="Node2D" parent="." unique_id=1762202597]
 script = ExtResource("9_xatsn")
 passive_movement_rotation_threshold = 0.2
 booster_strength = 50.0
 
-[node name="thruster_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="thruster_sound" type="AudioStreamPlayer2D" parent="." unique_id=839637896]
 stream = ExtResource("10_5fyrk")
 pitch_scale = 0.5
 autoplay = true
 bus = &"Ships"
 
-[node name="mine_attachement_aura" type="Area2D" parent="."]
+[node name="mine_attachement_aura" type="Area2D" parent="." unique_id=1211262187]
 light_mask = 2
 visibility_layer = 3
 position = Vector2(-125, 0)
@@ -190,22 +194,22 @@ collision_mask = 3
 monitorable = false
 script = ExtResource("14_a3wjc")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="mine_attachement_aura"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="mine_attachement_aura" unique_id=2083551058]
 shape = SubResource("CapsuleShape2D_a3wjc")
 
-[node name="attached_mine_sound" type="AudioStreamPlayer2D" parent="mine_attachement_aura"]
+[node name="attached_mine_sound" type="AudioStreamPlayer2D" parent="mine_attachement_aura" unique_id=856047518]
 stream = ExtResource("12_ciyox")
 bus = &"Sfx"
 
-[node name="healing_aura" type="Area2D" parent="."]
+[node name="healing_aura" type="Area2D" parent="." unique_id=2003228881]
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("14_5fyrk")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="healing_aura"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="healing_aura" unique_id=1040790840]
 shape = SubResource("CircleShape2D_d02ko")
 
-[node name="phase_effect" type="ColorRect" parent="."]
+[node name="phase_effect" type="ColorRect" parent="." unique_id=1585125963]
 material = SubResource("ShaderMaterial_5fyrk")
 anchors_preset = 8
 anchor_left = 0.5
@@ -219,17 +223,35 @@ offset_bottom = 512.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="state_display" parent="." instance=ExtResource("16_ciyox")]
+[node name="state_display" parent="." unique_id=793856351 instance=ExtResource("16_ciyox")]
 visible = false
 mini_health_bar_offset = Vector2(128, 0)
 
-[node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="." unique_id=469915241]
 stream = ExtResource("19_0uqlh")
 volume_db = -2.0
 bus = &"Ships"
+
+[node name="dock_assistant_north" type="Area2D" parent="." unique_id=1999099917]
+position = Vector2(-100, -512)
+script = ExtResource("16_8f66g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="dock_assistant_north" unique_id=628814133]
+shape = SubResource("CircleShape2D_nmp2x")
+
+[node name="dock_assistant_south" type="Area2D" parent="." unique_id=1500455833]
+position = Vector2(-100, 512)
+script = ExtResource("16_8f66g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="dock_assistant_south" unique_id=1247235151]
+shape = SubResource("CircleShape2D_nmp2x")
 
 [connection signal="body_entered" from="mine_attachement_aura" to="mine_attachement_aura" method="_on_body_entered"]
 [connection signal="body_exited" from="mine_attachement_aura" to="mine_attachement_aura" method="_on_body_exited"]
 [connection signal="equipped_ship" from="mine_attachement_aura" to="." method="_on_mine_attachement_aura_equipped_ship"]
 [connection signal="body_entered" from="healing_aura" to="healing_aura" method="_on_body_entered"]
 [connection signal="body_exited" from="healing_aura" to="healing_aura" method="_on_body_exited"]
+[connection signal="body_entered" from="dock_assistant_north" to="dock_assistant_north" method="_on_body_entered"]
+[connection signal="body_exited" from="dock_assistant_north" to="dock_assistant_north" method="_on_body_exited"]
+[connection signal="body_entered" from="dock_assistant_south" to="dock_assistant_south" method="_on_body_entered"]
+[connection signal="body_exited" from="dock_assistant_south" to="dock_assistant_south" method="_on_body_exited"]

@@ -64,6 +64,7 @@ func _ready():
 	$dialogues/destroy.connect(
 		"dialogue_signal_0",
 		func(): 
+			$combatants/disabled_droid.manually_exclude_from_battle = false
 			$combatants/disabled_droid/skin.set_visible(true)
 			$combatants/disabled_droid.modulate.a = 0.
 			$combatants/disabled_droid.set_visible(true)
@@ -134,6 +135,7 @@ func _on_player_carrier_phased(phased_in: bool) -> void:
 
 func _on_marker_body_entered(body: Node2D) -> void:
 	if "is_player" in body and body.is_player and current_tutorial_phase == TutorialPhases.MOVEMENT:
+		create_tween().tween_method(func(w: float): $level_ui/marks_progress.modulate.a = w, 0., 1., 0.5)
 		player_input.input_disabled = true
 		create_tween().tween_method(func(w: float): $markers/marker.modulate.a = w, 1., 0., 0.5)
 		$dialogues/boost.start()
@@ -148,7 +150,6 @@ func _on_character_boost_energy_updated(new_energy_level: float) -> void:
 func _on_intro_dialouge_finished() -> void:
 	player_input.input_disabled = false
 	current_tutorial_phase = TutorialPhases.MOVEMENT
-	create_tween().tween_method(func(w: float): $level_ui/marks_progress.modulate.a = w, 0., 1., 0.5)
 	GUI.get_node("keybindings_panel").set_visible(false)
 	var blink_info_tween = create_tween()
 	for _i in 3:

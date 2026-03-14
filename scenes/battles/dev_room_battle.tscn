@@ -170,7 +170,7 @@ red_curve_phasing = SubResource("Curve_8a2ah")
 green_curve_phasing = SubResource("Curve_ikjs2")
 blue_curve_phasing = SubResource("Curve_1rdfn")
 
-[node name="character" parent="combatants" unique_id=676021937 instance=ExtResource("12_d7i4t")]
+[node name="character" parent="combatants" unique_id=676021937 node_paths=PackedStringArray("carrier_ship") instance=ExtResource("12_d7i4t")]
 unique_name_in_owner = true
 visible = false
 position = Vector2(1581, -2512)
@@ -181,6 +181,7 @@ skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0
 max_health = 22.0
 mass = 100.0
+carrier_ship = NodePath("../player_carrier")
 
 [node name="cam" type="Camera2D" parent="combatants/character" unique_id=1901038686]
 zoom = Vector2(0.5, 0.5)

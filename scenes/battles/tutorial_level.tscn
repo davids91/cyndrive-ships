@@ -195,6 +195,7 @@ color = null
 skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 10.0
 max_health = 12.0
+manually_exclude_from_battle = true
 
 [node name="player_carrier" parent="combatants" unique_id=1616700583 groups=["complex_collision_shapes"] instance=ExtResource("11_fh4lj")]
 unique_name_in_owner = true
@@ -207,7 +208,7 @@ red_curve_phasing = SubResource("Curve_l3ay5")
 green_curve_phasing = SubResource("Curve_g8yy2")
 blue_curve_phasing = SubResource("Curve_45v6q")
 
-[node name="character" parent="combatants" unique_id=948225000 instance=ExtResource("5_6jemn")]
+[node name="character" parent="combatants" unique_id=948225000 node_paths=PackedStringArray("carrier_ship") instance=ExtResource("5_6jemn")]
 unique_name_in_owner = true
 visible = false
 position = Vector2(1581, -2512)
@@ -217,6 +218,7 @@ team = SubResource("Resource_l3ay5")
 skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_xxhjm")])
 starting_health = 10.0
 max_health = 12.0
+carrier_ship = NodePath("../player_carrier")
 
 [node name="cam" type="Camera2D" parent="combatants/character" unique_id=805374975]
 zoom = Vector2(0.5, 0.5)
