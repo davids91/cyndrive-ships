@@ -1,7 +1,7 @@
 #[c0]Alright, you're at the spot. 
 #[c2]Shouldn't you have explained what my mission is before I came out all this way?
 #[c1]Well, the printer ran out of ink, so we couldn't print the dossier in time...
-Then I went back in time to get more, but it turns out we were printing the construction manual for your ship#[t50]...#[t]
+Then I went back in time to get more, but it turns out I went back to the day we were printing the construction manual for your ship#[t50]...#[t]
 And when I went back to the present, your ship was inside out. Butterfly effect and all that. 
 #[c2]My mission?
 #[c0]Ahem#[t50]...#[t] Anyways, it's printed now. Let me give you the briefing.
