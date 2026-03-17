@@ -39,7 +39,7 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
 
-[sub_resource type="Resource" id="Resource_wb3pa"]
+[sub_resource type="Resource" id="Resource_w0t2q"]
 resource_local_to_scene = true
 script = ExtResource("21_jqfa8")
 team_id = 1
@@ -177,7 +177,7 @@ visible = false
 position = Vector2(1581, -2512)
 rotation = 1.570289
 is_player = true
-team = SubResource("Resource_wb3pa")
+team = SubResource("Resource_w0t2q")
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_rwtbh")])
 starting_health = 20.0
 max_health = 22.0
@@ -367,5 +367,5 @@ texture = ExtResource("11_ib23l")
 expand_mode = 3
 
 [node name="dialogue" parent="." unique_id=286697342 instance=ExtResource("23_w0t2q")]
-dialog = "res://dialogues/tutorial_level/tutorial_1_use_booster.txt"
+dialog = "res://dialogues/level_1_heist/01_lets_go.txt"
 autostart = true

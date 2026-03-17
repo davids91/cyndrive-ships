@@ -28,3 +28,4 @@ mono_crash.*.json
 
 # Misc
 export/*
+addons/godot-rapier2d/bin/~libgodot_rapier.windows.x86_64-pc-windows-msvc.dll

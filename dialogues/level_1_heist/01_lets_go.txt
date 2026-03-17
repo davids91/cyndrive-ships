@@ -1,0 +1,14 @@
+#[c0]Alright, you're at the spot. 
+#[c2]Shouldn't you have explained what my mission is before I came out all this way?
+#[c1]Well, the printer ran out of ink, so we couldn't print the dossier in time...
+Then I went back in time to get more, but it turns out we were printing the construction manual for your ship#[t50]...#[t]
+And when I went back to the present, your ship was inside out. Butterfly effect and all that. 
+#[c2]My mission?
+#[c0]Ahem#[t50]...#[t] Anyways, it's printed now. Let me give you the briefing.
+Team Pocket Co. has been hoarding as much Laupeerium as they can get their hands on, and they're not willing to share.
+Without Laupeerium, we can't use time travel.
+#[c2]And I'd be out of a job.
+#[c0]Exactly. Now, this silo is one Team Pocket uses to stockpile Laupeerium, and based on our scouting, it isn't very well guarded.
+We need you to eliminate any guard drones you see, and blast open the silo door.
+#[c1]Once the doors are open, grab as much Laupeerium as you can and hightail it!
+#[c2]I'm on it!
