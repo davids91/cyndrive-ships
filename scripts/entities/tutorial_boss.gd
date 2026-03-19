@@ -67,9 +67,14 @@ func _process_default_mode(delta: float) -> void:
 			aiming_to = get_global_position()
 			$state_display.say(gothcha_lines.pick_random())
 			time_until_lasers = difficulty_laser_warning_sec
-			if change_target_to.has_method("set_highlight"): change_target_to.set_highlight(true)
 		acquired_target = change_target_to
-	
+
+	if 0. < time_until_lasers and acquired_target:
+		$target_arrow.set_visible(true)
+		$target_arrow.global_position = acquired_target.global_position
+		$target_arrow.scale = Vector2.ONE * 10. * (time_until_lasers / difficulty_laser_warning_sec)
+	else: $target_arrow.set_visible(false)
+
 	# Shutdown lasers if target is dead
 	if acquired_target and not acquired_target.in_battle():
 		acquired_target = null
@@ -89,25 +94,18 @@ func _process_default_mode(delta: float) -> void:
 		
 		# Shoot the lasers and follow the target when it is active
 		moving_to = lerp(
-			moving_to,
-			(get_global_position() + acquired_target.get_global_position()) * 0.5,
+			moving_to, (get_global_position() + acquired_target.get_global_position()) * 0.5,
 			difficulty_moving_speed
 		)
 		aiming_to = lerp(aiming_to, acquired_target.get_global_position(), difficulty_laser_speed)
 		if not focus_change_from_damage:
 			focusing_at = lerp(focusing_at, acquired_target.get_global_position(), difficulty_sensor_speed)
-		if 0. < time_until_lasers:
-			time_until_lasers -= delta
-			acquired_target.set_highlight(
-				(time_until_lasers * 100. - floor(time_until_lasers * 100.)) < 0.7
-			)
-		else:
-			if acquired_target.has_method("set_highlight"): acquired_target.set_highlight(false)
-			for laser in $lasers.get_children():
-				laser.process_input_action({
-					"action_direction": (aiming_to - get_global_position()).normalized(),
-					"acquired_target_position": aiming_to
-				})
+		if 0. < time_until_lasers: time_until_lasers -= delta
+		else: for laser in $lasers.get_children():
+			laser.process_input_action({
+				"action_direction": (aiming_to - get_global_position()).normalized(),
+				"acquired_target_position": aiming_to
+			})
 	else: 
 		time_until_search_start -= delta
 		if search_loop_progress >= search_loop_length_sec: search_loop_progress = 0.
@@ -119,8 +117,6 @@ func _process_default_mode(delta: float) -> void:
 		if lost_target:
 			# Search loop is defined both in seconds and angles. A full search circle takes 2*PI seconds!
 			search_loop_progress = (lost_target.get_global_position() - get_global_position()).angle()
-			#if angle_difference(lost_target_angle, radar_angle) < angle_difference(lost_target_angle, -radar_angle):
-				#radar_angle = -radar_angle
 		moving_to = get_global_position() + Vector2(cos(search_loop_progress), sin(search_loop_progress)) * approx_size * 1.5
 		if not focus_change_from_damage:
 			focusing_at = get_global_position() + Vector2(cos(radar_angle), sin(radar_angle)) * approx_size
@@ -135,7 +131,6 @@ func _process_default_mode(delta: float) -> void:
 		aiming_to = lerp(aiming_to, focusing_at, difficulty_laser_speed)
 		$controller.process_input_action({
 			"movement_intent": (moving_to - get_global_position()).normalized(),
-			#"boost_intent": false
 		})
 	else: $controller.process_input_action({"movement_intent": Vector2.ZERO})
 
@@ -163,9 +158,7 @@ func _on_player_detection_body_entered(body: Node2D) -> void:
 		change_target_to = body
 
 func _on_player_detection_body_exited(body: Node2D) -> void:
-	if body == acquired_target and acquired_target:
-		if acquired_target.has_method("set_highlight"): acquired_target.set_highlight(false)
-		change_target_to = null
+	if body == acquired_target and acquired_target: change_target_to = null
 
 func _on_phased(phased_in: bool) -> void:
 	$skin.set_visible(phased_in)

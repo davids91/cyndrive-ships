@@ -119,9 +119,6 @@ func explode_mine() -> void:
 	correct_temporal_state({"linear_velocity": Vector2.ZERO})
 	await get_tree().create_timer(.2).timeout # give lightning time to draw
 
-func set_highlight(yesno: bool) -> void:
-	$target_arrow.set_visible(yesno)
-
 func accept_damage(_strength: float, _source: Node = null) -> void:
 	if is_activated: explode_mine()
 

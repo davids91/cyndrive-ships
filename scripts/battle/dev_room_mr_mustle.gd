@@ -23,8 +23,6 @@ func create_new_puppet(predecessor: BattleCharacter) -> void:
 	$timeline.connect("rewind_stopped", puppet.resume_control)
 	replayer.reset()
 	puppet.add_child(replayer, true)
-	#puppet.dead.connect(_on_battle_character_dead)
-	#puppet.resurrected.connect(_on_battle_character_resurrected)
 
 	# set new spawn position for the predecessor
 	predecessor.spawn_snapshot["transform"].origin = (
@@ -36,11 +34,13 @@ func create_new_puppet(predecessor: BattleCharacter) -> void:
 	predecessor.get_node("temporal_recorder").start_recording()
 
  # Dummy functions as there is no time travel here yet
-func time_control_triggered() -> void: pass
+func view_control_triggered(_action: Dictionary) -> void: pass
+func time_control_triggered(_action: Dictionary) -> void: pass
 func replay_game() -> void: pass
 func reset_game() -> void: pass
 func replay_round() -> void: pass
 
 func _on_character_dead(_itsme: BattleCharacter) -> void:
 	create_new_puppet($combatants/character)
+	$combatants/character.respawn()
 	$timeline.reset()

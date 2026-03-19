@@ -5,7 +5,6 @@
 [ext_resource type="Shader" uid="uid://c66rqecsnsqsu" path="res://shaders/implode.gdshader" id="2_w211o"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_jshdd"]
 [ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/entities/simple_skin.gd" id="4_gcdep"]
-[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="6_gcdep"]
 
 [sub_resource type="Curve" id="Curve_8jh2m"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -82,11 +81,6 @@ top_level = true
 z_index = -5
 points = PackedVector2Array(0, 0, 0, 0)
 default_color = Color(0.17193, 0.22, 0.16939999, 1)
-
-[node name="target_arrow" type="Sprite2D" parent="." unique_id=1683664192]
-visible = false
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("6_gcdep")
 
 [node name="seeking_aura" type="Area2D" parent="." unique_id=439778999]
 collision_layer = 0

@@ -134,7 +134,7 @@ func _on_player_carrier_phased(phased_in: bool) -> void:
 	%character.set_visible(phased_in)
 
 func _on_marker_body_entered(body: Node2D) -> void:
-	if "is_player" in body and body.is_player and current_tutorial_phase == TutorialPhases.MOVEMENT:
+	if body is PlayerShip and current_tutorial_phase == TutorialPhases.MOVEMENT:
 		create_tween().tween_method(func(w: float): $level_ui/marks_progress.modulate.a = w, 0., 1., 0.5)
 		player_input.input_disabled = true
 		create_tween().tween_method(func(w: float): $markers/marker.modulate.a = w, 1., 0., 0.5)
@@ -152,8 +152,10 @@ func _on_intro_dialouge_finished() -> void:
 	current_tutorial_phase = TutorialPhases.MOVEMENT
 	GUI.get_node("keybindings_panel").set_visible(false)
 	var blink_info_tween = create_tween()
-	for _i in 3:
-		blink_info_tween.tween_method(func(w: float): GUI.get_node("info_highlight").modulate.a = w, 0., 1., info_highlight_blink_length_sec)
+	for _i in 3: blink_info_tween.tween_method(
+		func(w: float): GUI.get_node("info_highlight").modulate.a = w,
+		0., 1., info_highlight_blink_length_sec
+	)
 	blink_info_tween.tween_method(func(w: float): GUI.get_node("info_highlight").modulate.a = w, 1., 0., info_highlight_blink_length_sec)
 
 func _on_boost_dialouge_finished() -> void:
@@ -302,6 +304,11 @@ func _on_disabled_droid_resurrected(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.RESTORE:
 		current_tutorial_phase = TutorialPhases.EXPLODE
 		GUI.set_objective("E to equip mine\n within carrier;\nE to deploy it!")
+
+func view_control_triggered(action: Dictionary) -> void:
+	if "zoom" in action:
+		$cam.zoom.x = action["zoom"]
+		$cam.zoom.y = action["zoom"]
 
 @export var rewind_animation_transition_sec: float = 0.75
 var is_rewinding: bool = false

@@ -24,7 +24,6 @@ func _ready():
 	GUI.set_fade_radius(4.)
 	update_laupeerium_bar()
 	$combatants/character/controller.stop()
-	$combatants/character/cam.make_current()
 	living_team_members[2] = 0
 	living_team_members[1] = 0
 	for combatant in $combatants.get_children():
@@ -340,6 +339,11 @@ func replay_game() -> void:
 	$replay_camera.make_current()
 	GUI.restart_during_replay.set_visible(true)
 	GUI.get_node("score").set_visible(false)
+
+func view_control_triggered(action: Dictionary) -> void:
+	if "zoom" in action:
+		$cam.zoom.x = action["zoom"]
+		$cam.zoom.y = action["zoom"]
 
 @export var rewind_animation_transition_sec: float = 0.75
 var is_rewinding: bool = false

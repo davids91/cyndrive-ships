@@ -21,12 +21,13 @@ func _process(delta_time: float) -> void:
 
 @onready var level_container: Node2D = get_node("/root/Main/LevelContainer")
 @onready var player_input: PlayerInput = get_node("/root/Main/player_input")
+@onready var GUI: BattleShipGUI = get_node("/root/Main/GUI")
 func load_level(level_name: String) -> void:
 	for n in level_container.get_children(): n.queue_free()
 	var level = load("res://scenes/battles/" + level_name + ".tscn").instantiate()
 	var player = level.get_node("%character")
-	var GUI: BattleShipGUI = get_node("/root/Main/GUI")
 	GUI.configure(player_input, level, player)
+	player_input.view_control_triggered.connect(level.view_control_triggered)
 	level_container.add_child(level)
 
 func _on_dev_room_button_scene_selected() -> void:

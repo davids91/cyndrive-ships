@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_5doxk"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_fbtwq"]
-[ext_resource type="Shader" uid="uid://djx4bom2edoc6" path="res://shaders/repairs.gdshader" id="3_57a82"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/entities/battle_ship.png" id="3_sqc82"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="4_ykdog"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="6_33oy3"]
@@ -20,7 +19,6 @@
 [ext_resource type="AudioStream" uid="uid://c76b3d0ookchm" path="res://audio/chain_lightning_5.wav" id="19_4rw3p"]
 [ext_resource type="AudioStream" uid="uid://blyru66ib1vq7" path="res://audio/chain_lightning_6.wav" id="20_3fltb"]
 [ext_resource type="PackedScene" uid="uid://c085tc8npm2p2" path="res://scenes/weapons/shield.tscn" id="21_hynoq"]
-[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="22_hm7ac"]
 [ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="23_aa58f"]
 [ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="24_axo4l"]
 [ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="25_qaijt"]
@@ -145,16 +143,6 @@ stream_1/stream = ExtResource("26_0ft2w")
 stream_2/stream = ExtResource("27_5mkc6")
 stream_3/stream = ExtResource("28_uokki")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cicko"]
-shader = ExtResource("3_57a82")
-shader_parameter/glow_intensity = 1.80600008252512
-shader_parameter/glow_speed = 0.10000000149012
-shader_parameter/radial_glow = 1.434000020615
-shader_parameter/glow_color = Color(0.19999999, 1, 0.30666673, 0.5921569)
-shader_parameter/wave_count = 6.1630002452425
-shader_parameter/wave_spacing = 0.23300000780762
-shader_parameter/pixel_size = 8.0000003325
-
 [node name="character" type="CharacterBody2D" unique_id=138634092 groups=["destroyables"]]
 collision_layer = 3
 script = ExtResource("1_iulgi")
@@ -275,28 +263,6 @@ bus = &"Ships"
 [node name="temporal_recorder" type="Node2D" parent="." unique_id=1211937507]
 script = ExtResource("30_5j1ue")
 triggers_per_second = 20
-
-[node name="target_arrow" type="Sprite2D" parent="." unique_id=435393122]
-visible = false
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("22_hm7ac")
-
-[node name="repair_indicator" type="ColorRect" parent="." unique_id=640690271]
-visible = false
-top_level = true
-z_index = -5
-material = SubResource("ShaderMaterial_cicko")
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -128.0
-offset_top = -128.0
-offset_right = 128.0
-offset_bottom = 128.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="state_display" parent="." unique_id=1321293095 node_paths=PackedStringArray("skin") instance=ExtResource("36_ei2dj")]
 visible = false

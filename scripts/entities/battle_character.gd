@@ -8,7 +8,6 @@ signal weapon_energy_updated(new_energy_level: float)
 signal phased(phased_in: bool)
 signal shields_toggled(turned_on: bool)
 
-@export var is_player: bool = false
 @export var approx_size: float = 100.
 @export var team: Team = preload("res://resources/player_team.tres")
 @export var color: Color = Color.from_rgba8(0,0,0,0)
@@ -184,7 +183,7 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 		create_tween().tween_property(self, "transform", snapshot["transform"], tween_length)
 		var clone = $skin.duplicate()
 		clone.set_skins_material(preload("res://resources/implode_effect.tres"))
-		clone.set_team_color(color)
+		clone.display_color(color)
 		clone.set_transform($skin.get_transform())
 		clone.set_global_position(get_global_position())
 		clone.set_global_rotation(get_global_rotation())
@@ -192,13 +191,6 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 		var tween = create_tween()
 		tween.tween_method(func(value): clone.set_burn_percentage(value), 0.0, 1.0, 0.3)
 		tween.finished.connect(func(): clone.queue_free())
-
-func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
-	ship_explosion = null
-	team = predecessor.team.duplicate()
-	team.color = new_color
-	skin_layers = predecessor.skin_layers # set skin from predecessor(_ready will construct the skin)
-	color = new_color
 
 @export var manually_exclude_from_battle: bool = false
 func in_battle() -> bool:
@@ -214,9 +206,6 @@ func in_battle() -> bool:
 			or (has_node("ai_control") and ai_fallback)
 		)
 	)
-
-func set_highlight(yesno: bool) -> void:
-	$target_arrow.set_visible(yesno)
 
 func apply_impulse(impulse: Vector2) -> void:
 	$controller.apply_impulse(impulse)
@@ -267,9 +256,6 @@ func _process(_delta):
 		$repair_indicator.set_global_position(get_global_position() - $repair_indicator.size * 0.55)
 		$repair_indicator.set_visible(visible and $skin.visible and is_being_healed)
 
-	if has_node("target_arrow"):
-		$target_arrow.set_visible($target_arrow.visible and visible and $skin.visible)
-
 	if has_node("state_display"):
 		$state_display.set_visible(visible and $skin.visible and 0. < $skin.modulate.a)
 
@@ -298,7 +284,7 @@ var entangled: bool = false
 func accept_damage(strength: float, source: Node = null) -> void:
 	# God mode - player team takes no damage when enabled
 	if FeatureFlags.is_enabled("god_mode"):
-		var battle_main = get_tree().current_scene
+		var battle_main = get_node("/root/Main/LevelContainer/battle")
 		if battle_main and "god_mode_active" in battle_main and battle_main.god_mode_active:
 			if team.team_id == 1: return
 
@@ -310,8 +296,6 @@ func accept_damage(strength: float, source: Node = null) -> void:
 	health -= max(0., strength)
 	is_alive = 0 < health
 	health_changed.emit(health / starting_health)
-	if health > low_health: explosion_shake_smooth()
-	else: explosion_shake()
 
 	# Handle explosion when ship is destroyed
 	if !is_alive:
@@ -339,6 +323,13 @@ func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 	health = min(health + max(0., strength), max_health)
 	is_alive = 0 < health
 	health_changed.emit(health / starting_health)
+
+func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
+	ship_explosion = null
+	team = predecessor.team.duplicate()
+	team.color = new_color
+	skin_layers = predecessor.skin_layers # set skin from predecessor(_ready will construct the skin)
+	color = new_color
 
 func respawn():
 	if has_node("weapon_slot"): $weapon_slot.select_slot(0)
@@ -396,11 +387,6 @@ func resume_control() -> void:
 	else: $controller.intent_direction = PlayerInput.instance.movement_intent
 	control_disabled = false
 
-func display_dock_message(should_be_visible: bool) -> void:
-	if has_node("state_display"):
-		if should_be_visible: $state_display.say("Press E to dock")
-		else: $state_display.shutup()
-
 var disabled_weapons_mask: int = 0x0
 var ready_to_receive_mine: bool = false
 var needs_docking_support: bool = false
@@ -408,11 +394,6 @@ var held_mine: ExplosiveMine = null
 var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
 	if not in_battle() or control_disabled: return # cannot process any action while not in battle
-
-	if "zoom" in action:
-		$cam.zoom.x = action["zoom"]
-		$cam.zoom.y = action["zoom"]
-		action.erase("zoom") # It's useless to store this in temporal records
 
 	if "weapon_slot" in action and has_node("weapon_slot"):
 		if 0 != (disabled_weapons_mask & (0x1 << action["weapon_slot"])):
@@ -448,10 +429,6 @@ func process_input_action(action: Dictionary) -> void:
 			action.erase("acquired_target_position")
 			action["action_released"] = true
 
-	if("action_direction" in action and has_node("target_assist") and $target_assist.is_target_locked()):
-		action["acquired_target_position"] = $target_assist.get_current_target_position()
-		action["acquired_target"] =  $target_assist.get_current_target()
-
 	# move camera lightly on boost
 	if "boost_initiated" in action:
 		$booster_sound.play()
@@ -485,36 +462,6 @@ func process_input_action(action: Dictionary) -> void:
 		if "speech_length" in action: $state_display.line_display_length_sec = action["speech_length"]
 		if "speech" in action: $state_display.say(action["speech"])
 		$state_display.process_input_action(action)
-
-func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: int = 20) -> void:
-	if not has_node("cam"): return
-	var tween = create_tween()
-
-	# Create multiple random shakes
-	for i in frequency:
-		var shake_offset = Vector2(
-			randf_range(-intensity, intensity),
-			randf_range(-intensity, intensity)
-		)
-		tween.tween_property($cam, "offset", shake_offset, duration / frequency)
-
-	# Return to center
-	tween.tween_property($cam, "offset", Vector2.ZERO, duration / frequency)
-
-func explosion_shake_smooth(intensity: float = 30.0, duration: float = 0.5) -> void:
-	if not has_node("cam"): return
-	var tween = create_tween()
-	var steps = 10
-	
-	for i in steps:
-		var progress = float(i) / steps
-		var current_intensity = intensity * (1.0 - progress)  # Decay
-		var shake_offset = Vector2(
-			randf_range(-current_intensity, current_intensity),
-			randf_range(-current_intensity, current_intensity)
-		)
-		tween.tween_property($cam, "offset", shake_offset, duration / steps)
-	tween.tween_property($cam, "offset", Vector2.ZERO, 0.1)
 
 var ai_fallback: bool = true
 var extend_replayer: bool = false

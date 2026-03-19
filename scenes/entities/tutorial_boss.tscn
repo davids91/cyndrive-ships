@@ -190,6 +190,7 @@ shader_parameter/zoom = 0.50000002305148
 [node name="boss" type="CharacterBody2D" unique_id=598623427]
 rotation = 3.1415927
 script = ExtResource("1_icc1o")
+difficulty_laser_warning_sec = 1.0
 approx_size = 512.0
 team = ExtResource("2_dvnma")
 color = Color(0, 0, 0, 0)
@@ -286,6 +287,7 @@ bus = &"Ships"
 
 [node name="target_arrow" type="Sprite2D" parent="." unique_id=131495817]
 visible = false
+self_modulate = Color(1, 1, 1, 0.45490196)
 position = Vector2(4, 0)
 scale = Vector2(2.96875, 2.96875)
 texture = ExtResource("14_0k8by")

@@ -6,7 +6,7 @@ func set_burn_percentage(percentage: float) -> void:
 	$skin_image.material.set_shader_parameter("burn_percentage", percentage)
 	set_visible(percentage < 0.99)
 
-func set_team_color(color: Color) -> void:
+func display_color(color: Color) -> void:
 	$skin_image.material.set_shader_parameter("team_color", color)
 
 func set_skins_material(mat: ShaderMaterial) -> void:
@@ -25,7 +25,7 @@ func init_skin(skin_layers: Array[BattleShipSkin], init_team_color: Color) -> vo
 		if not c is Camera2D: c.queue_free()
 
 	# Add a Sprite for each layer of skin
-	set_team_color(team_color)
+	display_color(team_color)
 	for layer in skin_layers.size():
 		var layer_image = Sprite2D.new()
 		layer_image.set_texture(skin_layers[layer].texture)
@@ -37,5 +37,6 @@ func init_skin(skin_layers: Array[BattleShipSkin], init_team_color: Color) -> vo
 		# --> $skin_image is required for the phase_effect
 		$layers.add_child(layer_image)
 		var actual_skin = layer_image.duplicate()
+		actual_skin.offset = Vector2.ZERO
 		actual_skin.material = $skin_image.get_material()
 		add_child(actual_skin)

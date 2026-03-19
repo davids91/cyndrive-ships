@@ -4,36 +4,14 @@
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="2_e8au5"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="3_bc2pp"]
 [ext_resource type="PackedScene" uid="uid://dmn3a6pdbqk1q" path="res://scenes/entities/tutorial_boss.tscn" id="4_kuptj"]
-[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="5_4fga1"]
-[ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="6_vloau"]
-[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="7_nqrrg"]
-[ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/entities/battle_ship.png" id="8_l53og"]
-[ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/equipment/sonar_sensor.gd" id="9_ws6ao"]
-[ext_resource type="Shape2D" uid="uid://bbuubnw2b6ne4" path="res://resources/target_assist_shape.tres" id="10_v81v7"]
-[ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="11_mx70d"]
-
-[sub_resource type="Resource" id="Resource_iex6b"]
-script = ExtResource("5_4fga1")
-team_id = 2
-color = Color(1, 0.120000005, 0.120000005, 0)
-metadata/_custom_type_script = "uid://upxd16rpbdyu"
-
-[sub_resource type="Resource" id="Resource_i0uq0"]
-resource_local_to_scene = true
-script = ExtResource("5_4fga1")
-team_id = 1
-color = Color(1, 1, 1, 0)
-metadata/_custom_type_script = "uid://upxd16rpbdyu"
-
-[sub_resource type="Resource" id="Resource_rwtbh"]
-script = ExtResource("7_nqrrg")
-metadata/_custom_type_script = "uid://cud6a5voxneed"
-
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_mgsm1"]
-points = PackedVector2Array(0, 50, 0, -50, 1000000, -5000, 1000000, 5000)
+[ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="6_h56ul"]
 
 [node name="battle" type="Node2D" unique_id=1944730611]
 script = ExtResource("1_i0uq0")
+
+[node name="cam" type="Camera2D" parent="." unique_id=1742123394]
+position = Vector2(961, -1972)
+zoom = Vector2(0.2, 0.2)
 
 [node name="timeline" type="Node" parent="." unique_id=933754575]
 script = ExtResource("2_e8au5")
@@ -44,36 +22,17 @@ script = ExtResource("2_e8au5")
 
 [node name="boss" parent="combatants" unique_id=981109126 instance=ExtResource("4_kuptj")]
 position = Vector2(890, -648)
-team = SubResource("Resource_iex6b")
 
-[node name="character" parent="combatants" unique_id=259990880 instance=ExtResource("6_vloau")]
+[node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("6_h56ul")]
 unique_name_in_owner = true
-position = Vector2(1581, -2512)
+position = Vector2(961, -1972)
+color = Color(0, 0, 0, 0)
+
+[node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1963758468]
 rotation = 1.570289
-team = SubResource("Resource_i0uq0")
-skin_layers = Array[ExtResource("7_nqrrg")]([SubResource("Resource_rwtbh")])
-starting_health = 20.0
-max_health = 22.0
-mass = 100.0
-
-[node name="cam" type="Camera2D" parent="combatants/character" unique_id=1742123394]
-zoom = Vector2(0.2, 0.2)
-
-[node name="sonar_sensor" type="ShapeCast2D" parent="combatants/character" unique_id=2043198660]
-visible = false
-shape = SubResource("ConvexPolygonShape2D_mgsm1")
-target_position = Vector2(0, 0)
-collision_mask = 3
-script = ExtResource("9_ws6ao")
-rotation_speed = 0.05
-
-[node name="target_assist" type="ShapeCast2D" parent="combatants/character" unique_id=965842422]
-visible = false
-top_level = true
-shape = ExtResource("10_v81v7")
-target_position = Vector2(0, 0)
-collision_mask = 7
-script = ExtResource("11_mx70d")
+remote_path = NodePath("../../../cam")
+update_rotation = false
+update_scale = false
 
 [node name="mush" type="Node" parent="." unique_id=222397579]
 

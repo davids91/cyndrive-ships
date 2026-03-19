@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://blkx4xohejd2i" path="res://scenes/effects/black_hole.tscn" id="4_7g2yh"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="5_osmje"]
 [ext_resource type="PackedScene" uid="uid://dni5mwbuc6qpp" path="res://scenes/entities/meteor.tscn" id="7_0wrxa"]
+[ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="7_scjvp"]
 [ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="7_w0t2q"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="8_fe3c8"]
 [ext_resource type="Script" uid="uid://dl4dk45frpwra" path="res://scripts/equipment/minimap.gd" id="8_wb3pa"]
@@ -13,10 +14,6 @@
 [ext_resource type="Texture2D" uid="uid://3nu76apg4ufe" path="res://textures/ui/icons/minimap_icon_3.png" id="10_fws0x"]
 [ext_resource type="Texture2D" uid="uid://crvtsjud0ssjq" path="res://textures/ui/icons/minimap_icon_4.png" id="11_ib23l"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="12_d7i4t"]
-[ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/entities/battle_ship.png" id="13_qs6j5"]
-[ext_resource type="Script" uid="uid://82hb1gbig1h3" path="res://scripts/equipment/sonar_sensor.gd" id="14_f1ub4"]
-[ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="15_5bo7e"]
-[ext_resource type="Shape2D" uid="uid://bbuubnw2b6ne4" path="res://resources/target_assist_shape.tres" id="15_pmnbd"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="16_f4125"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="17_2y2lr"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="18_54bea"]
@@ -39,19 +36,12 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
 
-[sub_resource type="Resource" id="Resource_w0t2q"]
+[sub_resource type="Resource" id="Resource_scjvp"]
 resource_local_to_scene = true
 script = ExtResource("21_jqfa8")
 team_id = 1
 color = Color(1, 1, 1, 0)
 metadata/_custom_type_script = "uid://upxd16rpbdyu"
-
-[sub_resource type="Resource" id="Resource_rwtbh"]
-script = ExtResource("9_25tx2")
-metadata/_custom_type_script = "uid://cud6a5voxneed"
-
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_61i1y"]
-points = PackedVector2Array(0, 50, 0, -50, 1000000, -5000, 1000000, 5000)
 
 [sub_resource type="Resource" id="Resource_f0g0v"]
 script = ExtResource("9_25tx2")
@@ -89,6 +79,10 @@ sources/0 = SubResource("TileSetAtlasSource_pmnbd")
 script = ExtResource("1_6u6au")
 metadata/_edit_vertical_guides_ = [788.0, 163.0]
 metadata/_edit_horizontal_guides_ = [426.0]
+
+[node name="cam" type="Camera2D" parent="." unique_id=1901038686]
+position = Vector2(1592, -2689)
+zoom = Vector2(0.5, 0.5)
 
 [node name="timeline" type="Node" parent="." unique_id=1475911727]
 script = ExtResource("3_tlx8b")
@@ -171,37 +165,16 @@ red_curve_phasing = SubResource("Curve_8a2ah")
 green_curve_phasing = SubResource("Curve_ikjs2")
 blue_curve_phasing = SubResource("Curve_1rdfn")
 
-[node name="character" parent="combatants" unique_id=676021937 node_paths=PackedStringArray("carrier_ship") instance=ExtResource("12_d7i4t")]
+[node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("7_scjvp")]
 unique_name_in_owner = true
 visible = false
-position = Vector2(1581, -2512)
-rotation = 1.570289
-is_player = true
-team = SubResource("Resource_w0t2q")
-skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_rwtbh")])
-starting_health = 20.0
-max_health = 22.0
-mass = 100.0
-carrier_ship = NodePath("../player_carrier")
+position = Vector2(1592, -2689)
+team = SubResource("Resource_scjvp")
 
-[node name="cam" type="Camera2D" parent="combatants/character" unique_id=1901038686]
-zoom = Vector2(0.5, 0.5)
-
-[node name="sonar_sensor" type="ShapeCast2D" parent="combatants/character" unique_id=274990593]
-visible = false
-shape = SubResource("ConvexPolygonShape2D_61i1y")
-target_position = Vector2(0, 0)
-collision_mask = 3
-script = ExtResource("14_f1ub4")
-rotation_speed = 0.05
-
-[node name="target_assist" type="ShapeCast2D" parent="combatants/character" unique_id=1036643708]
-visible = false
-top_level = true
-shape = ExtResource("15_pmnbd")
-target_position = Vector2(0, 0)
-collision_mask = 7
-script = ExtResource("15_5bo7e")
+[node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1621046320]
+remote_path = NodePath("../../../cam")
+update_rotation = false
+update_scale = false
 
 [node name="enemy" parent="combatants" unique_id=1861043382 instance=ExtResource("12_d7i4t")]
 position = Vector2(1515, 237)

@@ -2,6 +2,7 @@ extends Node2D
 
 class_name PlayerInput
 
+signal view_control_triggered(action:Dictionary)
 signal time_control_triggered(action: Dictionary)
 signal action_triggered(action: Dictionary)
 
@@ -30,7 +31,7 @@ var reverse_initiated: bool = false
 var reverse_hold_time_sec: float = 0.
 var accumulated_slowdown_value_sec: float = 0.
 
-@export var zoom_range: float = 0.25
+@export var zoom_range: float = 0.39
 @export var zoom_center: float = 0.4
 var current_zoom_value: float = zoom_center
 func _unhandled_input(event: InputEvent) -> void:
@@ -71,10 +72,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("zoom_in"):
 		current_zoom_value = max(current_zoom_value * 0.95, zoom_center * (1. - zoom_range))
-		action["zoom"] = current_zoom_value
+		view_control_triggered.emit({"zoom": current_zoom_value})
 	elif event.is_action_pressed("zoom_out"):
 		current_zoom_value = min(current_zoom_value * 1.05, zoom_center * (1. + zoom_range))
-		action["zoom"] = current_zoom_value
+		view_control_triggered.emit({"zoom": current_zoom_value})
 
 	if not input_disabled and not action.is_empty():
 		action_triggered.emit(action)
