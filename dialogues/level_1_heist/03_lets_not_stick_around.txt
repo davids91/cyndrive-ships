@@ -1,7 +1,10 @@
-#[c4]#[t250]AHHHHH!#[t] #[p100]You...#[p100] you worm!
-This... this isn't over! 
-Watch! I'll go back another year so I can get more flight practice, and THEN I'll show you!
-Wait, no... the ship is too damaged! It's gonna blow!
+#[c4]#[t250]ARGHHHHH!#[t] #[p500]You...#[p500] you worm!
+You think you can stop me by trapping me in this pathetic black hole?
+Don't you know that black holes are natural #[t100]TIME MACHINES?#[t]
+Once I find my way to the past, I'll be back... 
+After TEN years of flight school!
+Wait... No!#[p500] No!
+Everything is stretching! The spaghettification! The ship is going to blow!
 #[t250]NOOOOOOOOOO!#[t]
 #[c2]Ugh, finally. I can come back now, right!
 #[c0]Please do. I never want to think about that guy again. 
