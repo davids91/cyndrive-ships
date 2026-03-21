@@ -8,7 +8,8 @@ const EXPLOSION_FIREY = preload("res://scenes/effects/explosion-firey.tscn")
 @export var seeking_speed: float = 2000.
 @export var seeking_warmup_msec: float = 5000.
 @export var seek_responsiveness: float = 0.75
-#TechDebt: Mines are actually seeking the team they are assigned to
+
+# Mines are seeking any team they are not assigned to
 @export var team: Team = preload("res://resources/player_team.tres")
 
 @onready var level = get_node("/root/Main/LevelContainer/battle")
@@ -81,8 +82,7 @@ func _process(delta: float) -> void:
 				ship.held_mine = self
 
 	# Check for any ships in explosion proximity
-	if is_activated and not enemies_in_proximity.is_empty():
-		explode_mine()
+	if is_activated and not enemies_in_proximity.is_empty(): explode_mine()
 
 func _physics_process(_delta: float) -> void:
 	# Handle dragging the attached mine behind ship

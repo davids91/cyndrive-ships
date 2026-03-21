@@ -3,7 +3,7 @@ class_name BattleDebris extends RigidBody2D
 @export var debris_collision_layer_value = 0x01
 @export var approx_size: float = 100.
 
-@onready var spawn_snapshot: Dictionary = get_snapshot()
+@onready var spawn_snapshot: Dictionary
 @onready var spawn_time_msec: float = BattleTimeline.instance.time_msec()
 @onready var was_in_battle: bool = in_battle()
 
@@ -19,12 +19,15 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 func get_snapshot() -> Dictionary:
 	return {"transform": transform, "linear_velocity": linear_velocity, "angular_velocity": angular_velocity}
 
+func erase() -> void: 
+	create_tween().tween_method(func(w: float): $skin.set_burn_percentage(w), 0., 1., 0.5).finished.connect(func(): queue_free())
+
+# This needs to be explicitly called here, instead of the @onready attr, to clearly set the order of initialization
+func _ready() -> void: spawn_snapshot = get_snapshot()
+
 func _process(_delta: float) -> void:
 	# Erase from the map if time preceeds spawn time
-	if BattleTimeline.instance.time_msec() < spawn_time_msec:
-		create_tween().tween_method(func(w: float): $skin.set_burn_percentage(w), 0., 1., 0.5).finished.connect(
-			func(): queue_free()
-		)
+	if BattleTimeline.instance.time_msec() < spawn_time_msec: erase()
 
 	# Set battle presence state
 	if not in_battle() and was_in_battle:

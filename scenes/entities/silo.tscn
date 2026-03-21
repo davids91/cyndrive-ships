@@ -1,0 +1,142 @@
+[gd_scene format=3 uid="uid://cqubhj8ciim3i"]
+
+[ext_resource type="Texture2D" uid="uid://bfwwsak64uiyq" path="res://textures/entities/silo_open.png" id="1_6laxo"]
+[ext_resource type="Script" uid="uid://j01uc3merjxs" path="res://scripts/entities/silo.gd" id="1_122oo"]
+[ext_resource type="Texture2D" uid="uid://trmo6u2kadif" path="res://textures/entities/silo_closed.png" id="1_whun4"]
+[ext_resource type="Texture2D" uid="uid://ktuk8547nurd" path="res://textures/entities/silo_door.png" id="2_6laxo"]
+[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/entities/simple_skin.gd" id="3_0n0ls"]
+[ext_resource type="Shader" uid="uid://c66rqecsnsqsu" path="res://shaders/implode.gdshader" id="3_rk5aj"]
+[ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="5_xchnb"]
+[ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="8_uiv6f"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uskil"]
+radius = 445.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_122oo"]
+radius = 113.137085
+height = 384.66614
+
+[sub_resource type="Curve" id="Curve_cy11g"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_attt3"]
+curve = SubResource("Curve_cy11g")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ce6sv"]
+noise_type = 5
+frequency = 0.0188
+fractal_type = 2
+fractal_octaves = 2
+fractal_lacunarity = 2.525
+fractal_gain = 2.0
+domain_warp_type = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ei2dj"]
+noise = SubResource("FastNoiseLite_ce6sv")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uiv6f"]
+shader = ExtResource("3_rk5aj")
+shader_parameter/noise = SubResource("NoiseTexture2D_ei2dj")
+shader_parameter/burn_color = Color(1, 1, 0, 1)
+shader_parameter/team_color = Color(0, 0, 0, 0)
+shader_parameter/burn_percentage = 0.0
+shader_parameter/burn_curve = SubResource("CurveTexture_attt3")
+shader_parameter/burn_threshold = 1.0
+shader_parameter/burn_flame_supression = 0.50000002375
+shader_parameter/pixel_scale = 2.0000000475
+shader_parameter/color_aberration = 0.150000007125
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rk5aj"]
+viewport_path = NodePath("skin/layers")
+
+[node name="silo" type="RigidBody2D" unique_id=1278794569]
+script = ExtResource("1_122oo")
+approx_size = 1024.0
+
+[node name="collision_shape_closed" type="CollisionShape2D" parent="." unique_id=846619341]
+shape = SubResource("CircleShape2D_uskil")
+
+[node name="silo_entered_detector" type="Area2D" parent="." unique_id=1512604683]
+collision_layer = 0
+
+[node name="collision_shape" type="CollisionShape2D" parent="silo_entered_detector" unique_id=444467435]
+shape = SubResource("CircleShape2D_uskil")
+
+[node name="collision_shape_open_0" type="CollisionShape2D" parent="." unique_id=1077600908]
+position = Vector2(-226, -228.00002)
+rotation = 0.7853982
+shape = SubResource("CapsuleShape2D_122oo")
+
+[node name="collision_shape_open_1" type="CollisionShape2D" parent="." unique_id=2057613408]
+position = Vector2(240.00002, 243)
+rotation = 0.7853982
+shape = SubResource("CapsuleShape2D_122oo")
+
+[node name="collision_shape_open_2" type="CollisionShape2D" parent="." unique_id=739631372]
+position = Vector2(-231.99998, 231.00002)
+rotation = -0.7853982
+shape = SubResource("CapsuleShape2D_122oo")
+
+[node name="collision_shape_open_3" type="CollisionShape2D" parent="." unique_id=703460513]
+position = Vector2(227.00002, -238.99998)
+rotation = -0.7853982
+shape = SubResource("CapsuleShape2D_122oo")
+
+[node name="state_display" parent="." unique_id=1883341501 instance=ExtResource("5_xchnb")]
+z_index = 15
+offset_left = -64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 80.0
+speech_buble_offset = Vector2(64, 256)
+
+[node name="skin" type="Sprite2D" parent="." unique_id=1166410963]
+z_index = 10
+material = SubResource("ShaderMaterial_uiv6f")
+texture = SubResource("ViewportTexture_rk5aj")
+script = ExtResource("3_0n0ls")
+
+[node name="layers" type="SubViewport" parent="skin" unique_id=75690266]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1024, 1024)
+
+[node name="cam" type="Camera2D" parent="skin/layers" unique_id=63946097]
+
+[node name="SiloOpen" type="Sprite2D" parent="skin/layers" unique_id=1280738507 groups=["silo_open_skin"]]
+texture = ExtResource("1_6laxo")
+
+[node name="SiloClosed" type="Sprite2D" parent="skin/layers" unique_id=2062649460 groups=["silo_closed_skin"]]
+texture = ExtResource("1_whun4")
+
+[node name="SiloDoor" type="Sprite2D" parent="skin/layers" unique_id=791303669 groups=["silo_closed_skin"]]
+position = Vector2(412, 0)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_6laxo")
+
+[node name="SiloDoor2" type="Sprite2D" parent="skin/layers" unique_id=504031927 groups=["silo_closed_skin"]]
+position = Vector2(-412, 0)
+rotation = -3.1415925
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_6laxo")
+
+[node name="SiloDoor3" type="Sprite2D" parent="skin/layers" unique_id=991526208 groups=["silo_closed_skin"]]
+position = Vector2(0, -412)
+rotation = -1.5707964
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_6laxo")
+
+[node name="SiloDoor4" type="Sprite2D" parent="skin/layers" unique_id=743446916 groups=["silo_closed_skin"]]
+position = Vector2(0, 412)
+rotation = 1.5707964
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_6laxo")
+
+[node name="temporal_recorder" type="Node2D" parent="." unique_id=446043724]
+script = ExtResource("8_uiv6f")
+triggers_per_second = 20
+autostart = true
+
+[connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]

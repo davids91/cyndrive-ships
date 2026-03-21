@@ -40,7 +40,7 @@ func display_dock_message(should_be_visible: bool) -> void:
 		if should_be_visible: $state_display.say("Press E to dock")
 		else: $state_display.shutup()
 
-func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: int = 20) -> void:
+func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: int = 20) -> Tween:
 	if not has_node("cam_remote_transform"): return
 	var tween = create_tween()
 
@@ -54,8 +54,9 @@ func explosion_shake(intensity: float = 30.0, duration: float = 0.5, frequency: 
 
 	# Return to center
 	tween.tween_property($cam_remote_transform, "position", Vector2.ZERO, duration / frequency)
+	return tween
 
-func explosion_shake_smooth(intensity: float = 30.0, duration: float = 0.5) -> void:
+func explosion_shake_smooth(intensity: float = 30.0, duration: float = 0.5) -> Tween:
 	if not has_node("cam_remote_transform"): return
 	var tween = create_tween()
 	var steps = 10
@@ -69,7 +70,8 @@ func explosion_shake_smooth(intensity: float = 30.0, duration: float = 0.5) -> v
 		)
 		tween.tween_property($cam_remote_transform, "position", shake_offset, duration / steps)
 	tween.tween_property($cam_remote_transform, "position", Vector2.ZERO, 0.1)
-	
+	return tween
+
 func _process(delta: float) -> void:
 	super(delta)
 	if target_locked and $target_assist.is_target_locked():

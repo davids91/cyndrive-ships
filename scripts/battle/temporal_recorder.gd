@@ -14,6 +14,7 @@ var usec_records : Dictionary # key is in usec
 var msec_records : Dictionary # key is in msec
 
 @export var triggers_per_second: int = 4
+@export var autostart: bool = false
 
 @onready var target : PhysicsBody2D = get_parent()
 
@@ -32,6 +33,7 @@ static func reverse_action_key_in_snapshot(key: String, snapshot: Dictionary) ->
 		snapshot.erase(released_key)
 		snapshot[initiated_key] = value
 
+func _ready() -> void: if autostart: start_recording()
 func _process(_delta: float) -> void:
 	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		# update stored actions

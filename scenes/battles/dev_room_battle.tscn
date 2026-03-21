@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="17_2y2lr"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="18_54bea"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="21_jqfa8"]
+[ext_resource type="PackedScene" uid="uid://cqubhj8ciim3i" path="res://scenes/entities/silo.tscn" id="21_pmnbd"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="23_w0t2q"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="26_jqfa8"]
 
@@ -58,7 +59,7 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
 
-[sub_resource type="Resource" id="Resource_scjvp"]
+[sub_resource type="Resource" id="Resource_pmnbd"]
 resource_local_to_scene = true
 script = ExtResource("21_jqfa8")
 team_id = 1
@@ -194,6 +195,9 @@ position = Vector2(2756, 313)
 position = Vector2(2093, -59)
 skin_idx = 0
 
+[node name="silo" parent="debris" unique_id=1278794569 instance=ExtResource("21_pmnbd")]
+position = Vector2(3177, -2226)
+
 [node name="combatants" type="Node" parent="." unique_id=1595997118]
 
 [node name="player_carrier" parent="combatants" unique_id=1161290739 groups=["complex_collision_shapes"] instance=ExtResource("8_fe3c8")]
@@ -209,7 +213,7 @@ blue_curve_phasing = SubResource("Curve_1rdfn")
 unique_name_in_owner = true
 visible = false
 position = Vector2(1592, -2689)
-team = SubResource("Resource_scjvp")
+team = SubResource("Resource_pmnbd")
 color = Color(0, 0, 0, 0)
 carrier_ship = NodePath("../player_carrier")
 laser_strength = 0.6
@@ -357,3 +361,5 @@ script = ExtResource("18_54bea")
 [node name="dialogue" parent="." unique_id=286697342 instance=ExtResource("23_w0t2q")]
 dialog = "res://dialogues/level_1_heist/01_lets_go.txt"
 autostart = true
+
+[connection signal="doors_toggled" from="debris/silo" to="." method="_on_silo_doors_toggled"]

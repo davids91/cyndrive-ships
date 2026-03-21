@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dlyah7481n6o7"]
+
+[ext_resource type="Script" uid="uid://bg8pweqwdny4o" path="res://scripts/entities/battle_debris.gd" id="1_gib7p"]
+[ext_resource type="Shader" uid="uid://c66rqecsnsqsu" path="res://shaders/implode.gdshader" id="2_kw1ff"]
+[ext_resource type="Texture2D" uid="uid://ktuk8547nurd" path="res://textures/entities/silo_door.png" id="2_uapvc"]
+[ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/entities/simple_skin.gd" id="3_qmpo8"]
+[ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="3_uapvc"]
+
+[sub_resource type="Curve" id="Curve_cy11g"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_attt3"]
+curve = SubResource("Curve_cy11g")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ce6sv"]
+noise_type = 5
+frequency = 0.0188
+fractal_type = 2
+fractal_octaves = 2
+fractal_lacunarity = 2.525
+fractal_gain = 2.0
+domain_warp_type = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ei2dj"]
+noise = SubResource("FastNoiseLite_ce6sv")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uiv6f"]
+shader = ExtResource("2_kw1ff")
+shader_parameter/noise = SubResource("NoiseTexture2D_ei2dj")
+shader_parameter/burn_color = Color(1, 1, 0, 1)
+shader_parameter/team_color = Color(0, 0, 0, 0)
+shader_parameter/burn_percentage = 0.0
+shader_parameter/burn_curve = SubResource("CurveTexture_attt3")
+shader_parameter/burn_threshold = 1.0
+shader_parameter/burn_flame_supression = 0.50000002375
+shader_parameter/pixel_scale = 2.0000000475
+shader_parameter/color_aberration = 0.150000007125
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qmpo8"]
+size = Vector2(45, 376)
+
+[node name="door" type="RigidBody2D" unique_id=1665446878]
+script = ExtResource("1_gib7p")
+
+[node name="skin" type="Sprite2D" parent="." unique_id=45423786]
+material = SubResource("ShaderMaterial_uiv6f")
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_uapvc")
+script = ExtResource("3_qmpo8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1193618503]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_qmpo8")
+
+[node name="temporal_recorder" type="Node2D" parent="." unique_id=25829402]
+script = ExtResource("3_uapvc")
+triggers_per_second = 20
+autostart = true

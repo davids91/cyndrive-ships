@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cdoiin3jtjink"]
+[gd_scene format=3 uid="uid://cdoiin3jtjink"]
 
 [ext_resource type="Script" uid="uid://dognc8keyjf2i" path="res://scripts/ui_menus/state_display.gd" id="1_3cnfo"]
 [ext_resource type="Texture2D" uid="uid://bjy0f6fe7ye6e" path="res://textures/ui/emotes.png" id="2_a3x2t"]
@@ -84,7 +84,7 @@ shader_parameter/burn_flame_supression = 0.50000002375
 shader_parameter/pixel_scale = 10.0000004275
 shader_parameter/color_aberration = 0.150000007125
 
-[node name="state_display" type="ProgressBar"]
+[node name="state_display" type="ProgressBar" unique_id=1386965956]
 self_modulate = Color(1, 0, 0, 1)
 top_level = true
 offset_right = 128.0
@@ -96,14 +96,14 @@ show_percentage = false
 script = ExtResource("1_3cnfo")
 metadata/_edit_vertical_guides_ = [-212.0]
 
-[node name="emote" type="Sprite2D" parent="."]
+[node name="emote" type="Sprite2D" parent="." unique_id=1672691989]
 visible = false
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_a3x2t")
 region_enabled = true
 region_rect = Rect2(43.584427, 0.114406586, 18.161957, 78.38318)
 
-[node name="speech_bubble" type="Control" parent="."]
+[node name="speech_bubble" type="Control" parent="." unique_id=492733545]
 visible = false
 anchors_preset = 0
 offset_left = 128.0
@@ -111,7 +111,7 @@ offset_top = 64.0
 offset_right = 168.0
 offset_bottom = 104.0
 
-[node name="text" type="Label" parent="speech_bubble"]
+[node name="text" type="Label" parent="speech_bubble" unique_id=1906718065]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -124,7 +124,7 @@ label_settings = SubResource("LabelSettings_a3x2t")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="border" type="Sprite2D" parent="speech_bubble"]
+[node name="border" type="Sprite2D" parent="speech_bubble" unique_id=439726381]
 material = SubResource("ShaderMaterial_a3x2t")
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("3_a3x2t")

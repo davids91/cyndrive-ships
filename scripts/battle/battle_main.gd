@@ -377,3 +377,6 @@ func time_control_triggered(action: Dictionary) -> void:
 
 func update_laupeerium_bar() -> void:
 	laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
+
+func _on_silo_doors_toggled(is_open: bool) -> void:
+	if is_open: %character.explosion_shake(100.)
