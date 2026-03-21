@@ -82,7 +82,7 @@ func _process(delta: float) -> void:
 				ship.held_mine = self
 
 	# Check for any ships in explosion proximity
-	if is_activated and not enemies_in_proximity.is_empty(): explode_mine()
+	if is_activated and not enemies_in_proximity.is_empty() and not is_exploded: explode_mine()
 
 func _physics_process(_delta: float) -> void:
 	# Handle dragging the attached mine behind ship
@@ -109,8 +109,8 @@ func explode_mine() -> void:
 		explosion = EXPLOSION_FIREY.instantiate()
 		explosion.explosion_damage = 15.
 		explosion.explosion_length = 3.
-		explosion.explosion_strength = 500.
 		explosion.explosion_range = 600.
+		explosion.shockwave_strength = 200.
 		explosion.scale *= 3
 		level.get_node("mush").add_child(explosion)
 	explosion.global_position = get_global_position()
@@ -159,7 +159,7 @@ func _on_explode_radius_body_exited(body: Node2D) -> void:
 
 var enemies_to_seek: Dictionary[Node2D, float] = {}
 func _on_seeking_aura_body_entered(body: Node2D) -> void:
-	if "team" in body and team.is_enemy(body.team):
+	if "team" in body and team.is_enemy(body.team) and body.has_method("in_battle") and body.in_battle():
 		enemies_to_seek[body] = BattleTimeline.instance.time_msec()
 
 func _on_seeking_aura_body_exited(body: Node2D) -> void:

@@ -33,7 +33,7 @@ func _load_dialog_lines() -> PackedStringArray:
 var signals_shot: Dictionary = {}
 
 func start() -> void:
-	signals_shot.clear()#[c0]
+	signals_shot.clear()
 	current_line = 0
 	if dialog_lines.is_empty():
 		push_error("No dialogue lines loaded for: " + dialog)

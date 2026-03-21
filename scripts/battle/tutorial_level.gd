@@ -218,7 +218,7 @@ func _on_marker_5_body_entered(_body: Node2D) -> void:
 	if $markers/marker4: $markers/marker4.queue_free()
 	%character.spawn_snapshot = %character.get_snapshot()
 	create_tween().tween_method(func(w: float): $markers/marker5.modulate.a = w, 1., 0., 0.5).finished.connect(
-		func(): $markers/marker5.queue_free()
+ 		func(): if $markers/marker5: $markers/marker5.queue_free()
 	)
 	player_input.input_disabled = true
 	%character.pause_control()
@@ -342,12 +342,7 @@ func time_control_triggered(action: Dictionary) -> void:
 	if(
 		"checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]
 		and not is_rewinding
-	):
-		# Handling Battle restart
-		if current_tutorial_phase == TutorialPhases.ROUND_RESET:
-			current_tutorial_phase = TutorialPhases.MUSTLE_FIGHT
-			$dialogues/player_dies.finish()
-		replay_round()
+	): replay_round()
 
 func reset_game() -> void:
 	get_tree().reload_current_scene()
@@ -391,7 +386,9 @@ func replay_round() -> void:
 		GUI.get_node("defeat").set_visible(false)
 		GUI.get_node("victory").set_visible(false)
 		GUI.get_node("restart_round_panel").set_visible(false)
-		if current_tutorial_phase == TutorialPhases.MUSTLE_FIGHT:
+		if current_tutorial_phase == TutorialPhases.ROUND_RESET:
+			current_tutorial_phase = TutorialPhases.MUSTLE_FIGHT
+			$dialogues/player_dies.finish()
 			for combatant in $combatants.get_children():
 				combatant.pause_control()
 			$dialogues/player_resurrected.start()

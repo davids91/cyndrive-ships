@@ -8,7 +8,6 @@ const DELETE_IF_TIME_PRECEEDS_SPAWN = true
 
 @export var explosion_damage: float = 5.
 @export var explosion_length: float = 1.2
-@export var explosion_strength: float = 1000.
 @export var shockwave_strength: float = 100.
 @export var explosion_range: float = 250.
 @export var shockwave_delay_sec: float = 0.35
@@ -48,7 +47,7 @@ func apply_shockwave(delta: float) -> void:
 			hit_normal = hit_normal.normalized()
 			combatant.apply_impulse(
 				hit_normal * delta
-				* explosion_strength * shockwave_strength / combatant.mass
+				* shockwave_strength / combatant.mass
 			)
 
 			if combatant.has_method("accept_damage"):

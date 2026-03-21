@@ -188,7 +188,6 @@ shader_parameter/phase_blue = 1.0
 shader_parameter/zoom = 0.50000002305148
 
 [node name="boss" type="CharacterBody2D" unique_id=598623427]
-rotation = 3.1415927
 script = ExtResource("1_icc1o")
 difficulty_laser_warning_sec = 1.0
 approx_size = 512.0
