@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="5_6jemn"]
 [ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="6_by8vi"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="6_xw3hl"]
-[ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/entities/battle_ship.png" id="7_0a1mf"]
 [ext_resource type="Script" uid="uid://dl4dk45frpwra" path="res://scripts/equipment/minimap.gd" id="7_2soyj"]
 [ext_resource type="Texture2D" uid="uid://3nu76apg4ufe" path="res://textures/ui/icons/minimap_icon_3.png" id="8_lhduc"]
 [ext_resource type="Texture2D" uid="uid://crvtsjud0ssjq" path="res://textures/ui/icons/minimap_icon_4.png" id="9_5pomm"]
@@ -19,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://dh7roqtbhf7vh" path="res://scenes/entities/marker.tscn" id="18_2soyj"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_2soyj"]
 [ext_resource type="Script" uid="uid://cxw7l8tkolluc" path="res://scripts/entities/disabled_droid.gd" id="19_l3ay5"]
+[ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="19_xxhjm"]
 [ext_resource type="AudioStream" uid="uid://0oqoh37hsp4w" path="res://audio/music_big_beat_longer.ogg" id="21_g8yy2"]
 [ext_resource type="AudioStream" uid="uid://l8abnhstyv07" path="res://audio/Acid-Theme v1.mp3" id="22_45v6q"]
 [ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="27_45v6q"]
@@ -80,22 +80,18 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
 
-[sub_resource type="Resource" id="Resource_l3ay5"]
+[sub_resource type="Resource" id="Resource_fh4lj"]
 resource_local_to_scene = true
 script = ExtResource("12_by8vi")
 team_id = 1
 color = Color(1, 1, 1, 0)
 metadata/_custom_type_script = "uid://upxd16rpbdyu"
 
-[sub_resource type="Resource" id="Resource_xxhjm"]
-script = ExtResource("6_xw3hl")
-metadata/_custom_type_script = "uid://cud6a5voxneed"
-
 [node name="battle" type="Node2D" unique_id=254046485]
 script = ExtResource("1_aby8t")
 
 [node name="cam" type="Camera2D" parent="." unique_id=805374975]
-position = Vector2(1581, -2512)
+position = Vector2(1591, -2681)
 rotation = 1.570289
 zoom = Vector2(0.5, 0.5)
 
@@ -216,18 +212,16 @@ red_curve_phasing = SubResource("Curve_l3ay5")
 green_curve_phasing = SubResource("Curve_g8yy2")
 blue_curve_phasing = SubResource("Curve_45v6q")
 
-[node name="character" parent="combatants" unique_id=948225000 node_paths=PackedStringArray("carrier_ship") instance=ExtResource("5_6jemn")]
+[node name="character" parent="combatants" unique_id=138634092 node_paths=PackedStringArray("carrier_ship") instance=ExtResource("19_xxhjm")]
 unique_name_in_owner = true
 visible = false
-position = Vector2(1581, -2512)
-rotation = 1.570289
-team = SubResource("Resource_l3ay5")
-skin_layers = Array[ExtResource("6_xw3hl")]([SubResource("Resource_xxhjm")])
-starting_health = 10.0
-max_health = 12.0
+position = Vector2(1591, -2681)
+team = SubResource("Resource_fh4lj")
+color = Color(0, 0, 0, 0)
 carrier_ship = NodePath("../player_carrier")
 
 [node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=2048571450]
+rotation = 1.570289
 remote_path = NodePath("../../../cam")
 update_rotation = false
 update_scale = false

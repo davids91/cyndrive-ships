@@ -234,6 +234,7 @@ bus = &"Ships"
 
 [node name="dock_assistant_north" type="Area2D" parent="." unique_id=1999099917]
 position = Vector2(-100, -512)
+collision_layer = 0
 script = ExtResource("16_8f66g")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="dock_assistant_north" unique_id=628814133]
@@ -241,6 +242,7 @@ shape = SubResource("CircleShape2D_nmp2x")
 
 [node name="dock_assistant_south" type="Area2D" parent="." unique_id=1500455833]
 position = Vector2(-100, 512)
+collision_layer = 0
 script = ExtResource("16_8f66g")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="dock_assistant_south" unique_id=1247235151]

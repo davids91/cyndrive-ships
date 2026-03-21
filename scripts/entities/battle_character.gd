@@ -151,7 +151,6 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 		$ai_control.chosen_target = snapshot["ai_target"]
 	if "held_mine" in snapshot and not null == snapshot["held_mine"]:
 		held_mine = snapshot["held_mine"]
-
 	if "health" in snapshot:
 		was_alive = is_alive
 		health = snapshot["health"]
@@ -248,7 +247,7 @@ func _process(_delta):
 		was_in_battle = true
 
 	# Erase explosion if ship is alive
-	if is_alive and ship_explosion != null:
+	if is_alive and ship_explosion:
 		ship_explosion.queue_free()
 		ship_explosion = null
 

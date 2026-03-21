@@ -34,10 +34,16 @@ var accumulated_slowdown_value_sec: float = 0.
 @export var zoom_range: float = 0.39
 @export var zoom_center: float = 0.4
 var current_zoom_value: float = zoom_center
+var is_boosting: bool = false
 func _unhandled_input(event: InputEvent) -> void:
 	var action = get_action(event)
 	var just_pressed = event.is_pressed() and not event.is_echo()
 	var was_shooting = is_shooting
+
+	is_boosting = (
+		(is_boosting and (not "boost_released" in action or not action["boost_released"]))
+		or ("boost_initiated" in action and action["boost_initiated"])
+	)
 
 	if "movement_intent" in action:
 		movement_intent += action["movement_intent"]

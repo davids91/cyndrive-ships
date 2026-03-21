@@ -10,6 +10,7 @@ const DELETE_IF_TIME_PRECEEDS_SPAWN = true
 @export var explosion_length: float = 1.2
 @export var explosion_strength: float = 1000.
 @export var explosion_range: float = 250.
+@export var shockwave_delay_sec: float = 0.35
 
 @onready var fire1: Sprite2D = $fire1
 @onready var fire2: Sprite2D = $fire2
@@ -49,6 +50,7 @@ func apply_shockwave(delta: float) -> void:
 			if combatant.has_method("accept_damage"):
 				combatant.accept_damage(explosion_damage * delta, self)
 
+
 var exploded: bool = false
 func _process(delta: float) -> void:
 	# grab from game time manager
@@ -83,7 +85,7 @@ func _process(delta: float) -> void:
 		debris4.scale = hideScale
 		return
 		
-	if currentAgeSec < explosion_length:
+	if shockwave_delay_sec < currentAgeSec and currentAgeSec < explosion_length:
 		apply_shockwave(delta)
 
 	# different lifespanSecs for varying speeds

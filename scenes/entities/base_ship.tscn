@@ -196,8 +196,8 @@ energy_cost = 5.0
 
 [node name="laser_beam" parent="." unique_id=1841506215 node_paths=PackedStringArray("wielder") instance=ExtResource("11_cy11g")]
 wielder = NodePath("..")
-base_damage = 0.8
-energy_cost = 0.5
+base_damage = 0.3
+energy_cost = 0.1
 
 [node name="hotsaber" parent="." unique_id=1252353179 instance=ExtResource("11_tpj62")]
 

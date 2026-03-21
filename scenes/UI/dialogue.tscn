@@ -85,7 +85,7 @@ layout_mode = 2
 
 [node name="npc_icon" type="TextureRect" parent="control/content_container/HBoxContainer" unique_id=340020180]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(85, 100)
 layout_mode = 2
 texture = SubResource("PlaceholderTexture2D_3n4vj")
 expand_mode = 1

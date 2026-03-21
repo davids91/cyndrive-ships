@@ -44,10 +44,11 @@ func _ready():
 	# Show booster marker
 	$dialogues/boost.connect( "dialogue_signal_0", func():
 		$markers/marker2.set_visible(true)
+		%character/cam_remote_transform.update_position = false
 		boost_dialogue_showing_next_mark_tween = create_tween()
 		boost_dialogue_showing_next_mark_tween.tween_method(
-			func(w: float): %character/cam.set_global_position(lerp(
-				%character/cam.get_global_position(),
+			func(w: float): $cam.set_global_position(lerp(
+				$cam.get_global_position(),
 				$markers/marker2.get_position(),
 				w
 			)),
@@ -55,7 +56,7 @@ func _ready():
 		)
 		boost_dialogue_showing_next_mark_tween.tween_interval(1.)
 		boost_dialogue_showing_next_mark_tween.tween_method(
-			func(w: float): %character/cam.position *= w,
+			func(w: float): $cam.position *= w,
 			1., 0., 1. * Difficulty.gameplay_speed
 		)
 	)
@@ -151,6 +152,7 @@ func _on_intro_dialouge_finished() -> void:
 	player_input.input_disabled = false
 	current_tutorial_phase = TutorialPhases.MOVEMENT
 	GUI.get_node("keybindings_panel").set_visible(false)
+	%character/sonar_sensor.add_blip($markers/marker)
 	var blink_info_tween = create_tween()
 	for _i in 3: blink_info_tween.tween_method(
 		func(w: float): GUI.get_node("info_highlight").modulate.a = w,
@@ -164,7 +166,8 @@ func _on_boost_dialouge_finished() -> void:
 	GUI.set_time(marker_time_left_secs)
 	$markers/marker2.set_visible(true)
 	player_input.input_disabled = false
-	%character/cam.position = Vector2.ZERO
+	$cam.position = Vector2.ZERO
+	%character/cam_remote_transform.update_position = true
 	%character/sonar_sensor.add_blip($markers/marker2)
 	%character.spawn_snapshot = %character.get_snapshot()
 	$timeline.checkpoint()
@@ -212,7 +215,7 @@ func _on_marker_5_body_entered(_body: Node2D) -> void:
 	create_tween().tween_property(%marks_progress, "value", 400. / 4., 0.6)
 	create_tween().tween_method(func(w: float): $level_ui/marks_progress.modulate.a = w, 1., 0., 0.5)
 	current_tutorial_phase = TutorialPhases.DESTROY
-	$markers/marker4.queue_free()
+	if $markers/marker4: $markers/marker4.queue_free()
 	%character.spawn_snapshot = %character.get_snapshot()
 	create_tween().tween_method(func(w: float): $markers/marker5.modulate.a = w, 1., 0., 0.5).finished.connect(
 		func(): $markers/marker5.queue_free()
@@ -344,18 +347,13 @@ func time_control_triggered(action: Dictionary) -> void:
 		if current_tutorial_phase == TutorialPhases.ROUND_RESET:
 			current_tutorial_phase = TutorialPhases.MUSTLE_FIGHT
 			$dialogues/player_dies.finish()
-			replay_round(func():
-				for combatant in $combatants.get_children():
-					combatant.pause_control()
-				$dialogues/player_resurrected.start()
-			)
-		else: replay_round()
+		replay_round()
 
 func reset_game() -> void:
 	get_tree().reload_current_scene()
 
 @export var respawn_time_sec: float = 1.
-func replay_round(call_on_restart: Callable = func(): pass) -> void:
+func replay_round() -> void:
 	#TechDebt: Eliminate mine after round end
 	if not %character.held_mine == null:
 		%character.held_mine.queue_free()
@@ -393,7 +391,10 @@ func replay_round(call_on_restart: Callable = func(): pass) -> void:
 		GUI.get_node("defeat").set_visible(false)
 		GUI.get_node("victory").set_visible(false)
 		GUI.get_node("restart_round_panel").set_visible(false)
-		call_on_restart.call()
+		if current_tutorial_phase == TutorialPhases.MUSTLE_FIGHT:
+			for combatant in $combatants.get_children():
+				combatant.pause_control()
+			$dialogues/player_resurrected.start()
 	)
 	player_move_tween.chain()
 
@@ -472,8 +473,7 @@ func _on_character_dead(_itsme: BattleCharacter) -> void:
 	else: GUI.set_objective("Rewind to try again")
 
 func _on_character_shields_toggled(turned_on: bool) -> void:
-	if turned_on:
-		$dialogues/player_dies.dialogue_conditionals[0] = true
+	$dialogues/player_dies.dialogue_conditionals[0] |= turned_on
 
 func _on_player_resurrected_dialouge_finished() -> void:
 	current_tutorial_phase = TutorialPhases.MUSTLE_FIGHT

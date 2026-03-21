@@ -1,6 +1,7 @@
 class_name PlayerShip
 extends BattleCharacter
 
+var is_boosting: bool = false
 var target_locked: bool = false
 func process_input_action(action: Dictionary) -> void:
 	if"action_direction" in action:
@@ -9,6 +10,17 @@ func process_input_action(action: Dictionary) -> void:
 			action["acquired_target_position"] = $target_assist.get_current_target_position()
 			action["acquired_target"] =  $target_assist.get_current_target()
 			$target_arrow.global_position = $target_assist.get_current_target_position()
+	is_boosting = (
+		(is_boosting and (not "boost_released" in action or not action["boost_released"]))
+		or ("boost_initiated" in action and action["boost_initiated"])
+	)
+
+	# TechDebt: Temporal replay reverses shoot and boost inputs
+	# so if rewinding is stopped midway boosting, the character stays in invalid state
+	if is_boosting and not PlayerInput.instance.is_boosting:
+		action.erase("boost_initiated")
+		action["boost_released"] = true
+
 	super(action)
 
 var monitored_slowdown: float = 1.

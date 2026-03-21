@@ -21,6 +21,28 @@
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="23_w0t2q"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="26_jqfa8"]
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pmnbd"]
+texture = ExtResource("7_w0t2q")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+1:2/0 = 0
+1:1/0 = 0
+2:2/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_f22mk"]
+sources/0 = SubResource("TileSetAtlasSource_pmnbd")
+
 [sub_resource type="Curve" id="Curve_8a2ah"]
 _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 387.30502), 0.0, -286.33978, 0, 0, Vector2(0.62785864, 259.64706), -680.9095, -680.9095, 0, 0, Vector2(0.7546778, 9.17395), -1497.7778, -1497.7778, 0, 0, Vector2(0.8128898, 1), -3281.3196, 0.0, 0, 0]
@@ -53,32 +75,50 @@ script = ExtResource("9_25tx2")
 texture = ExtResource("17_2y2lr")
 metadata/_custom_type_script = "uid://cud6a5voxneed"
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pmnbd"]
-texture = ExtResource("7_w0t2q")
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-0:1/0 = 0
-3:1/0 = 0
-0:2/0 = 0
-3:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-1:2/0 = 0
-1:1/0 = 0
-2:2/0 = 0
-2:1/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_f22mk"]
-sources/0 = SubResource("TileSetAtlasSource_pmnbd")
-
 [node name="battle" type="Node2D" unique_id=471580]
 script = ExtResource("1_6u6au")
 metadata/_edit_vertical_guides_ = [788.0, 163.0]
 metadata/_edit_horizontal_guides_ = [426.0]
+
+[node name="level_ui" type="CanvasLayer" parent="." unique_id=212346450]
+
+[node name="minimap" type="TileMapLayer" parent="level_ui" unique_id=616457367 node_paths=PackedStringArray("monitor_nodes", "icon_template")]
+modulate = Color(1, 1, 1, 0.54901963)
+tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
+tile_set = SubResource("TileSet_f22mk")
+script = ExtResource("8_wb3pa")
+map_extent = Rect2(500, -6000, 20000, 15000)
+monitor_nodes = [NodePath("../../debris"), NodePath("../../combatants")]
+icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
+
+[node name="MapIcon" type="Sprite2D" parent="level_ui/minimap" unique_id=505907446]
+self_modulate = Color(1, 1, 1, 0.3647059)
+position = Vector2(347, 198)
+scale = Vector2(0.515625, 0.515625)
+texture = ExtResource("10_320hu")
+
+[node name="area" type="Panel" parent="level_ui/minimap" unique_id=150730760]
+offset_left = 160.0
+offset_top = 193.0
+offset_right = 352.0
+offset_bottom = 336.0
+
+[node name="icon_combatants" type="TextureRect" parent="level_ui/minimap/area" unique_id=2031764954]
+visible = false
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("10_fws0x")
+expand_mode = 3
+
+[node name="icon_debris" type="TextureRect" parent="level_ui/minimap/area" unique_id=836663822]
+visible = false
+self_modulate = Color(1, 0.97400004, 0.74, 1)
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("11_ib23l")
+expand_mode = 3
 
 [node name="cam" type="Camera2D" parent="." unique_id=1901038686]
 position = Vector2(1592, -2689)
@@ -165,11 +205,14 @@ red_curve_phasing = SubResource("Curve_8a2ah")
 green_curve_phasing = SubResource("Curve_ikjs2")
 blue_curve_phasing = SubResource("Curve_1rdfn")
 
-[node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("7_scjvp")]
+[node name="character" parent="combatants" unique_id=138634092 node_paths=PackedStringArray("carrier_ship") instance=ExtResource("7_scjvp")]
 unique_name_in_owner = true
 visible = false
 position = Vector2(1592, -2689)
 team = SubResource("Resource_scjvp")
+color = Color(0, 0, 0, 0)
+carrier_ship = NodePath("../player_carrier")
+laser_strength = 0.6
 
 [node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1621046320]
 remote_path = NodePath("../../../cam")
@@ -183,6 +226,7 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy" unique_id=1945575380]
 rotation = 3.14159
@@ -195,6 +239,7 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy2" unique_id=41821530]
 rotation = 3.14159
@@ -207,6 +252,7 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy3" unique_id=658812959]
 rotation = 3.14159
@@ -219,6 +265,7 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy4" unique_id=346071339]
 rotation = 3.14159
@@ -231,6 +278,7 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy5" unique_id=880287047]
 rotation = 3.14159
@@ -243,6 +291,7 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy6" unique_id=1107976218]
 position = Vector2(163.99951, 194.00041)
@@ -256,6 +305,7 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy7" unique_id=58503513]
 position = Vector2(-1822.9983, -665.00464)
@@ -269,6 +319,7 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy8" unique_id=602831933]
 position = Vector2(265.99988, 43.000675)
@@ -282,6 +333,7 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy9" unique_id=2131926910]
 rotation = 3.14159
@@ -294,50 +346,13 @@ team = ExtResource("26_jqfa8")
 color = Color(1, 0, 0, 0.5803922)
 skin_layers = Array[ExtResource("9_25tx2")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
 starting_health = 20.0
+laser_strength = 0.3
 
 [node name="ai_control" type="Node2D" parent="combatants/enemy10" unique_id=528393074]
 rotation = 3.14159
 script = ExtResource("18_54bea")
 
 [node name="mush" type="Node" parent="." unique_id=737214258]
-
-[node name="minimap" type="TileMapLayer" parent="." unique_id=616457367 node_paths=PackedStringArray("monitor_nodes", "icon_template")]
-modulate = Color(1, 1, 1, 0.54901963)
-tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
-tile_set = SubResource("TileSet_f22mk")
-script = ExtResource("8_wb3pa")
-map_extent = Rect2(500, -6000, 20000, 15000)
-monitor_nodes = [NodePath("../debris"), NodePath("../combatants")]
-icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
-
-[node name="MapIcon" type="Sprite2D" parent="minimap" unique_id=505907446]
-self_modulate = Color(1, 1, 1, 0.3647059)
-position = Vector2(347, 198)
-scale = Vector2(0.515625, 0.515625)
-texture = ExtResource("10_320hu")
-
-[node name="area" type="Panel" parent="minimap" unique_id=150730760]
-offset_left = 160.0
-offset_top = 193.0
-offset_right = 352.0
-offset_bottom = 336.0
-
-[node name="icon_combatants" type="TextureRect" parent="minimap/area" unique_id=2031764954]
-visible = false
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("10_fws0x")
-expand_mode = 3
-
-[node name="icon_debris" type="TextureRect" parent="minimap/area" unique_id=836663822]
-visible = false
-self_modulate = Color(1, 0.97400004, 0.74, 1)
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("11_ib23l")
-expand_mode = 3
 
 [node name="dialogue" parent="." unique_id=286697342 instance=ExtResource("23_w0t2q")]
 dialog = "res://dialogues/level_1_heist/01_lets_go.txt"

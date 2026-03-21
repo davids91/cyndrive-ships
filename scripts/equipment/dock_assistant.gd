@@ -17,6 +17,7 @@ func _on_body_exited(body: Node2D) -> void:
 func _process(delta: float) -> void:
 	for ship in ships_within_aura:
 		if (
-			"docked" in ship and not ship.docked
+			"carrier_ship" in ship and ship.carrier_ship == get_parent()
+			and "docked" in ship and not ship.docked
 			 and "needs_docking_support" in ship and ship.needs_docking_support
 		): ship.apply_impulse((character.global_position - ship.global_position) * delta)

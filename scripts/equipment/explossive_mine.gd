@@ -141,7 +141,8 @@ func spawn_mine_attached_to(ship: BattleCharacter, attached_length: float = ship
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	super(state)
-	if 0.1 < seek_velocity.length():
+	if is_exploded: state.linear_velocity = Vector2.ZERO
+	elif 0.1 < seek_velocity.length():
 		state.linear_velocity = lerp(state.linear_velocity, seek_velocity, seek_responsiveness)
 
 var friendlies_in_proximity: Dictionary[Node2D, float] = {}

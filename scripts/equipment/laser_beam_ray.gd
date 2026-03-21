@@ -1,6 +1,6 @@
 class_name BattleShipLaser extends BattleShipWeapon
 
-@export var warmup_damage_modifier: float = 0.35
+@export var warmup_damage_modifier: float = 0.05
 @export var ray_warmup_width: float = 5
 @export var ray_full_width: float = 10
 @export var warmup_time_sec: float = 0.25
@@ -13,6 +13,8 @@ func _ready() -> void:
 	if not wielder: wielder = get_parent()
 
 func shutdown() -> void:
+	current_strength_modifier = warmup_damage_modifier
+
 	# TECHDEBT: In case the laser is released before warmup, the tweens get in conflict, so wait until at least the warmup is finished
 	await get_tree().create_timer(warmup_time_sec).timeout
 	create_tween().tween_method(func(a): $beam_line.self_modulate.a = a, $beam_line.self_modulate.a, 0., shutdown_time_sec)
@@ -50,8 +52,6 @@ func process_input_action(action: Dictionary) -> void:
 	if is_shooting:
 		$sound.play()
 		if not was_shooting: # Laser alpha and width animation
-			current_strength_modifier = warmup_damage_modifier
-			create_tween().tween_property(self, "current_strength_modifier", warmup_damage_modifier, 1.)
 			create_tween().tween_method(func(a): $beam_line.self_modulate.a = a, 0., 1., warmup_time_sec)
 			var laser_ray_tween: Tween = create_tween()
 			laser_ray_tween.tween_property($beam_line, "width", ray_warmup_width, warmup_time_sec)
@@ -86,7 +86,9 @@ func _physics_process(_delta: float) -> void:
 	$raycast.target_position = laser_origin + (acquired_target - laser_origin) * 1000.
 
 	# Handle sounds and applying damage
+	if not is_shooting: current_strength_modifier = warmup_damage_modifier
 	if is_shooting:
+		current_strength_modifier = round(lerp(current_strength_modifier, 1., 0.5) * 100.) / 100.
 		if null != $raycast.get_collider():
 			hits = $raycast.get_collider()
 			var victim = $raycast.get_collider()
