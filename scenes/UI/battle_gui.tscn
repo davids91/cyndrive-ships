@@ -22,7 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://djx4c7a3peok5" path="res://textures/ui/panels/replay_button_hover.png" id="18_cq71w"]
 [ext_resource type="Texture2D" uid="uid://b655tybark5um" path="res://textures/ui/defeat.png" id="19_swp6i"]
 [ext_resource type="PackedScene" uid="uid://1o5og2xeefgp" path="res://scenes/UI/pause menu.tscn" id="20_1owcp"]
-[ext_resource type="Shader" uid="uid://dkoreljmu6vd4" path="res://shaders/slowdown.gdshader" id="23_a8p6b"]
+[ext_resource type="Shader" uid="uid://dkoreljmu6vd4" path="res://shaders/fade_screen.gdshader" id="23_a8p6b"]
 
 [sub_resource type="Gradient" id="Gradient_8j45s"]
 offsets = PackedFloat32Array(0.7495935, 0.7642276, 0.8097561, 1)

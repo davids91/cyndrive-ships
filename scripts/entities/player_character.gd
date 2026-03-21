@@ -11,6 +11,13 @@ func process_input_action(action: Dictionary) -> void:
 			$target_arrow.global_position = $target_assist.get_current_target_position()
 	super(action)
 
+var monitored_slowdown: float = 1.
+func time_control_triggered(action: Dictionary) -> void:
+	if "slowdown" in action:
+		if (monitored_slowdown == 1.) != (action["slowdown"] == 1.):
+			$slowdown_effect.toggle(action["slowdown"] != 1.)
+		monitored_slowdown = action["slowdown"]
+
 func accept_damage(strength: float, source: Node = null) -> void:
 	super(strength, source)
 	if health > low_health: explosion_shake_smooth()

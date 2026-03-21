@@ -26,6 +26,7 @@ func load_level(level_name: String) -> void:
 	for n in level_container.get_children(): n.queue_free()
 	var level = load("res://scenes/battles/" + level_name + ".tscn").instantiate()
 	var player = level.get_node("%character")
+	player_input.time_control_triggered.connect(player.time_control_triggered)
 	GUI.configure(player_input, level, player)
 	player_input.view_control_triggered.connect(level.view_control_triggered)
 	level_container.add_child(level)

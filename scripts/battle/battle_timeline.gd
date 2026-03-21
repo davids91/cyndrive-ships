@@ -29,6 +29,9 @@ func _process(delta: float) -> void:
 		time_accrued_msec += delta * 1000.
 		time_accrued_usec += int(delta * 1000000.)
 
+func slowdown_value() -> float:
+	return Difficulty.slowdown_multiplier
+
 # Set the current time as 0 without emitting a round reset signal
 func checkpoint() -> void:
 	checkpoint_triggered.emit()

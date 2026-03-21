@@ -75,7 +75,7 @@ void fragment() {
 	float ring_filled_length_rad = PI_DOUBLE * texture(noise, vec2(strip_length_sample_x, strip_sample_y)).r;
 
 	// determine position within the ring based on angle
-	float current_px_angle_rad = atan(vector_to_circle_center.y, vector_to_circle_center.x);
+	float current_px_angle_rad = atan(vector_to_circle_center.y, vector_to_circle_center.x) + PI;
 	if (current_px_angle_rad < 0.0) {
 		current_px_angle_rad += PI_DOUBLE;
 	}

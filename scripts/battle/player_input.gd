@@ -94,13 +94,13 @@ func _process(delta: float) -> void:
 			0., accumulated_slowdown_value_sec - delta * slowdown_regenerate_speed
 		)
 	if 0. < accumulated_slowdown_value_sec:
-		time_control["slowdown"] = 1. - min(
+		time_control["slowdown"] = round((1. - min(
 			slowdown_max_subtract_value,
 			(
 				pow(min(accumulated_slowdown_value_sec, slowdown_max_hold_sec), 2.) 
 				/ (slowdown_max_hold_sec * slowdown_max_hold_sec)
 			)
-		)
+		)) * 1000.) / 1000.
 
 	# Handling Timeline reverse
 	if reverse_being_held and not slowdown_being_held:

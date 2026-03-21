@@ -8,8 +8,10 @@
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="5_unlmi"]
 [ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="6_yfi7f"]
 [ext_resource type="Shader" uid="uid://djx4bom2edoc6" path="res://shaders/repairs.gdshader" id="7_o4dyv"]
+[ext_resource type="Shader" uid="uid://0bsekv0htl80" path="res://shaders/slowdown.gdshader" id="9_viv6s"]
+[ext_resource type="Script" uid="uid://bs6b1t8t8865p" path="res://scripts/effects/slowdown_effect.gd" id="10_47atm"]
 
-[sub_resource type="Resource" id="Resource_0ib56"]
+[sub_resource type="Resource" id="Resource_47atm"]
 resource_local_to_scene = true
 script = ExtResource("2_0ib56")
 team_id = 1
@@ -80,7 +82,7 @@ domain_warp_type = 1
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ei2dj"]
 noise = SubResource("FastNoiseLite_ce6sv")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_viv6s"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_unlmi"]
 resource_local_to_scene = true
 shader = SubResource("Shader_tpj62")
 shader_parameter/noise = SubResource("NoiseTexture2D_ei2dj")
@@ -93,7 +95,7 @@ shader_parameter/burn_flame_supression = 0.50000002375
 shader_parameter/pixel_scale = 2.0000000475
 shader_parameter/color_aberration = 0.150000007125
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_47atm"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_yfi7f"]
 viewport_path = NodePath("skin/layers")
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_us3k5"]
@@ -109,19 +111,32 @@ shader_parameter/wave_count = 6.1630002452425
 shader_parameter/wave_spacing = 0.23300000780762
 shader_parameter/pixel_size = 8.0000003325
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ib56"]
+shader = ExtResource("9_viv6s")
+shader_parameter/clock_radius = 0.8190000389025
+shader_parameter/clock_width = 0.05000000074506
+shader_parameter/long_leg_width = 0.15000000596046
+shader_parameter/long_leg_height = 0.15000000596046
+shader_parameter/short_leg_width = 0.3450000163875
+shader_parameter/short_leg_height = 0.15000000596046
+shader_parameter/clock_color = Color(0, 0.95000005, 1, 1)
+shader_parameter/long_leg_angle_ = -9.556089099177484
+shader_parameter/short_leg_angle_ = -2.389022274794371
+shader_parameter/pixellize_size = 20.0
+shader_parameter/pixel_continuity = 0.0
+
 [node name="character" unique_id=138634092 instance=ExtResource("1_y5ukg")]
 script = ExtResource("2_y5ukg")
-team = SubResource("Resource_0ib56")
+team = SubResource("Resource_47atm")
 color = null
 starting_health = 10.0
 max_health = 12.0
 
 [node name="skin_image" parent="skin" parent_id_path=PackedInt32Array(1876036470) index="1" unique_id=376491413]
-material = SubResource("ShaderMaterial_viv6s")
-texture = SubResource("ViewportTexture_47atm")
+material = SubResource("ShaderMaterial_unlmi")
+texture = SubResource("ViewportTexture_yfi7f")
 
 [node name="sonar_sensor" type="ShapeCast2D" parent="." index="17" unique_id=322767234]
-visible = false
 shape = SubResource("ConvexPolygonShape2D_us3k5")
 target_position = Vector2(0, 0)
 collision_mask = 3
@@ -157,3 +172,18 @@ offset_right = 128.0
 offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="slowdown_effect" type="ColorRect" parent="." index="21" unique_id=976764568]
+material = SubResource("ShaderMaterial_0ib56")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("10_47atm")
