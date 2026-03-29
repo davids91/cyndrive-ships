@@ -24,6 +24,8 @@ func select_slot(slot: int) -> void:
 	if "shutdown" in weapons[current_slot]:
 		weapons[current_slot].shutdown()
 	current_slot = slot
+	if get_parent().has_node("weapon_changed_sound"):
+		get_parent().get_node("weapon_changed_sound").play()
 	weapon_changed.emit(slot)
 
 func get_weapon_name() -> String:
