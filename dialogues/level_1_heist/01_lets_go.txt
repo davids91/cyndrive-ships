@@ -7,6 +7,10 @@ And when I went back to the present, your ship was inside out.
 Butterfly effect and all that. 
 #[c2]My mission?
 #[c0]Ahem#[t250]...#[t] Anyways, it's printed now. Let me give you the briefing.
+First of all, we salvaged the gun that loud fellow you killed was using from what was left of his ship.
+#[c1]It's yours now. It fires coils of molten steel, heated to 1,464 degrees, at over 3,000 meters per second at a designated target.
+In layman's terms, it hurts people.
+#[c0]Now for your objective.
 Team Pocket Co. has been hoarding as much Laupeerium as they can get their hands on, and they're not willing to share.
 Without Laupeerium, we can't use time travel.
 #[c2]And I'd be out of a job.
