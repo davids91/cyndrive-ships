@@ -1,0 +1,3 @@
+#[d0]#[c0]You can also equip a deadly explosive! Press "E" to st..#[p0]
+#[d0]#[c1]a WHAT..?
+#[d0]#[c0]Yup, like we discussed! Press "E" to strap a deadly explosive to the ship!

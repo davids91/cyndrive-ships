@@ -1,0 +1,4 @@
+#[c1]Perfect! Now I don't have to travel back to when I stole that Battle Droid and snatch it from myself.
+There's one more function I built into the ship. If you hold down the "R" button, everything around you will slow down.
+When you let it go, time will gradually speed up back to its normal state.
+You can use it for as long as you have Laupeerium in reserve. Try it out!
