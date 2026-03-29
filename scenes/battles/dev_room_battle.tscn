@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="17_2y2lr"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="18_54bea"]
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="21_jqfa8"]
-[ext_resource type="PackedScene" uid="uid://cqubhj8ciim3i" path="res://scenes/entities/silo.tscn" id="21_pmnbd"]
+[ext_resource type="PackedScene" path="res://scenes/entities/silo.tscn" id="21_pmnbd"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="23_w0t2q"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="26_jqfa8"]
 

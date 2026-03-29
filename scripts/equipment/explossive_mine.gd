@@ -148,6 +148,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 var friendlies_in_proximity: Dictionary[Node2D, float] = {}
 var enemies_in_proximity: Dictionary[Node2D, float] = {}
 func _on_explode_radius_body_entered(body: Node2D) -> void:
+	if not body.has_method("in_battle") or not body.in_battle():
+		return
 	if "team" in body and team.is_enemy(body.team):
 		enemies_in_proximity[body] = BattleTimeline.instance.time_msec()
 	elif "team" in body and not team.is_enemy(body.team):

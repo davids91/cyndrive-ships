@@ -25,10 +25,7 @@ func process_input_action(action: Dictionary) -> void:
 
 var monitored_slowdown: float = 1.
 func time_control_triggered(action: Dictionary) -> void:
-	if "slowdown" in action:
-		if (monitored_slowdown == 1.) != (action["slowdown"] == 1.):
-			$slowdown_effect.toggle(action["slowdown"] != 1.)
-		monitored_slowdown = action["slowdown"]
+	if "slowdown" in action: monitored_slowdown = action["slowdown"]
 
 func accept_damage(strength: float, source: Node = null) -> void:
 	super(strength, source)
@@ -74,6 +71,9 @@ func explosion_shake_smooth(intensity: float = 30.0, duration: float = 0.5) -> T
 
 func _process(delta: float) -> void:
 	super(delta)
+	if $slowdown_effect.is_active != PlayerInput.instance.slowdown_being_held:
+		$slowdown_effect.toggle(PlayerInput.instance.slowdown_being_held)
+
 	if target_locked and $target_assist.is_target_locked():
 		$target_arrow.set_visible(true)
 		$target_arrow.global_position = lerp(

@@ -352,6 +352,7 @@ func time_control_triggered(action: Dictionary) -> void:
 		Difficuilty.slowdown_multiplier = action["slowdown"]
 
 	if "rewind_toggled" in action:
+		print("REWIND INITIATED")
 		if 0. < current_laupeerium:
 			is_rewinding = action["rewind_toggled"]
 			if is_rewinding:

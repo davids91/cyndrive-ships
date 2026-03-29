@@ -12,7 +12,7 @@
 [ext_resource type="Shader" uid="uid://0bsekv0htl80" path="res://shaders/slowdown.gdshader" id="9_viv6s"]
 [ext_resource type="Script" uid="uid://bs6b1t8t8865p" path="res://scripts/effects/slowdown_effect.gd" id="10_47atm"]
 
-[sub_resource type="Resource" id="Resource_47atm"]
+[sub_resource type="Resource" id="Resource_unlmi"]
 resource_local_to_scene = true
 script = ExtResource("2_0ib56")
 team_id = 1
@@ -83,7 +83,7 @@ domain_warp_type = 1
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ei2dj"]
 noise = SubResource("FastNoiseLite_ce6sv")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_unlmi"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yfi7f"]
 resource_local_to_scene = true
 shader = SubResource("Shader_tpj62")
 shader_parameter/noise = SubResource("NoiseTexture2D_ei2dj")
@@ -96,7 +96,7 @@ shader_parameter/burn_flame_supression = 0.50000002375
 shader_parameter/pixel_scale = 2.0000000475
 shader_parameter/color_aberration = 0.150000007125
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_yfi7f"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_o4dyv"]
 viewport_path = NodePath("skin/layers")
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_us3k5"]
@@ -128,14 +128,14 @@ shader_parameter/pixel_continuity = 0.0
 
 [node name="character" unique_id=138634092 instance=ExtResource("1_y5ukg")]
 script = ExtResource("2_y5ukg")
-team = SubResource("Resource_47atm")
+team = SubResource("Resource_unlmi")
 color = null
 starting_health = 10.0
 max_health = 12.0
 
 [node name="skin_image" parent="skin" parent_id_path=PackedInt32Array(1876036470) index="1" unique_id=376491413]
-material = SubResource("ShaderMaterial_unlmi")
-texture = SubResource("ViewportTexture_yfi7f")
+material = SubResource("ShaderMaterial_yfi7f")
+texture = SubResource("ViewportTexture_o4dyv")
 
 [node name="weapon_changed_sound" type="AudioStreamPlayer2D" parent="." index="17" unique_id=1296558143]
 stream = ExtResource("4_unlmi")

@@ -3,5 +3,5 @@
 Pilot can you undo the destructing, please?
 #[c2] I .. uh #[p300] ..what?
 #[c1]Oh that's right! I forgot about the time engine!
-You can hold "R" to reverse time. Be frugal though! We have a limited supply of Laupeerium!#[p1800]
+You can hold "Shift + R" to reverse time. Be frugal though! We have a limited supply of Laupeerium!#[p1800]
 #[e0]And be careful with that thing strapped to the ship! It's another DSEAR failure waiting to happen!

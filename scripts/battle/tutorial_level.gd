@@ -134,7 +134,10 @@ func _on_player_carrier_phased(phased_in: bool) -> void:
 	$dialogues/intro.start()
 	%character.set_visible(phased_in)
 
+var character_in_marker: BattleMarker = null
 func _on_marker_body_entered(body: Node2D) -> void:
+	if character_in_marker: return # Do not step into the function multiple times
+	character_in_marker = $markers/marker
 	if body is PlayerShip and current_tutorial_phase == TutorialPhases.MOVEMENT:
 		create_tween().tween_method(func(w: float): $level_ui/marks_progress.modulate.a = w, 0., 1., 0.5)
 		player_input.input_disabled = true
@@ -175,6 +178,9 @@ func _on_boost_dialouge_finished() -> void:
 	%character/temporal_recorder.start_recording()
 
 func _on_marker_2_body_entered(_body: Node2D) -> void:
+	if character_in_marker != $markers/marker: return # Do not step into the function multiple times
+	character_in_marker = $markers/marker2
+
 	if currently_failing_at_markers or not $markers/marker2.visible: return
 	create_tween().tween_property(%marks_progress, "value", 100. / 4., 0.6)
 	if $markers/marker: $markers/marker.queue_free()
@@ -187,6 +193,9 @@ func _on_marker_2_body_entered(_body: Node2D) -> void:
 	marker_time_left_secs = time_to_get_to_marker
 
 func _on_marker_3_body_entered(_body: Node2D) -> void:
+	if character_in_marker != $markers/marker2: return # Do not step into the function multiple times
+	character_in_marker = $markers/marker3
+
 	if currently_failing_at_markers or not $markers/marker3.visible: return
 	create_tween().tween_property(%marks_progress, "value", 200. / 4., 0.6)
 	if $markers/marker2: $markers/marker2.queue_free()
@@ -199,6 +208,9 @@ func _on_marker_3_body_entered(_body: Node2D) -> void:
 	marker_time_left_secs = time_to_get_to_marker
 
 func _on_marker_4_body_entered(_body: Node2D) -> void:
+	if character_in_marker != $markers/marker3: return # Do not step into the function multiple times
+	character_in_marker = $markers/marker4
+
 	if currently_failing_at_markers or not $markers/marker4.visible: return
 	create_tween().tween_property(%marks_progress, "value", 300. / 4., 0.6)
 	if $markers/marker3: $markers/marker3.queue_free()
@@ -211,6 +223,9 @@ func _on_marker_4_body_entered(_body: Node2D) -> void:
 	marker_time_left_secs = time_to_get_to_marker
 
 func _on_marker_5_body_entered(_body: Node2D) -> void:
+	if character_in_marker != $markers/marker4: return # Do not step into the function multiple times
+	character_in_marker = $markers/marker5
+
 	if currently_failing_at_markers or not $markers/marker5.visible: return
 	create_tween().tween_property(%marks_progress, "value", 400. / 4., 0.6)
 	create_tween().tween_method(func(w: float): $level_ui/marks_progress.modulate.a = w, 1., 0., 0.5)
@@ -251,10 +266,13 @@ func _on_boss_arrives_dialouge_finished() -> void:
 func _on_restore_dialouge_finished() -> void:
 	player_input.input_disabled = false
 	%character.resume_control()
-	GUI.set_objective("Hold R to rewind\n(resurrect dummy droid)")
+	GUI.set_objective("Hold Shift + R to rewind\n(resurrect dummy droid)")
 
 func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
-	if current_tutorial_phase == TutorialPhases.DESTROY: 
+	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
+		return
+
+	if current_tutorial_phase == TutorialPhases.DESTROY:
 		current_tutorial_phase = TutorialPhases.RESTORE
 		%character/weapon_slot.shutdown()
 		%character.pause_control()
@@ -345,7 +363,11 @@ func time_control_triggered(action: Dictionary) -> void:
 	): replay_round()
 
 func reset_game() -> void:
-	get_tree().reload_current_scene()
+	create_tween().tween_method(
+		func(w: float): $level_ui/try_again.modulate.a = w, 0., 1., 1.
+	).set_ease(Tween.EASE_IN).finished.connect(func():GUI.fade_to(Color.BLACK).finished.connect(func():
+		get_tree().reload_current_scene()
+	))
 
 @export var respawn_time_sec: float = 1.
 func replay_round() -> void:
@@ -436,8 +458,7 @@ func _on_timeline_checkpoint_triggered() -> void:
 			if "spawn_time_msec" in object: object.spawn_time_msec = -50000.
 
 func _on_player_carrier_dead(_itsme: BattleCharacter) -> void:
-	if not %character.in_battle():
-		reset_game()
+	if not %character.in_battle(): reset_game()
 
 func _on_character_dead(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.MUSTLE_ARRIVES and $combatants/boss:
@@ -459,14 +480,7 @@ func _on_character_dead(_itsme: BattleCharacter) -> void:
 		or current_tutorial_phase == TutorialPhases.MOVEMENT
 		or current_tutorial_phase == TutorialPhases.BOOST
 		or current_tutorial_phase == TutorialPhases.DESTROY
-	): # No way to reverse time in these phases, restart level
-		var failed_level_tween: Tween = create_tween()
-		failed_level_tween.tween_method(
-			func(w: float): $level_ui/try_again.modulate.a = w, 0., 1., 1.
-		).set_ease(Tween.EASE_IN)
-		failed_level_tween.tween_callback(
-			func():GUI.fade_to(Color.BLACK).finished.connect(func(): reset_game())
-		)
+	): reset_game() # No way to reverse time in these phases, restart level
 	else: GUI.set_objective("Rewind to try again")
 
 func _on_character_shields_toggled(turned_on: bool) -> void:
@@ -517,7 +531,5 @@ func _on_character_resurrected(_itsme: BattleCharacter) -> void:
 		GUI.set_objective("E to equip mine\n within carrier;\nE to deploy it!")
 
 func _on_timeline_rewind_started() -> void: pass
-
 func _on_timeline_rewind_stopped() -> void: pass
-
 func replay_game() -> void: pass # Dummy function as there is no replay on this level

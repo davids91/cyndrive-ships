@@ -16,6 +16,7 @@ static var instance: PlayerInput:
 		input_disabled = value
 		is_shooting = false
 		reverse_being_held = false
+		reverse_hold_time_sec = 0.
 		current_action_direction = Vector2.ZERO
 
 const tap_interval_msec: int = 500
@@ -61,9 +62,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		action["action_initiated"] = true
 
 	if event.is_action_pressed("slowdown") and just_pressed:
-		slowdown_being_held = !slowdown_being_held
+		slowdown_being_held = true
 
-	if event.is_action_pressed("replay") and just_pressed and not slowdown_being_held:
+	if event.is_action_released("slowdown"):
+		slowdown_being_held = false
+
+	if event.is_action_pressed("replay") and just_pressed:
 		reverse_being_held = true
 	if event.is_action_released("replay"):
 		reverse_being_held = false
@@ -90,7 +94,11 @@ func _unhandled_input(event: InputEvent) -> void:
 @export var slowdown_max_hold_sec: float = 3.
 @export var slowdown_regenerate_speed: float = 0.5
 func _process(delta: float) -> void:
-	if input_disabled: return
+	if input_disabled:
+		if reverse_initiated and not reverse_being_held:
+			time_control_triggered.emit({"rewind_toggled": false})
+			reverse_initiated = false
+		return
 	var time_control: Dictionary = {}
 
 	# Handling slowdown:
@@ -109,7 +117,7 @@ func _process(delta: float) -> void:
 		)) * 1000.) / 1000.
 
 	# Handling Timeline reverse
-	if reverse_being_held and not slowdown_being_held:
+	if reverse_being_held:
 		reverse_hold_time_sec += delta
 		if reverse_hold_time_sec > short_reverse_hold_time_sec:
 			if not reverse_initiated:
