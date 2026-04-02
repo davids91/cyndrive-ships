@@ -5,13 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="4_io4v1"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="5_6jemn"]
 [ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="6_by8vi"]
-[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="6_xw3hl"]
+[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="6_xw3hl"]
 [ext_resource type="Script" uid="uid://dl4dk45frpwra" path="res://scripts/equipment/minimap.gd" id="7_2soyj"]
 [ext_resource type="Texture2D" uid="uid://3nu76apg4ufe" path="res://textures/ui/icons/minimap_icon_3.png" id="8_lhduc"]
 [ext_resource type="Texture2D" uid="uid://crvtsjud0ssjq" path="res://textures/ui/icons/minimap_icon_4.png" id="9_5pomm"]
 [ext_resource type="Texture2D" uid="uid://bnmuvyy2lsbhk" path="res://textures/ui/icons/map_icon.png" id="10_fh4lj"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="11_fh4lj"]
-[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="12_by8vi"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="12_g8yy2"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="14_45v6q"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="15_jmtss"]
@@ -19,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_2soyj"]
 [ext_resource type="Script" uid="uid://cxw7l8tkolluc" path="res://scripts/entities/disabled_droid.gd" id="19_l3ay5"]
 [ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="19_xxhjm"]
+[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="20_fh4lj"]
 [ext_resource type="AudioStream" uid="uid://0oqoh37hsp4w" path="res://audio/music_big_beat_longer.ogg" id="21_g8yy2"]
 [ext_resource type="AudioStream" uid="uid://l8abnhstyv07" path="res://audio/Acid-Theme v1.mp3" id="22_45v6q"]
 [ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="27_45v6q"]
@@ -79,13 +79,6 @@ point_count = 5
 _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
-
-[sub_resource type="Resource" id="Resource_fh4lj"]
-resource_local_to_scene = true
-script = ExtResource("12_by8vi")
-team_id = 1
-color = Color(1, 1, 1, 0)
-metadata/_custom_type_script = "uid://upxd16rpbdyu"
 
 [node name="battle" type="Node2D" unique_id=254046485]
 script = ExtResource("1_aby8t")
@@ -216,7 +209,7 @@ blue_curve_phasing = SubResource("Curve_45v6q")
 unique_name_in_owner = true
 visible = false
 position = Vector2(1591, -2681)
-team = SubResource("Resource_fh4lj")
+team = ExtResource("20_fh4lj")
 color = Color(0, 0, 0, 0)
 carrier_ship = NodePath("../player_carrier")
 
@@ -272,6 +265,10 @@ unskippable_signals = Array[int]([0])
 [node name="restore" parent="dialogues" unique_id=1410695419 instance=ExtResource("19_2soyj")]
 visible = false
 dialog = "res://dialogues/tutorial_level/tutorial_3_restore_captured_drone.txt"
+
+[node name="slowdown" parent="dialogues" unique_id=286697342 instance=ExtResource("19_2soyj")]
+visible = false
+dialog = "res://dialogues/tutorial_level/tutorial_3.5_slow_time.txt"
 dialogue_conditionals = Array[bool]([false])
 
 [node name="boss_arrives" parent="dialogues" unique_id=1036083588 instance=ExtResource("19_2soyj")]
@@ -320,6 +317,7 @@ dialog = "res://dialogues/tutorial_level/tutorial_7_boss_defeated.txt"
 [connection signal="dialouge_finished" from="dialogues/boost" to="." method="_on_boost_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/destroy" to="." method="_on_destroy_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/restore" to="." method="_on_restore_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/slowdown" to="." method="_on_slowdown_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/boss_arrives" to="." method="_on_boss_arrives_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/player_dies" to="." method="_on_player_dies_dialouge_finished"]
 [connection signal="dialouge_finished" from="dialogues/player_resurrected" to="." method="_on_player_resurrected_dialouge_finished"]

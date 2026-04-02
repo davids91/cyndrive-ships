@@ -250,7 +250,7 @@ func _on_destroy_dialouge_finished() -> void:
 	GUI.set_objective("Destroy\nthe prototype droid")
 
 func _on_player_carrier_equipped_ship_with_mine(_ship: BattleCharacter) -> void:
-	$dialogues/restore.dialogue_conditionals[0] = true
+	$dialogues/slowdown.dialogue_conditionals[0] = true
 
 func _on_boss_arrives_dialouge_finished() -> void:
 	current_tutorial_phase = TutorialPhases.MUSTLE_ARRIVES
@@ -324,7 +324,7 @@ func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 func _on_disabled_droid_resurrected(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.RESTORE:
 		current_tutorial_phase = TutorialPhases.EXPLODE
-		GUI.set_objective("E to equip mine\n within carrier;\nE to deploy it!")
+		$dialogues/slowdown.start()
 
 func view_control_triggered(action: Dictionary) -> void:
 	if "zoom" in action:
@@ -533,3 +533,6 @@ func _on_character_resurrected(_itsme: BattleCharacter) -> void:
 func _on_timeline_rewind_started() -> void: pass
 func _on_timeline_rewind_stopped() -> void: pass
 func replay_game() -> void: pass # Dummy function as there is no replay on this level
+
+func _on_slowdown_dialouge_finished() -> void:
+	GUI.set_objective("E to equip mine\n within carrier;\nE to deploy it!")

@@ -59,7 +59,7 @@ sources/0 = SubResource("TileSetAtlasSource_qg2gn")
 
 [sub_resource type="LabelSettings" id="LabelSettings_ikjs2"]
 line_spacing = 0.0
-font_size = 25
+font_size = 20
 font_color = Color(0, 1, 1, 0.5019608)
 
 [sub_resource type="LabelSettings" id="LabelSettings_8j45s"]
@@ -196,12 +196,15 @@ label_settings = ExtResource("3_o14dv")
 [node name="info_label2" type="Label" parent="." unique_id=353632813]
 offset_left = 604.0
 offset_top = 25.0
-offset_right = 1061.0
+offset_right = 876.0
 offset_bottom = 174.0
-text = "Press 'R' to rewind battle
-Ctrl + 'R' to restart battle
-Press 'K' for keybindings"
+text = "
+Hold R to slow down time
+Shift + R to rewind battle
+Ctrl + R to restart battle
+Press K for keybindings"
 label_settings = SubResource("LabelSettings_ikjs2")
+horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="objective" type="Label" parent="." unique_id=374281671]

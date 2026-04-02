@@ -1,11 +1,10 @@
 [gd_scene format=3 uid="uid://bxvkgl6pp7mn0"]
 
 [ext_resource type="Script" uid="uid://b4yck7dcr2mqg" path="res://scripts/entities/battle_character.gd" id="1_iulgi"]
-[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_5doxk"]
+[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="2_5doxk"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_fbtwq"]
 [ext_resource type="Texture2D" uid="uid://cm6fobaf78bk1" path="res://textures/entities/battle_ship.png" id="3_sqc82"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="4_ykdog"]
-[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="6_33oy3"]
 [ext_resource type="Script" uid="uid://cdrsm7mlhnmnm" path="res://scripts/equipment/energy_systems.gd" id="7_0nsx8"]
 [ext_resource type="Script" uid="uid://co4eimc5mgx3i" path="res://scripts/equipment/weapon_slot.gd" id="8_owx80"]
 [ext_resource type="Script" uid="uid://c8qgskcr7o3mn" path="res://scripts/equipment/decoy_shooter.gd" id="10_5doxk"]
@@ -29,11 +28,6 @@
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="30_5j1ue"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="36_ei2dj"]
 
-[sub_resource type="Resource" id="Resource_cy11g"]
-resource_local_to_scene = true
-script = ExtResource("6_33oy3")
-metadata/_custom_type_script = "uid://upxd16rpbdyu"
-
 [sub_resource type="Resource" id="Resource_2vmea"]
 script = ExtResource("2_5doxk")
 offset = Vector2(128, -128)
@@ -42,86 +36,6 @@ metadata/_custom_type_script = "uid://cud6a5voxneed"
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k8udw"]
 radius = 15.0
 height = 60.0
-
-[sub_resource type="Shader" id="Shader_tpj62"]
-code = "shader_type canvas_item;
-
-uniform sampler2D noise;
-uniform vec4 burn_color : source_color;
-uniform vec4 team_color: source_color;
-
-uniform float burn_percentage: hint_range(0.0, 1.0) = 0.5;
-uniform sampler2D burn_curve;
-uniform float burn_threshold: hint_range(0.001, 1.0) = 0.1;
-uniform float burn_flame_supression: hint_range(0.0, 0.8) = 0.1;
-uniform float pixel_scale: hint_range(1., 100.);
-uniform float color_aberration: hint_range(0.0, 0.2) = 0.1;
-
-void fragment() {
-	if (1.0 == burn_percentage) {
-		discard;
-	}
-
-	vec2 pixel_uv = floor(UV * pixel_scale) / pixel_scale;
-	vec2 large_pixel_uv = floor(UV * pixel_scale * 4.) / pixel_scale / 4.;
-	vec4 skin_color;
-	float red_abberation_angle = texture(noise, pixel_uv).r * 2. * PI;
-	float green_abberation_angle = texture(noise, pixel_uv + vec2(0., 1.)).r * 2. * PI;
-	float blue_abberation_angle = texture(noise, pixel_uv + vec2(1., 0.)).r * 2. * PI;
-	float aberration = color_aberration * burn_percentage;
-	skin_color = vec4(
-		texture(TEXTURE, UV + vec2(cos(red_abberation_angle), sin(red_abberation_angle)) * aberration).r,
-		texture(TEXTURE, UV + vec2(cos(green_abberation_angle), sin(green_abberation_angle)) * aberration).g,
-		texture(TEXTURE, UV + vec2(cos(blue_abberation_angle), sin(blue_abberation_angle)) * aberration).b,
-		max(max(
-			texture(TEXTURE, UV + vec2(cos(red_abberation_angle), sin(red_abberation_angle)) * aberration).a,
-			texture(TEXTURE, UV + vec2(cos(green_abberation_angle), sin(green_abberation_angle)) * aberration).a),
-			texture(TEXTURE, UV + vec2(cos(blue_abberation_angle), sin(blue_abberation_angle)) * aberration).a
-		)
-	);
-	skin_color = vec4(mix(skin_color, team_color, team_color.a).rgb, skin_color.a);
-	float corrected_burn_prec = texture(burn_curve, vec2(burn_percentage, 0.)).r;
-	float skin_alpha = clamp(pow(texture(noise, large_pixel_uv).r, mix(0.001, 25., corrected_burn_prec)), 0., 1.);
-	float skin_alpha_larger = clamp(pow(texture(noise, large_pixel_uv).r, mix(0.001, 10., corrected_burn_prec)), 0., 1.);
-	vec4 burned_color = mix(burn_color, skin_color, clamp(skin_alpha / max(0.01, (burn_threshold - burn_flame_supression)), 0., 1.));
-	skin_alpha = clamp(min(skin_alpha * 4., skin_color.a), 0., 1.);
-    COLOR = vec4(burned_color.rgb, skin_alpha);
-}"
-
-[sub_resource type="Curve" id="Curve_cy11g"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_attt3"]
-curve = SubResource("Curve_cy11g")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ce6sv"]
-noise_type = 5
-frequency = 0.0188
-fractal_type = 2
-fractal_octaves = 2
-fractal_lacunarity = 2.525
-fractal_gain = 2.0
-domain_warp_type = 1
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ei2dj"]
-noise = SubResource("FastNoiseLite_ce6sv")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5doxk"]
-resource_local_to_scene = true
-shader = SubResource("Shader_tpj62")
-shader_parameter/noise = SubResource("NoiseTexture2D_ei2dj")
-shader_parameter/burn_color = Color(1, 1, 0, 1)
-shader_parameter/team_color = Color(0, 0, 0, 0)
-shader_parameter/burn_percentage = 0.0
-shader_parameter/burn_curve = SubResource("CurveTexture_attt3")
-shader_parameter/burn_threshold = 1.0
-shader_parameter/burn_flame_supression = 0.50000002375
-shader_parameter/pixel_scale = 2.0000000475
-shader_parameter/color_aberration = 0.150000007125
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_8vsun"]
-viewport_path = NodePath("skin/layers")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_i0gp7"]
 streams_count = 6
@@ -146,7 +60,6 @@ stream_3/stream = ExtResource("28_uokki")
 [node name="character" type="CharacterBody2D" unique_id=138634092 groups=["destroyables"]]
 collision_layer = 3
 script = ExtResource("1_iulgi")
-team = SubResource("Resource_cy11g")
 color = Color(0, 0, 0, 0)
 skin_layers = Array[ExtResource("2_5doxk")]([SubResource("Resource_2vmea")])
 starting_health = 500.0
@@ -169,11 +82,6 @@ handle_input_locally = false
 size = Vector2i(100, 100)
 
 [node name="cam" type="Camera2D" parent="skin/layers" unique_id=1084235475]
-
-[node name="skin_image" type="Sprite2D" parent="skin" unique_id=376491413]
-visible = false
-material = SubResource("ShaderMaterial_5doxk")
-texture = SubResource("ViewportTexture_8vsun")
 
 [node name="shield" parent="." unique_id=967055025 instance=ExtResource("21_hynoq")]
 position = Vector2(128, 0)

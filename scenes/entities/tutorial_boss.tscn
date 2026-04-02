@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://daxgfc8sbv7ql" path="res://scripts/entities/tutorial_boss.gd" id="1_icc1o"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_at5o7"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="2_dvnma"]
-[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="2_icc1o"]
+[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="2_icc1o"]
 [ext_resource type="Texture2D" uid="uid://d08wg3qlw4vqo" path="res://textures/entities/white ship.png" id="3_opo5f"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="4_opo5f"]
 [ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="5_cjpna"]
@@ -223,6 +223,7 @@ autoplay = "default"
 [node name="skin" type="Node2D" parent="." unique_id=186782862]
 visible = false
 script = ExtResource("4_opo5f")
+color_mix = null
 
 [node name="layers" type="SubViewport" parent="skin" unique_id=188810637]
 disable_3d = true

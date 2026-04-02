@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Team" load_steps=2 format=3 uid="uid://ym7tr32c2fsa"]
+[gd_resource type="Resource" script_class="Team" format=3 uid="uid://ym7tr32c2fsa"]
 
 [ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="1_m2esa"]
 
