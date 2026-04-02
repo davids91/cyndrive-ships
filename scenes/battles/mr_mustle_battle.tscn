@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c6k16wfmb6gt6"]
 
-[ext_resource type="Script" uid="uid://ctj8isc4n0ws8" path="res://scripts/battle/dev_room_mr_mustle.gd" id="1_i0uq0"]
+[ext_resource type="Script" uid="uid://ctj8isc4n0ws8" path="res://scripts/battle/boss_fight_room.gd" id="1_i0uq0"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="2_e8au5"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="3_bc2pp"]
 [ext_resource type="PackedScene" uid="uid://dmn3a6pdbqk1q" path="res://scenes/entities/tutorial_boss.tscn" id="4_kuptj"]

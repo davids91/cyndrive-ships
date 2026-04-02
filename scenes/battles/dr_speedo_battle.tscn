@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://bqb81rnetoha8"]
+
+[ext_resource type="Script" uid="uid://ctj8isc4n0ws8" path="res://scripts/battle/boss_fight_room.gd" id="1_mxww0"]
+[ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="2_mxww0"]
+[ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="3_hrh6b"]
+[ext_resource type="PackedScene" uid="uid://djk4xx0uhmkfn" path="res://scenes/entities/level1_boss.tscn" id="4_mxww0"]
+[ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="5_0dc3k"]
+[ext_resource type="PackedScene" uid="uid://blkx4xohejd2i" path="res://scenes/effects/black_hole.tscn" id="5_hrh6b"]
+[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="6_bimru"]
+
+[node name="battle" type="Node2D" unique_id=1944730611]
+script = ExtResource("1_mxww0")
+
+[node name="cam" type="Camera2D" parent="." unique_id=1742123394]
+position = Vector2(961, -1972)
+zoom = Vector2(0.2, 0.2)
+
+[node name="timeline" type="Node" parent="." unique_id=933754575]
+script = ExtResource("2_mxww0")
+
+[node name="parallax_background" parent="." unique_id=988100783 instance=ExtResource("3_hrh6b")]
+
+[node name="combatants" type="Node" parent="." unique_id=1456232303]
+
+[node name="boss" parent="combatants" unique_id=128563897 instance=ExtResource("4_mxww0")]
+position = Vector2(-1838, -898)
+
+[node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("5_0dc3k")]
+unique_name_in_owner = true
+position = Vector2(961, -1972)
+team = ExtResource("6_bimru")
+color = Color(0, 0, 0, 0)
+
+[node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1963758468]
+rotation = 1.570289
+remote_path = NodePath("../../../cam")
+update_rotation = false
+update_scale = false
+
+[node name="mush" type="Node" parent="." unique_id=222397579]
+
+[node name="debris" type="Node" parent="." unique_id=600629627]
+
+[node name="black_hole" parent="." unique_id=613685002 instance=ExtResource("5_hrh6b")]
+position = Vector2(-536, -2386)
+
+[connection signal="round_reset" from="timeline" to="combatants/boss" method="respawn"]
+[connection signal="dead" from="combatants/boss" to="." method="_on_character_dead"]
+[connection signal="dead" from="combatants/character" to="." method="_on_character_dead"]

@@ -17,14 +17,14 @@ signal shields_toggled(turned_on: bool)
 @export var low_health: float = 3.
 @export_range(0., 1000.) var mass: float = 10.
 
-@onready var spawn_snapshot: Dictionary = get_snapshot()
 @onready var health: float = starting_health
+@onready var spawn_snapshot: Dictionary = get_snapshot()
 
 func _ready() -> void:
 	$skin.init_skin(skin_layers, team.color)
 	if has_node("laser_beam"): $laser_beam.base_damage *= laser_strength
 	if has_node("ai_control"): $ai_control.enabled = true
-	elif not self is MrMustle:
+	elif not self is MrMustle and not self is DrSpeedo:
 		$controller.set_script(preload("res://scripts/equipment/player_motion_control.gd"))
 		$controller.character = self
 		$controller.last_position = get_global_position()

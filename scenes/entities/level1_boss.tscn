@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://djk4xx0uhmkfn"]
 
-[ext_resource type="Script" uid="uid://c1m1au4apakrm" path="res://scripts/entities/level1_boss.gd" id="1_gr2rq"]
-[ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_i2uoc"]
+[ext_resource type="Script" uid="uid://c1m1au4apakrm" path="res://scripts/entities/dr_spedo_brain.gd" id="1_gr2rq"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="2_ydxfo"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="3_4am64"]
-[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://resources/battle_ship_skin.gd" id="3_8sms1"]
+[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="3_8sms1"]
 [ext_resource type="Texture2D" uid="uid://qnvemx3643ri" path="res://textures/entities/ominous ship.png" id="4_h0o0o"]
 [ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="4_ydxfo"]
+[ext_resource type="Script" uid="uid://cawwrwd124mpc" path="res://scripts/equipment/dummy_controller.gd" id="5_0oxfl"]
 [ext_resource type="AudioStream" uid="uid://bxfkppefqurjq" path="res://audio/boss_screaming.wav" id="5_8sms1"]
 [ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="6_h0o0o"]
+[ext_resource type="Script" uid="uid://co4eimc5mgx3i" path="res://scripts/equipment/weapon_slot.gd" id="6_x76km"]
 [ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="7_a5rul"]
 [ext_resource type="AudioStream" uid="uid://dajttw71kitgt" path="res://audio/explosion_001.wav" id="8_tb2r6"]
 [ext_resource type="AudioStream" uid="uid://besa8dwtnwqwy" path="res://audio/explosion_002.wav" id="9_xsh2e"]
@@ -17,6 +18,15 @@
 [ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="12_jd4ta"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="13_0oxfl"]
 [ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="14_x76km"]
+[ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="18_8sms1"]
+[ext_resource type="Script" uid="uid://uuxtpr3aemf2" path="res://scripts/equipment/zap_aura.gd" id="18_h0o0o"]
+[ext_resource type="Script" uid="uid://n2lp6a2eyw3m" path="res://scripts/equipment/chain_lightning.gd" id="19_0oxfl"]
+[ext_resource type="AudioStream" uid="uid://cj2onr3cwpkuu" path="res://audio/chain_lightning_1.wav" id="20_x76km"]
+[ext_resource type="AudioStream" uid="uid://bt6iti1d0u2bv" path="res://audio/chain_lightning_2.wav" id="21_it8mc"]
+[ext_resource type="AudioStream" uid="uid://bqh8lv83t44ky" path="res://audio/chain_lightning_3.wav" id="22_o2pl7"]
+[ext_resource type="AudioStream" uid="uid://bk6en08xn1djx" path="res://audio/chain_lightning_4.wav" id="23_b23ht"]
+[ext_resource type="AudioStream" uid="uid://c76b3d0ookchm" path="res://audio/chain_lightning_5.wav" id="24_ebfdu"]
+[ext_resource type="AudioStream" uid="uid://blyru66ib1vq7" path="res://audio/chain_lightning_6.wav" id="25_o6hf0"]
 
 [sub_resource type="Resource" id="Resource_a5rul"]
 script = ExtResource("3_8sms1")
@@ -39,9 +49,14 @@ _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0.39823008, 1), 0.0, -64.04968, 0, 0, Vector2(0.42123893, 110.13977), 0.0, 0.0, 0, 0, Vector2(0.93805313, 1), -184.13016, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_it8mc"]
-radius = 100.0
-height = 425.6
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_yqywa"]
+streams_count = 6
+stream_0/stream = ExtResource("20_x76km")
+stream_1/stream = ExtResource("21_it8mc")
+stream_2/stream = ExtResource("22_o2pl7")
+stream_3/stream = ExtResource("23_b23ht")
+stream_4/stream = ExtResource("24_ebfdu")
+stream_5/stream = ExtResource("25_o6hf0")
 
 [sub_resource type="Shader" id="Shader_xqo7t"]
 code = "shader_type canvas_item;
@@ -121,6 +136,7 @@ shader_parameter/pixel_scale = 2.0000000475
 shader_parameter/color_aberration = 0.150000007125
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_b23ht"]
+viewport_path = NodePath("skin/layers")
 
 [sub_resource type="Gradient" id="Gradient_ebfdu"]
 offsets = PackedFloat32Array(0, 0.47215497, 0.8595642, 1)
@@ -154,6 +170,16 @@ shader_parameter/phase_green = 1.0
 shader_parameter/phase_blue = 1.0
 shader_parameter/zoom = 0.75000003492648
 
+[sub_resource type="Curve" id="Curve_ydxfo"]
+_data = [Vector2(0, 0.50561804), 0.0, 0.0, 0, 0, Vector2(0.9984351, 0.49438208), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_8sms1"]
+colors = PackedColorArray(0.61, 0.5693334, 0, 1, 1, 0.61733335, 0.18, 0.16862746)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0oxfl"]
+radius = 1000.0
+
 [node name="boss" type="CharacterBody2D" unique_id=128563897]
 script = ExtResource("1_gr2rq")
 approx_size = 512.0
@@ -167,17 +193,32 @@ red_curve_phasing = SubResource("Curve_8a2ah")
 green_curve_phasing = SubResource("Curve_ikjs2")
 blue_curve_phasing = SubResource("Curve_1rdfn")
 
-[node name="collision_shape" type="CollisionShape2D" parent="." unique_id=2127527192]
-position = Vector2(-32, 0)
-shape = SubResource("CapsuleShape2D_it8mc")
-disabled = true
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=841035113]
+rotation = 1.5707964
+polygon = PackedVector2Array(-12, 258, -128, 168, -127, -5, -236, -166, 229, -166, 108, 0, 112, 171)
 
 [node name="controller" type="Node2D" parent="." unique_id=855373956]
-script = ExtResource("2_i2uoc")
-handle_rotation = false
-top_speed = 5.0
-start_resistance = 5.0
-momentum_dampener = 0.95
+script = ExtResource("5_0oxfl")
+
+[node name="weapon_slot" type="Node" parent="." unique_id=273678752 node_paths=PackedStringArray("weapons")]
+script = ExtResource("6_x76km")
+weapons = [NodePath("../chain_lightning")]
+metadata/_custom_type_script = "uid://co4eimc5mgx3i"
+
+[node name="chain_lightning" type="Node2D" parent="." unique_id=320241691 node_paths=PackedStringArray("wielder")]
+script = ExtResource("19_0oxfl")
+wielder = NodePath("..")
+chain_radius = 750.0
+base_damage = 0.5
+energy_cost = 0.1
+metadata/_custom_type_script = "uid://cy4bwltyfsq3g"
+
+[node name="sound" type="AudioStreamPlayer2D" parent="chain_lightning" unique_id=1493407972]
+stream = SubResource("AudioStreamRandomizer_yqywa")
+volume_db = -30.0
+attenuation = 0.3186402
+max_polyphony = 5
+bus = &"Ships"
 
 [node name="skin" type="Node2D" parent="." unique_id=878303484]
 script = ExtResource("3_4am64")
@@ -245,6 +286,7 @@ bus = &"Ships"
 
 [node name="target_arrow" type="Sprite2D" parent="." unique_id=2104382642]
 visible = false
+self_modulate = Color(0.2193, 0.51, 0.28713, 1)
 position = Vector2(4, 0)
 scale = Vector2(2.96875, 2.96875)
 texture = ExtResource("12_jd4ta")
@@ -256,6 +298,7 @@ mini_health_bar_offset = Vector2(-320, 320)
 emote_offset = Vector2(100, -70)
 
 [node name="phase_effect" type="ColorRect" parent="." unique_id=696427734]
+visible = false
 material = SubResource("ShaderMaterial_2dggn")
 anchors_preset = 8
 anchor_left = 0.5
@@ -274,7 +317,29 @@ stream = ExtResource("5_8sms1")
 volume_db = -2.0
 bus = &"Sfx"
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=891487070]
+[node name="trail" type="Line2D" parent="." unique_id=858635274]
+visible = false
+top_level = true
+z_index = -10
+points = PackedVector2Array(0, 0, -2500, 0)
+width = 114.385
+width_curve = SubResource("Curve_ydxfo")
+gradient = SubResource("Gradient_8sms1")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=841035113]
-polygon = PackedVector2Array(-12, 258, -128, 168, -127, -5, -236, -166, 229, -166, 108, 0, 112, 171)
+[node name="zap_aura" type="Area2D" parent="." unique_id=2032168816]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("18_h0o0o")
+
+[node name="collision_shape" type="CollisionShape2D" parent="zap_aura" unique_id=2127527192]
+position = Vector2(-32, 0)
+rotation = -1.5707964
+shape = SubResource("CircleShape2D_0oxfl")
+
+[node name="temporal_recorder" type="Node2D" parent="." unique_id=925830415]
+script = ExtResource("18_8sms1")
+triggers_per_second = 20
+
+[connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]
+[connection signal="body_entered" from="zap_aura" to="zap_aura" method="_on_body_entered"]
+[connection signal="body_exited" from="zap_aura" to="zap_aura" method="_on_body_exited"]

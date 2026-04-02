@@ -3,11 +3,11 @@ extends Area2D
 @export var healing_power: float = 0.5
 @export var strength_over_time: float = 0.005
 
-@onready var character: BattleCharacter = get_parent()
+@onready var wielder: BattleCharacter = get_parent()
 
 var ships_within_aura: Dictionary = {}
 func _on_body_entered(body: Node2D) -> void:
-	if body != character and "team" in body and not body.team.is_enemy(character.team):
+	if body != wielder and "team" in body and not body.team.is_enemy(wielder.team):
 		ships_within_aura[body] = BattleTimeline.instance.time_msec()
 		if "is_being_healed" in body: body.is_being_healed = true
 

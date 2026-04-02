@@ -55,6 +55,8 @@ func _on_next_button_pressed() -> void:
 func _on_next_button_pressed_2() -> void:
 	%GUIdes_cam.offset = $time_travel_guide.position
 
-
 func _on_difficulty_slider_value_changed(value: float) -> void:
 	Difficulty.gameplay_speed = value
+
+func _on_dr_speedo_battle_pressed() -> void:
+		load_level("dr_speedo_battle")

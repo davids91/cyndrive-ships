@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dmn3a6pdbqk1q"]
 
-[ext_resource type="Script" uid="uid://daxgfc8sbv7ql" path="res://scripts/entities/tutorial_boss.gd" id="1_icc1o"]
+[ext_resource type="Script" uid="uid://daxgfc8sbv7ql" path="res://scripts/entities/mr_mustle_brain.gd" id="1_icc1o"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="2_at5o7"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="2_dvnma"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="2_icc1o"]

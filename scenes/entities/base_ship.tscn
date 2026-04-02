@@ -60,10 +60,19 @@ stream_3/stream = ExtResource("28_uokki")
 [node name="character" type="CharacterBody2D" unique_id=138634092 groups=["destroyables"]]
 collision_layer = 3
 script = ExtResource("1_iulgi")
+approx_size = null
+team = null
 color = Color(0, 0, 0, 0)
 skin_layers = Array[ExtResource("2_5doxk")]([SubResource("Resource_2vmea")])
 starting_health = 500.0
 max_health = 500.0
+low_health = null
+mass = null
+phase_in_duration_sec = null
+manually_exclude_from_battle = null
+docked_radius_percent = null
+laser_strength = null
+entanglement_chance = null
 
 [node name="collision_shape" type="CollisionShape2D" parent="." unique_id=2034315278]
 rotation = 1.5708

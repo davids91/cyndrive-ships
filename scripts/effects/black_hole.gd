@@ -1,5 +1,7 @@
+class_name BlackHole
 extends Area2D
 
+const DAMAGE: float = 666.
 
 var bodies_within: Dictionary
 func _on_body_entered(body: Node2D) -> void:
@@ -18,7 +20,7 @@ func _process(_delta: float) -> void:
 		if body.has_node("ai_control"): pull_force *= 500. # TechDebt: snappy playercontroller works on different force amounts
 		body.apply_impulse(pull_force)
 		if body_to_center.length() < death_radius:
-			if body.has_method("accept_damage"): body.accept_damage(666)
+			if body.has_method("accept_damage"): body.accept_damage(DAMAGE)
 			else:
 				bodies_within.erase(body)
 				body.queue_free()

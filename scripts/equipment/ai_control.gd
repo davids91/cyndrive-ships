@@ -96,8 +96,8 @@ func _physics_process(delta: float) -> void:
 		chosen_target = null
 
 	# decide potential new target
-	var tries = 0
-	var raycast_result
+	var tries: int = 0
+	var raycast_result: Dictionary
 	var random_target = combatants.get_children().pick_random()
 	while tries < 5 and ("in_battle" not in random_target or !random_target.in_battle()):
 		random_target = combatants.get_children().pick_random()
@@ -118,7 +118,7 @@ func _physics_process(delta: float) -> void:
 				distance_to_target = vector_to_target.length()
 				time_until_target_drop = goldfish_memory_sec
 				target_moving_avg = random_target.get_global_position()
-			else: raycast_result = null # In case the random target is not in line of sight, do not cache the raycast results
+			else: raycast_result = {} # In case the random target is not in line of sight, do not cache the raycast results
 
 	# Go to spawn position if no target
 	var target_is_alive = false
