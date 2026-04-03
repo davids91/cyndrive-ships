@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cqubhj8ciim3i"]
+[gd_scene format=3 uid="uid://sdrks6ruwidt"]
 
 [ext_resource type="Texture2D" uid="uid://bfwwsak64uiyq" path="res://textures/entities/silo_open.png" id="1_6laxo"]
 [ext_resource type="Script" uid="uid://j01uc3merjxs" path="res://scripts/entities/silo.gd" id="1_122oo"]
@@ -8,6 +8,8 @@
 [ext_resource type="Shader" uid="uid://c66rqecsnsqsu" path="res://shaders/implode.gdshader" id="3_rk5aj"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="5_xchnb"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="8_uiv6f"]
+[ext_resource type="Shader" uid="uid://t43psq6ffrwl" path="res://shaders/shiny_pickup.gdshader" id="9_v162e"]
+[ext_resource type="Script" uid="uid://ddlf5o0iu0v5e" path="res://scripts/effects/shiny.gd" id="10_jnyqh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uskil"]
 radius = 445.0
@@ -49,6 +51,42 @@ shader_parameter/color_aberration = 0.150000007125
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_rk5aj"]
 viewport_path = NodePath("skin/layers")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jnyqh"]
+radius = 150.0
+
+[sub_resource type="Curve" id="Curve_v162e"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.47245407, 0.22127146), 0.0, 0.0, 0, 0, Vector2(1, 0.14180934), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_jnyqh"]
+curve = SubResource("Curve_v162e")
+
+[sub_resource type="Curve" id="Curve_jnyqh"]
+_data = [Vector2(0, 0.31265283), 0.0, 0.0, 0, 0, Vector2(0.91318864, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_v162e"]
+curve = SubResource("Curve_jnyqh")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jnyqh"]
+shader = ExtResource("9_v162e")
+shader_parameter/color = Color(0.98039216, 0.9372549, 0.105882354, 1)
+shader_parameter/radius = 0.426000020235
+shader_parameter/radius_curve = SubResource("CurveTexture_jnyqh")
+shader_parameter/row_angle_offset = SubResource("CurveTexture_v162e")
+shader_parameter/ray_count = 20
+shader_parameter/ray_width = 0.3030000143925
+
+[sub_resource type="Gradient" id="Gradient_jnyqh"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.0033057851, 0.061157025, 0.0892562, 0.10909091)
+colors = PackedColorArray(0.65166646, 0, 0.85, 1, 0.55, 0.20166667, 0, 1, 1, 0.65, 0, 1, 0.68, 0.442, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aibyv"]
+gradient = SubResource("Gradient_jnyqh")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [node name="silo" type="RigidBody2D" unique_id=1278794569]
 script = ExtResource("1_122oo")
@@ -92,7 +130,7 @@ offset_bottom = 80.0
 speech_buble_offset = Vector2(64, 256)
 
 [node name="skin" type="Sprite2D" parent="." unique_id=1166410963]
-z_index = 10
+z_index = 15
 material = SubResource("ShaderMaterial_uiv6f")
 texture = SubResource("ViewportTexture_rk5aj")
 script = ExtResource("3_0n0ls")
@@ -139,4 +177,36 @@ script = ExtResource("8_uiv6f")
 triggers_per_second = 20
 autostart = true
 
+[node name="payload_trigger" type="Area2D" parent="." unique_id=1848804853]
+z_index = 5
+collision_layer = 0
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="payload_trigger" unique_id=877497511]
+shape = SubResource("CircleShape2D_jnyqh")
+
+[node name="payload" type="ColorRect" parent="payload_trigger" unique_id=106022512]
+z_index = 5
+material = SubResource("ShaderMaterial_jnyqh")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(128, 128)
+script = ExtResource("10_jnyqh")
+
+[node name="TextureRect" type="TextureRect" parent="payload_trigger/payload" unique_id=1976303002]
+layout_mode = 0
+offset_right = 256.0
+offset_bottom = 256.0
+texture = SubResource("GradientTexture2D_aibyv")
+
 [connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]
+[connection signal="body_entered" from="payload_trigger" to="." method="_on_payload_trigger_body_entered"]

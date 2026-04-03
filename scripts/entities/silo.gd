@@ -2,6 +2,7 @@ extends BattleDebris
 
 signal doors_toggled(is_open: bool)
 signal health_changed(percentage: float)
+signal payload_reached()
 
 @export var starting_health: float = 100.
 @export var color: Color = Color.YELLOW # Color for the minimap
@@ -63,3 +64,10 @@ func _health_check() -> void:
 func _process(delta: float) -> void:
 	$state_display.set_visible(visible)
 	super(delta)
+
+func _on_payload_trigger_body_entered(_body: Node2D) -> void:
+	if not is_alive and $payload_trigger/payload:
+		create_tween().tween_property($payload_trigger/payload, "self_modulate", Color.TRANSPARENT, 0.5).finished.connect(
+			func(): $payload_trigger/payload.queue_free()
+		)
+		payload_reached.emit()
