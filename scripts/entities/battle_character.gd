@@ -5,6 +5,7 @@ signal dead(itsme: BattleCharacter)
 signal resurrected(itsme: BattleCharacter)
 signal boost_energy_updated(new_energy_level: float)
 signal weapon_energy_updated(new_energy_level: float)
+signal weapon_changed(slot: int)
 signal phased(phased_in: bool)
 signal shields_toggled(turned_on: bool)
 
@@ -500,3 +501,7 @@ func _infinite_boost_enabled() -> bool:
 		if battle_main and "infinite_boost_active" in battle_main and battle_main.infinite_boost_active:
 			return true
 	return false
+
+
+func _on_weapon_slot_weapon_changed(slot: int) -> void:
+	weapon_changed.emit(slot)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d4ak0rrpifxgt"]
+[gd_scene format=3 uid="uid://d4ak0rrpifxgt"]
 
 [ext_resource type="Texture2D" uid="uid://cn42r86npa81i" path="res://textures/ui/icons/select_normal.png" id="1_ic8al"]
 [ext_resource type="Texture2D" uid="uid://bpmilk2lntuvm" path="res://textures/ui/icons/select_selected.png" id="2_4sgma"]
@@ -6,7 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://c44cf4lxuafkd" path="res://textures/ui/icons/select_hover.png" id="3_mjowh"]
 [ext_resource type="Script" uid="uid://ntyulp3gc6rt" path="res://scripts/ui_menus/level_select_button.gd" id="4_4sgma"]
 
-[node name="level_select" type="TextureButton"]
+[sub_resource type="LabelSettings" id="LabelSettings_4sgma"]
+font_size = 20
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="level_select" type="TextureButton" unique_id=808673130]
 self_modulate = Color(0.29000002, 0.31366664, 1, 1)
 anchors_preset = 8
 anchor_left = 0.5
@@ -24,10 +29,11 @@ texture_pressed = ExtResource("2_4sgma")
 texture_hover = ExtResource("3_mjowh")
 script = ExtResource("4_4sgma")
 
-[node name="orbitable" type="Node2D" parent="."]
+[node name="orbitable" type="Node2D" parent="." unique_id=1832234778]
 script = ExtResource("3_4sgma")
 
-[node name="label" type="Label" parent="."]
+[node name="label" type="Label" parent="." unique_id=235051710]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_4sgma")

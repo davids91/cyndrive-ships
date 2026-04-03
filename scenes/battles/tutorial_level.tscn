@@ -1,15 +1,11 @@
-[gd_scene format=4 uid="uid://cer054lhx4edf"]
+[gd_scene format=3 uid="uid://cer054lhx4edf"]
 
 [ext_resource type="Script" uid="uid://bc2ashwmpmgd5" path="res://scripts/battle/tutorial_level.gd" id="1_aby8t"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="3_u34vn"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="4_io4v1"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="5_6jemn"]
-[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="6_by8vi"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="6_xw3hl"]
-[ext_resource type="Script" uid="uid://dl4dk45frpwra" path="res://scripts/equipment/minimap.gd" id="7_2soyj"]
-[ext_resource type="Texture2D" uid="uid://3nu76apg4ufe" path="res://textures/ui/icons/minimap_icon_3.png" id="8_lhduc"]
-[ext_resource type="Texture2D" uid="uid://crvtsjud0ssjq" path="res://textures/ui/icons/minimap_icon_4.png" id="9_5pomm"]
-[ext_resource type="Texture2D" uid="uid://bnmuvyy2lsbhk" path="res://textures/ui/icons/map_icon.png" id="10_fh4lj"]
+[ext_resource type="PackedScene" uid="uid://cvwcsmrrpxecn" path="res://scenes/UI/minimap.tscn" id="7_by8vi"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="11_fh4lj"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="12_g8yy2"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="14_45v6q"]
@@ -32,28 +28,6 @@ stream_2/stream = ExtResource("22_45v6q")
 [sub_resource type="LabelSettings" id="LabelSettings_fh4lj"]
 font_size = 45
 font_color = Color(1, 0, 0, 1)
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g8yy2"]
-texture = ExtResource("6_by8vi")
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-0:1/0 = 0
-3:1/0 = 0
-0:2/0 = 0
-3:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-1:2/0 = 0
-1:1/0 = 0
-2:2/0 = 0
-2:1/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_45v6q"]
-sources/0 = SubResource("TileSetAtlasSource_g8yy2")
 
 [sub_resource type="Resource" id="Resource_f0g0v"]
 script = ExtResource("6_xw3hl")
@@ -82,6 +56,12 @@ point_count = 5
 
 [node name="battle" type="Node2D" unique_id=254046485]
 script = ExtResource("1_aby8t")
+info_highlight_blink_length_sec = null
+rewind_animation_transition_sec = null
+respawn_time_sec = null
+gui_visible = null
+spawn_position = null
+spawn_radius = null
 
 [node name="cam" type="Camera2D" parent="." unique_id=805374975]
 position = Vector2(1591, -2681)
@@ -142,43 +122,17 @@ show_percentage = false
 layout_mode = 2
 text = "NAVIGATION PROGRESS"
 
-[node name="minimap" type="TileMapLayer" parent="level_ui" unique_id=1338846631 node_paths=PackedStringArray("monitor_nodes", "icon_template")]
-modulate = Color(1, 1, 1, 0.54901963)
-tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
-tile_set = SubResource("TileSet_45v6q")
-script = ExtResource("7_2soyj")
-map_extent = Rect2(500, -6000, 20000, 15000)
+[node name="minimap" parent="level_ui" unique_id=2003495201 node_paths=PackedStringArray("monitor_nodes") instance=ExtResource("7_by8vi")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -220.0
+offset_right = -220.0
+offset_bottom = 0.0
+grow_horizontal = 0
+map_extent = Rect2(500, -6000, 20000, 7500)
 monitor_nodes = [NodePath("../../markers"), NodePath("../../combatants")]
-icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
-
-[node name="MapIcon" type="Sprite2D" parent="level_ui/minimap" unique_id=1094368202]
-self_modulate = Color(1, 1, 1, 0.3647059)
-position = Vector2(347, 198)
-scale = Vector2(0.515625, 0.515625)
-texture = ExtResource("10_fh4lj")
-
-[node name="area" type="Panel" parent="level_ui/minimap" unique_id=2024670023]
-offset_left = 160.0
-offset_top = 193.0
-offset_right = 352.0
-offset_bottom = 336.0
-
-[node name="icon_combatants" type="TextureRect" parent="level_ui/minimap/area" unique_id=1943859511]
-visible = false
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("8_lhduc")
-expand_mode = 3
-
-[node name="icon_debris" type="TextureRect" parent="level_ui/minimap/area" unique_id=1331971977]
-visible = false
-self_modulate = Color(1, 0.97400004, 0.74, 1)
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("9_5pomm")
-expand_mode = 3
 
 [node name="combatants" type="Node" parent="." unique_id=330691034]
 
@@ -305,7 +259,7 @@ dialog = "res://dialogues/tutorial_level/tutorial_7_boss_defeated.txt"
 [connection signal="equipped_ship_with_mine" from="combatants/player_carrier" to="." method="_on_player_carrier_equipped_ship_with_mine"]
 [connection signal="phased" from="combatants/player_carrier" to="." method="_on_player_carrier_phased"]
 [connection signal="boost_energy_updated" from="combatants/character" to="." method="_on_character_boost_energy_updated"]
-[connection signal="dead" from="combatants/character" to="." method="_on_character_dead"]
+[connection signal="dead" from="combatants/character" to="." method="_on_battle_character_dead"]
 [connection signal="resurrected" from="combatants/character" to="." method="_on_character_resurrected"]
 [connection signal="shields_toggled" from="combatants/character" to="." method="_on_character_shields_toggled"]
 [connection signal="body_entered" from="markers/marker" to="." method="_on_marker_body_entered"]

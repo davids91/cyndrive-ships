@@ -1,51 +1,30 @@
-extends Node2D
+extends BaseBattle
 
 const character_template: PackedScene = preload("res://scenes/entities/base_ship.tscn")
 const round_start_delay_sec: float = 2.
 
-
-@export var gui_visible: bool = true
 @export var starting_laupeerium: float = 25.
 @export_range(0., 1.) var replay_screen_responsiveness: float = 0.05
 
 @onready var laupeerium_bar: UIEnergyBar = get_node("/root/Main/GUI/%laupeerium_bar")
-@onready var GUI: BattleShipGUI = get_node("/root/Main/GUI")
-@onready var player_input: PlayerInput = get_node("/root/Main/player_input")
 
 var init_countdown_sec: float = round_start_delay_sec
 var current_laupeerium: float = starting_laupeerium
 var living_team_members: Dictionary = {}
-var god_mode_active: bool = false
-var infinite_ammo_active: bool = false
-var infinite_boost_active: bool = false
 
 func _ready():
+	super()
+	spawn_position = $combatants/player_carrier.global_position
 	GUI.fade_to(Color.from_rgba8(0, 255,255, 200))
 	GUI.set_fade_radius(4.)
-	update_laupeerium_bar()
+	_update_laupeerium_bar()
 	$combatants/character/controller.stop()
+
+	# Initial count of team members
 	living_team_members[2] = 0
 	living_team_members[1] = 0
 	for combatant in $combatants.get_children():
-		$timeline.connect("round_reset", combatant.respawn)
-		$timeline.connect("rewind_started", combatant.pause_control)
-		$timeline.connect("rewind_stopped", combatant.resume_control)
-		combatant.dead.connect(_on_battle_character_dead)
-		combatant.resurrected.connect(_on_battle_character_resurrected)
 		living_team_members[combatant.team.team_id] += 1
-
-	for debris in $debris.get_children():
-		$timeline.connect("round_reset", debris.respawn)
-
-	# Connect weapon slot signal for UI updates
-	if $combatants/character.has_node("weapon_slot"):
-		$combatants/character/weapon_slot.weapon_changed.connect(_on_weapon_changed)
-	$combatants/player_carrier.phase_in()
-
-func reset_game() -> void:
-	for explosion in $mush.get_children():
-		explosion.queue_free()
-	get_tree().call_deferred("reload_current_scene")
 
 @export var rewind_battle_laupeerium_cost: float = 1.
 @export var slowdown_battle_laupeerium_cost: float = 0.1
@@ -54,83 +33,25 @@ func replay_round(rewind_animation: bool = true) -> void:
 
 	# Handle resource changes with round restart
 	if not is_replay: current_laupeerium -= rewind_battle_laupeerium_cost
-	update_laupeerium_bar()
-
-	#TechDebt: Eliminate mine after round end
-	if not $combatants/character.held_mine == null:
-		$combatants/character.held_mine.queue_free()
-
-	# Stop the fighting
-	for combatant in $combatants.get_children():
-		if "pause_control" in combatant:
-			combatant.pause_control()
-
-	# Create a clone of the ship
-	create_new_puppet($combatants/character)
-
-	# Handle temporal entanglement for affected ships
+	_update_laupeerium_bar()
+	super(rewind_animation)
+	# TechDebt: Await respawn animation
+	await get_tree().create_timer(respawn_time).timeout
+	living_team_members[1] = 0
+	living_team_members[2] = 0
 	for c in $combatants.get_children():
-		if(
-			"entangled" in c and c.entangled and not c.has_node("replayer")
-			and "team" in c and c.team.is_enemy($combatants/character.team)
-		): entangle_ship_with_player(c)
-
-	if not rewind_animation:
-		for combatant in $combatants.get_children():
-			if "pause_control" in combatant:
-				combatant.resume_control()
-		$timeline.reset()
-		queue_redraw()
-		GUI.get_node("defeat").set_visible(false)
-		GUI.get_node("victory").set_visible(false)
-		GUI.get_node("restart_round_panel").set_visible(false)
-		return
-
-	# Set up UI for the new round
-	GUI.get_node("rewind_effects").set_visible(true)
-
-	# Move the player to its spawn position
-	var respawn_time = 1.
-	var player_move_tween: Tween = create_tween()
-	player_move_tween.tween_method(
-		func(pos):
-			$combatants/character.set_global_position(pos)
-			GUI.get_node("rewind_effects").material.set_shader_parameter(
-				"rewind_amount",
-				-(pos - $combatants/character.spawn_snapshot["transform"].origin).length() / 500.
-			),
-		$combatants/character.get_global_position(),
-		$combatants/character.spawn_snapshot["transform"].origin,
-		respawn_time
-	)
-	player_move_tween.tween_callback(func():
-		for combatant in $combatants.get_children():
-			if "pause_control" in combatant:
-				combatant.resume_control()
-		GUI.get_node("rewind_effects").set_visible(false)
-		$timeline.reset()
-		queue_redraw()
-		GUI.get_node("defeat").set_visible(false)
-		GUI.get_node("victory").set_visible(false)
-		GUI.get_node("restart_round_panel").set_visible(false)
-		living_team_members[1] = 0
-		living_team_members[2] = 0
-		for c in $combatants.get_children():
-			if "is_alive" in c and c.is_alive:
-				living_team_members[c.team.team_id] += 1
-	)
-	player_move_tween.chain()
+		if "is_alive" in c and c.is_alive:
+			living_team_members[c.team.team_id] += 1
 
 var replay_viewport = Rect2()
 func _process(delta):
-	GUI.get_node("debug_stats/fps").set_text("%s fps" % Engine.get_frames_per_second())
 	GUI.set_time(BattleTimeline.instance.time_msec() / 1000.)
 	GUI.set_fade_radius(4. * Difficulty.slowdown_multiplier)
 
 	# Countdown to battle start
 	if 0 < init_countdown_sec:
 		init_countdown_sec = max(init_countdown_sec - delta / Difficuilty.gameplay_speed, 0)
-		GUI.get_node("score").set_text("%0.3f" % init_countdown_sec)
+		GUI.set_objectives_header("%0.3f" % init_countdown_sec)
 		if init_countdown_sec <= 0:
 			$combatants/character.set_visible(true)
 			$combatants/character/temporal_recorder.start_recording()
@@ -139,7 +60,7 @@ func _process(delta):
 				combatant.resume_control()
 			$timeline.reset()
 			player_input.input_disabled = false
-			GUI.get_node("score").set_text(str(
+			GUI.set_objectives_header(str(
 				living_team_members[1], " vs ", living_team_members[2],
 				" - Score: ", int(kill_score * kill_score_multiplier)
 			))
@@ -167,7 +88,7 @@ func _process(delta):
 	# Handling Timeline reverse
 	if is_rewinding:
 		current_laupeerium -= delta
-		update_laupeerium_bar()
+		_update_laupeerium_bar()
 		$timeline.reverse(delta)
 		GUI.get_node("defeat").set_visible(false)
 		GUI.get_node("victory").set_visible(false)
@@ -180,56 +101,7 @@ func _process(delta):
 			0., current_laupeerium - (1. - Difficulty.slowdown_multiplier) * delta * slowdown_battle_laupeerium_cost
 		)
 		if 0. == current_laupeerium: Difficuilty.slowdown_multiplier = 1.
-		update_laupeerium_bar()
-
-func entangle_ship_with_player(ship: BattleCharacter) -> void:
-	if ship.has_node("replayer") or ship.name == "character": return # Nothing to do when ship is already entangled
-	var records = ship.get_node("temporal_recorder").stop_recording()
-	var replayer = Node2D.new()
-	replayer.set_script(preload("res://scripts/battle/temporal_replayer.gd"))
-	replayer.name = "replayer"
-	replayer.usec_records = records["action"]
-	replayer.msec_records = records["temporal_snapshots"]
-	replayer.temporal_scope_changed.connect(ship._on_replayer_temporal_scope_changed)
-	$timeline.connect("round_reset", replayer.reset)
-	$timeline.connect("round_reset", replayer.start_replay)
-	replayer.reset()
-	ship.add_child(replayer)
-	if ship.has_node("ai_control"):
-		ship.get_node("ai_control").set_disabled(true)
-
-func create_new_puppet(predecessor: BattleCharacter) -> void:
-	var records = predecessor.get_node("temporal_recorder").stop_recording()
-	var puppet = character_template.instantiate();
-	var replayer = Node2D.new()
-	puppet.init_clone(predecessor, Color.from_rgba8(29, 191, 0, 104))
-	replayer.set_script(preload("res://scripts/battle/temporal_replayer.gd"))
-	replayer.name = "replayer"
-	replayer.usec_records = records["action"]
-	replayer.msec_records = records["temporal_snapshots"]
-	$timeline.connect("round_reset", puppet.respawn)
-	$timeline.connect("rewind_started", puppet.pause_control)
-	$timeline.connect("rewind_stopped", puppet.resume_control)
-	replayer.reset()
-	puppet.add_child(replayer, true)
-	puppet.dead.connect(_on_battle_character_dead)
-	puppet.resurrected.connect(_on_battle_character_resurrected)
-
-	# set new spawn position for the predecessor
-	predecessor.spawn_snapshot["transform"].origin = (
-		$combatants/player_carrier.spawn_snapshot["transform"].origin
-		+ (
-			(
-				predecessor.get_global_position()
-				- $combatants/player_carrier.spawn_snapshot["transform"].origin
-			).normalized()
-			* $combatants/player_carrier.approx_size
-		)
-	)
-
-	# Add the new puppet to battle
-	$combatants.add_child(puppet)
-	predecessor.get_node("temporal_recorder").start_recording()
+		_update_laupeerium_bar()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if is_replay: return
@@ -286,7 +158,7 @@ func _on_battle_character_dead(character: BattleCharacter) -> void:
 	living_team_members[dead_character_team.team_id] -= 1
 	if $combatants/character.team.is_enemy(dead_character_team):
 		kill_score += character.starting_health * Difficuilty.gameplay_speed
-	GUI.get_node("score").set_text(str(
+	GUI.set_objectives_header(str(
 		living_team_members[1], " vs ", living_team_members[2],
 		" - Score: ", int(kill_score * kill_score_multiplier)
 	))
@@ -298,7 +170,7 @@ func _on_battle_character_dead(character: BattleCharacter) -> void:
 		GUI.get_node("restart_round_panel").set_visible(false)
 		GUI.get_node("defeat").set_visible(false)
 		GUI.get_node("victory").set_visible(true)
-		GUI.get_node("score").set_text(str(
+		GUI.set_objectives_header(str(
 			living_team_members[1], " vs ", living_team_members[2],
 			" - Score: ", int(kill_score * kill_score_multiplier + current_laupeerium * resource_score_multiplier)
 		))
@@ -312,14 +184,10 @@ func _on_battle_character_resurrected(character: BattleCharacter) -> void:
 	if $combatants.has_node("character") and $combatants/character.is_alive:
 		GUI.get_node("restart_round_panel").set_visible(false)
 	living_team_members[character.team.team_id] += 1
-	GUI.get_node("score").set_text(str(
+	GUI.set_objectives_header(str(
 		living_team_members[1], " vs ", living_team_members[2],
 		" - Score: ", int(kill_score * kill_score_multiplier)
 	))
-
-const one_weapon_slot_width_with_padding: float = 128.5
-func _on_weapon_changed(slot: int) -> void:
-	GUI.get_node("selected_weapon_panel").transform.origin.y = float(slot) * one_weapon_slot_width_with_padding
 
 var is_replay = false
 func replay_game() -> void:
@@ -345,39 +213,17 @@ func view_control_triggered(action: Dictionary) -> void:
 		$cam.zoom.x = action["zoom"]
 		$cam.zoom.y = action["zoom"]
 
-@export var rewind_animation_transition_sec: float = 0.75
-var is_rewinding: bool = false
 func time_control_triggered(action: Dictionary) -> void:
-	if "slowdown" in action and 0 < current_laupeerium:
-		Difficuilty.slowdown_multiplier = action["slowdown"]
+	if not (
+		"rewind_toggled" in action and 0. >= current_laupeerium
+		or (
+			"checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]
+			and rewind_battle_laupeerium_cost >= current_laupeerium
+		)  # There are enough resources to control time!
+	): super(action)
 
-	if "rewind_toggled" in action:
-		print("REWIND INITIATED")
-		if 0. < current_laupeerium:
-			is_rewinding = action["rewind_toggled"]
-			if is_rewinding:
-				GUI.get_node("rewind_effects").set_visible(true)
-				create_tween().tween_method(
-					func(w: float): GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_intensity", w),
-					0., 1., rewind_animation_transition_sec
-				)
-		if not action["rewind_toggled"]:
-			$timeline.finish_reverse()
-			var rewind_hide_tween: Tween = create_tween()
-			rewind_hide_tween.tween_method(
-				func(w: float): GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_intensity", w),
-				1., 0., rewind_animation_transition_sec
-			)
-			rewind_hide_tween.tween_callback(func() : GUI.get_node("rewind_effects").set_visible(false))
-			rewind_hide_tween.chain()
-		
-	if "checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]:
-		# Handling Battle restart
-		if rewind_battle_laupeerium_cost <= current_laupeerium:
-			replay_round()
-
-func update_laupeerium_bar() -> void:
-	laupeerium_bar.bars_remaining = round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium))
+func _update_laupeerium_bar() -> void:
+	GUI.set_laupeerium_indicator(round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium)))
 
 func _on_silo_doors_toggled(is_open: bool) -> void:
 	if is_open: %character.explosion_shake(100.)

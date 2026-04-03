@@ -1,0 +1,368 @@
+[gd_scene format=3 uid="uid://drjfqjr1cgqru"]
+
+[ext_resource type="Script" uid="uid://c8yiqt71414ds" path="res://scripts/battle/level_1.gd" id="1_v8cdc"]
+[ext_resource type="PackedScene" uid="uid://cvwcsmrrpxecn" path="res://scenes/UI/minimap.tscn" id="2_aqxgm"]
+[ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="2_v8cdc"]
+[ext_resource type="AudioStream" uid="uid://0oqoh37hsp4w" path="res://audio/music_big_beat_longer.ogg" id="3_mxreo"]
+[ext_resource type="AudioStream" uid="uid://l8abnhstyv07" path="res://audio/Acid-Theme v1.mp3" id="4_xbv3a"]
+[ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="6_h81yr"]
+[ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="7_q5qgv"]
+[ext_resource type="PackedScene" uid="uid://blkx4xohejd2i" path="res://scenes/effects/black_hole.tscn" id="8_4l4jl"]
+[ext_resource type="PackedScene" uid="uid://dni5mwbuc6qpp" path="res://scenes/entities/meteor.tscn" id="9_advtw"]
+[ext_resource type="PackedScene" path="res://scenes/entities/silo.tscn" id="10_hd80u"]
+[ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="11_br7re"]
+[ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="13_gj2nr"]
+[ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="14_t7wgu"]
+[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="14_v8cdc"]
+[ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="15_kd5kk"]
+[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="16_6gyee"]
+[ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="17_kbqyr"]
+[ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="18_35rxa"]
+[ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="19_i2fda"]
+[ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="22_xbv3a"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dxaua"]
+streams_count = 3
+stream_0/stream = ExtResource("2_v8cdc")
+stream_1/stream = ExtResource("3_mxreo")
+stream_2/stream = ExtResource("4_xbv3a")
+
+[sub_resource type="Curve" id="Curve_p2j82"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 387.30502), 0.0, -286.33978, 0, 0, Vector2(0.62785864, 259.64706), -680.9095, -680.9095, 0, 0, Vector2(0.7546778, 9.17395), -1497.7778, -1497.7778, 0, 0, Vector2(0.8128898, 1), -3281.3196, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_k0vmg"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0.00831601, 340.0395), 0.0, -25.619877, 0, 0, Vector2(0.4760915, 345.66812), -525.49896, -525.49896, 0, 0, Vector2(0.6881497, 198.2428), 0.0, 0.0, 0, 0, Vector2(0.91268194, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.95634097, 1), -2265.3918, 198.92365, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_6rtka"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Resource" id="Resource_f0g0v"]
+script = ExtResource("16_6gyee")
+texture = ExtResource("17_kbqyr")
+metadata/_custom_type_script = "uid://cud6a5voxneed"
+
+[sub_resource type="Resource" id="Resource_at2n2"]
+script = ExtResource("16_6gyee")
+texture = ExtResource("18_35rxa")
+metadata/_custom_type_script = "uid://cud6a5voxneed"
+
+[node name="battle" type="Node2D" unique_id=1010459710]
+script = ExtResource("1_v8cdc")
+
+[node name="cam" type="Camera2D" parent="." unique_id=624570446]
+position = Vector2(1592, -2689)
+zoom = Vector2(0.5, 0.5)
+
+[node name="background_music" type="AudioStreamPlayer2D" parent="cam" unique_id=1541739517]
+unique_name_in_owner = true
+position = Vector2(-186.94458, -109.09485)
+rotation = -1.570289
+stream = SubResource("AudioStreamRandomizer_dxaua")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
+
+[node name="level_ui" type="CanvasLayer" parent="." unique_id=264875378]
+
+[node name="minimap" parent="level_ui" unique_id=2003495201 node_paths=PackedStringArray("monitor_nodes") instance=ExtResource("2_aqxgm")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -220.0
+offset_right = -220.0
+offset_bottom = 0.0
+grow_horizontal = 0
+map_extent = Rect2(0, -6000, 5000, 10000)
+monitor_nodes = [NodePath("../../debris"), NodePath("../../combatants")]
+
+[node name="timeline" type="Node" parent="." unique_id=1154592895]
+script = ExtResource("6_h81yr")
+
+[node name="replay_camera" type="Camera2D" parent="." unique_id=1585108320]
+
+[node name="parallax_background" parent="." unique_id=50580037 instance=ExtResource("7_q5qgv")]
+
+[node name="debris" type="Node" parent="." unique_id=530590905]
+
+[node name="meteor" parent="debris" unique_id=686138016 instance=ExtResource("9_advtw")]
+position = Vector2(507, 236)
+skin_idx = 0
+
+[node name="meteor2" parent="debris" unique_id=1061783826 instance=ExtResource("9_advtw")]
+position = Vector2(1373.0001, -149.99997)
+rotation = -2.863026
+skin_idx = 2
+
+[node name="meteor15" parent="debris" unique_id=424629684 instance=ExtResource("9_advtw")]
+position = Vector2(2785, 1699.0002)
+rotation = -2.863026
+skin_idx = 2
+
+[node name="meteor3" parent="debris" unique_id=1025921394 instance=ExtResource("9_advtw")]
+position = Vector2(1100, -118.00003)
+rotation = -2.9309459
+skin_idx = 3
+
+[node name="meteor4" parent="debris" unique_id=1800108507 instance=ExtResource("9_advtw")]
+position = Vector2(865, 1233)
+skin_idx = 4
+
+[node name="meteor11" parent="debris" unique_id=76540533 instance=ExtResource("9_advtw")]
+position = Vector2(1167, 426)
+skin_idx = 5
+
+[node name="meteor12" parent="debris" unique_id=1650682443 instance=ExtResource("9_advtw")]
+position = Vector2(2100, 2285)
+skin_idx = 6
+
+[node name="meteor13" parent="debris" unique_id=12597781 instance=ExtResource("9_advtw")]
+position = Vector2(886, 912)
+skin_idx = 6
+
+[node name="meteor5" parent="debris" unique_id=1841992765 instance=ExtResource("9_advtw")]
+position = Vector2(2181, 1738)
+rotation = -2.3048532
+skin_idx = 1
+
+[node name="meteor6" parent="debris" unique_id=97120478 instance=ExtResource("9_advtw")]
+position = Vector2(954, 1736)
+skin_idx = 1
+
+[node name="meteor7" parent="debris" unique_id=1878975969 instance=ExtResource("9_advtw")]
+position = Vector2(2229, 756)
+skin_idx = 5
+
+[node name="meteor14" parent="debris" unique_id=230799807 instance=ExtResource("9_advtw")]
+position = Vector2(2517, 758)
+skin_idx = 4
+
+[node name="meteor8" parent="debris" unique_id=1988732466 instance=ExtResource("9_advtw")]
+position = Vector2(609, 1081)
+skin_idx = 1
+
+[node name="meteor9" parent="debris" unique_id=612446160 instance=ExtResource("9_advtw")]
+position = Vector2(2756, 313)
+
+[node name="meteor10" parent="debris" unique_id=1965665396 instance=ExtResource("9_advtw")]
+position = Vector2(2093, -59)
+skin_idx = 0
+
+[node name="silo" parent="debris" unique_id=1278794569 instance=ExtResource("10_hd80u")]
+position = Vector2(1675, 1230)
+
+[node name="black_hole" parent="debris" unique_id=1106643319 instance=ExtResource("8_4l4jl")]
+position = Vector2(4580, -1178)
+
+[node name="combatants" type="Node" parent="." unique_id=477359581]
+
+[node name="player_carrier" parent="combatants" unique_id=956278995 groups=["complex_collision_shapes"] instance=ExtResource("11_br7re")]
+position = Vector2(1690, -2699)
+approx_size = 770.0
+starting_health = 500.0
+max_health = 500.0
+red_curve_phasing = SubResource("Curve_p2j82")
+green_curve_phasing = SubResource("Curve_k0vmg")
+blue_curve_phasing = SubResource("Curve_6rtka")
+
+[node name="character" parent="combatants" unique_id=138634092 node_paths=PackedStringArray("carrier_ship") instance=ExtResource("13_gj2nr")]
+unique_name_in_owner = true
+visible = false
+position = Vector2(1592, -2689)
+team = ExtResource("14_v8cdc")
+color = Color(0, 0, 0, 0)
+carrier_ship = NodePath("../player_carrier")
+laser_strength = 0.6
+
+[node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1056342169]
+remote_path = NodePath("../../../cam")
+update_rotation = false
+update_scale = false
+
+[node name="enemy" parent="combatants" unique_id=1489514358 instance=ExtResource("14_t7wgu")]
+position = Vector2(1204, 1954)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy" unique_id=108998722]
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy2" parent="combatants" unique_id=556699840 instance=ExtResource("14_t7wgu")]
+position = Vector2(1355, 1814)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy2" unique_id=1558050607]
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy3" parent="combatants" unique_id=1119940825 instance=ExtResource("14_t7wgu")]
+position = Vector2(2576, 1055)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy3" unique_id=434059168]
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy4" parent="combatants" unique_id=1074688589 instance=ExtResource("14_t7wgu")]
+position = Vector2(2056, 206)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy4" unique_id=1209314940]
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy5" parent="combatants" unique_id=620739208 instance=ExtResource("14_t7wgu")]
+position = Vector2(2146, 376)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy5" unique_id=1144922080]
+position = Vector2(311.00436, -1716.9993)
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy6" parent="combatants" unique_id=1316934422 instance=ExtResource("14_t7wgu")]
+position = Vector2(1421, 643)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy6" unique_id=1714196924]
+position = Vector2(163.99951, 194.00041)
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy7" parent="combatants" unique_id=1660916969 instance=ExtResource("14_t7wgu")]
+position = Vector2(2492, 1325)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy7" unique_id=2059261316]
+position = Vector2(-1822.9983, -665.00464)
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy8" parent="combatants" unique_id=1104274237 instance=ExtResource("14_t7wgu")]
+position = Vector2(2045, 599)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy8" unique_id=884773568]
+position = Vector2(265.99988, 43.000675)
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy9" parent="combatants" unique_id=1605163746 instance=ExtResource("14_t7wgu")]
+position = Vector2(1710, 271)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy9" unique_id=1701568770]
+position = Vector2(-712.99756, -960.00183)
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy11" parent="combatants" unique_id=495338757 instance=ExtResource("14_t7wgu")]
+position = Vector2(1445, 2017)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy11" unique_id=2082296243]
+position = Vector2(-712.99756, -960.00183)
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy10" parent="combatants" unique_id=1488797046 instance=ExtResource("14_t7wgu")]
+position = Vector2(1408, 430)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy10" unique_id=1745354777]
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="enemy12" parent="combatants" unique_id=1613333909 instance=ExtResource("14_t7wgu")]
+position = Vector2(2526, 2036)
+rotation = 3.14159
+team = ExtResource("15_kd5kk")
+color = Color(1, 0, 0, 0.5803922)
+skin_layers = Array[ExtResource("16_6gyee")]([SubResource("Resource_f0g0v"), SubResource("Resource_at2n2")])
+starting_health = 20.0
+laser_strength = 0.3
+
+[node name="ai_control" type="Node2D" parent="combatants/enemy12" unique_id=136921815]
+rotation = 3.14159
+script = ExtResource("19_i2fda")
+
+[node name="mush" type="Node" parent="." unique_id=2069580515]
+
+[node name="dialogues" type="Node" parent="." unique_id=1915422660]
+
+[node name="intro" parent="dialogues" unique_id=286697342 instance=ExtResource("22_xbv3a")]
+visible = false
+dialog = "res://dialogues/level_1_heist/01_lets_go.txt"
+unskippable_signals = Array[int]([0])
+
+[node name="bang" parent="dialogues" unique_id=446461769 instance=ExtResource("22_xbv3a")]
+visible = false
+dialog = "res://dialogues/level_1_heist/02_doors_destroyed.txt"
+
+[node name="scurry" parent="dialogues" unique_id=897044663 instance=ExtResource("22_xbv3a")]
+visible = false
+dialog = "res://dialogues/level_1_heist/03_lets_not_stick_around.txt"
+
+[connection signal="phased" from="combatants/player_carrier" to="." method="_on_player_carrier_phased"]
+[connection signal="dialouge_finished" from="dialogues/intro" to="." method="_on_intro_dialouge_finished"]

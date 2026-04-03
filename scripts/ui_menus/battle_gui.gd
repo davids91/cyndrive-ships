@@ -10,6 +10,7 @@ func configure(player_input: PlayerInput, level: Node2D, player: BattleCharacter
 	player_input.time_control_triggered.connect(level.time_control_triggered)
 	player.boost_energy_updated.connect(_on_character_boost_energy_updated)
 	player.weapon_energy_updated.connect(_on_character_weapon_energy_updated)
+	player.weapon_changed.connect(_on_weapon_changed)
 	replay_game.connect(level.replay_game)
 	reset_game.connect(level.reset_game)
 	replay_round.connect(level.replay_round)
@@ -36,7 +37,7 @@ func transform_fade_radius(radius: float = 2., duration_sec: float = 0.5) -> Met
 		.set_ease(Tween.EASE_IN)
 	)
 
-func set_score(score: String) -> void:
+func set_objectives_header(score: String) -> void:
 	$score.set_text(score)
 
 func set_objective(text: String) -> void:
@@ -47,12 +48,19 @@ func set_time(seconds: float) -> void:
 
 func set_disabled_weapons_mask(mask: int) -> void:
 	if 0 != (mask & 0x01): $laser_icon.set_visible(false)
-	if 0 != (mask & 0x02): $chain_lightning_icon.set_visible(false)
-	if 0 != (mask & 0x04): $hotsaber_icon.set_visible(false)
+	if 0 != (mask & 0x02): $hotsaber_icon.set_visible(false)
+	if 0 != (mask & 0x04): $chain_lightning_icon.set_visible(false)
 	if 0 != (mask & 0x08): $decoy_shooter_icon.set_visible(false)
 
 func set_laupeerium_indicator(bars: float) -> void:
 	%laupeerium_bar.bars_remaining = bars
+
+func _process(_delta: float) -> void:
+	$debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
+
+const one_weapon_slot_width_with_padding: float = 128.5
+func _on_weapon_changed(slot: int) -> void:
+	$selected_weapon_panel.transform.origin.y = float(slot) * one_weapon_slot_width_with_padding
 
 func _on_character_boost_energy_updated(new_energy_level: float) -> void:
 	%boost_energy_bar.energy_updated(new_energy_level)

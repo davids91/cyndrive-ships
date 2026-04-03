@@ -1,48 +1,30 @@
-[gd_scene format=4 uid="uid://b3trh6sc7bkeq"]
+[gd_scene format=3 uid="uid://b3trh6sc7bkeq"]
 
-[ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/battle_main.gd" id="1_6u6au"]
+[ext_resource type="Script" uid="uid://oidhfjf35vx5" path="res://scripts/battle/dev_room_battle.gd" id="1_6u6au"]
+[ext_resource type="PackedScene" uid="uid://cvwcsmrrpxecn" path="res://scenes/UI/minimap.tscn" id="2_p41qx"]
+[ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="3_kweu0"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="3_tlx8b"]
 [ext_resource type="PackedScene" uid="uid://blkx4xohejd2i" path="res://scenes/effects/black_hole.tscn" id="4_7g2yh"]
+[ext_resource type="AudioStream" uid="uid://0oqoh37hsp4w" path="res://audio/music_big_beat_longer.ogg" id="4_scjvp"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="5_osmje"]
+[ext_resource type="AudioStream" uid="uid://l8abnhstyv07" path="res://audio/Acid-Theme v1.mp3" id="5_pmnbd"]
 [ext_resource type="PackedScene" uid="uid://dni5mwbuc6qpp" path="res://scenes/entities/meteor.tscn" id="7_0wrxa"]
 [ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="7_scjvp"]
-[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="7_w0t2q"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="8_fe3c8"]
-[ext_resource type="Script" uid="uid://dl4dk45frpwra" path="res://scripts/equipment/minimap.gd" id="8_wb3pa"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="9_25tx2"]
-[ext_resource type="Texture2D" uid="uid://bnmuvyy2lsbhk" path="res://textures/ui/icons/map_icon.png" id="10_320hu"]
-[ext_resource type="Texture2D" uid="uid://3nu76apg4ufe" path="res://textures/ui/icons/minimap_icon_3.png" id="10_fws0x"]
-[ext_resource type="Texture2D" uid="uid://crvtsjud0ssjq" path="res://textures/ui/icons/minimap_icon_4.png" id="11_ib23l"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="12_d7i4t"]
+[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="14_pmnbd"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="16_f4125"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="17_2y2lr"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="18_54bea"]
-[ext_resource type="Script" uid="uid://upxd16rpbdyu" path="res://scripts/equipment/team.gd" id="21_jqfa8"]
 [ext_resource type="PackedScene" path="res://scenes/entities/silo.tscn" id="21_pmnbd"]
-[ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="23_w0t2q"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="26_jqfa8"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pmnbd"]
-texture = ExtResource("7_w0t2q")
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-0:1/0 = 0
-3:1/0 = 0
-0:2/0 = 0
-3:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-1:2/0 = 0
-1:1/0 = 0
-2:2/0 = 0
-2:1/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_f22mk"]
-sources/0 = SubResource("TileSetAtlasSource_pmnbd")
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_f22mk"]
+streams_count = 3
+stream_0/stream = ExtResource("3_kweu0")
+stream_1/stream = ExtResource("4_scjvp")
+stream_2/stream = ExtResource("5_pmnbd")
 
 [sub_resource type="Curve" id="Curve_8a2ah"]
 _limits = [1.0, 600.0, 0.0, 1.0]
@@ -58,13 +40,6 @@ point_count = 5
 _limits = [1.0, 600.0, 0.0, 1.0]
 _data = [Vector2(0, 505.46893), 0.0, -64.04968, 0, 0, Vector2(0.56340957, 216.63654), 0.0, 0.0, 0, 0, Vector2(0.7068607, 115.43527), -223.10666, -223.10666, 0, 0, Vector2(0.81912684, 21.824097), 0.0, 0.0, 0, 0, Vector2(0.8669439, 1), -1758.1343, 0.0, 0, 0]
 point_count = 5
-
-[sub_resource type="Resource" id="Resource_pmnbd"]
-resource_local_to_scene = true
-script = ExtResource("21_jqfa8")
-team_id = 1
-color = Color(1, 1, 1, 0)
-metadata/_custom_type_script = "uid://upxd16rpbdyu"
 
 [sub_resource type="Resource" id="Resource_f0g0v"]
 script = ExtResource("9_25tx2")
@@ -83,47 +58,30 @@ metadata/_edit_horizontal_guides_ = [426.0]
 
 [node name="level_ui" type="CanvasLayer" parent="." unique_id=212346450]
 
-[node name="minimap" type="TileMapLayer" parent="level_ui" unique_id=616457367 node_paths=PackedStringArray("monitor_nodes", "icon_template")]
-modulate = Color(1, 1, 1, 0.54901963)
-tile_map_data = PackedByteArray("AAAVABUAAAABAAMAAAAWABQAAAADAAIAAAAWABUAAAADAAMAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAEAAAAKAAsAAAABAAMAAAAWAA4AAAADAAEAAAAUABUAAAABAAMAAAAJABIAAAAAAAIAAAAJABMAAAAAAAEAAAAJABUAAAAAAAMAAAAJABQAAAADAAEAAAAKABUAAAABAAMAAAALABUAAAABAAMAAAAMABUAAAABAAMAAAANABUAAAABAAMAAAAOABUAAAABAAMAAAAPABUAAAABAAMAAAAQABUAAAABAAMAAAARABUAAAABAAMAAAASABUAAAABAAMAAAATABUAAAABAAMAAAAWABMAAAAAAAIAAAAJAA0AAAACAAMAAAAWAA8AAAACAAMAAAAWAA0AAAAAAAIAAAALAAsAAAABAAAAAABaAGb/AAACAAMAAABbAGb/AAACAAMAAABcAGb/AAACAAMAAABdAGX/AAACAAMAAABeAGX/AAACAAMAAADo/2z/AAACAAMAAADg/2f/AAACAAMAAAA=")
-tile_set = SubResource("TileSet_f22mk")
-script = ExtResource("8_wb3pa")
-map_extent = Rect2(500, -6000, 20000, 15000)
+[node name="minimap" parent="level_ui" unique_id=1822664664 node_paths=PackedStringArray("monitor_nodes") instance=ExtResource("2_p41qx")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -220.0
+offset_right = -220.0
+offset_bottom = 0.0
+grow_horizontal = 0
+map_extent = Rect2(-500, -6000, 5000, 7500)
 monitor_nodes = [NodePath("../../debris"), NodePath("../../combatants")]
-icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
-
-[node name="MapIcon" type="Sprite2D" parent="level_ui/minimap" unique_id=505907446]
-self_modulate = Color(1, 1, 1, 0.3647059)
-position = Vector2(347, 198)
-scale = Vector2(0.515625, 0.515625)
-texture = ExtResource("10_320hu")
-
-[node name="area" type="Panel" parent="level_ui/minimap" unique_id=150730760]
-offset_left = 160.0
-offset_top = 193.0
-offset_right = 352.0
-offset_bottom = 336.0
-
-[node name="icon_combatants" type="TextureRect" parent="level_ui/minimap/area" unique_id=2031764954]
-visible = false
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("10_fws0x")
-expand_mode = 3
-
-[node name="icon_debris" type="TextureRect" parent="level_ui/minimap/area" unique_id=836663822]
-visible = false
-self_modulate = Color(1, 0.97400004, 0.74, 1)
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-texture = ExtResource("11_ib23l")
-expand_mode = 3
 
 [node name="cam" type="Camera2D" parent="." unique_id=1901038686]
 position = Vector2(1592, -2689)
 zoom = Vector2(0.5, 0.5)
+
+[node name="background_music" type="AudioStreamPlayer2D" parent="cam" unique_id=687824544]
+unique_name_in_owner = true
+position = Vector2(-186.94458, -109.09485)
+rotation = -1.570289
+stream = SubResource("AudioStreamRandomizer_f22mk")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
 
 [node name="timeline" type="Node" parent="." unique_id=1475911727]
 script = ExtResource("3_tlx8b")
@@ -213,7 +171,7 @@ blue_curve_phasing = SubResource("Curve_1rdfn")
 unique_name_in_owner = true
 visible = false
 position = Vector2(1592, -2689)
-team = SubResource("Resource_pmnbd")
+team = ExtResource("14_pmnbd")
 color = Color(0, 0, 0, 0)
 carrier_ship = NodePath("../player_carrier")
 laser_strength = 0.6
@@ -357,9 +315,5 @@ rotation = 3.14159
 script = ExtResource("18_54bea")
 
 [node name="mush" type="Node" parent="." unique_id=737214258]
-
-[node name="dialogue" parent="." unique_id=286697342 instance=ExtResource("23_w0t2q")]
-dialog = "res://dialogues/level_1_heist/01_lets_go.txt"
-autostart = true
 
 [connection signal="doors_toggled" from="debris/silo" to="." method="_on_silo_doors_toggled"]

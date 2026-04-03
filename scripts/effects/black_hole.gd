@@ -3,6 +3,9 @@ extends Area2D
 
 const DAMAGE: float = 666.
 
+# To have it displayed on the minimap
+func in_battle() -> bool: return true
+
 var bodies_within: Dictionary
 func _on_body_entered(body: Node2D) -> void:
 	bodies_within[body] = BattleTimeline.instance.time_msec()

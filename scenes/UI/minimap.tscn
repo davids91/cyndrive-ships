@@ -1,0 +1,75 @@
+[gd_scene format=4 uid="uid://cvwcsmrrpxecn"]
+
+[ext_resource type="Texture2D" uid="uid://ci1a1of5pn6u" path="res://textures/ui/panels/panel_tileset.png" id="1_n1kkc"]
+[ext_resource type="Script" uid="uid://dl4dk45frpwra" path="res://scripts/equipment/minimap.gd" id="2_d0rtg"]
+[ext_resource type="Texture2D" uid="uid://bnmuvyy2lsbhk" path="res://textures/ui/icons/map_icon.png" id="3_l58we"]
+[ext_resource type="Texture2D" uid="uid://3nu76apg4ufe" path="res://textures/ui/icons/minimap_icon_3.png" id="4_ex5fb"]
+[ext_resource type="Texture2D" uid="uid://crvtsjud0ssjq" path="res://textures/ui/icons/minimap_icon_4.png" id="5_shn1r"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g8yy2"]
+texture = ExtResource("1_n1kkc")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+1:2/0 = 0
+1:1/0 = 0
+2:2/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_45v6q"]
+sources/0 = SubResource("TileSetAtlasSource_g8yy2")
+
+[node name="minimap" type="Control" unique_id=1822664664 node_paths=PackedStringArray("monitor_nodes", "icon_template")]
+modulate = Color(1, 1, 1, 0.54901963)
+layout_mode = 3
+anchor_right = 0.117000006
+anchor_bottom = 0.162
+offset_right = -224.64001
+offset_bottom = -174.96
+script = ExtResource("2_d0rtg")
+map_extent = Rect2(500, -6000, 20000, 15000)
+monitor_nodes = [null, null]
+icon_template = [NodePath("area/icon_debris"), NodePath("area/icon_combatants")]
+
+[node name="MapIcon" type="Sprite2D" parent="." unique_id=536541295]
+self_modulate = Color(1, 1, 1, 0.3647059)
+position = Vector2(203.00002, 21.500015)
+scale = Vector2(0.515625, 0.515625)
+texture = ExtResource("3_l58we")
+
+[node name="area" type="Panel" parent="." unique_id=1105078361]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.5
+offset_right = 208.0
+offset_bottom = 159.5
+
+[node name="icon_combatants" type="TextureRect" parent="area" unique_id=1378287090]
+visible = false
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("4_ex5fb")
+expand_mode = 3
+
+[node name="icon_debris" type="TextureRect" parent="area" unique_id=677492526]
+visible = false
+self_modulate = Color(1, 0.97400004, 0.74, 1)
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("5_shn1r")
+expand_mode = 3
+
+[node name="minimap" type="TileMapLayer" parent="." unique_id=325274078]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAEAAAAAAAIAAAACAAMAAAAAAAcAAAAAAAIAAAAAAAgAAAAAAAEAAAAAAAkAAAADAAEAAAAAAAoAAAAAAAMAAAABAAAAAAABAAMAAAABAAoAAAABAAMAAAACAAAAAAABAAAAAAACAAoAAAABAAMAAAADAAoAAAABAAMAAAAEAAoAAAABAAMAAAAFAAoAAAABAAMAAAAGAAoAAAABAAMAAAAHAAoAAAABAAMAAAAIAAoAAAABAAMAAAAJAAoAAAABAAMAAAAKAAoAAAABAAMAAAALAAoAAAABAAMAAAAMAAoAAAABAAMAAAANAAIAAAAAAAIAAAANAAMAAAADAAEAAAANAAQAAAACAAMAAAANAAgAAAAAAAIAAAANAAkAAAADAAIAAAANAAoAAAADAAMAAAA=")
+tile_set = SubResource("TileSet_45v6q")

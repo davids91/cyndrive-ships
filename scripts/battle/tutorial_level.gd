@@ -1,4 +1,4 @@
-extends Node2D
+extends BaseBattle
 
 enum TutorialPhases{
 	INTRO, MOVEMENT, BOOST,
@@ -8,15 +8,10 @@ enum TutorialPhases{
 
 const time_to_get_to_marker: float = 5.
 
-@export var GUI: BattleShipGUI
-@export var gui_visible: bool = true
-@onready var player_input: PlayerInput = get_node("/root/Main/player_input")
-
 var boost_dialogue_showing_next_mark_tween: Tween
 var marker_time_left_secs: float = time_to_get_to_marker
 var current_tutorial_phase: TutorialPhases = TutorialPhases.INTRO
 func _ready():
-	GUI.set_score("Objective:")
 	GUI.set_objective("")
 	GUI.set_disabled_weapons_mask(0xE)
 	GUI.set_laupeerium_indicator(UIEnergyBar.max_bars / 4.)
@@ -460,7 +455,7 @@ func _on_timeline_checkpoint_triggered() -> void:
 func _on_player_carrier_dead(_itsme: BattleCharacter) -> void:
 	if not %character.in_battle(): reset_game()
 
-func _on_character_dead(_itsme: BattleCharacter) -> void:
+func _on_battle_character_dead(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.MUSTLE_ARRIVES and $combatants/boss:
 		$combatants/boss.difficulty_sensor_speed = 0.1
 		$combatants/boss.difficulty_laser_speed = 0.25

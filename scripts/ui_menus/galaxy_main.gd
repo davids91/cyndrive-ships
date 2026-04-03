@@ -59,4 +59,7 @@ func _on_difficulty_slider_value_changed(value: float) -> void:
 	Difficulty.gameplay_speed = value
 
 func _on_dr_speedo_battle_pressed() -> void:
-		load_level("dr_speedo_battle")
+	load_level("dr_speedo_battle")
+
+func _on_level_1_pressed() -> void:
+	load_level("level_1")

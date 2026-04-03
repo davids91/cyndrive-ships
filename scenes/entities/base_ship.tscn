@@ -60,19 +60,10 @@ stream_3/stream = ExtResource("28_uokki")
 [node name="character" type="CharacterBody2D" unique_id=138634092 groups=["destroyables"]]
 collision_layer = 3
 script = ExtResource("1_iulgi")
-approx_size = null
-team = null
 color = Color(0, 0, 0, 0)
 skin_layers = Array[ExtResource("2_5doxk")]([SubResource("Resource_2vmea")])
 starting_health = 500.0
 max_health = 500.0
-low_health = null
-mass = null
-phase_in_duration_sec = null
-manually_exclude_from_battle = null
-docked_radius_percent = null
-laser_strength = null
-entanglement_chance = null
 
 [node name="collision_shape" type="CollisionShape2D" parent="." unique_id=2034315278]
 rotation = 1.5708
@@ -104,7 +95,7 @@ metadata/_custom_type_script = "uid://cdrsm7mlhnmnm"
 
 [node name="weapon_slot" type="Node" parent="." unique_id=691233118 node_paths=PackedStringArray("weapons")]
 script = ExtResource("8_owx80")
-weapons = [NodePath("../laser_beam"), NodePath("../chain_lightning"), NodePath("../hotsaber"), NodePath("../decoy_shooter")]
+weapons = [NodePath("../laser_beam"), NodePath("../hotsaber"), NodePath("../chain_lightning"), NodePath("../decoy_shooter")]
 metadata/_custom_type_script = "uid://co4eimc5mgx3i"
 
 [node name="decoy_shooter" type="Node2D" parent="." unique_id=1043209663]
@@ -189,3 +180,4 @@ skin = NodePath("../skin")
 [connection signal="boosting" from="controller" to="." method="_on_controller_boosting"]
 [connection signal="boost_energy_updated" from="energy_systems" to="." method="_on_energy_systems_boost_energy_updated"]
 [connection signal="weapon_energy_updated" from="energy_systems" to="." method="_on_energy_systems_weapon_energy_updated"]
+[connection signal="weapon_changed" from="weapon_slot" to="." method="_on_weapon_slot_weapon_changed"]

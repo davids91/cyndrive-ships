@@ -45,5 +45,5 @@ update_scale = false
 position = Vector2(-536, -2386)
 
 [connection signal="round_reset" from="timeline" to="combatants/boss" method="respawn"]
-[connection signal="dead" from="combatants/boss" to="." method="_on_character_dead"]
-[connection signal="dead" from="combatants/character" to="." method="_on_character_dead"]
+[connection signal="dead" from="combatants/boss" to="." method="_on_battle_character_dead"]
+[connection signal="dead" from="combatants/character" to="." method="_on_battle_character_dead"]

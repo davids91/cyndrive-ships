@@ -168,7 +168,7 @@ offset_left = 12.0
 offset_top = 44.0
 offset_right = 98.0
 offset_bottom = 81.0
-text = "1 vs 1"
+text = "Objectives:"
 label_settings = ExtResource("1_pgs3n")
 
 [node name="time" type="Label" parent="." unique_id=669570408]
@@ -318,11 +318,11 @@ position = Vector2(75, 235)
 texture = ExtResource("13_a7irf")
 
 [node name="chain_lightning_icon" type="Sprite2D" parent="." unique_id=1849093875]
-position = Vector2(79, 373)
+position = Vector2(78, 498)
 texture = ExtResource("14_ts7hs")
 
 [node name="hotsaber_icon" type="Sprite2D" parent="." unique_id=745848340]
-position = Vector2(81, 498.00003)
+position = Vector2(82, 371)
 scale = Vector2(0.59375, 0.59375)
 texture = ExtResource("15_oq75t")
 
@@ -394,6 +394,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 
 [node name="fade_to_black" type="ColorRect" parent="." unique_id=679578357]
+visible = false
 self_modulate = Color(1, 1, 1, 0)
 material = SubResource("ShaderMaterial_7d241")
 anchors_preset = 15

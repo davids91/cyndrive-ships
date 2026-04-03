@@ -1,4 +1,4 @@
-extends TileMapLayer
+extends Control
 
 @export var map_extent: Rect2
 @export var monitor_nodes: Array[Node]
