@@ -1,9 +1,9 @@
 class_name BaseBattle
 extends Node2D
 
-var god_mode_active: bool = false
-var infinite_ammo_active: bool = false
-var infinite_boost_active: bool = false
+@export var god_mode_active: bool = false
+@export var infinite_ammo_active: bool = false
+@export var infinite_boost_active: bool = false
 
 @export var GUI: BattleShipGUI
 @export var gui_visible: bool = true
@@ -121,31 +121,14 @@ func replay_round(rewind_animation: bool = true) -> void:
 		GUI.get_node("restart_round_panel").set_visible(false)
 	)
 
-@export var rewind_animation_transition_sec: float = 0.75
-var is_rewinding: bool = false
 func time_control_triggered(action: Dictionary) -> void:
 	if "slowdown" in action:
 		Difficuilty.slowdown_multiplier = action["slowdown"]
 
 	if "rewind_toggled" in action:
-		is_rewinding = action["rewind_toggled"]
-		if is_rewinding:
-			GUI.get_node("rewind_effects").set_visible(true)
-			create_tween().tween_method(
-				func(w: float): GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_intensity", w),
-				0., 1., rewind_animation_transition_sec
-			)
+		if action["rewind_toggled"]: $timeline.start_reverse()
+		else: $timeline.finish_reverse()
 
-		if not action["rewind_toggled"]:
-			$timeline.finish_reverse()
-			var rewind_hide_tween: Tween = create_tween()
-			rewind_hide_tween.tween_method(
-				func(w: float): GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_intensity", w),
-				1., 0., rewind_animation_transition_sec
-			)
-			rewind_hide_tween.tween_callback(func() : GUI.get_node("rewind_effects").set_visible(false))
-			rewind_hide_tween.chain()
-		
 	if "checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]:
 		replay_round()
 

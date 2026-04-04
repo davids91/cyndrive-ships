@@ -86,14 +86,12 @@ func _process(delta):
 			$replay_camera.set_global_position(replay_viewport.position + replay_viewport.size / 2.)
 
 	# Handling Timeline reverse
-	if is_rewinding:
+	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		current_laupeerium -= delta
 		_update_laupeerium_bar()
-		$timeline.reverse(delta)
 		GUI.get_node("defeat").set_visible(false)
 		GUI.get_node("victory").set_visible(false)
 		GUI.get_node("restart_round_panel").set_visible(false)
-		GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
 	# Handling Slowdown
 	if Difficulty.slowdown_multiplier < 1.:

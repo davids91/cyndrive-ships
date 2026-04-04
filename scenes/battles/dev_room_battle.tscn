@@ -13,11 +13,10 @@
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="8_fe3c8"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="9_25tx2"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="12_d7i4t"]
-[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="14_pmnbd"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="16_f4125"]
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="17_2y2lr"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="18_54bea"]
-[ext_resource type="PackedScene" path="res://scenes/entities/silo.tscn" id="21_pmnbd"]
+[ext_resource type="PackedScene" uid="uid://sdrks6ruwidt" path="res://scenes/entities/silo.tscn" id="21_pmnbd"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="26_jqfa8"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_f22mk"]
@@ -171,7 +170,6 @@ blue_curve_phasing = SubResource("Curve_1rdfn")
 unique_name_in_owner = true
 visible = false
 position = Vector2(1592, -2689)
-team = ExtResource("14_pmnbd")
 color = Color(0, 0, 0, 0)
 carrier_ship = NodePath("../player_carrier")
 laser_strength = 0.6

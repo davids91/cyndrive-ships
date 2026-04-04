@@ -17,8 +17,9 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 	if "acquired_target" in snapshot: acquired_target = snapshot["acquired_target"]
 	super(snapshot, over_time_msec)
 
-# NO DAMAGE FOR YOU! ONLY BLACK HOLE! HA
-func accept_damage(_strength: float, _source: Node = null) -> void: pass
+func accept_damage(strength: float, source: Node = null) -> void:
+	if strength >= BlackHole.DAMAGE:
+		super(strength, source)
 
 var charge_animation_tween: Tween = null
 func _charge_attack() -> Tween:
@@ -86,8 +87,10 @@ var time_until_next_attack_sec: float = recuperate_time_sec
 var recuperation_time_left_sec: float = phase_in_duration_sec
 func _physics_process(delta: float) -> void:
 	super(delta)
-	if BattleTimeline.instance.time_flow != BattleTimeline.TimeFlow.FORWARD:
-		return
+	if(
+		BattleTimeline.instance.time_flow != BattleTimeline.TimeFlow.FORWARD
+		or control_disabled
+	): return
 	if acquired_target:
 		if 0. < time_until_next_attack_sec:
 			# have the cross descend on the target
@@ -124,7 +127,7 @@ func _physics_process(delta: float) -> void:
 				if not shapecast_result.has("collider"): continue
 				if shapecast_result.collider.has_method("accept_damage"):
 					shapecast_result.collider.accept_damage(BlackHole.DAMAGE)
-				else: shapecast_result.collider.que_free()
+				else: shapecast_result.collider.queue_free()
 				victims_count += 1
 				if 0 == victims_count: $state_display.annoyed_emote()
 		else: recuperation_time_left_sec -= delta
@@ -148,7 +151,10 @@ func _physics_process(delta: float) -> void:
 		):
 			random_target = combatants.get_children().pick_random()
 			tries += 1
-		if tries < 5 and random_target != self:
+		if(
+			tries < 5 and random_target != self
+			and "team" in random_target and random_target.team.is_enemy(team)
+		):
 			acquired_target = random_target
 			time_until_next_attack_sec = charge_attack_duration_sec
 			$target_arrow.visible = true

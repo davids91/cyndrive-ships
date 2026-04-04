@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://blkx4xohejd2i"]
+[gd_scene format=3 uid="uid://blkx4xohejd2i"]
 
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="1_tcq75"]
 [ext_resource type="Script" uid="uid://bs8h5t1b4u1x3" path="res://scripts/effects/black_hole.gd" id="2_mfsi2"]
@@ -26,17 +26,18 @@ shader_parameter/color_base = Color(0.93, 0.6, 0.3, 1)
 [sub_resource type="CircleShape2D" id="CircleShape2D_1rdfn"]
 radius = 1100.0
 
-[node name="black_hole" type="Area2D"]
+[node name="black_hole" type="Area2D" unique_id=1614324572]
 material = SubResource("ShaderMaterial_r0ctv")
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("2_mfsi2")
-strength = 7.18
+strength = 25.0
+death_radius = 350.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1069411079]
 shape = SubResource("CircleShape2D_1rdfn")
 
-[node name="black_hole_original" type="ColorRect" parent="."]
+[node name="black_hole_original" type="ColorRect" parent="." unique_id=1495340447]
 z_index = 100
 material = SubResource("ShaderMaterial_r0ctv")
 offset_left = -1250.0

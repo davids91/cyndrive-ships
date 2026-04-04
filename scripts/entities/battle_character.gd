@@ -22,6 +22,7 @@ signal shields_toggled(turned_on: bool)
 @onready var spawn_snapshot: Dictionary = get_snapshot()
 
 func _ready() -> void:
+	if has_node("temporal_recorder"): $temporal_recorder.start_recording()
 	$skin.init_skin(skin_layers, team.color)
 	if has_node("laser_beam"): $laser_beam.base_damage *= laser_strength
 	if has_node("ai_control"): $ai_control.enabled = true

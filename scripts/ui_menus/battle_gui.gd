@@ -5,6 +5,8 @@ signal replay_round()
 signal replay_game()
 signal reset_game()
 
+@export var rewind_animation_transition_sec: float = 0.75
+
 func configure(player_input: PlayerInput, level: Node2D, player: BattleCharacter) -> void:
 	player_input.action_triggered.connect(player.process_input_action)
 	player_input.time_control_triggered.connect(level.time_control_triggered)
@@ -14,6 +16,21 @@ func configure(player_input: PlayerInput, level: Node2D, player: BattleCharacter
 	replay_game.connect(level.replay_game)
 	reset_game.connect(level.reset_game)
 	replay_round.connect(level.replay_round)
+	
+	level.get_node("timeline").rewind_stopped.connect(func(): 
+		create_tween().tween_method(
+			func(w: float): $rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+			1., 0., rewind_animation_transition_sec
+		).finished.connect(func(): $rewind_effects.set_visible(false))
+	)
+	level.get_node("timeline").rewind_started.connect(func(): 
+		$rewind_effects.set_visible(true)
+		create_tween().tween_method(
+			func(w: float): $rewind_effects.material.set_shader_parameter("rewind_intensity", w),
+			0., 1., rewind_animation_transition_sec
+		)
+	)
+	
 	if "GUI" in level: level.GUI = self
 	set_visible("gui_visible" in level and level.gui_visible)
 
@@ -57,6 +74,9 @@ func set_laupeerium_indicator(bars: float) -> void:
 
 func _process(_delta: float) -> void:
 	$debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
+	if BattleTimeline.instance: #TechDebt: BattleTimeline may not be
+		if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
+			$rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
 const one_weapon_slot_width_with_padding: float = 128.5
 func _on_weapon_changed(slot: int) -> void:

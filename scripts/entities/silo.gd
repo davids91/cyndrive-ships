@@ -65,9 +65,9 @@ func _process(delta: float) -> void:
 	$state_display.set_visible(visible)
 	super(delta)
 
-func _on_payload_trigger_body_entered(_body: Node2D) -> void:
-	if not is_alive and $payload_trigger/payload:
+func _on_payload_trigger_body_entered(body: Node2D) -> void:
+	if not is_alive and body is PlayerShip and $payload_trigger/payload:
 		create_tween().tween_property($payload_trigger/payload, "self_modulate", Color.TRANSPARENT, 0.5).finished.connect(
-			func(): $payload_trigger/payload.queue_free()
+			func(): if $payload_trigger/payload: $payload_trigger/payload.queue_free()
 		)
 		payload_reached.emit()

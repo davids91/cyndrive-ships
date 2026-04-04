@@ -1,0 +1,12 @@
+#[c1]Wow, that went surprisingly well. 
+#[c0]Seems like we got lucky. There doesn't seem to be any kind of alarm system.
+#[c2]#[s0]Hopefully I can get out of this sector before anyone-
+#[c4]And just what the frak do you think you're doing to my silo?
+#[c2]notices#[t250]...
+#[c4]#[t]You worm! You think you can sabotage my research and get away with it?
+#[c2]Well, I'm sorry, mister...
+#[c4]That's DOCTOR to you, worm! Doctor Speedo! This is my life's work! I'll kill you before I let you ruin it!
+And once I finish my work, I'll go back 5 years and enroll in flight school so I can kick your ass even harder!
+#[c1]Damn, I should have thought of that.
+#[c0]Sorry to make you have to deal with this, kid.
+#[c2]Don't worry, I can take care of him.

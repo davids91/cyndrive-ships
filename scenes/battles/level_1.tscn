@@ -9,11 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="7_q5qgv"]
 [ext_resource type="PackedScene" uid="uid://blkx4xohejd2i" path="res://scenes/effects/black_hole.tscn" id="8_4l4jl"]
 [ext_resource type="PackedScene" uid="uid://dni5mwbuc6qpp" path="res://scenes/entities/meteor.tscn" id="9_advtw"]
-[ext_resource type="PackedScene" path="res://scenes/entities/silo.tscn" id="10_hd80u"]
+[ext_resource type="PackedScene" uid="uid://sdrks6ruwidt" path="res://scenes/entities/silo.tscn" id="10_hd80u"]
 [ext_resource type="PackedScene" uid="uid://b2el5b6ucyivj" path="res://scenes/entities/carrier_ship.tscn" id="11_br7re"]
 [ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="13_gj2nr"]
 [ext_resource type="PackedScene" uid="uid://bxvkgl6pp7mn0" path="res://scenes/entities/base_ship.tscn" id="14_t7wgu"]
-[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="14_v8cdc"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="15_kd5kk"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="16_6gyee"]
 [ext_resource type="Texture2D" uid="uid://dfg1j5w5e5k8y" path="res://textures/entities/fighter-ship-base.png" id="17_kbqyr"]
@@ -163,6 +162,7 @@ position = Vector2(4580, -1178)
 [node name="combatants" type="Node" parent="." unique_id=477359581]
 
 [node name="player_carrier" parent="combatants" unique_id=956278995 groups=["complex_collision_shapes"] instance=ExtResource("11_br7re")]
+unique_name_in_owner = true
 position = Vector2(1690, -2699)
 approx_size = 770.0
 starting_health = 500.0
@@ -175,7 +175,6 @@ blue_curve_phasing = SubResource("Curve_6rtka")
 unique_name_in_owner = true
 visible = false
 position = Vector2(1592, -2689)
-team = ExtResource("14_v8cdc")
 color = Color(0, 0, 0, 0)
 carrier_ship = NodePath("../player_carrier")
 laser_strength = 0.6
@@ -359,10 +358,20 @@ unskippable_signals = Array[int]([0])
 [node name="bang" parent="dialogues" unique_id=446461769 instance=ExtResource("22_xbv3a")]
 visible = false
 dialog = "res://dialogues/level_1_heist/02_doors_destroyed.txt"
+unskippable_signals = Array[int]([0])
+
+[node name="that_went_well" parent="dialogues" unique_id=413367898 instance=ExtResource("22_xbv3a")]
+visible = false
+dialog = "res://dialogues/level_1_heist/02.5_return_to_base.txt"
+unskippable_signals = Array[int]([0])
 
 [node name="scurry" parent="dialogues" unique_id=897044663 instance=ExtResource("22_xbv3a")]
 visible = false
 dialog = "res://dialogues/level_1_heist/03_lets_not_stick_around.txt"
 
+[connection signal="doors_toggled" from="debris/silo" to="." method="_on_silo_doors_toggled"]
+[connection signal="payload_reached" from="debris/silo" to="." method="_on_silo_payload_reached"]
 [connection signal="phased" from="combatants/player_carrier" to="." method="_on_player_carrier_phased"]
 [connection signal="dialouge_finished" from="dialogues/intro" to="." method="_on_intro_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/that_went_well" to="." method="_on_that_went_well_dialouge_finished"]
+[connection signal="dialouge_finished" from="dialogues/scurry" to="." method="_on_scurry_dialouge_finished"]

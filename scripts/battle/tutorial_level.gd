@@ -100,7 +100,6 @@ func _process(delta: float) -> void:
 	): GUI.set_time(BattleTimeline.instance.time_msec() / 1000.)
 	
 	if is_rewinding:
-		$timeline.reverse(delta)
 		GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
 	if current_tutorial_phase == TutorialPhases.BOOST:
@@ -326,8 +325,6 @@ func view_control_triggered(action: Dictionary) -> void:
 		$cam.zoom.x = action["zoom"]
 		$cam.zoom.y = action["zoom"]
 
-@export var rewind_animation_transition_sec: float = 0.75
-var is_rewinding: bool = false
 func time_control_triggered(action: Dictionary) -> void:
 	if(
 		current_tutorial_phase == TutorialPhases.MOVEMENT
@@ -343,7 +340,6 @@ func time_control_triggered(action: Dictionary) -> void:
 				0., 1., rewind_animation_transition_sec
 			)
 		if not action["rewind_toggled"]:
-			$timeline.finish_reverse()
 			var rewind_hide_tween: Tween = create_tween()
 			rewind_hide_tween.tween_method(
 				func(w: float): GUI.get_node("rewind_effects").material.set_shader_parameter("rewind_intensity", w),
@@ -365,7 +361,7 @@ func reset_game() -> void:
 	))
 
 @export var respawn_time_sec: float = 1.
-func replay_round() -> void:
+func replay_round(_replay_animation: bool = true) -> void:
 	#TechDebt: Eliminate mine after round end
 	if not %character.held_mine == null:
 		%character.held_mine.queue_free()
