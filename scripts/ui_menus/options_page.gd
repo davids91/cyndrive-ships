@@ -55,7 +55,7 @@ func _on_volume_slider_drag_ended(value_changed: bool, which:VOLUMES) -> void:
 func _on_volume_slider_value_changed(value: float, which:VOLUMES) -> void:
 	## Called every frame potentially as the slider is moved
 	var rounded_percentage_as_text:String = "%d%%" % value
-	var db_as_text:String = "%.1f" % linear_to_db(value / 100.0)
+	var db_as_text:String = "%.1f dB" % linear_to_db(value / 100.0)
 	match which:
 		VOLUMES.MASTER:
 			vol_master_label_pct.text = rounded_percentage_as_text

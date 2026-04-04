@@ -18,7 +18,7 @@ var msec_records : Dictionary # key is in msec
 
 @onready var target : PhysicsBody2D = get_parent()
 
-var last_time_flow = BattleTimeline.TimeFlow.FORWARD
+var last_time_flow: BattleTimeline.TimeFlow = BattleTimeline.TimeFlow.FORWARD
 var last_snapshot: Dictionary
 
 static func reverse_action_key_in_snapshot(key: String, snapshot: Dictionary) -> void:
@@ -34,16 +34,19 @@ static func reverse_action_key_in_snapshot(key: String, snapshot: Dictionary) ->
 		snapshot[initiated_key] = value
 
 func _ready() -> void: if autostart: start_recording()
+
 func _process(_delta: float) -> void:
 	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		# update stored actions
 		while not usec_records.is_empty() and usec_records.keys().back() > BattleTimeline.instance.time_usec():
 			if ( # Correct actions for reversed timeflow and apply them
 				target.has_node("controller")
-				and not (target.has_node("replayer") and target.get_node("replayer").is_within_current_time())
+				and not (target.has_node("replayer")
+				and target.get_node("replayer").is_within_current_time())
 			):
 				var snapshot_to_apply = usec_records[usec_records.keys().back()]
 				reverse_action_key_in_snapshot("boost", snapshot_to_apply)
+				reverse_action_key_in_snapshot("action", snapshot_to_apply)
 				target.process_input_action(snapshot_to_apply)
 			usec_records.erase(usec_records.keys().back())
 
@@ -66,14 +69,15 @@ func _process(_delta: float) -> void:
 				corrective_snapshot = msec_records[msec_records.keys().back()]
 				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(msec_records.keys().back()))
 			target.correct_temporal_state(corrective_snapshot, time_to_snapshot)
+
 	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.FORWARD \
 		and last_time_flow == BattleTimeline.TimeFlow.BACKWARD \
 		and last_snapshot != null and not last_snapshot.is_empty():
 			target.correct_temporal_state(last_snapshot[last_snapshot.keys()[0]])
 	last_time_flow = BattleTimeline.time_flow
+
 var last_triggered = 0. 
 var recording = false
-
 ## Restarts recording of the target, erasing all previous stored data
 func start_recording() -> void:
 	if !recording:

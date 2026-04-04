@@ -53,6 +53,7 @@ metadata/_custom_type_script = "uid://cud6a5voxneed"
 
 [node name="battle" type="Node2D" unique_id=1010459710]
 script = ExtResource("1_v8cdc")
+god_mode_active = true
 
 [node name="cam" type="Camera2D" parent="." unique_id=624570446]
 position = Vector2(1592, -2689)
@@ -157,7 +158,8 @@ skin_idx = 0
 position = Vector2(1675, 1230)
 
 [node name="black_hole" parent="debris" unique_id=1106643319 instance=ExtResource("8_4l4jl")]
-position = Vector2(4580, -1178)
+position = Vector2(9134, -3150)
+scale = Vector2(2, 2)
 
 [node name="combatants" type="Node" parent="." unique_id=477359581]
 

@@ -1,5 +1,6 @@
 extends BaseBattle
 
+var objective_blip: Node2D
 func _ready() -> void:
 	super()
 	spawn_position = $combatants/player_carrier.global_position
@@ -7,6 +8,8 @@ func _ready() -> void:
 	GUI.set_objective("")
 	GUI.set_disabled_weapons_mask(0xC)
 	GUI.set_laupeerium_indicator(UIEnergyBar.max_bars / 5.)
+	objective_blip = %character/sonar_sensor.add_blip($debris/silo)
+	%character.set_disabled_weapons_mask(0xC)
 	$dialogues/intro.start()
 	$dialogues/intro.connect(
 		"dialogue_signal_0",
@@ -39,6 +42,7 @@ func _on_intro_dialouge_finished() -> void:
 	player_input.input_disabled = false
 
 func _on_silo_payload_reached() -> void:
+	objective_blip.queue_free()
 	create_tween().tween_method(
 		func(w: float): GUI.set_laupeerium_indicator(w),
 		UIEnergyBar.max_bars / 5., UIEnergyBar.max_bars, 0.5
@@ -50,7 +54,9 @@ func _on_silo_payload_reached() -> void:
 	)
 
 func _on_that_went_well_dialouge_finished() -> void:
-	if $combatants/boss: $combatants/boss.control_disabled = false
+	if $combatants/boss:
+		objective_blip = %character/sonar_sensor.add_blip($combatants/boss)
+		$combatants/boss.control_disabled = false
 
 func _on_boss_death(_boss: BattleCharacter) -> void:
 	$dialogues/scurry.start()
@@ -69,5 +75,8 @@ func _on_scurry_dialouge_finished() -> void:
 		level_container.add_child(level)
 	)
 
+var already_triggered: bool = false
 func _on_silo_doors_toggled(is_open: bool) -> void:
-	if is_open: $dialogues/bang.start()
+	if is_open and not already_triggered:
+		$dialogues/bang.start()
+		already_triggered = true

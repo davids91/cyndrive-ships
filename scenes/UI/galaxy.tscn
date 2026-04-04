@@ -14,6 +14,12 @@
 [ext_resource type="Texture2D" uid="uid://ds7lgrc5c7dj" path="res://textures/ui/panels/arrow_left_hover.png" id="10_r47se"]
 [ext_resource type="Texture2D" uid="uid://x7exn78klmof" path="res://textures/outer_space/hubble.png" id="13_8bcf2"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_oftex"]
+font_size = 20
+font_color = Color(0, 0.0666666, 1, 1)
+outline_size = 3
+outline_color = Color(1, 0, 0, 1)
+
 [sub_resource type="Gradient" id="Gradient_7lfv1"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_m51ka"]
@@ -93,19 +99,21 @@ script = ExtResource("1_m3hme")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1413322784]
 layout_mode = 0
-offset_left = 153.0
-offset_top = -294.0
-offset_right = 665.0
-offset_bottom = -271.0
+offset_left = 60.0
+offset_top = -263.0
+offset_right = 572.0
+offset_bottom = -240.0
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="HBoxContainer" unique_id=1678045989]
+[node name="difficuilty_text" type="Label" parent="HBoxContainer" unique_id=1678045989]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Difficuilty"
+label_settings = SubResource("LabelSettings_oftex")
 vertical_alignment = 1
 
 [node name="difficulty_slider" type="HSlider" parent="HBoxContainer" unique_id=2017574813]
-self_modulate = Color(0, 0.6500001, 1, 1)
+self_modulate = Color(0.13, 0.6955001, 1, 1)
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -216,6 +224,7 @@ offset_bottom = 64.0
 mouse_filter = 2
 
 [node name="guides_cam" type="Camera2D" parent="." unique_id=609192043]
+unique_name_in_owner = true
 zoom = Vector2(0.895, 0.895)
 
 [node name="movement_guide" type="Sprite2D" parent="." unique_id=1218886450]

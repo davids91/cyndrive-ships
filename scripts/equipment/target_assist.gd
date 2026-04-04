@@ -2,6 +2,7 @@ extends ShapeCast2D
 
 
 @export var goldfish_memory_sec: float = 3.
+@export var targeting_range: float = 3000.
 
 @onready var character: BattleCharacter = get_parent()
 
@@ -11,7 +12,10 @@ func set_disabled(yesno: bool) -> void:
 	enabled = not yesno
 
 func is_target_locked() -> bool:
-	return not highligthed_body == null
+	return (
+		highligthed_body != null
+		and (highligthed_body.global_position - character.global_position).length() < targeting_range
+	)
 
 func get_current_target() -> Node2D:
 	return highligthed_body

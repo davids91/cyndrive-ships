@@ -82,10 +82,7 @@ void fragment() {
 
 	// Add time as start offset
 	ring_start_angle_rad += manual_angle_offset;
-
-	while(current_px_angle_rad < ring_start_angle_rad){
-		current_px_angle_rad += PI_DOUBLE;
-	}
+	current_px_angle_rad += PI_DOUBLE * round((ring_start_angle_rad - current_px_angle_rad) / PI_DOUBLE);
 
 	vec4 clock_color = vec4(0,0,0,0);
 	if (

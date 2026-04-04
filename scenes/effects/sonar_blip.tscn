@@ -1,11 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://0gxeanhrnsr1"]
+[gd_scene format=3 uid="uid://0gxeanhrnsr1"]
 
 [ext_resource type="Script" uid="uid://bcldhcdt573aw" path="res://scripts/effects/sonar_blip.gd" id="1_00fke"]
 [ext_resource type="Texture2D" uid="uid://mlhdaf7ys86b" path="res://textures/ui/icons/sonar_blip.png" id="2_fi0gf"]
 
-[node name="sonar_blip" type="Node2D"]
+[node name="sonar_blip" type="Node2D" unique_id=1475533784]
 script = ExtResource("1_00fke")
 
-[node name="blip" type="Sprite2D" parent="."]
+[node name="blip" type="Sprite2D" parent="." unique_id=980122154]
 rotation = 1.5707964
+scale = Vector2(3, 3)
 texture = ExtResource("2_fi0gf")

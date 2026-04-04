@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://ktuk8547nurd" path="res://textures/entities/silo_door.png" id="2_6laxo"]
 [ext_resource type="Script" uid="uid://ewiix7elqv01" path="res://scripts/entities/simple_skin.gd" id="3_0n0ls"]
 [ext_resource type="Shader" uid="uid://c66rqecsnsqsu" path="res://shaders/implode.gdshader" id="3_rk5aj"]
-[ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="5_xchnb"]
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="8_uiv6f"]
 [ext_resource type="Shader" uid="uid://t43psq6ffrwl" path="res://shaders/shiny_pickup.gdshader" id="9_v162e"]
 [ext_resource type="Script" uid="uid://ddlf5o0iu0v5e" path="res://scripts/effects/shiny.gd" id="10_jnyqh"]
@@ -89,6 +88,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [node name="silo" type="RigidBody2D" unique_id=1278794569]
+mass = 1500.0
 script = ExtResource("1_122oo")
 approx_size = 1024.0
 
@@ -120,14 +120,6 @@ shape = SubResource("CapsuleShape2D_122oo")
 position = Vector2(227.00002, -238.99998)
 rotation = -0.7853982
 shape = SubResource("CapsuleShape2D_122oo")
-
-[node name="state_display" parent="." unique_id=1883341501 instance=ExtResource("5_xchnb")]
-z_index = 15
-offset_left = -64.0
-offset_top = 64.0
-offset_right = 64.0
-offset_bottom = 80.0
-speech_buble_offset = Vector2(64, 256)
 
 [node name="skin" type="Sprite2D" parent="." unique_id=1166410963]
 z_index = 15
@@ -208,5 +200,4 @@ offset_right = 256.0
 offset_bottom = 256.0
 texture = SubResource("GradientTexture2D_aibyv")
 
-[connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]
 [connection signal="body_entered" from="payload_trigger" to="." method="_on_payload_trigger_body_entered"]

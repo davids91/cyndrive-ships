@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://br0ks3g1mac4b" path="res://scripts/ui_menus/pause_menu.gd" id="1_aa0ln"]
 [ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="2_th4ef"]
 [ext_resource type="StyleBox" uid="uid://cvq7dn2d87nav" path="res://resources/pause menu buttons.tres" id="2_um83q"]
-[ext_resource type="Script" uid="uid://cq1p7mgya1fq" path="res://scenes/UI/pause_menu_rewind_effect.gd" id="3_1ax27"]
+[ext_resource type="Script" uid="uid://cq1p7mgya1fq" path="res://scripts/ui_menus/pause_menu_rewind_effect.gd" id="3_1ax27"]
 [ext_resource type="Theme" uid="uid://ch4hp78pq2ovy" path="res://resources/options-page.theme" id="5_1glx7"]
-[ext_resource type="Script" uid="uid://c0wsysneh00mq" path="res://scenes/UI/options_page.gd" id="5_67wsm"]
+[ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="5_57ju3"]
+[ext_resource type="Script" uid="uid://c0wsysneh00mq" path="res://scripts/ui_menus/options_page.gd" id="5_67wsm"]
 [ext_resource type="LabelSettings" uid="uid://d2n8of3dmvcvl" path="res://resources/options-page-heading_label-settings.tres" id="6_hsxpq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1ax27"]
@@ -20,7 +21,7 @@ noise = SubResource("FastNoiseLite_th4ef")
 shader = ExtResource("2_th4ef")
 shader_parameter/screen_ratio_w_h = 1.7777778
 shader_parameter/noise = SubResource("NoiseTexture2D_1ax27")
-shader_parameter/rewind_amount = 241.4721261239349
+shader_parameter/rewind_amount = 4411.6130282256445
 shader_parameter/rewind_intensity = 0.2
 shader_parameter/circle_centers = PackedVector2Array(0.58, 0.315)
 shader_parameter/circle_radiuses = PackedFloat32Array(0.32)
@@ -131,16 +132,6 @@ theme_override_styles/normal = ExtResource("2_um83q")
 theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Restart Game"
 
-[node name="Restart_Round_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage" unique_id=965898991]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 50)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = ExtResource("2_um83q")
-theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
-text = "Restart Round"
-
 [node name="Main_Menu_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage" unique_id=2049443179]
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
@@ -158,6 +149,13 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = ExtResource("2_um83q")
 theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Quit Game"
+
+[node name="FeatureFlaggedNode" type="Node" parent="Panel/VBoxContainer/TabContainer/PausePage/Quit_btn" unique_id=17618713]
+script = ExtResource("5_57ju3")
+flag_name = "auto__WEB"
+node_enabled_by_flag = false
+node_removed_by_flag = true
+metadata/_custom_type_script = "uid://cdy0wfjq4rl2c"
 
 [node name="OptionsPage" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer" unique_id=1742230278]
 unique_name_in_owner = true
@@ -225,7 +223,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
-text = "0.0"
+text = "0.0 dB"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -265,7 +263,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
-text = "0.0"
+text = "0.0 dB"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -305,7 +303,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
-text = "0.0"
+text = "0.0 dB"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -343,7 +341,6 @@ text = "Back"
 [connection signal="pressed" from="Panel/VBoxContainer/TabContainer/PausePage/Resume_btn" to="." method="_on_resume_btn_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/TabContainer/PausePage/Options_Menu_btn" to="." method="_on_options_menu_btn_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/TabContainer/PausePage/Restart_Game_btn" to="." method="_on_restart_btn_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/TabContainer/PausePage/Restart_Round_btn" to="." method="_on_restart_round_btn_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/TabContainer/PausePage/Main_Menu_btn" to="." method="_on_main_menu_btn_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/TabContainer/PausePage/Quit_btn" to="." method="_on_quit_btn_pressed"]
 [connection signal="exited" from="Panel/VBoxContainer/TabContainer/OptionsPage" to="." method="_on_options_page_exited"]

@@ -14,16 +14,6 @@
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="19_2soyj"]
 [ext_resource type="Script" uid="uid://cxw7l8tkolluc" path="res://scripts/entities/disabled_droid.gd" id="19_l3ay5"]
 [ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="19_xxhjm"]
-[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="20_fh4lj"]
-[ext_resource type="AudioStream" uid="uid://0oqoh37hsp4w" path="res://audio/music_big_beat_longer.ogg" id="21_g8yy2"]
-[ext_resource type="AudioStream" uid="uid://l8abnhstyv07" path="res://audio/Acid-Theme v1.mp3" id="22_45v6q"]
-[ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="27_45v6q"]
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jmtss"]
-streams_count = 3
-stream_0/stream = ExtResource("27_45v6q")
-stream_1/stream = ExtResource("21_g8yy2")
-stream_2/stream = ExtResource("22_45v6q")
 
 [sub_resource type="LabelSettings" id="LabelSettings_fh4lj"]
 font_size = 45
@@ -56,26 +46,11 @@ point_count = 5
 
 [node name="battle" type="Node2D" unique_id=254046485]
 script = ExtResource("1_aby8t")
-info_highlight_blink_length_sec = null
-rewind_animation_transition_sec = null
-respawn_time_sec = null
-gui_visible = null
-spawn_position = null
-spawn_radius = null
 
 [node name="cam" type="Camera2D" parent="." unique_id=805374975]
 position = Vector2(1591, -2681)
 rotation = 1.570289
 zoom = Vector2(0.5, 0.5)
-
-[node name="background_music" type="AudioStreamPlayer2D" parent="cam" unique_id=1404026983]
-unique_name_in_owner = true
-position = Vector2(-186.94458, -109.09485)
-rotation = -1.570289
-stream = SubResource("AudioStreamRandomizer_jmtss")
-volume_db = -10.0
-autoplay = true
-bus = &"Music"
 
 [node name="timeline" type="Node" parent="." unique_id=1585561361]
 script = ExtResource("3_u34vn")
@@ -163,7 +138,6 @@ blue_curve_phasing = SubResource("Curve_45v6q")
 unique_name_in_owner = true
 visible = false
 position = Vector2(1591, -2681)
-team = ExtResource("20_fh4lj")
 color = Color(0, 0, 0, 0)
 carrier_ship = NodePath("../player_carrier")
 

@@ -209,7 +209,7 @@ metadata/_custom_type_script = "uid://co4eimc5mgx3i"
 script = ExtResource("19_0oxfl")
 wielder = NodePath("..")
 chain_radius = 750.0
-base_damage = 0.5
+base_damage = 0.4
 energy_cost = 0.1
 metadata/_custom_type_script = "uid://cy4bwltyfsq3g"
 
@@ -330,6 +330,7 @@ gradient = SubResource("Gradient_8sms1")
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("18_h0o0o")
+zap_occurence_sec = 0.5
 
 [node name="collision_shape" type="CollisionShape2D" parent="zap_aura" unique_id=2127527192]
 position = Vector2(-32, 0)

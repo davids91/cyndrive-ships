@@ -16,7 +16,7 @@ signal shields_toggled(turned_on: bool)
 @export var starting_health: float = 10.
 @export var max_health: float = 12.
 @export var low_health: float = 3.
-@export_range(0., 1000.) var mass: float = 10.
+@export_range(0., 5000.) var mass: float = 10.
 
 @onready var health: float = starting_health
 @onready var spawn_snapshot: Dictionary = get_snapshot()
@@ -24,6 +24,10 @@ signal shields_toggled(turned_on: bool)
 func _ready() -> void:
 	if has_node("temporal_recorder"): $temporal_recorder.start_recording()
 	$skin.init_skin(skin_layers, team.color)
+	if has_node("booster_sound"):$booster_sound.finished.connect(func():
+		$booster_fx.visible = false
+		$thruster_fx.visible = true
+	)
 	if has_node("laser_beam"): $laser_beam.base_damage *= laser_strength
 	if has_node("ai_control"): $ai_control.enabled = true
 	elif not self is MrMustle and not self is DrSpeedo:
@@ -221,8 +225,6 @@ func _physics_process(delta: float) -> void:
 			contact_time += delta
 		else: contact_time = 0.
 		body_in_contact = collision.get_collider()
-		var mass_ratio = mass / body_in_contact.mass
-		body_in_contact.apply_impulse($controller.internal_force * delta * mass_ratio * 0.15)
 	else: contact_time = 0.
 
 @export var carrier_ship: BattleCharacter
@@ -388,6 +390,9 @@ func resume_control() -> void:
 	else: $controller.intent_direction = PlayerInput.instance.movement_intent
 	control_disabled = false
 
+func set_disabled_weapons_mask(mask: int) -> void:
+	disabled_weapons_mask = mask
+
 var disabled_weapons_mask: int = 0x0
 var ready_to_receive_mine: bool = false
 var needs_docking_support: bool = false
@@ -431,18 +436,7 @@ func process_input_action(action: Dictionary) -> void:
 			action["action_released"] = true
 
 	# move camera lightly on boost
-	if "boost_initiated" in action:
-		$booster_sound.play()
-		await $booster_sound.finished.connect(func():
-			$booster_fx.visible = false
-			$thruster_fx.visible = true
-		)
-		var camera_direction = $controller.intent_direction * -1
-		var boost_tween: Tween = create_tween()
-		if has_node("cam"):
-			boost_tween.tween_property($cam, "offset", camera_direction * approx_size * 2., 0.1)
-			boost_tween.tween_property($cam, "offset", Vector2(), 0.5)
-			boost_tween.chain()
+	if "boost_initiated" in action: $booster_sound.play()
 
 	# For targets representing past versions ( e.g. player previous round ), positions may mismatch slightly
 	# because of the inaccuracies in the replay system and floating point inaccuracies of the physics system

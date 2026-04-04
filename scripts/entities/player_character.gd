@@ -15,6 +15,12 @@ func process_input_action(action: Dictionary) -> void:
 		or ("boost_initiated" in action and action["boost_initiated"])
 	)
 
+	if "boost_initiated" in action and action["boost_initiated"]:
+		if has_node("cam_remote_transform"):
+			var boost_tween: Tween = create_tween()
+			boost_tween.tween_property($cam_remote_transform, "position", $controller.intent_direction * approx_size * -2., 0.1)
+			boost_tween.tween_property($cam_remote_transform, "position", Vector2(), 0.5)
+
 	# TechDebt: Temporal replay reverses shoot and boost inputs
 	# so if rewinding is stopped midway boosting, the character stays in invalid state
 	if is_boosting and not PlayerInput.instance.is_boosting:

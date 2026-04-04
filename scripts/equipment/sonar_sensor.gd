@@ -30,13 +30,16 @@ func _physics_process(delta: float) -> void:
 			continue
 		blips[collider.get_instance_id()].reinvigorate()
 
-func add_blip(collider: Object) -> Node2D:
-	var blip_lifetime: float = 1. if not "sonar_blip_lifetime" in collider else collider.sonar_blip_lifetime
+@export var blip_default_life_sec: float = 2.
+func add_blip(collider: Node2D) -> Node2D:
 	var coll_color: Color = Color.WEB_GRAY
 	coll_color.a = collider.modulate.a
-	if "team" in collider:
-		# team 1 is the player! 
-		if collider.team.team_id == 1: coll_color = Color.LIME
+	if "team" in collider: 
+		if collider is LaupeeriumSilo: coll_color = Color.GOLD
+		elif collider.team.team_id == 1: coll_color = Color.LIME # team 1 is the player!
 		else: coll_color = collider.team.color
 	if "blip_color" in collider: coll_color = collider.blip_color
-	return display_node.add_display_object(self, blip_radius, collider, coll_color, blip_lifetime)
+	return display_node.add_display_object(
+		self, blip_radius, collider, coll_color,
+		blip_default_life_sec if not "sonar_blip_lifetime" in collider else collider.sonar_blip_lifetime
+	)

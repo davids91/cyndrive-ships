@@ -8,8 +8,8 @@ var _flags: Dictionary = {}
 
 
 func _ready() -> void:
+	_detect_auto_flags()
 	_load_flags()
-
 
 func _load_flags() -> void:
 	if not FileAccess.file_exists("res://feature_flags.json"):
@@ -17,14 +17,15 @@ func _load_flags() -> void:
 		var dir = DirAccess.open("res://")
 		if dir.copy("res://feature_flags.example.json", "res://feature_flags.json") != OK:
 			print("ERROR copying file!")
-
 	var base := _parse_json_file("res://feature_flags.json")
 	_flags = base
-
 	if OS.has_feature("editor") and FileAccess.file_exists("res://feature_flags.dev.json"):
 		var overrides := _parse_json_file("res://feature_flags.dev.json")
 		_flags.merge(overrides, true)
 
+func _detect_auto_flags() -> void:
+	if OS.has_feature("web"): _flags["auto__WEB"] = { "enabled": true }
+	else: _flags["auto__WEB"] = { "enabled": false }
 
 func _parse_json_file(path: String) -> Dictionary:
 	var file := FileAccess.open(path, FileAccess.READ)

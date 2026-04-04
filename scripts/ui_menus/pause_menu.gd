@@ -19,9 +19,6 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("pause_menu") and game_is_paused:
 		unpause_game()
 
-func restart_round_button_visible(yesno: bool) -> void:
-	%Restart_Round_btn.set_visible(yesno)
-
 func unpause_game():
 	game_is_paused = false
 	get_tree().paused = false
@@ -30,25 +27,17 @@ func unpause_game():
 func _on_resume_btn_pressed() -> void:
 	unpause_game()
 
-
 func _on_quit_btn_pressed() -> void:
 	get_tree().quit()
-
 
 func _on_restart_btn_pressed() -> void:
 	get_tree().paused = false
 	battle.reset_game()
 
-func _on_restart_round_btn_pressed() -> void:
-	get_tree().paused = false
-	self.hide()
-	battle.restart_round()
-
 func _on_main_menu_btn_pressed() -> void:
 	var GUI: BattleShipGUI = get_node("/root/Main/GUI")
 	var level_container: Node2D = get_node("/root/Main/LevelContainer")
 	var level = load("res://scenes/UI/galaxy.tscn").instantiate()
-
 	level.get_node("main_cam").make_current()
 	for n in level_container.get_children(): n.queue_free()
 	GUI.set_visible(false)

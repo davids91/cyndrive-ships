@@ -123,9 +123,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			god_mode_active = !god_mode_active
 			GUI.get_node("debug_stats/god_mode_label").visible = god_mode_active
 
-	if event.is_action_pressed("key_bindings") and just_pressed:
-		GUI.keybindings_panel.set_visible(not GUI.keybindings_panel.visible)
-
 func player_defeated() -> bool:
 	return (
 		# character is deleted upon replaying the round
@@ -205,11 +202,6 @@ func replay_game() -> void:
 	$replay_camera.make_current()
 	GUI.restart_during_replay.set_visible(true)
 	GUI.get_node("score").set_visible(false)
-
-func view_control_triggered(action: Dictionary) -> void:
-	if "zoom" in action:
-		$cam.zoom.x = action["zoom"]
-		$cam.zoom.y = action["zoom"]
 
 func time_control_triggered(action: Dictionary) -> void:
 	if not (

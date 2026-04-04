@@ -78,6 +78,11 @@ func _process(_delta: float) -> void:
 		if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 			$rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
+func _unhandled_input(event: InputEvent) -> void:
+	var just_pressed = event.is_pressed() and not event.is_echo()
+	if event.is_action_pressed("key_bindings") and just_pressed:
+		$keybindings_panel.set_visible(not $keybindings_panel.visible)
+
 const one_weapon_slot_width_with_padding: float = 128.5
 func _on_weapon_changed(slot: int) -> void:
 	$selected_weapon_panel.transform.origin.y = float(slot) * one_weapon_slot_width_with_padding

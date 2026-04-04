@@ -1,3 +1,4 @@
+class_name LaupeeriumSilo
 extends BattleDebris
 
 signal doors_toggled(is_open: bool)
@@ -8,6 +9,8 @@ signal payload_reached()
 @export var color: Color = Color.YELLOW # Color for the minimap
 @export var team: Team = preload("res://resources/enemy_team.tres")
 @export var doors_fly_off_delay: float = 0.5
+@export var sonar_blip_lifetime: float = SonarBlip.INFINITE_LIFETIME
+@export var sonar_blip_scale: Vector2 = Vector2(1.5, 1.5)
 
 @onready var health: float = starting_health
 @onready var is_alive: bool = true
@@ -60,10 +63,6 @@ func _health_check() -> void:
 					debris_container.add_child(door)
 		)
 	was_alive = is_alive
-
-func _process(delta: float) -> void:
-	$state_display.set_visible(visible)
-	super(delta)
 
 func _on_payload_trigger_body_entered(body: Node2D) -> void:
 	if not is_alive and body is PlayerShip and $payload_trigger/payload:

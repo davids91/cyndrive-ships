@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="3_bc2pp"]
 [ext_resource type="PackedScene" uid="uid://dmn3a6pdbqk1q" path="res://scenes/entities/tutorial_boss.tscn" id="4_kuptj"]
 [ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="6_h56ul"]
-[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="6_qwaac"]
 
 [node name="battle" type="Node2D" unique_id=1944730611]
 script = ExtResource("1_i0uq0")
+god_mode_active = true
 
 [node name="cam" type="Camera2D" parent="." unique_id=1742123394]
 position = Vector2(961, -1972)
@@ -27,7 +27,6 @@ position = Vector2(890, -648)
 [node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("6_h56ul")]
 unique_name_in_owner = true
 position = Vector2(961, -1972)
-team = ExtResource("6_qwaac")
 color = Color(0, 0, 0, 0)
 
 [node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1963758468]

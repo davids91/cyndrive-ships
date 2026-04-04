@@ -28,9 +28,10 @@ var aiming_to: Vector2 = Vector2.ZERO
 var search_loop_progress: float = 0.
 var time_until_target_drop: float = goldfish_memory_sec
 var whirlwind_duration_left_sec: float = 0.
+var mr_mustle_control_disabled: bool = false
 func _process(delta: float):
 	super(delta)
-	if control_disabled: return
+	if mr_mustle_control_disabled: return
 	
 	$player_detection.set_global_position(get_global_position())
 	if not change_target_to and 0. < time_until_target_drop:
@@ -121,8 +122,13 @@ func _process_default_mode(delta: float) -> void:
 		if not focus_change_from_damage:
 			focusing_at = get_global_position() + Vector2(cos(radar_angle), sin(radar_angle)) * approx_size
 
-	$player_detection.set_global_rotation(clamp(
-		(focusing_at - get_global_position()).angle(),
+	var focus_angle: float = (focusing_at - get_global_position()).angle()
+	if sign(focus_angle) != $player_detection.get_global_rotation():
+		# TechDebt? LERP won't work well when the rotation changes from PI to -PI or vice versa
+		# despite the actual angles being almost identical!
+		$player_detection.set_global_rotation(focus_angle)
+	else: $player_detection.set_global_rotation(clamp(
+		focus_angle,
 		lerp_angle(get_global_rotation(), get_global_rotation() - PI / 4., 1.),
 		lerp_angle(get_global_rotation(), get_global_rotation() + PI / 4., 1.),
 	))
@@ -155,10 +161,18 @@ func _on_player_detection_body_entered(body: Node2D) -> void:
 		not acquired_target and "team" in body and body.team.is_enemy(team)
 		and body.has_method("in_battle") and body.in_battle()
 	):
+		if change_target_to == body and safeguard_for_accidental_drop:
+			safeguard_for_accidental_drop.kill()
 		change_target_to = body
 
+@export var safeguard_time_for_accidental_drop_sec : float = 0.8
+var safeguard_for_accidental_drop: Tween = null
 func _on_player_detection_body_exited(body: Node2D) -> void:
-	if body == acquired_target and acquired_target: change_target_to = null
+	if body == acquired_target and acquired_target:
+		if safeguard_for_accidental_drop: safeguard_for_accidental_drop.kill()
+		safeguard_for_accidental_drop = create_tween()
+		safeguard_for_accidental_drop.tween_interval(safeguard_time_for_accidental_drop_sec)
+		safeguard_for_accidental_drop.tween_callback(func(): change_target_to = null)
 
 func _on_phased(phased_in: bool) -> void:
 	$skin.set_visible(phased_in)

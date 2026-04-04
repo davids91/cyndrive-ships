@@ -7,8 +7,7 @@ And when I went back to the present, your ship was inside out.
 Butterfly effect and all that. 
 #[c2]My mission?
 #[c0]Ahem#[t250]...#[t] Anyways, it's printed now. Let me give you the briefing.
-First of all,
-we salvaged the gun that loud fellow was using when he bolted.
+First of all, we salvaged the gun that loud fellow was using when he bolted.
 #[c1]It fires coils of molten steel, heated to 1,464 degrees,
 at over 3,000 meters per second at a designated target.
 In layman's terms, it hurts people.

@@ -60,6 +60,7 @@ collision_layer = 3
 motion_mode = 1
 script = ExtResource("1_nmp2x")
 skin_layers = Array[ExtResource("2_nmp2x")]([SubResource("Resource_e50ek"), SubResource("Resource_mpb26")])
+mass = 1000.0
 
 [node name="skin" type="Node2D" parent="." unique_id=996370363]
 visible = false

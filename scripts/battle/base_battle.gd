@@ -60,7 +60,6 @@ func reset_game() -> void:
 		explosion.queue_free()
 	get_tree().call_deferred("reload_current_scene")
 
-func view_control_triggered(_action: Dictionary) -> void: pass
 func replay_game() -> void: pass
 func replay_round(rewind_animation: bool = true) -> void:
 	#TechDebt: Eliminate mine after round end
@@ -121,14 +120,17 @@ func replay_round(rewind_animation: bool = true) -> void:
 		GUI.get_node("restart_round_panel").set_visible(false)
 	)
 
+func view_control_triggered(action: Dictionary) -> void:
+	if "zoom" in action:
+		$cam.zoom.x = action["zoom"]
+		$cam.zoom.y = action["zoom"]
+
 func time_control_triggered(action: Dictionary) -> void:
 	if "slowdown" in action:
 		Difficuilty.slowdown_multiplier = action["slowdown"]
-
 	if "rewind_toggled" in action:
 		if action["rewind_toggled"]: $timeline.start_reverse()
 		else: $timeline.finish_reverse()
-
 	if "checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]:
 		replay_round()
 
@@ -142,7 +144,7 @@ func _ready() -> void:
 
 	for debris in $debris.get_children(): if debris.has_method("respawn"):
 		$timeline.connect("round_reset", debris.respawn)
-	$combatants/player_carrier.phase_in()
+	if $combatants.has_node("player_carrier"): $combatants/player_carrier.phase_in()
 
 func _on_battle_character_resurrected(_character: BattleCharacter) -> void: pass
 func _on_battle_character_dead(_character: BattleCharacter) -> void: pass

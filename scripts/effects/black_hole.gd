@@ -21,7 +21,7 @@ func _process(_delta: float) -> void:
 		var pull_force = body_to_center.normalized()
 		pull_force *= strength * (BattleTimeline.instance.time_msec() - bodies_within[body]) / time_to_die_msec
 		if body.has_node("ai_control"): pull_force *= 500. # TechDebt: snappy playercontroller works on different force amounts
-		body.apply_impulse(pull_force)
+		if body.has_method("apply_impulse"): body.apply_impulse(pull_force)
 		if body_to_center.length() < death_radius:
 			if body.has_method("accept_damage"): body.accept_damage(DAMAGE)
 			else:

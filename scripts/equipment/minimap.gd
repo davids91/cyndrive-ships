@@ -15,11 +15,12 @@ func _process(delta: float) -> void:
 			minimap_icons[node].queue_free()
 			minimap_icons.erase(node)
 	for i in monitor_nodes.size(): for node in monitor_nodes[i].get_children():
-		# check if still in battle, erase if not
 		if (not node.in_battle() or not node.visible) and minimap_icons.has(node):
+			# check if still in battle, erase if not
 			minimap_icons[node].queue_free()
 			minimap_icons.erase(node)
 		elif node.in_battle() and node.visible and 0. < node.modulate.a and not minimap_icons.has(node):
+			# Add icon if it just appeared in battle
 			minimap_icons[node] = icon_template[i].duplicate()
 			if "team" in node:
 				# team 1 is the player!
@@ -29,12 +30,13 @@ func _process(delta: float) -> void:
 			minimap_icons[node].set_visible(true)
 			$area.add_child(minimap_icons[node])
 
-		# Update icons position
+		# Update icons position and scale
 		if minimap_icons.has(node):
-			minimap_icons[node].position = get_position_within_panel(node.get_global_position())
-
-## Caclulate the position within the minimap
-func get_position_within_panel(pos: Vector2) -> Vector2:
-	var position_in_minimap: Vector2 = (pos - map_extent.position).clamp(Vector2.ZERO, map_extent.size)
-	position_in_minimap = position_in_minimap / map_extent.size * $area.size
-	return position_in_minimap
+			var unclamped_position_in_minimap: Vector2 = (node.get_global_position() - map_extent.position)
+			var position_in_minimap: Vector2 = unclamped_position_in_minimap.clamp(Vector2.ZERO, map_extent.size)
+			var icon_scale : Vector2 = Vector2.ONE
+			if position_in_minimap != unclamped_position_in_minimap: icon_scale *= 0.5
+			if node is PlayerShip: icon_scale *= 1.2
+			position_in_minimap = position_in_minimap / map_extent.size * $area.size
+			minimap_icons[node].position = position_in_minimap
+			minimap_icons[node].scale = icon_scale

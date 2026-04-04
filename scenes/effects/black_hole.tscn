@@ -31,7 +31,7 @@ material = SubResource("ShaderMaterial_r0ctv")
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("2_mfsi2")
-strength = 25.0
+strength = 100.0
 death_radius = 350.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1069411079]

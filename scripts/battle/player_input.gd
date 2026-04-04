@@ -53,6 +53,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if "action_direction" in action:
 		current_action_direction += action["action_direction"]
 		action["action_direction"] = current_action_direction
+
+		# !TechDebt: When a dialogue panel is visible action pressed is not triggered, only released
+		# --> The accumulated vector is reseted when detected
+		if current_action_direction.length() > 1.:
+			current_action_direction = Vector2.ZERO
 		is_shooting = 0 < action["action_direction"].length()
 
 	if was_shooting and not is_shooting:
@@ -160,48 +165,30 @@ Output format is the following:
 	action["deploy_mine"]: activate and release the attached mine ( if any )
 	action["zoom"]: set camera zoom level(not stored in temporal records)
 """
-static func get_action(input_event: InputEvent) -> Dictionary:
+func get_action(input_event: InputEvent) -> Dictionary:
 	var action = Dictionary()
 	
 	var intent_direction = Vector2(0,0)
 	var action_direction = Vector2(0,0)
 	
-	if input_event.is_action_pressed("movement_left"):
-		intent_direction.x = -1
-	if input_event.is_action_pressed("movement_right"):
-		intent_direction.x = 1
-	if input_event.is_action_pressed("movement_down"):
-		intent_direction.y = 1
-	if input_event.is_action_pressed("movement_up"):
-		intent_direction.y = -1
-	if input_event.is_action_released("movement_left"):
-		intent_direction.x = 1
-	if input_event.is_action_released("movement_right"):
-		intent_direction.x = -1
-	if input_event.is_action_released("movement_down"):
-		intent_direction.y = -1
-	if input_event.is_action_released("movement_up"):
-		intent_direction.y = 1
-
+	if input_event.is_action_pressed("movement_left"): intent_direction.x = -1
+	if input_event.is_action_pressed("movement_right"): intent_direction.x = 1
+	if input_event.is_action_pressed("movement_down"): intent_direction.y = 1
+	if input_event.is_action_pressed("movement_up"): intent_direction.y = -1
+	if input_event.is_action_released("movement_left"): intent_direction.x = 1
+	if input_event.is_action_released("movement_right"): intent_direction.x = -1
+	if input_event.is_action_released("movement_down"): intent_direction.y = -1
+	if input_event.is_action_released("movement_up"): intent_direction.y = 1
 	action["movement_intent"] = intent_direction
 
-	if input_event.is_action_pressed("action_left"):
-		action_direction.x = -1
-	if input_event.is_action_pressed("action_right"):
-		action_direction.x = 1
-	if input_event.is_action_pressed("action_down"):
-		action_direction.y = 1
-	if input_event.is_action_pressed("action_up"):
-		action_direction.y = -1
-	if input_event.is_action_released("action_left"):
-		action_direction.x = 1
-	if input_event.is_action_released("action_right"):
-		action_direction.x = -1
-	if input_event.is_action_released("action_down"):
-		action_direction.y = -1
-	if input_event.is_action_released("action_up"):
-		action_direction.y = 1
-
+	if input_event.is_action_pressed("action_left"): action_direction.x = -1
+	if input_event.is_action_pressed("action_right"): action_direction.x = 1
+	if input_event.is_action_pressed("action_down"): action_direction.y = 1
+	if input_event.is_action_pressed("action_up"): action_direction.y = -1
+	if input_event.is_action_released("action_left"): action_direction.x = 1
+	if input_event.is_action_released("action_right"): action_direction.x = -1
+	if input_event.is_action_released("action_down"): action_direction.y = -1
+	if input_event.is_action_released("action_up"): action_direction.y = 1
 	action["action_direction"] = action_direction
 
 	if input_event.is_action_pressed("boost"):
@@ -229,9 +216,8 @@ static func get_action(input_event: InputEvent) -> Dictionary:
 	if(
 		input_event is InputEventKey and input_event.pressed and not input_event.echo
 		and input_event.physical_keycode >= KEY_1 and input_event.physical_keycode <= KEY_4
-	):
-		action["weapon_slot"] = input_event.physical_keycode - KEY_1
-		
+	): action["weapon_slot"] = input_event.physical_keycode - KEY_1
+
 	return action
 
 func _enter_tree() -> void:
