@@ -1,0 +1,280 @@
+[gd_scene format=3 uid="uid://6vnpress2q4m"]
+
+[ext_resource type="Script" uid="uid://d2hqpg412bwwt" path="res://scripts/entities/orange_boss_brain.gd" id="1_hci4j"]
+[ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="2_4ie31"]
+[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="3_0cmmo"]
+[ext_resource type="Texture2D" uid="uid://qnvemx3643ri" path="res://textures/entities/ominous ship.png" id="4_k0o1n"]
+[ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="5_0y81i"]
+[ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="6_am5af"]
+[ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="7_0xp6m"]
+[ext_resource type="AudioStream" uid="uid://bxfkppefqurjq" path="res://audio/boss_screaming.wav" id="8_yn676"]
+[ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="9_0yue2"]
+[ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="10_vv58x"]
+[ext_resource type="AudioStream" uid="uid://dajttw71kitgt" path="res://audio/explosion_001.wav" id="11_wko7g"]
+[ext_resource type="AudioStream" uid="uid://besa8dwtnwqwy" path="res://audio/explosion_002.wav" id="12_1po6q"]
+[ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="13_e2la0"]
+[ext_resource type="AudioStream" uid="uid://bokt2np2jc03c" path="res://audio/engine_booster.wav" id="14_8dg4r"]
+[ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="15_latyb"]
+[ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="16_7t5ug"]
+[ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="17_1diy2"]
+
+[sub_resource type="Resource" id="Resource_a5rul"]
+script = ExtResource("3_0cmmo")
+texture = ExtResource("4_k0o1n")
+scale = Vector2(4, 4)
+metadata/_custom_type_script = "uid://cud6a5voxneed"
+
+[sub_resource type="Curve" id="Curve_8a2ah"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 8.61438), 0.0, -286.33978, 0, 0, Vector2(0.63893807, 110.13977), 1121.7161, 1121.7161, 0, 0, Vector2(0.8902655, 1), -999.4854, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_ikjs2"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0, 56.83893), 0.0, -25.619877, 0, 0, Vector2(0.4814159, 150.74997), 1338.4434, 1338.4434, 0, 0, Vector2(0.95634097, 1), -2265.3918, 198.92365, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_1rdfn"]
+_limits = [1.0, 600.0, 0.0, 1.0]
+_data = [Vector2(0.39823008, 1), 0.0, -64.04968, 0, 0, Vector2(0.42123893, 110.13977), 0.0, 0.0, 0, 0, Vector2(0.93805313, 1), -184.13016, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_it8mc"]
+radius = 100.0
+height = 425.6
+
+[sub_resource type="Shader" id="Shader_xqo7t"]
+code = "shader_type canvas_item;
+
+uniform sampler2D noise;
+uniform vec4 burn_color : source_color;
+uniform vec4 team_color: source_color;
+
+uniform float burn_percentage: hint_range(0.0, 1.0) = 0.5;
+uniform sampler2D burn_curve;
+uniform float burn_threshold: hint_range(0.001, 1.0) = 0.1;
+uniform float burn_flame_supression: hint_range(0.0, 0.8) = 0.1;
+uniform float pixel_scale: hint_range(1., 100.);
+uniform float color_aberration: hint_range(0.0, 0.2) = 0.1;
+
+void fragment() {
+	if (1.0 == burn_percentage) {
+		discard;
+	}
+
+	vec2 pixel_uv = floor(UV * pixel_scale) / pixel_scale;
+	vec2 large_pixel_uv = floor(UV * pixel_scale * 4.) / pixel_scale / 4.;
+	vec4 skin_color;
+	float red_abberation_angle = texture(noise, pixel_uv).r * 2. * PI;
+	float green_abberation_angle = texture(noise, pixel_uv + vec2(0., 1.)).r * 2. * PI;
+	float blue_abberation_angle = texture(noise, pixel_uv + vec2(1., 0.)).r * 2. * PI;
+	float aberration = color_aberration * burn_percentage;
+	skin_color = vec4(
+		texture(TEXTURE, UV + vec2(cos(red_abberation_angle), sin(red_abberation_angle)) * aberration).r,
+		texture(TEXTURE, UV + vec2(cos(green_abberation_angle), sin(green_abberation_angle)) * aberration).g,
+		texture(TEXTURE, UV + vec2(cos(blue_abberation_angle), sin(blue_abberation_angle)) * aberration).b,
+		max(max(
+			texture(TEXTURE, UV + vec2(cos(red_abberation_angle), sin(red_abberation_angle)) * aberration).a,
+			texture(TEXTURE, UV + vec2(cos(green_abberation_angle), sin(green_abberation_angle)) * aberration).a),
+			texture(TEXTURE, UV + vec2(cos(blue_abberation_angle), sin(blue_abberation_angle)) * aberration).a
+		)
+	);
+	skin_color = vec4(mix(skin_color, team_color, team_color.a).rgb, skin_color.a);
+	float corrected_burn_prec = texture(burn_curve, vec2(burn_percentage, 0.)).r;
+	float skin_alpha = clamp(pow(texture(noise, large_pixel_uv).r, mix(0.001, 25., corrected_burn_prec)), 0., 1.);
+	float skin_alpha_larger = clamp(pow(texture(noise, large_pixel_uv).r, mix(0.001, 10., corrected_burn_prec)), 0., 1.);
+	vec4 burned_color = mix(burn_color, skin_color, clamp(skin_alpha / max(0.01, (burn_threshold - burn_flame_supression)), 0., 1.));
+	skin_alpha = clamp(min(skin_alpha * 4., skin_color.a), 0., 1.);
+    COLOR = vec4(burned_color.rgb, skin_alpha);
+}"
+
+[sub_resource type="Curve" id="Curve_mnine"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.44708997, 0.1048305), 0.44892073, 0.44892073, 0, 0, Vector2(1, 0.53414845), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_0dpix"]
+curve = SubResource("Curve_mnine")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_c274t"]
+noise_type = 5
+frequency = 0.0188
+fractal_type = 2
+fractal_octaves = 2
+fractal_lacunarity = 2.525
+fractal_gain = 2.0
+domain_warp_type = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2hyy3"]
+noise = SubResource("FastNoiseLite_c274t")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2pl7"]
+resource_local_to_scene = true
+shader = SubResource("Shader_xqo7t")
+shader_parameter/noise = SubResource("NoiseTexture2D_2hyy3")
+shader_parameter/burn_color = Color(1, 1, 0, 1)
+shader_parameter/team_color = Color(0, 0, 0, 0)
+shader_parameter/burn_percentage = 0.0
+shader_parameter/burn_curve = SubResource("CurveTexture_0dpix")
+shader_parameter/burn_threshold = 1.0
+shader_parameter/burn_flame_supression = 0.50000002375
+shader_parameter/pixel_scale = 2.0000000475
+shader_parameter/color_aberration = 0.150000007125
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_b23ht"]
+
+[sub_resource type="Gradient" id="Gradient_ebfdu"]
+offsets = PackedFloat32Array(0, 0.47215497, 0.8595642, 1)
+colors = PackedColorArray(1, 0.972549, 0, 1, 0.9203016, 0.25930175, 0, 1, 0, 0, 0, 0.8901961, 0, 0, 0, 0)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_o6hf0"]
+streams_count = 4
+stream_0/stream = ExtResource("10_vv58x")
+stream_1/stream = ExtResource("11_wko7g")
+stream_2/stream = ExtResource("12_1po6q")
+stream_3/stream = ExtResource("13_e2la0")
+
+[sub_resource type="Gradient" id="Gradient_ydxfo"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8sms1"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hxwci"]
+noise = SubResource("FastNoiseLite_8sms1")
+color_ramp = SubResource("Gradient_ydxfo")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ydxfo"]
+viewport_path = NodePath("skin/layers")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2dggn"]
+resource_local_to_scene = true
+shader = ExtResource("17_1diy2")
+shader_parameter/noise = SubResource("NoiseTexture2D_hxwci")
+shader_parameter/skin = SubResource("ViewportTexture_ydxfo")
+shader_parameter/phase_red = 1.0
+shader_parameter/phase_green = 1.0
+shader_parameter/phase_blue = 1.0
+shader_parameter/zoom = 0.75000003492648
+
+[node name="boss" type="CharacterBody2D" unique_id=128563897]
+script = ExtResource("1_hci4j")
+approx_size = 512.0
+team = ExtResource("2_4ie31")
+skin_layers = Array[ExtResource("3_0cmmo")]([SubResource("Resource_a5rul")])
+starting_health = 500.0
+max_health = 500.0
+low_health = 25.0
+mass = 500.0
+red_curve_phasing = SubResource("Curve_8a2ah")
+green_curve_phasing = SubResource("Curve_ikjs2")
+blue_curve_phasing = SubResource("Curve_1rdfn")
+
+[node name="collision_shape" type="CollisionShape2D" parent="." unique_id=2127527192]
+position = Vector2(-32, 0)
+shape = SubResource("CapsuleShape2D_it8mc")
+disabled = true
+
+[node name="controller" type="Node2D" parent="." unique_id=855373956]
+script = ExtResource("5_0y81i")
+handle_rotation = false
+top_speed = 5.0
+start_resistance = 5.0
+momentum_dampener = 0.95
+
+[node name="skin" type="Node2D" parent="." unique_id=878303484]
+script = ExtResource("6_am5af")
+color_mix = 0.0
+
+[node name="layers" type="SubViewport" parent="skin" unique_id=640020234]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+
+[node name="cam" type="Camera2D" parent="skin/layers" unique_id=374064074]
+
+[node name="skin_image" type="Sprite2D" parent="skin" unique_id=1205086725]
+material = SubResource("ShaderMaterial_o2pl7")
+texture = SubResource("ViewportTexture_b23ht")
+
+[node name="thruster_fx" type="CPUParticles2D" parent="." unique_id=523274637]
+visible = false
+position = Vector2(-45, 0)
+rotation = 3.1415925
+emitting = false
+amount = 25
+lifetime = 0.4
+one_shot = true
+gravity = Vector2(0, 0)
+initial_velocity_min = 32.0
+initial_velocity_max = 64.0
+angle_max = 360.0
+scale_amount_min = 4.0
+scale_amount_max = 4.0
+color_ramp = SubResource("Gradient_ebfdu")
+script = ExtResource("7_0xp6m")
+
+[node name="booster_fx" type="CPUParticles2D" parent="." unique_id=428209508]
+visible = false
+show_behind_parent = true
+position = Vector2(-45, 0)
+rotation = -3.1415925
+amount = 500
+lifetime = 0.75
+speed_scale = 2.0
+spread = 1.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 250.0
+initial_velocity_max = 400.0
+scale_amount_min = 4.0
+scale_amount_max = 4.0
+color_ramp = SubResource("Gradient_ebfdu")
+
+[node name="screaming" type="AudioStreamPlayer2D" parent="." unique_id=1511663896]
+stream = ExtResource("8_yn676")
+bus = &"Ships"
+
+[node name="thruster_sound" type="AudioStreamPlayer2D" parent="." unique_id=1450109790]
+stream = ExtResource("9_0yue2")
+bus = &"Ships"
+
+[node name="explosion_sound" type="AudioStreamPlayer2D" parent="." unique_id=1469094972]
+stream = SubResource("AudioStreamRandomizer_o6hf0")
+bus = &"Weapons"
+
+[node name="booster_sound" type="AudioStreamPlayer2D" parent="." unique_id=568402428]
+stream = ExtResource("14_8dg4r")
+bus = &"Ships"
+
+[node name="target_arrow" type="Sprite2D" parent="." unique_id=2104382642]
+visible = false
+position = Vector2(4, 0)
+scale = Vector2(2.96875, 2.96875)
+texture = ExtResource("15_latyb")
+
+[node name="state_display" parent="." unique_id=2010139536 instance=ExtResource("16_7t5ug")]
+visible = false
+scale = Vector2(5, 5)
+mini_health_bar_offset = Vector2(-320, 320)
+emote_offset = Vector2(100, -70)
+
+[node name="phase_effect" type="ColorRect" parent="." unique_id=696427734]
+material = SubResource("ShaderMaterial_2dggn")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="." unique_id=197730154]
+stream = ExtResource("8_yn676")
+volume_db = -2.0
+bus = &"Sfx"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=891487070]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=841035113]
+polygon = PackedVector2Array(-12, 258, -128, 168, -127, -5, -236, -166, 229, -166, 108, 0, 112, 171)

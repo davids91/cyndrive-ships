@@ -176,6 +176,18 @@ offset_right = -19.0
 offset_bottom = 68.68
 label_text = "Visit Dr. Speedo"
 
+[node name="orange_boss_battle" parent="scenes" unique_id=808673130 instance=ExtResource("5_fmtwf")]
+anchors_preset = -1
+anchor_left = 0.139
+anchor_top = 0.083
+anchor_right = 0.139
+anchor_bottom = 0.083
+offset_left = -147.0
+offset_top = -59.32
+offset_right = -19.0
+offset_bottom = 68.68
+label_text = "Attack Queen Orange"
+
 [node name="tutorial_level_button" parent="scenes" unique_id=504111091 instance=ExtResource("5_fmtwf")]
 anchors_preset = 0
 anchor_left = 0.0
@@ -329,6 +341,7 @@ texture = ExtResource("13_8bcf2")
 [connection signal="pressed" from="scenes/level_1" to="." method="_on_level_1_pressed"]
 [connection signal="pressed" from="scenes/mr_mustle_battle" to="." method="_on_mr_mustle_battle_pressed"]
 [connection signal="pressed" from="scenes/dr_speedo_battle" to="." method="_on_dr_speedo_battle_pressed"]
+[connection signal="pressed" from="scenes/orange_boss_battle" to="." method="_on_orange_boss_battle_pressed"]
 [connection signal="pressed" from="scenes/tutorial_level_button" to="." method="_on_tutorial_level_button_scene_selected"]
 [connection signal="pressed" from="scenes/guides_button" to="." method="_on_guides_button_pressed"]
 [connection signal="pressed" from="movement_guide/next_button" to="." method="_on_next_button_pressed"]

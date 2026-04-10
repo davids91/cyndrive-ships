@@ -68,5 +68,8 @@ func _on_difficulty_slider_value_changed(value: float) -> void:
 func _on_dr_speedo_battle_pressed() -> void:
 	load_level("dr_speedo_battle")
 
+func _on_orange_boss_battle_pressed() -> void:
+	load_level("orange_boss_battle")
+
 func _on_level_1_pressed() -> void:
 	load_level("level_1")

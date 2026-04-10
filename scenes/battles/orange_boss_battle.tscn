@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://cl3xxrvivq1m6"]
+
+[ext_resource type="Script" uid="uid://ctj8isc4n0ws8" path="res://scripts/battle/boss_fight_room.gd" id="1_6nn2s"]
+[ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="2_gx3na"]
+[ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="3_uo2b2"]
+[ext_resource type="PackedScene" uid="uid://6vnpress2q4m" path="res://scenes/entities/orange_boss.tscn" id="4_gx3na"]
+[ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="5_80rpw"]
+[ext_resource type="Texture2D" uid="uid://cci36n556vbkt" path="res://textures/entities/Orange ship.png" id="5_gx3na"]
+
+[node name="battle" type="Node2D" unique_id=1944730611]
+script = ExtResource("1_6nn2s")
+
+[node name="cam" type="Camera2D" parent="." unique_id=1742123394]
+position = Vector2(961, -1972)
+zoom = Vector2(0.2, 0.2)
+
+[node name="timeline" type="Node" parent="." unique_id=933754575]
+script = ExtResource("2_gx3na")
+
+[node name="parallax_background" parent="." unique_id=988100783 instance=ExtResource("3_uo2b2")]
+
+[node name="combatants" type="Node" parent="." unique_id=1456232303]
+
+[node name="orange_boss" parent="combatants" unique_id=128563897 instance=ExtResource("4_gx3na")]
+
+[node name="Sprite2D" type="Sprite2D" parent="combatants/orange_boss" unique_id=1971795560]
+z_index = 999
+position = Vector2(-510, -8)
+rotation = -1.5707964
+scale = Vector2(8, 8)
+texture = ExtResource("5_gx3na")
+
+[node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("5_80rpw")]
+unique_name_in_owner = true
+position = Vector2(961, -1972)
+color = Color(0, 0, 0, 0)
+
+[node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1963758468]
+rotation = 1.570289
+remote_path = NodePath("../../../cam")
+update_rotation = false
+update_scale = false
+
+[node name="mush" type="Node" parent="." unique_id=222397579]
+
+[node name="debris" type="Node" parent="." unique_id=600629627]
+
+[connection signal="dead" from="combatants/orange_boss" to="combatants/orange_boss" method="_on_dead"]
+[connection signal="phased" from="combatants/orange_boss" to="combatants/orange_boss" method="_on_phased"]
+[connection signal="dead" from="combatants/character" to="." method="_on_character_dead"]
