@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://6vnpress2q4m"]
+[gd_scene format=3 uid="uid://dirv180mm1eai"]
 
-[ext_resource type="Script" uid="uid://d2hqpg412bwwt" path="res://scripts/entities/orange_boss_brain.gd" id="1_hci4j"]
+[ext_resource type="Script" path="res://scripts/entities/orange_boss_brain.gd" id="1_hci4j"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="2_4ie31"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="3_0cmmo"]
 [ext_resource type="Texture2D" uid="uid://qnvemx3643ri" path="res://textures/entities/ominous ship.png" id="4_k0o1n"]
@@ -17,6 +17,14 @@
 [ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="15_latyb"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="16_7t5ug"]
 [ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="17_1diy2"]
+[ext_resource type="Texture2D" uid="uid://c7yntewdsp6v4" path="res://textures/ui/radar_cone_1.png" id="18_0yue2"]
+[ext_resource type="PackedScene" uid="uid://dg5gm8lkvhpfs" path="res://scenes/weapons/laser_beam.tscn" id="18_4ie31"]
+[ext_resource type="Texture2D" uid="uid://bbl7n08smblpj" path="res://textures/ui/radar_cone_2.png" id="19_vv58x"]
+[ext_resource type="Texture2D" uid="uid://8x0sgp8cyody" path="res://textures/ui/radar_cone_3.png" id="20_wko7g"]
+[ext_resource type="Texture2D" uid="uid://cr5oycs347cxb" path="res://textures/ui/radar_cone_4.png" id="21_1po6q"]
+[ext_resource type="Texture2D" uid="uid://drija0tn7letk" path="res://textures/ui/radar_cone_5.png" id="22_e2la0"]
+[ext_resource type="Texture2D" uid="uid://sfy3jjd0xx7s" path="res://textures/ui/radar_cone_6.png" id="23_8dg4r"]
+[ext_resource type="Texture2D" uid="uid://cgffr4oksq8x5" path="res://textures/ui/radar_cone_7.png" id="24_latyb"]
 
 [sub_resource type="Resource" id="Resource_a5rul"]
 script = ExtResource("3_0cmmo")
@@ -154,6 +162,35 @@ shader_parameter/phase_green = 1.0
 shader_parameter/phase_blue = 1.0
 shader_parameter/zoom = 0.75000003492648
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_7t5ug"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_0yue2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_vv58x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_wko7g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_1po6q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_e2la0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_8dg4r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_latyb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
 [node name="boss" type="CharacterBody2D" unique_id=128563897]
 script = ExtResource("1_hci4j")
 approx_size = 512.0
@@ -276,5 +313,43 @@ bus = &"Sfx"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=891487070]
 
+[node name="RadarConeVisual" type="AnimatedSprite2D" parent="." unique_id=349978879]
+visible = false
+position = Vector2(2354, 0)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_7t5ug")
+autoplay = "default"
+
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=841035113]
 polygon = PackedVector2Array(-12, 258, -128, 168, -127, -5, -236, -166, 229, -166, 108, 0, 112, 171)
+
+[node name="lasers" type="Node" parent="." unique_id=1772057737]
+
+[node name="laser_beam" parent="lasers" unique_id=1730683071 node_paths=PackedStringArray("wielder") instance=ExtResource("18_4ie31")]
+position = Vector2(215, -200)
+wielder = NodePath("../..")
+offset = Vector2(215, -200)
+
+[node name="laser_beam2" parent="lasers" unique_id=1956873483 node_paths=PackedStringArray("wielder") instance=ExtResource("18_4ie31")]
+position = Vector2(215, -200)
+wielder = NodePath("../..")
+offset = Vector2(50, -60)
+
+[node name="laser_beam3" parent="lasers" unique_id=264289076 node_paths=PackedStringArray("wielder") instance=ExtResource("18_4ie31")]
+position = Vector2(215, -200)
+wielder = NodePath("../..")
+offset = Vector2(60, 50)
+
+[node name="laser_beam4" parent="lasers" unique_id=1125894141 node_paths=PackedStringArray("wielder") instance=ExtResource("18_4ie31")]
+position = Vector2(215, -200)
+wielder = NodePath("../..")
+offset = Vector2(215, 200)
+
+[node name="player_detection" type="Area2D" parent="." unique_id=2102855040]
+top_level = true
+light_mask = 2
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="player_detection" unique_id=1579018187]
+polygon = PackedVector2Array(0, 0, 15000, 5000, 15000, -5000)
