@@ -2,11 +2,9 @@
 There's one more function I built into the ship.
 If you hold down the "R" button, everything around you will slow down.
 When you let it go, time will gradually speed up back to its normal state.
-You can use it for as long as you have Laupeerium in reserve. Try it out!
-#[c0]OR you could continue with the actual objective for the interview
-and blow up the disabled droid with a deadly explosive mine. Your call.
-#[e0]#[c1]Be careful with that thing strapped to the ship! It's another DSEAR failure waiting to happen!
-#[d0]You can use the ship. Press "E" to st..#[p0]
-#[d0]#[c1]a WHAT..?
-#[d0]#[c0]Yup, like we discussed Remember?
-#[d0]Press "E" to strap a deadly explosive to the ship!
+You can use it for as long as you have Laupeerium in reserve.
+#[e0]#[c1]By the way! Be careful with that thing(explosive) strapped to the ship!
+#[e0]It's another DSEAR failure waiting to happen!
+#[e0]#[c0]Use it to blow up the captured droid!
+#[d0]#[c0]Well then. Press "E" to strap a deadly explosive to the ship!
+When the explosive is deployed it will seek out the nearest enemy.

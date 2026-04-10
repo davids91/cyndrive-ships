@@ -1,6 +1,6 @@
 #[c3]THIS ISN'T THE LAST YOU HEAR OF ME#[s0]
 #[c0]Uhm... that was the interview stress-test..? You passed!
-#[c1]This was our best interview yet! When can you start?
+#[c1]#[s0]This was our best interview yet! When can you start?
 #[c0]DUDE I decide that!
 #[c2]I can start whenever!
 #[c0]#[t500]...#[t] Thank you for your participation! We'll let you know about the next steps.

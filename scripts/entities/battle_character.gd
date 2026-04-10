@@ -153,7 +153,7 @@ func get_snapshot() -> Dictionary:
 
 var debug_color: Color = Color.from_hsv(randf(), 1., 1., 1.)
 func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001) -> void:
-	if "ai_target" in snapshot and snapshot["ai_target"] and has_node("ai_control"):
+	if has_node("ai_control") and "ai_target" in snapshot:
 		$ai_control.chosen_target = snapshot["ai_target"]
 	if "held_mine" in snapshot and not null == snapshot["held_mine"]:
 		held_mine = snapshot["held_mine"]
@@ -236,6 +236,7 @@ var is_being_healed: bool = false
 var ship_explosion : Explosion
 var explosion_template = preload("res://scenes/effects/explosion-firey.tscn")
 var docked: bool = false
+var state_display_hidden: bool = false
 func _process(_delta):
 	# Sync state for being alive and in battle
 	if is_alive != was_alive: was_in_battle = in_battle()
@@ -259,8 +260,10 @@ func _process(_delta):
 		$repair_indicator.set_global_position(get_global_position() - $repair_indicator.size * 0.55)
 		$repair_indicator.set_visible(visible and $skin.visible and is_being_healed)
 
-	if has_node("state_display"):
-		$state_display.set_visible(visible and $skin.visible and 0. < $skin.modulate.a)
+	if has_node("state_display"): $state_display.set_visible(
+		visible and $skin.visible and 0. < $skin.modulate.a
+		and not state_display_hidden
+	)
 
 	# Do not continue if the ship is not in battle
 	if not in_battle(): return

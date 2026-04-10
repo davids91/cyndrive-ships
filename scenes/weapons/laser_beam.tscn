@@ -6,6 +6,12 @@
 [ext_resource type="AudioStream" uid="uid://ek4nsx32wrle" path="res://audio/laser_3.wav" id="4_cd6mu"]
 [ext_resource type="AudioStream" uid="uid://3gxc0hqxn1re" path="res://audio/laser_4.wav" id="5_ump2f"]
 
+[sub_resource type="Gradient" id="Gradient_7wpsd"]
+colors = PackedColorArray(1, 0.00999999, 0.00999999, 1, 0.77, 0, 0, 0.7411765)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n6uf7"]
+gradient = SubResource("Gradient_7wpsd")
+
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_xsqp8"]
 streams_count = 4
 stream_0/stream = ExtResource("2_n6uf7")
@@ -16,6 +22,7 @@ stream_3/stream = ExtResource("5_ump2f")
 [node name="laser_beam" type="Node2D" unique_id=1730683071]
 script = ExtResource("1_7wpsd")
 target_time_sec = 0.0
+color_intensity_gradient = SubResource("GradientTexture2D_n6uf7")
 base_damage = 0.4
 energy_cost = 0.05
 metadata/_custom_type_script = "uid://cy4bwltyfsq3g"

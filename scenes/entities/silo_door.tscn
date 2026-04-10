@@ -41,6 +41,8 @@ shader_parameter/color_aberration = 0.150000007125
 size = Vector2(45, 376)
 
 [node name="door" type="RigidBody2D" unique_id=1665446878]
+linear_damp = 1.1
+angular_damp = 0.8
 script = ExtResource("1_gib7p")
 
 [node name="skin" type="Sprite2D" parent="." unique_id=45423786]

@@ -107,10 +107,10 @@ noise = SubResource("FastNoiseLite_61i1y")
 shader = ExtResource("6_tfwac")
 shader_parameter/screen_ratio_w_h = 1.7777778
 shader_parameter/noise = SubResource("NoiseTexture2D_saiin")
-shader_parameter/rewind_amount = 0.0
+shader_parameter/rewind_amount = 13.375
 shader_parameter/rewind_intensity = 0.0
-shader_parameter/circle_centers = PackedVector2Array(0.65, 0.245, 0.315, 0.235, 0.405, 0.46)
-shader_parameter/circle_radiuses = PackedFloat32Array(0.48, 0.335, 0.16)
+shader_parameter/circle_centers = PackedVector2Array(0.625, 0.285, 0.315, 0.29, 0.46, 0.37)
+shader_parameter/circle_radiuses = PackedFloat32Array(0.28, 0.15, 0.215)
 shader_parameter/max_rings = 10.0
 shader_parameter/pixellize_size = 200.0
 shader_parameter/color_1 = Color(0.16862746, 1, 0.98039216, 1)
@@ -223,7 +223,6 @@ material = SubResource("ShaderMaterial_th0af")
 script = ExtResource("5_ywr47")
 
 [node name="rewind_effects" type="ColorRect" parent="." unique_id=1216906585]
-visible = false
 material = SubResource("ShaderMaterial_saiin")
 anchors_preset = 15
 anchor_right = 1.0
@@ -259,12 +258,12 @@ label_text = "Boost"
 [node name="keybindings_panel" parent="." unique_id=1889784637 instance=ExtResource("9_6n4mw")]
 visible = false
 
-[node name="weapon_selector_panel" type="TileMapLayer" parent="." unique_id=1359590394]
+[node name="weapon_selector_panel" type="TileMapLayer" parent="." unique_id=1359590394 groups=["weapon_selector"]]
 modulate = Color(1, 1, 1, 0.54901963)
 tile_map_data = PackedByteArray("AAABABEAAAAAAAEAAAABABIAAAAAAAMAAAAIAAwAAAADAAEAAAACABIAAAABAAMAAAAIAAsAAAADAAAAAAABABkAAAAAAAEAAAABABoAAAAAAAMAAAACABoAAAABAAMAAAAHABMAAAABAAMAAAAIABMAAAADAAAAAAAIABQAAAADAAEAAAABACEAAAAAAAEAAAABACIAAAAAAAMAAAACACIAAAABAAMAAAAHABsAAAABAAMAAAAIABsAAAADAAAAAAAIABwAAAADAAEAAAABACkAAAAAAAEAAAABACoAAAAAAAMAAAACACoAAAABAAMAAAAHACMAAAABAAMAAAAIACMAAAADAAAAAAAIACQAAAADAAEAAAAHAAsAAAABAAMAAAA=")
 tile_set = SubResource("TileSet_eivww")
 
-[node name="selected_weapon_panel" type="TileMapLayer" parent="." unique_id=17286148]
+[node name="selected_weapon_panel" type="TileMapLayer" parent="." unique_id=17286148 groups=["weapon_selector"]]
 modulate = Color(1, 1, 1, 0.54901963)
 tile_map_data = PackedByteArray("AAABAAsAAAAAAAAAAAABAAwAAAAAAAEAAAAHABIAAAACAAAAAAAIABEAAAADAAIAAAAIABIAAAADAAMAAAACAAsAAAABAAMAAAADAAsAAAABAAAAAAA=")
 tile_set = SubResource("TileSet_eivww")
@@ -313,20 +312,20 @@ texture_pressed = ExtResource("11_n1dtb")
 texture_hover = ExtResource("12_73pwi")
 stretch_mode = 4
 
-[node name="laser_icon" type="Sprite2D" parent="." unique_id=2108124820]
+[node name="laser_icon" type="Sprite2D" parent="." unique_id=2108124820 groups=["weapon_selector"]]
 position = Vector2(75, 235)
 texture = ExtResource("13_a7irf")
 
-[node name="chain_lightning_icon" type="Sprite2D" parent="." unique_id=1849093875]
+[node name="chain_lightning_icon" type="Sprite2D" parent="." unique_id=1849093875 groups=["weapon_selector"]]
 position = Vector2(78, 498)
 texture = ExtResource("14_ts7hs")
 
-[node name="hotsaber_icon" type="Sprite2D" parent="." unique_id=745848340]
+[node name="hotsaber_icon" type="Sprite2D" parent="." unique_id=745848340 groups=["weapon_selector"]]
 position = Vector2(82, 371)
 scale = Vector2(0.59375, 0.59375)
 texture = ExtResource("15_oq75t")
 
-[node name="decoy_shooter_icon" type="Sprite2D" parent="." unique_id=892168881]
+[node name="decoy_shooter_icon" type="Sprite2D" parent="." unique_id=892168881 groups=["weapon_selector"]]
 position = Vector2(81, 624.00024)
 scale = Vector2(0.59375, 0.59375)
 texture = ExtResource("16_8j45s")

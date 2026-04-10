@@ -28,11 +28,13 @@ var aiming_to: Vector2 = Vector2.ZERO
 var search_loop_progress: float = 0.
 var time_until_target_drop: float = goldfish_memory_sec
 var whirlwind_duration_left_sec: float = 0.
-var mr_mustle_control_disabled: bool = false
+var mr_mustle_control_disabled: bool = false:
+	set(value):
+		control_disabled = value
+		mr_mustle_control_disabled = value
 func _process(delta: float):
 	super(delta)
 	if mr_mustle_control_disabled: return
-	
 	$player_detection.set_global_position(get_global_position())
 	if not change_target_to and 0. < time_until_target_drop:
 		time_until_target_drop -= delta
@@ -180,7 +182,6 @@ func _on_phased(phased_in: bool) -> void:
 	$state_display.visible = phased_in
 
 func pause_control() -> void:
-	control_disabled = true
 	velocity = Vector2.ZERO
 	$controller.internal_force = Vector2.ZERO
 	$controller.intent_direction = Vector2.ZERO

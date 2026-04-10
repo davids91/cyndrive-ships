@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://br0ks3g1mac4b" path="res://scripts/ui_menus/pause_menu.gd" id="1_aa0ln"]
 [ext_resource type="Shader" uid="uid://rsuxn1jhme0d" path="res://shaders/rewind.gdshader" id="2_th4ef"]
 [ext_resource type="StyleBox" uid="uid://cvq7dn2d87nav" path="res://resources/pause menu buttons.tres" id="2_um83q"]
-[ext_resource type="Script" uid="uid://cq1p7mgya1fq" path="res://scripts/ui_menus/pause_menu_rewind_effect.gd" id="3_1ax27"]
+[ext_resource type="Script" path="res://scripts/ui_menus/pause_menu_rewind_effect.gd" id="3_1ax27"]
 [ext_resource type="Theme" uid="uid://ch4hp78pq2ovy" path="res://resources/options-page.theme" id="5_1glx7"]
 [ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="5_57ju3"]
 [ext_resource type="Script" uid="uid://c0wsysneh00mq" path="res://scripts/ui_menus/options_page.gd" id="5_67wsm"]
@@ -21,8 +21,8 @@ noise = SubResource("FastNoiseLite_th4ef")
 shader = ExtResource("2_th4ef")
 shader_parameter/screen_ratio_w_h = 1.7777778
 shader_parameter/noise = SubResource("NoiseTexture2D_1ax27")
-shader_parameter/rewind_amount = 4411.6130282256445
-shader_parameter/rewind_intensity = 0.2
+shader_parameter/rewind_amount = 34.66566777265306
+shader_parameter/rewind_intensity = 1.0
 shader_parameter/circle_centers = PackedVector2Array(0.58, 0.315)
 shader_parameter/circle_radiuses = PackedFloat32Array(0.32)
 shader_parameter/max_rings = 5.0

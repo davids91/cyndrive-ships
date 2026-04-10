@@ -79,6 +79,8 @@ func replay_round(rewind_animation: bool = true) -> void:
 		if(
 			"entangled" in c and c.entangled and not c.has_node("replayer")
 			and "team" in c and c.team.is_enemy($combatants/character.team)
+			and not c is MrMustle
+			and not c is DrSpeedo
 		): entangle_ship_with_player(c)
 
 	if not rewind_animation:

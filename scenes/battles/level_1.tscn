@@ -53,7 +53,6 @@ metadata/_custom_type_script = "uid://cud6a5voxneed"
 
 [node name="battle" type="Node2D" unique_id=1010459710]
 script = ExtResource("1_v8cdc")
-god_mode_active = true
 
 [node name="cam" type="Camera2D" parent="." unique_id=624570446]
 position = Vector2(1592, -2689)

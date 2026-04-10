@@ -24,7 +24,10 @@ func _physics_process(delta: float) -> void:
 	for i in range(get_collision_count()): # prevent re-firing on each tick while colliding remains true
 		var collider = get_collider(i)
 		# Do not show invisible objects
-		if not collider.visible or not "in_battle" in collider or not collider.in_battle(): continue
+		if(
+			not collider.visible or not "in_battle" in collider or not collider.in_battle()
+			#TODO: exclude flag in collider
+		): continue
 		if not blips.has(collider.get_instance_id()) or null == blips[collider.get_instance_id()]:
 			blips[collider.get_instance_id()] = add_blip(collider)
 			continue

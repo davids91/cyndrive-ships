@@ -1,4 +1,4 @@
 extends AudioStreamPlayer2D
 
 func _on_finished() -> void:
-	play()
+	if get_node("/root/Main/LevelContainer/battle"): play()

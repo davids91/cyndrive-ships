@@ -200,7 +200,7 @@ func replay_game() -> void:
 	player_input.input_disabled = true
 	$combatants/character.queue_free()
 	$replay_camera.make_current()
-	GUI.restart_during_replay.set_visible(true)
+	GUI.get_node("restart_during_replay").set_visible(true)
 	GUI.get_node("score").set_visible(false)
 
 func time_control_triggered(action: Dictionary) -> void:

@@ -6,33 +6,27 @@ enum TutorialPhases{
 	MUSTLE_ARRIVES, ROUND_RESET, MUSTLE_FIGHT
 }
 
-const time_to_get_to_marker: float = 5.
+const time_to_get_to_marker: float = 8.
 
 var boost_dialogue_showing_next_mark_tween: Tween
 var marker_time_left_secs: float = time_to_get_to_marker
 var current_tutorial_phase: TutorialPhases = TutorialPhases.INTRO
 func _ready():
 	GUI.set_objective("")
+	GUI.set_weapons_panel_visible(false)
 	GUI.set_disabled_weapons_mask(0xE)
 	GUI.set_laupeerium_indicator(UIEnergyBar.max_bars / 4.)
 	%character.set_disabled_weapons_mask(0xE)
+	%character.state_display_hidden = true
 	$combatants/disabled_droid/skin.set_visible(false)
 	%character/weapon_slot.disabled = true
 	%player_carrier.phase_in()
 
-	# Show keybindings
-	$dialogues/intro.connect(
-		"dialogue_signal_0",
-		func(): GUI.get_node("keybindings_panel").set_visible(true)
-	)
-	
 	# Display start mark
-	$dialogues/intro.connect(
-		"dialogue_signal_1",
-		func():
-			$markers/marker.set_visible(true)
-			create_tween().tween_method(func(w: float): $markers/marker.modulate.a = w, 0., 1., 0.5)
-			GUI.set_objective("Follow the\nred arrows")
+	$dialogues/intro.connect("dialogue_signal_0", func():
+		$markers/marker.set_visible(true)
+		create_tween().tween_method(func(w: float): $markers/marker.modulate.a = w, 0., 1., 0.5)
+		GUI.set_objective("Follow red arrow to markers.")
 	)
 
 	# Show booster marker
@@ -46,12 +40,11 @@ func _ready():
 				$markers/marker2.get_position(),
 				w
 			)),
-			0., 1., 3. * Difficulty.gameplay_speed
+			0., 1., 1. * Difficulty.gameplay_speed
 		)
 		boost_dialogue_showing_next_mark_tween.tween_interval(1.)
 		boost_dialogue_showing_next_mark_tween.tween_method(
-			func(w: float): $cam.position *= w,
-			1., 0., 1. * Difficulty.gameplay_speed
+			func(w: float): $cam.position *= w, 1., 0., 1. * Difficulty.gameplay_speed
 		)
 	)
 
@@ -63,6 +56,7 @@ func _ready():
 			$combatants/disabled_droid/skin.set_visible(true)
 			$combatants/disabled_droid.modulate.a = 0.
 			$combatants/disabled_droid.set_visible(true)
+			GUI.set_weapons_panel_visible(true)
 			create_tween().tween_method(func(w: float): $combatants/disabled_droid.modulate.a = w, 0., 1., 0.8)
 			create_tween().tween_method(func(w: float): $combatants/disabled_droid.position.y = w, -3200., -3800., 0.8)
 	)
@@ -85,6 +79,7 @@ func _ready():
 			boss.focusing_at = %character.get_global_position()
 			boss.moving_to = %character.get_global_position() + Vector2(900., 0.)
 			boss.connect("health_changed", _on_boss_health_changed)
+			boss.phased.connect(func(phased: bool): if not phased: boss.queue_free())
 			$combatants.add_child(boss)
 			GUI.set_objective("New ship\nwho dis?")
 	)
@@ -109,8 +104,9 @@ func _process(delta: float) -> void:
 					if %character.held_mine:
 						%character.held_mine.correct_temporal_state(%character.held_mine.spawn_snapshot)
 					create_tween().tween_method(func(w: float): $level_ui/try_again.modulate.a = w, 1., 0., 3.)
-				).finished.connect(func():GUI.fade_to(Color.TRANSPARENT, 0.3).finished.connect(
-						func(): currently_failing_at_markers = false
+				).finished.connect(func():GUI.fade_to(Color.TRANSPARENT, 0.3).finished.connect(func():
+						currently_failing_at_markers = false
+						finished_navigation_test = false
 				))
 			)
 		GUI.set_time(marker_time_left_secs)
@@ -129,6 +125,11 @@ func _on_marker_body_entered(body: Node2D) -> void:
 		create_tween().tween_method(func(w: float): $level_ui/marks_progress.modulate.a = w, 0., 1., 0.5)
 		player_input.input_disabled = true
 		create_tween().tween_method(func(w: float): $markers/marker.modulate.a = w, 1., 0., 0.5)
+		create_tween().tween_property(
+			%character, "global_rotation",
+			($markers/marker2.global_position - %character.global_position).angle(),
+			0.5
+		)
 		$dialogues/boost.start()
 		body.pause_control()
 		body.velocity = Vector2.ZERO
@@ -141,7 +142,6 @@ func _on_character_boost_energy_updated(new_energy_level: float) -> void:
 func _on_intro_dialouge_finished() -> void:
 	player_input.input_disabled = false
 	current_tutorial_phase = TutorialPhases.MOVEMENT
-	GUI.get_node("keybindings_panel").set_visible(false)
 	%character/sonar_sensor.add_blip($markers/marker)
 	var blink_info_tween = create_tween()
 	for _i in 3: blink_info_tween.tween_method(
@@ -163,66 +163,63 @@ func _on_boost_dialouge_finished() -> void:
 	$timeline.checkpoint()
 	%character.resume_control()
 	%character/temporal_recorder.start_recording()
+	GUI.set_objective("Follow red arrow to markers.\n Use Space Key to boost!")
 
 func _on_marker_2_body_entered(_body: Node2D) -> void:
-	if character_in_marker != $markers/marker: return # Do not step into the function multiple times
+	if character_in_marker != $markers/marker or currently_failing_at_markers: return # Do not step into the function multiple times
 	character_in_marker = $markers/marker2
 
-	if currently_failing_at_markers or not $markers/marker2.visible: return
 	create_tween().tween_property(%marks_progress, "value", 100. / 4., 0.6)
 	%character.spawn_snapshot = %character.get_snapshot()
-	create_tween().tween_method(func(w: float): $markers/marker2.modulate.a = w, 1., 0., 0.5).finished.connect(
-		func(): $markers/marker2.set_visible(false)
-	)
+	create_tween().tween_method(func(w: float): $markers/marker2.modulate.a = w, 1., 0., 0.5)
 	$markers/marker3.set_visible(true)
 	%character/sonar_sensor.add_blip($markers/marker3)
 	marker_time_left_secs = time_to_get_to_marker
 
 func _on_marker_3_body_entered(_body: Node2D) -> void:
-	if character_in_marker != $markers/marker2: return # Do not step into the function multiple times
+	if character_in_marker != $markers/marker2 or currently_failing_at_markers: return # Do not step into the function multiple times
 	character_in_marker = $markers/marker3
 
-	if currently_failing_at_markers or not $markers/marker3.visible: return
 	create_tween().tween_property(%marks_progress, "value", 200. / 4., 0.6)
 	%character.spawn_snapshot = %character.get_snapshot()
-	create_tween().tween_method(func(w: float): $markers/marker3.modulate.a = w, 1., 0., 0.5).finished.connect(
-		func(): $markers/marker3.set_visible(false)
-	)
+	create_tween().tween_method(func(w: float): $markers/marker3.modulate.a = w, 1., 0., 0.5)
 	$markers/marker4.set_visible(true)
 	%character/sonar_sensor.add_blip($markers/marker4)
 	marker_time_left_secs = time_to_get_to_marker
 
 func _on_marker_4_body_entered(_body: Node2D) -> void:
-	if character_in_marker != $markers/marker3: return # Do not step into the function multiple times
+	if character_in_marker != $markers/marker3 or currently_failing_at_markers: return # Do not step into the function multiple times
 	character_in_marker = $markers/marker4
 
 	if currently_failing_at_markers or not $markers/marker4.visible: return
 	create_tween().tween_property(%marks_progress, "value", 300. / 4., 0.6)
 	%character.spawn_snapshot = %character.get_snapshot()
-	create_tween().tween_method(func(w: float): $markers/marker4.modulate.a = w, 1., 0., 0.5).finished.connect(
-		func(): $markers/marker4.set_visible(false)
-	)
+	create_tween().tween_method(func(w: float): $markers/marker4.modulate.a = w, 1., 0., 0.5)
 	$markers/marker5.set_visible(true)
 	%character/sonar_sensor.add_blip($markers/marker5)
 	marker_time_left_secs = time_to_get_to_marker
 
+var finished_navigation_test: bool = false
 func _on_marker_5_body_entered(_body: Node2D) -> void:
-	if character_in_marker != $markers/marker4: return # Do not step into the function multiple times
-	character_in_marker = $markers/marker5
-	if currently_failing_at_markers or not $markers/marker5.visible: return
+	if (
+		(current_tutorial_phase == TutorialPhases.BOOST and finished_navigation_test)
+		or current_tutorial_phase == TutorialPhases.DESTROY
+		or currently_failing_at_markers
+	): return # Do not step into the function multiple times
+	finished_navigation_test = true
 	create_tween().tween_property(%marks_progress, "value", 400. / 4., 0.6)
 	create_tween().tween_method(func(w: float): $level_ui/marks_progress.modulate.a = w, 1., 0., 0.5)
 	current_tutorial_phase = TutorialPhases.DESTROY
-	if $markers/marker4: $markers/marker4.queue_free()
 	%character.spawn_snapshot = %character.get_snapshot()
-	create_tween().tween_method(func(w: float): $markers/marker5.modulate.a = w, 1., 0., 0.5).finished.connect(
- 		func(): if $markers/marker5: $markers/marker5.queue_free()
-	)
 	player_input.input_disabled = true
 	%character.pause_control()
 	%character.velocity = Vector2.ZERO
 	$dialogues/destroy.start()
-	for m in $markers.get_children(): m.queue_free()
+
+	for m in $markers.get_children():
+		create_tween().tween_method(
+			func(w: float): m.modulate.a = w, m.modulate.a, 0., 0.5
+		).finished.connect(func(): m.queue_free())
 
 func _on_destroy_dialouge_finished() -> void:
 	player_input.input_disabled = false
@@ -231,7 +228,7 @@ func _on_destroy_dialouge_finished() -> void:
 	$combatants/disabled_droid/temporal_recorder.start_recording()
 	%character/temporal_recorder.start_recording()
 	$timeline.checkpoint()
-	GUI.set_objective("Destroy\nthe prototype droid")
+	GUI.set_objective("Destroy the stolen droid.\n Use the Arrow Keys!")
 
 func _on_player_carrier_equipped_ship_with_mine(_ship: BattleCharacter) -> void:
 	$dialogues/slowdown.dialogue_conditionals[0] = true
@@ -250,7 +247,7 @@ func _on_boss_arrives_dialouge_finished() -> void:
 func _on_restore_dialouge_finished() -> void:
 	player_input.input_disabled = false
 	%character.resume_control()
-	GUI.set_objective("Hold Shift + R to rewind\n(resurrect dummy droid)")
+	GUI.set_objective("Hold Shift + R to rewind\n(resurrect stolen droid)")
 
 func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
@@ -384,17 +381,16 @@ func _on_battle_character_dead(_itsme: BattleCharacter) -> void:
 		$dialogues/player_dies.start()
 		GUI.set_objective("Good job")
 		current_tutorial_phase = TutorialPhases.ROUND_RESET
-	elif(
+	elif( # Player is currently fighting mr Mustle, show limbo dialog
 		current_tutorial_phase == TutorialPhases.ROUND_RESET
 		or current_tutorial_phase == TutorialPhases.MUSTLE_FIGHT
-	): # Player is currently fighting mr Mustle, show limbo dialog
-		GUI.get_node("restart_round_panel").set_visible(true)
-	elif(
+	): GUI.get_node("restart_round_panel").set_visible(true)
+	elif( # No way to reverse time in these phases, restart level
 		current_tutorial_phase == TutorialPhases.INTRO
 		or current_tutorial_phase == TutorialPhases.MOVEMENT
 		or current_tutorial_phase == TutorialPhases.BOOST
 		or current_tutorial_phase == TutorialPhases.DESTROY
-	): reset_game() # No way to reverse time in these phases, restart level
+	): reset_game()
 	else: GUI.set_objective("Rewind to try again")
 
 func _on_character_shields_toggled(turned_on: bool) -> void:
@@ -422,6 +418,7 @@ func _on_boss_health_changed(percentage: float) -> void:
 		GUI.set_objective("Completed")
 
 func _on_boss_defeated_dialouge_finished() -> void:
+	$timeline.reset()
 	GUI.get_node("restart_round_panel").set_visible(false)
 	GUI.get_node("victory").set_visible(true)
 	GUI.get_node("victory/replay_button").set_visible(false)

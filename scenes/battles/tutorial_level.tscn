@@ -177,8 +177,7 @@ position = Vector2(2438, -3364)
 
 [node name="intro" parent="dialogues" unique_id=691249911 instance=ExtResource("19_2soyj")]
 visible = false
-unskippable_signals = Array[int]([1])
-is_dialogue_active = true
+unskippable_signals = Array[int]([0])
 
 [node name="boost" parent="dialogues" unique_id=2125322020 instance=ExtResource("19_2soyj")]
 visible = false

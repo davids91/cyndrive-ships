@@ -37,6 +37,9 @@ var accumulated_slowdown_value_sec: float = 0.
 var current_zoom_value: float = zoom_center
 var is_boosting: bool = false
 func _unhandled_input(event: InputEvent) -> void:
+	if DialoguePanel.active_dialogue and DialoguePanel.active_dialogue.is_dialogue_active:
+		return # Do not accept user input while a dialouge is in progress
+
 	var action = get_action(event)
 	var just_pressed = event.is_pressed() and not event.is_echo()
 	var was_shooting = is_shooting
@@ -52,11 +55,17 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if "action_direction" in action:
 		current_action_direction += action["action_direction"]
+		if (
+			not Input.is_action_pressed("action_left")
+			and not Input.is_action_pressed("action_right")
+			and not Input.is_action_pressed("action_up")
+			and not Input.is_action_pressed("action_down")
+		): current_action_direction = Vector2.ZERO
 		action["action_direction"] = current_action_direction
 
 		# !TechDebt: When a dialogue panel is visible action pressed is not triggered, only released
 		# --> The accumulated vector is reseted when detected
-		if current_action_direction.length() > 1.:
+		if current_action_direction.length() > 1.5: # 1.5 ~ sqrt(2), which is the length of e.g. Vector2(1., 1.)
 			current_action_direction = Vector2.ZERO
 		is_shooting = 0 < action["action_direction"].length()
 
@@ -92,8 +101,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		current_zoom_value = min(current_zoom_value * 1.05, zoom_center * (1. + zoom_range))
 		view_control_triggered.emit({"zoom": current_zoom_value})
 
-	if not input_disabled and not action.is_empty():
-		action_triggered.emit(action)
+	if not input_disabled and not action.is_empty(): action_triggered.emit(action)
 
 @export var slowdown_max_subtract_value: float = Difficulty.gameplay_speed * 0.9
 @export var slowdown_max_hold_sec: float = 3.
@@ -137,7 +145,13 @@ func _process(delta: float) -> void:
 			reverse_initiated = false
 
 	if not time_control.is_empty(): time_control_triggered.emit(time_control)
-	if is_shooting: action_triggered.emit({"action_direction": current_action_direction})
+	if(
+		is_shooting
+		and (
+			not DialoguePanel.active_dialogue
+			or not DialoguePanel.active_dialogue.is_dialogue_active
+		)
+	): action_triggered.emit({"action_direction": current_action_direction})
 
 #	_FORCE_INLINE_ real_t tdotx(const Vector2 &p_v) const { return columns[0][0] * p_v.x + columns[1][0] * p_v.y; }
 static func tdotx(mat, vec):
@@ -175,20 +189,20 @@ func get_action(input_event: InputEvent) -> Dictionary:
 	if input_event.is_action_pressed("movement_right"): intent_direction.x = 1
 	if input_event.is_action_pressed("movement_down"): intent_direction.y = 1
 	if input_event.is_action_pressed("movement_up"): intent_direction.y = -1
-	if input_event.is_action_released("movement_left"): intent_direction.x = 1
-	if input_event.is_action_released("movement_right"): intent_direction.x = -1
-	if input_event.is_action_released("movement_down"): intent_direction.y = -1
-	if input_event.is_action_released("movement_up"): intent_direction.y = 1
+	if input_event.is_action_released("movement_left"): intent_direction.x += 1
+	if input_event.is_action_released("movement_right"): intent_direction.x += -1
+	if input_event.is_action_released("movement_down"): intent_direction.y += -1
+	if input_event.is_action_released("movement_up"): intent_direction.y += 1
 	action["movement_intent"] = intent_direction
 
 	if input_event.is_action_pressed("action_left"): action_direction.x = -1
 	if input_event.is_action_pressed("action_right"): action_direction.x = 1
 	if input_event.is_action_pressed("action_down"): action_direction.y = 1
 	if input_event.is_action_pressed("action_up"): action_direction.y = -1
-	if input_event.is_action_released("action_left"): action_direction.x = 1
-	if input_event.is_action_released("action_right"): action_direction.x = -1
-	if input_event.is_action_released("action_down"): action_direction.y = -1
-	if input_event.is_action_released("action_up"): action_direction.y = 1
+	if input_event.is_action_released("action_left"): action_direction.x += 1
+	if input_event.is_action_released("action_right"): action_direction.x += -1
+	if input_event.is_action_released("action_down"): action_direction.y += -1
+	if input_event.is_action_released("action_up"): action_direction.y += 1
 	action["action_direction"] = action_direction
 
 	if input_event.is_action_pressed("boost"):

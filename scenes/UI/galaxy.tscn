@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://wt4f85n5mn7s" path="res://scripts/ui_menus/galaxy_main.gd" id="1_m3hme"]
 [ext_resource type="Shader" uid="uid://beksqhxqmaqvw" path="res://shaders/galaxy.gdshader" id="2_i4jmc"]
 [ext_resource type="Texture2D" uid="uid://cgjeow13rx32e" path="res://textures/outer_space/star-4.png" id="3_3adoa"]
-[ext_resource type="Script" uid="uid://cdy0wfjq4rl2c" path="res://scripts/feature_flagged_node.gd" id="3_kdehn"]
+[ext_resource type="Texture2D" uid="uid://bk6uvrlmtg4aa" path="res://textures/title_logo.png" id="4_tpiep"]
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="4_x6ffi"]
 [ext_resource type="PackedScene" uid="uid://d4ak0rrpifxgt" path="res://scenes/UI/level_select_button.tscn" id="5_fmtwf"]
 [ext_resource type="Texture2D" uid="uid://d3obqqch3a2aj" path="res://textures/guides/movement.png" id="7_lwv00"]
@@ -90,6 +90,12 @@ fill = 1
 fill_from = Vector2(0.4957265, 0.5)
 fill_to = Vector2(0, 0)
 
+[sub_resource type="LabelSettings" id="LabelSettings_tpiep"]
+font_size = 50
+font_color = Color(0, 0.0666666, 1, 1)
+outline_size = 3
+outline_color = Color(1, 0, 0, 1)
+
 [node name="main_menu" type="Control" unique_id=1687943681]
 layout_mode = 3
 anchors_preset = 0
@@ -130,15 +136,11 @@ anchor_left = 0.0
 anchor_top = 0.029000001
 anchor_right = 0.0
 anchor_bottom = 0.029000001
-offset_left = 276.0
-offset_top = -83.32
-offset_right = 404.0
-offset_bottom = 44.68
-label_text = "Dev Room"
-
-[node name="feature_flag" type="Node" parent="scenes/dev_room_button" unique_id=2010192829]
-script = ExtResource("3_kdehn")
-flag_name = "dev_room"
+offset_left = 150.0
+offset_top = -162.32
+offset_right = 278.0
+offset_bottom = -34.32
+label_text = "Gym(With Cheats)"
 
 [node name="level_1" parent="scenes" unique_id=75786873 instance=ExtResource("5_fmtwf")]
 anchors_preset = -1
@@ -146,11 +148,11 @@ anchor_left = 0.0
 anchor_top = 0.029000001
 anchor_right = 0.0
 anchor_bottom = 0.029000001
-offset_left = 19.0
-offset_top = -120.32
-offset_right = 147.0
-offset_bottom = 7.6799984
-label_text = "Laupeerium Heist"
+offset_left = 34.0
+offset_top = -227.32
+offset_right = 162.0
+offset_bottom = -99.32
+label_text = "Laupeerium Heist(Main Level)"
 
 [node name="mr_mustle_battle" parent="scenes" unique_id=1748839115 instance=ExtResource("5_fmtwf")]
 anchors_preset = -1
@@ -158,10 +160,10 @@ anchor_left = 0.0
 anchor_top = 0.029000001
 anchor_right = 0.0
 anchor_bottom = 0.029000001
-offset_left = -227.0
-offset_top = -168.32
-offset_right = -99.0
-offset_bottom = -40.32
+offset_left = -177.0
+offset_top = -163.32
+offset_right = -49.0
+offset_bottom = -35.32
 label_text = "Visit Mr. Mustle"
 
 [node name="dr_speedo_battle" parent="scenes" unique_id=907101880 instance=ExtResource("5_fmtwf")]
@@ -170,10 +172,10 @@ anchor_left = 0.0
 anchor_top = 0.029000001
 anchor_right = 0.0
 anchor_bottom = 0.029000001
-offset_left = -147.0
-offset_top = -59.32
-offset_right = -19.0
-offset_bottom = 68.68
+offset_left = -88.0
+offset_top = -11.32
+offset_right = 40.0
+offset_bottom = 116.68
 label_text = "Visit Dr. Speedo"
 
 [node name="orange_boss_battle" parent="scenes" unique_id=808673130 instance=ExtResource("5_fmtwf")]
@@ -200,7 +202,7 @@ offset_right = -1.0
 offset_bottom = -102.0
 grow_horizontal = 1
 grow_vertical = 1
-label_text = "Tutorial"
+label_text = "Tutorial(Start Here)"
 
 [node name="guides_button" parent="scenes" unique_id=216305623 instance=ExtResource("5_fmtwf")]
 anchors_preset = 0
@@ -208,10 +210,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = -623.0
-offset_top = -90.0
-offset_right = -495.0
-offset_bottom = 38.0
+offset_left = -315.0
+offset_top = -60.0
+offset_right = -187.0
+offset_bottom = 68.0
 grow_horizontal = 1
 grow_vertical = 1
 label_text = "Guides"
@@ -335,6 +337,21 @@ z_index = -1000
 position = Vector2(-10, -1)
 scale = Vector2(1.205, 1.205)
 texture = ExtResource("13_8bcf2")
+
+[node name="TitleLogo" type="Sprite2D" parent="." unique_id=805860212]
+position = Vector2(-479, -318)
+texture = ExtResource("4_tpiep")
+
+[node name="level_select_text" type="Label" parent="." unique_id=1400503002]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 44.0
+offset_top = -341.0
+offset_right = 326.0
+offset_bottom = -272.0
+text = "Level Select"
+label_settings = SubResource("LabelSettings_tpiep")
+vertical_alignment = 1
 
 [connection signal="value_changed" from="HBoxContainer/difficulty_slider" to="." method="_on_difficulty_slider_value_changed"]
 [connection signal="pressed" from="scenes/dev_room_button" to="." method="_on_dev_room_button_scene_selected"]

@@ -17,7 +17,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="Cyndrive Ships"
 run/main_scene="uid://d15yqv1ma6jmq"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-boot_splash/image="uid://h6m1tw4ajqsm"
+boot_splash/image="uid://c8ejvs04oyiox"
 config/icon="uid://48168dk0ow7d"
 config/size/mode=0
 

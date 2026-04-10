@@ -17,7 +17,7 @@ func _process(delta_time: float) -> void:
 	$StarParticles.get_process_material().set_shader_parameter("angle", angle);
 
 	# Update scene selection
-	for s in $scenes.get_children():
+	for s in $scenes.get_children(): if s.has_node("orbitable"):
 		s.get_node("orbitable").angle += star_speed * delta_time / Difficulty.gameplay_speed
 
 func _unhandled_input(event: InputEvent) -> void:

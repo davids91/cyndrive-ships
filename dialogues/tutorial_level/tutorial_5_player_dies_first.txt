@@ -4,7 +4,4 @@ You won't die until the time engine on the carrier ship is destroyed!
 #[d0]Why didn't you use the shield?
 #[d0]#[c2] Huh.. ? #[p150] Shield?
 #[d0]#[c1]Oh, we could have mentioned it! Press Q to switch it on!#[p500] It'll block the laser though..
-#[c0]STOP SPEWING our tech to candidates!
-#[c1]We kind of need him right now? Or can you pilot the prototype?
-#[c0]#[t100] . . .
-#[c1]#[t]Pilot! #[p200]Let's try this again! Press Ctrl+R!
+#[c1]Let's try this again! Press Ctrl+R to revert to the last time checkpoint!

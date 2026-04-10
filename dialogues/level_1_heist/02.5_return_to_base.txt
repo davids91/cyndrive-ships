@@ -8,5 +8,5 @@
 #[c4]That's DOCTOR to you, worm! Doctor Speedo! This is my life's work! I'll kill you before I let you ruin it!
 And once I finish my work, I'll go back 5 years and enroll in flight school so I can kick your ass even harder!
 #[c1]Damn, I should have thought of that.
-#[c0]Sorry to make you have to deal with this, kid.
+#[c0](Better set a checkpoint *click*)Sorry to make you have to deal with this, kid.
 #[c2]Don't worry, I can take care of him.

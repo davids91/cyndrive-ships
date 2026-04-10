@@ -83,10 +83,10 @@ func _physics_process(delta: float) -> void:
 	)
 	
 	internal_force *= floatiness
-	if internal_force.length() < 0.1: internal_force = Vector2()
+	if internal_force.length() < 0.1: internal_force = Vector2.ZERO
 	
 	current_impulse *= 0.7
-	if current_impulse.length() < 0.1: current_impulse = Vector2()
+	if current_impulse.length() < 0.1: current_impulse = Vector2.ZERO
 	
 	last_position = get_global_position()
 

@@ -3,13 +3,6 @@
 #[c0]Let's commence the interview!
 Where do you see yourself in 5 years?#[p0]
 #[c1]That's irrelevant! We can just grab his future self and ask..
-#[c0]Would you kindly stick to observing?!#[p600] Sorry about that!
-We also have support from technical side of the interview.
-#[t15]Whether we like it or not..
-#[c1]#[t]HEY! I heard that! You left the intercom on!
-#[c0]#[t15] WELL ANYHOW #[p200]#[t] Your first test is all about navigating to marks..
-#[s0]Have you read the user manuals?
-#[c2]I have.. #[p250]But were they for the same ship? I see no WASD keys, only switches and joysticks..
-#[s1]#[c0]Your first test is hitting the targets we placed.
+#[c0]Would you kindly stick to observing?!#[p100] Sorry about that, pilot.
+#[s0]Your first test is hitting the targets we placed.
 You can refer to the little arrows around the ship you're piloting for locating them.
-Hit the first one to continue!

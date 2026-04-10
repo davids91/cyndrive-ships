@@ -1,6 +1,9 @@
+class_name DialoguePanel
 extends CanvasLayer
 
 signal dialouge_finished()
+
+static var active_dialogue: DialoguePanel = null
 
 @onready var dialogText: Label = %main_dialogue
 @onready var dialogIcon: TextureRect = %npc_icon
@@ -15,7 +18,7 @@ signal dialouge_finished()
 	preload("res://textures/entities/npc_4.png")
 ]
 
-@export var seconds_per_letter: float = 0.025
+@export var seconds_per_letter: float = 0.01
 @export_file("*.txt") var dialog: String = ""
 @export var dialogue_conditionals: Array[bool] = []
 @export var unskippable_signals: Array[int] = []
@@ -33,6 +36,11 @@ func _load_dialog_lines() -> PackedStringArray:
 var signals_shot: Dictionary = {}
 
 func start() -> void:
+	# Finish any other dialogue in progress, and make this the active dialogue
+	if active_dialogue and active_dialogue.is_dialogue_active:
+		active_dialogue.finish()
+		active_dialogue = self
+
 	signals_shot.clear()
 	current_line = 0
 	if dialog_lines.is_empty():
@@ -51,9 +59,8 @@ func finish() -> void:
 	dialogue_in_progress = false
 	is_dialogue_active = false
 	set_visible(false)
-	for signal_idx in unskippable_signals:
-		if not signals_shot.has(signal_idx):
-			emit_signal("dialogue_signal_" + str(signal_idx))
+	for signal_idx in unskippable_signals: if not signals_shot.has(signal_idx):
+		emit_signal("dialogue_signal_" + str(signal_idx))
 	signals_shot.clear()
 	dialouge_finished.emit()
 

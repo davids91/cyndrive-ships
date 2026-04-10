@@ -11,34 +11,36 @@ radius = 72.468155
 height = 204.69724
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_83eji"]
-radius = 65.122955
+radius = 71.56
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8tfog"]
-radius = 32.522976
-height = 218.13437
+radius = 35.0
+height = 245.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lhxke"]
-radius = 21.826706
-height = 199.51257
+radius = 30.0
+height = 250.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wfndj"]
-radius = 57.913563
-height = 154.0
+radius = 80.45
+height = 215.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8tfog"]
-radius = 71.0
+radius = 90.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r80lr"]
-radius = 66.77974
-height = 181.98311
+radius = 102.2
+height = 226.94
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_stakr"]
-radius = 38.0
+radius = 79.86
 height = 218.2238
 
 [node name="meteor" type="RigidBody2D" unique_id=886695856 groups=["destroyables"]]
 collision_layer = 3
 mass = 500.0
+linear_damp = 0.9
+angular_damp = 0.9
 script = ExtResource("1_83eji")
 skin_idx = 7
 collision_shape = Array[Shape2D]([SubResource("CapsuleShape2D_83eji"), SubResource("CircleShape2D_83eji"), SubResource("CapsuleShape2D_8tfog"), SubResource("CapsuleShape2D_lhxke"), SubResource("CapsuleShape2D_wfndj"), SubResource("CircleShape2D_8tfog"), SubResource("CapsuleShape2D_r80lr"), SubResource("CapsuleShape2D_stakr")])

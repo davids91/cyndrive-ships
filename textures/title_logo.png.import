@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvvab4ihqo8lj"
-path="res://.godot/imported/time_travel.png-5a6d4ffa254eaa26e737695f9be2b6bd.ctex"
+uid="uid://bk6uvrlmtg4aa"
+path="res://.godot/imported/title_logo.png-15daba8daa71d4ede23d95df2d2179fb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/xcf/time_travel.png"
-dest_files=["res://.godot/imported/time_travel.png-5a6d4ffa254eaa26e737695f9be2b6bd.ctex"]
+source_file="res://textures/title_logo.png"
+dest_files=["res://.godot/imported/title_logo.png-15daba8daa71d4ede23d95df2d2179fb.ctex"]
 
 [params]
 

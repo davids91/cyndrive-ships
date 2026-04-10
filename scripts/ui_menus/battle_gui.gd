@@ -63,7 +63,9 @@ func set_objective(text: String) -> void:
 func set_time(seconds: float) -> void:
 	$time.set_text("%d:%02d" % [int(seconds / 60.0), int(seconds) % 60])
 
+var disabled_weapons_mask: int = 0x0
 func set_disabled_weapons_mask(mask: int) -> void:
+	disabled_weapons_mask = mask
 	if 0 != (mask & 0x01): $laser_icon.set_visible(false)
 	if 0 != (mask & 0x02): $hotsaber_icon.set_visible(false)
 	if 0 != (mask & 0x04): $chain_lightning_icon.set_visible(false)
@@ -71,6 +73,13 @@ func set_disabled_weapons_mask(mask: int) -> void:
 
 func set_laupeerium_indicator(bars: float) -> void:
 	%laupeerium_bar.bars_remaining = bars
+
+func clear_sonar_blips() -> void:
+	for blip in $sensors_display.get_children(): blip.queue_free()
+
+func set_weapons_panel_visible(weapons_visible: bool) -> void:
+	for n in get_tree().get_nodes_in_group("weapon_selector"): n.visible = weapons_visible
+	set_disabled_weapons_mask(disabled_weapons_mask)
 
 func _process(_delta: float) -> void:
 	$debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())

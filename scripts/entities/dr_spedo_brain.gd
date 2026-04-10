@@ -5,6 +5,8 @@ extends BattleCharacter
 @export var attack_swing_duration_sec: float = 0.5
 @export var attack_trail_width_min: float = 0.5
 @export var attack_trail_width_delta: float = 1.0
+@export var sonar_blip_lifetime: float = SonarBlip.INFINITE_LIFETIME
+@export var sonar_blip_scale: Vector2 = Vector2(1.5, 1.5)
 
 @onready var combatants: Node = get_node("/root/Main/LevelContainer/battle/combatants")
 
@@ -20,6 +22,10 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 func accept_damage(strength: float, source: Node = null) -> void:
 	if strength >= BlackHole.DAMAGE:
 		super(strength, source)
+
+var current_impulse: Vector2 = Vector2.ZERO
+func apply_impulse(impulse: Vector2) -> void:
+	current_impulse += impulse
 
 var charge_animation_tween: Tween = null
 func _charge_attack() -> Tween:
@@ -87,6 +93,8 @@ var time_until_next_attack_sec: float = recuperate_time_sec
 var recuperation_time_left_sec: float = phase_in_duration_sec
 func _physics_process(delta: float) -> void:
 	super(delta)
+	current_impulse *= 0.8
+	if current_impulse.length() < 0.1: current_impulse = Vector2.ZERO
 	if(
 		BattleTimeline.instance.time_flow != BattleTimeline.TimeFlow.FORWARD
 		or control_disabled
@@ -105,7 +113,7 @@ func _physics_process(delta: float) -> void:
 			attack_position = (
 				global_position + attack_vec.normalized() * max(
 					approx_size * 5.,
-					attack_vec.length() + min(attack_vec.length() * 0.6, approx_size * 3.)
+					attack_vec.length() + min(attack_vec.length() * 0.6, approx_size * 5.)
 				)
 			)
 			_charge_attack()

@@ -6,13 +6,49 @@
 [ext_resource type="Shape2D" uid="uid://bbuubnw2b6ne4" path="res://resources/target_assist_shape.tres" id="4_47atm"]
 [ext_resource type="AudioStream" uid="uid://fdis6176bi3i" path="res://audio/weapon_change_01.wav" id="4_unlmi"]
 [ext_resource type="Script" uid="uid://dusbajbexl3be" path="res://scripts/equipment/target_assist.gd" id="5_unlmi"]
+[ext_resource type="Texture2D" uid="uid://c7yntewdsp6v4" path="res://textures/ui/radar_cone_1.png" id="5_us3k5"]
+[ext_resource type="Texture2D" uid="uid://bbl7n08smblpj" path="res://textures/ui/radar_cone_2.png" id="6_1p3yf"]
 [ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="6_yfi7f"]
 [ext_resource type="Shader" uid="uid://djx4bom2edoc6" path="res://shaders/repairs.gdshader" id="7_o4dyv"]
+[ext_resource type="Texture2D" uid="uid://8x0sgp8cyody" path="res://textures/ui/radar_cone_3.png" id="7_qhxie"]
+[ext_resource type="Texture2D" uid="uid://cr5oycs347cxb" path="res://textures/ui/radar_cone_4.png" id="8_dqq0f"]
+[ext_resource type="Texture2D" uid="uid://drija0tn7letk" path="res://textures/ui/radar_cone_5.png" id="9_oxx4q"]
 [ext_resource type="Shader" uid="uid://0bsekv0htl80" path="res://shaders/slowdown.gdshader" id="9_viv6s"]
+[ext_resource type="Texture2D" uid="uid://sfy3jjd0xx7s" path="res://textures/ui/radar_cone_6.png" id="10_3ymhi"]
 [ext_resource type="Script" uid="uid://bs6b1t8t8865p" path="res://scripts/effects/slowdown_effect.gd" id="10_47atm"]
+[ext_resource type="Texture2D" uid="uid://cgffr4oksq8x5" path="res://textures/ui/radar_cone_7.png" id="11_fkulu"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_us3k5"]
 points = PackedVector2Array(0, 50, 0, -50, 1000000, -5000, 1000000, 5000)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1x8sr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_us3k5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_1p3yf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_qhxie")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_dqq0f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_oxx4q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_3ymhi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_fkulu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1p3yf"]
 shader = ExtResource("7_o4dyv")
@@ -56,12 +92,20 @@ script = ExtResource("3_viv6s")
 rotation_speed = 0.05
 
 [node name="target_assist" type="ShapeCast2D" parent="." index="19" unique_id=590534824]
-visible = false
 top_level = true
 shape = ExtResource("4_47atm")
 target_position = Vector2(0, 0)
 collision_mask = 7
 script = ExtResource("5_unlmi")
+
+[node name="RadarConeVisual" type="AnimatedSprite2D" parent="target_assist" index="0" unique_id=914487232]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(1, 1, 1, 0.39215687)
+position = Vector2(2354, 0)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_1x8sr")
+autoplay = "default"
 
 [node name="target_arrow" type="Sprite2D" parent="." index="20" unique_id=1557205991]
 visible = false

@@ -8,4 +8,3 @@ Everything is stretching! The spaghettification! The ship is going to blow!
 #[t250]NOOOOOOOOOO!#[t]
 #[c2]Ugh, finally. I can come back now, right!
 #[c0]Please do. I never want to think about that guy again. 
-#[c1]But make sure you grab that Laupeerium first!

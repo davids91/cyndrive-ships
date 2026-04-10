@@ -8,6 +8,8 @@ class_name BattleShipLaser extends BattleShipWeapon
 @export var target_time_sec: float = 0.01
 @export var wielder: BattleCharacter = get_parent()
 @export var offset: Vector2 = Vector2.ZERO
+@export var color_intensity_gradient: GradientTexture2D
+@export var laser_intensity_length: float = 1000.
 
 func _ready() -> void:
 	if not wielder: wielder = get_parent()
@@ -71,7 +73,7 @@ func _process(_delta: float) -> void:
 
 @export var sound_loop_start_sec: float = 0.2
 @export var sound_loop_end_sec: float = 2.0
-@export var hits: Node # Debug variable 
+@export var hits: Node2D
 func _physics_process(_delta: float) -> void:
 	# Handle laser beam display and raycast
 	var laser_origin = wielder.get_global_position() + offset.rotated(wielder.get_global_rotation())
@@ -94,6 +96,12 @@ func _physics_process(_delta: float) -> void:
 			var victim = $raycast.get_collider()
 			if victim != wielder and victim.has_method("accept_damage"):
 				victim.accept_damage(base_damage * current_strength_modifier, wielder)
+
+		if hits:
+			var hit_distance: float = (global_position - hits.global_position).length()
+			$beam_line.default_color = color_intensity_gradient.gradient.sample(
+				hit_distance / laser_intensity_length
+			)
 		if not was_shooting and not $sound.playing:
 			$sound.play()
 		if $sound.playing:

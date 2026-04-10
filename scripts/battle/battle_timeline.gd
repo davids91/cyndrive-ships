@@ -28,8 +28,7 @@ var _time_flow_ll: TimeFlow = _time_flow # Time Flow Last Loop
 func _process(delta: float) -> void:
 	if _time_flow == TimeFlow.BACKWARD:
 		if player_rewind_amount_sec * 1000. < time_accured_msec:
-			if _time_flow_ll != _time_flow_ll: reverse_speed = 1.
-			else: reverse_speed *= time_reverse_acceleration
+			reverse_speed *= time_reverse_acceleration
 			player_rewind_amount_sec += delta * reverse_speed
 		else: finish_reverse()
 	else:
@@ -48,6 +47,7 @@ func finish_reverse() -> void:
 	time_accured_msec -= player_rewind_amount_sec * 1000
 	time_accrued_usec -= int(player_rewind_amount_sec * 1000000.)
 	player_rewind_amount_sec = 0.
+	reverse_speed = 1.
 	_time_flow = TimeFlow.FORWARD
 	rewind_stopped.emit()
 
@@ -83,9 +83,7 @@ func time_since_usec(past_time_usec: int) -> int:
 	return time_usec() - past_time_usec
 
 func time_msec() -> float:
-	if 0 < player_rewind_amount_sec:
-		return time_accured_msec - player_rewind_amount_sec * 1000
-	return time_accured_msec
+	return max(0., time_accured_msec - player_rewind_amount_sec * 1000)
 
 func time_since_msec(past_time_msec: float) -> float:
 	return time_msec() - past_time_msec
