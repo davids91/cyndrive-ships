@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://djsjq3xumvdrc"]
+
+[ext_resource type="Script" uid="uid://d3kswoj5tfgmm" path="res://scripts/entities/orange_missile.gd" id="1_vavqv"]
+[ext_resource type="Texture2D" uid="uid://csyfxt65bnnax" path="res://textures/entities/orange_missile.png" id="2_26u6e"]
+
+[node name="OrangeMissile" type="Node2D" unique_id=1406241596]
+script = ExtResource("1_vavqv")
+
+[node name="missile_sprite" type="Sprite2D" parent="." unique_id=1841789680]
+texture = ExtResource("2_26u6e")

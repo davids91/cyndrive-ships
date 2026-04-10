@@ -2,13 +2,13 @@
 
 [ext_resource type="Script" uid="uid://d2hqpg412bwwt" path="res://scripts/entities/orange_boss_brain.gd" id="1_hci4j"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="2_4ie31"]
+[ext_resource type="PackedScene" uid="uid://djsjq3xumvdrc" path="res://scenes/entities/orange_missile.tscn" id="2_wko7g"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="3_0cmmo"]
 [ext_resource type="Texture2D" uid="uid://qnvemx3643ri" path="res://textures/entities/ominous ship.png" id="4_k0o1n"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="5_0y81i"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="6_am5af"]
 [ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="7_0xp6m"]
 [ext_resource type="AudioStream" uid="uid://c54ony2kfrubw" path="res://audio/orange_boss_intro.wav" id="8_vv58x"]
-[ext_resource type="AudioStream" uid="uid://bxfkppefqurjq" path="res://audio/boss_screaming.wav" id="8_yn676"]
 [ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="9_0yue2"]
 [ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="10_vv58x"]
 [ext_resource type="AudioStream" uid="uid://dajttw71kitgt" path="res://audio/explosion_001.wav" id="11_wko7g"]
@@ -16,6 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://bcnnssuecafi" path="res://audio/explosion_003.wav" id="13_e2la0"]
 [ext_resource type="AudioStream" uid="uid://bokt2np2jc03c" path="res://audio/engine_booster.wav" id="14_8dg4r"]
 [ext_resource type="Texture2D" uid="uid://dvsc27stwcqkh" path="res://textures/ui/target.png" id="15_latyb"]
+[ext_resource type="AudioStream" uid="uid://mtnw4fksy18k" path="res://audio/orange_missile_fire.wav" id="15_vv58x"]
 [ext_resource type="PackedScene" uid="uid://cdoiin3jtjink" path="res://scenes/UI/state_display.tscn" id="16_7t5ug"]
 [ext_resource type="Shader" uid="uid://b3h2cutf7c55t" path="res://shaders/hyper_speed.gdshader" id="17_1diy2"]
 [ext_resource type="Texture2D" uid="uid://c7yntewdsp6v4" path="res://textures/ui/radar_cone_1.png" id="18_0yue2"]
@@ -194,6 +195,11 @@ animations = [{
 
 [node name="orange_boss" type="CharacterBody2D" unique_id=128563897]
 script = ExtResource("1_hci4j")
+projectile_scene = ExtResource("2_wko7g")
+difficulty_sensor_speed = 0.05
+difficulty_laser_speed = 0.1
+search_loop_length_sec = 4.0
+whirlwind_speed_rad_per_sec = 3.0
 approx_size = 512.0
 team = ExtResource("2_4ie31")
 skin_layers = Array[ExtResource("3_0cmmo")]([SubResource("Resource_a5rul")])
@@ -281,6 +287,10 @@ bus = &"Weapons"
 stream = ExtResource("14_8dg4r")
 bus = &"Ships"
 
+[node name="missile_sound" type="AudioStreamPlayer2D" parent="." unique_id=26068947]
+stream = ExtResource("15_vv58x")
+bus = &"Ships"
+
 [node name="target_arrow" type="Sprite2D" parent="." unique_id=2104382642]
 visible = false
 position = Vector2(4, 0)
@@ -308,7 +318,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="phasing_in_sound" type="AudioStreamPlayer2D" parent="." unique_id=197730154]
-stream = ExtResource("8_yn676")
+stream = ExtResource("8_vv58x")
 volume_db = -2.0
 bus = &"Sfx"
 

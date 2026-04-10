@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://ctj8isc4n0ws8" path="res://scripts/battle/boss_fight_room.gd" id="1_6nn2s"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="2_gx3na"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="3_uo2b2"]
-[ext_resource type="PackedScene" uid="uid://6vnpress2q4m" path="res://scenes/entities/orange_boss.tscn" id="4_gx3na"]
+[ext_resource type="PackedScene" uid="uid://dirv180mm1eai" path="res://scenes/entities/orange_boss.tscn" id="4_gx3na"]
 [ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="5_80rpw"]
 [ext_resource type="Texture2D" uid="uid://cci36n556vbkt" path="res://textures/entities/Orange ship.png" id="5_gx3na"]
 
-[node name="battle" type="Node2D" unique_id=1944730611]
+[node name="orange_boss_battle" type="Node2D" unique_id=1944730611]
 script = ExtResource("1_6nn2s")
 
 [node name="cam" type="Camera2D" parent="." unique_id=1742123394]

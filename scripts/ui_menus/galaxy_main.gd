@@ -69,7 +69,9 @@ func _on_dr_speedo_battle_pressed() -> void:
 	load_level("dr_speedo_battle")
 
 func _on_orange_boss_battle_pressed() -> void:
-	get_node("/root/Main").load_level("orange_boss_battle")
+	# bugfix(?) nonexistent function - replaced with simpler version below
+	# get_node("/root/Main").load_level("orange_boss_battle")
+	load_level("orange_boss_battle")
 
 func _on_level_1_pressed() -> void:
 	load_level("level_1")

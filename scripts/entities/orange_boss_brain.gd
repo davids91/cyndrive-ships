@@ -6,6 +6,8 @@ const gothcha_lines: Array[String] = [
 	"I'LL SLICE YOU UP!"
 ]
 
+@export var projectile_scene: PackedScene # missiles
+
 @export_range(0., 1.) var difficulty_sensor_speed: float = 0.1
 @export_range(0., 1.) var difficulty_moving_speed: float = 0.1
 @export_range(0., 1.) var difficulty_laser_speed: float = 0.25
@@ -30,9 +32,22 @@ var time_until_target_drop: float = goldfish_memory_sec
 var whirlwind_duration_left_sec: float = 0.
 var boss_control_disabled: bool = false
 
+
+func missile_spam():
+	if randf() < 0.1:
+		$missile_sound.play()
+		if projectile_scene:
+			var miss = projectile_scene.instantiate()
+			get_tree().root.add_child(miss)
+			miss.rotation = rotation
+			miss.position = position
+			
+
 func _process(delta: float):
 	super(delta)
 	if boss_control_disabled: return
+
+	missile_spam()	
 	
 	$player_detection.set_global_position(get_global_position())
 	if not change_target_to and 0. < time_until_target_drop:
@@ -68,6 +83,7 @@ func _process_default_mode(delta: float) -> void:
 		elif change_target_to:
 			aiming_to = get_global_position()
 			$state_display.say(gothcha_lines.pick_random())
+			$screaming.play() # play an extra sound on player taunt
 			time_until_lasers = difficulty_laser_warning_sec
 		acquired_target = change_target_to
 
