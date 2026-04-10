@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://dirv180mm1eai"]
 
-[ext_resource type="Script" path="res://scripts/entities/orange_boss_brain.gd" id="1_hci4j"]
+[ext_resource type="Script" uid="uid://d2hqpg412bwwt" path="res://scripts/entities/orange_boss_brain.gd" id="1_hci4j"]
 [ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="2_4ie31"]
 [ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="3_0cmmo"]
 [ext_resource type="Texture2D" uid="uid://qnvemx3643ri" path="res://textures/entities/ominous ship.png" id="4_k0o1n"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="5_0y81i"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="6_am5af"]
 [ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="7_0xp6m"]
+[ext_resource type="AudioStream" uid="uid://c54ony2kfrubw" path="res://audio/orange_boss_intro.wav" id="8_vv58x"]
 [ext_resource type="AudioStream" uid="uid://bxfkppefqurjq" path="res://audio/boss_screaming.wav" id="8_yn676"]
 [ext_resource type="AudioStream" uid="uid://x01j2fo2me0d" path="res://audio/engine_thruster.wav" id="9_0yue2"]
 [ext_resource type="AudioStream" uid="uid://rps6evxmvrsb" path="res://audio/explosion_01.wav" id="10_vv58x"]
@@ -191,7 +192,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="boss" type="CharacterBody2D" unique_id=128563897]
+[node name="orange_boss" type="CharacterBody2D" unique_id=128563897]
 script = ExtResource("1_hci4j")
 approx_size = 512.0
 team = ExtResource("2_4ie31")
@@ -265,7 +266,7 @@ scale_amount_max = 4.0
 color_ramp = SubResource("Gradient_ebfdu")
 
 [node name="screaming" type="AudioStreamPlayer2D" parent="." unique_id=1511663896]
-stream = ExtResource("8_yn676")
+stream = ExtResource("8_vv58x")
 bus = &"Ships"
 
 [node name="thruster_sound" type="AudioStreamPlayer2D" parent="." unique_id=1450109790]
