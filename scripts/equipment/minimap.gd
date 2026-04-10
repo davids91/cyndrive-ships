@@ -8,10 +8,13 @@ extends Control
 var time_to_clean: float = garbage_clean_interval_sec
 var minimap_icons: Dictionary = {}
 func _process(delta: float) -> void:
+	#TechDebt: Because reset potentially strains the system, do not process minimap at the very start of the round
+	if BattleTimeline.instance.time_msec() < 250.: return
+
 	time_to_clean -= delta
 	if time_to_clean <= 0.:
 		time_to_clean = garbage_clean_interval_sec
-		for node in minimap_icons.keys(): if not node or not node.visible:
+		for node in minimap_icons: if not node or not node.visible:
 			minimap_icons[node].queue_free()
 			minimap_icons.erase(node)
 	for i in monitor_nodes.size(): for node in monitor_nodes[i].get_children():

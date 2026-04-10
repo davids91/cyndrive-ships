@@ -138,7 +138,7 @@ func start_new_line() -> void:
 	current_line_text = ""
 	line_in_progress = true
 	var max_pos_of_tempo_change: int = 0
-	for i in line_tempo_changes.keys(): if i > max_pos_of_tempo_change:
+	for i in line_tempo_changes: if i > max_pos_of_tempo_change:
 		max_pos_of_tempo_change = i
 	if line_tempo_changes.has(max_pos_of_tempo_change):
 		current_tempo = line_tempo_changes[max_pos_of_tempo_change]

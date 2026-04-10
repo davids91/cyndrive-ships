@@ -96,7 +96,7 @@ func _physics_process(delta: float) -> void:
 	current_impulse *= 0.8
 	if current_impulse.length() < 0.1: current_impulse = Vector2.ZERO
 	if(
-		BattleTimeline.instance.time_flow != BattleTimeline.TimeFlow.FORWARD
+		BattleTimeline.time_flow != BattleTimeline.TimeFlow.FORWARD
 		or control_disabled
 	): return
 	if acquired_target:

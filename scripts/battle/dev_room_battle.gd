@@ -86,7 +86,7 @@ func _process(delta):
 			$replay_camera.set_global_position(replay_viewport.position + replay_viewport.size / 2.)
 
 	# Handling Timeline reverse
-	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
+	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		current_laupeerium -= delta
 		_update_laupeerium_bar()
 		GUI.get_node("defeat").set_visible(false)

@@ -26,6 +26,7 @@ func create_new_puppet(predecessor: BattleCharacter) -> void:
 	$timeline.connect("rewind_started", puppet.pause_control)
 	$timeline.connect("rewind_stopped", puppet.resume_control)
 	replayer.reset()
+	puppet.get_node("temporal_recorder").queue_free()
 	puppet.add_child(replayer, true)
 	puppet.dead.connect(_on_battle_character_dead)
 	puppet.resurrected.connect(_on_battle_character_resurrected)
@@ -112,7 +113,7 @@ func replay_round(rewind_animation: bool = true) -> void:
 	)
 	player_move_tween.tween_callback(func():
 		for combatant in $combatants.get_children():
-			if "pause_control" in combatant:
+			if "resume_control" in combatant:
 				combatant.resume_control()
 		GUI.get_node("rewind_effects").set_visible(false)
 		$timeline.reset()

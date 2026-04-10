@@ -21,7 +21,7 @@ func toggle(active: bool) -> void:
 
 var elapsed_time_sec: float = 0.
 func _process(delta: float) -> void:
-	elapsed_time_sec += delta * BattleTimeline.instance.time_flow
+	elapsed_time_sec += delta * BattleTimeline.time_flow
 
 	if is_active:
 		var angle: float = fmod(elapsed_time_sec, PI * 2.)

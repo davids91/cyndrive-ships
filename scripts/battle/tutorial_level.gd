@@ -250,7 +250,7 @@ func _on_restore_dialouge_finished() -> void:
 	GUI.set_objective("Hold Shift + R to rewind\n(resurrect stolen droid)")
 
 func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
-	if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
+	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 		return
 
 	if current_tutorial_phase == TutorialPhases.DESTROY:

@@ -51,6 +51,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if "movement_intent" in action:
 		movement_intent += action["movement_intent"]
+		if (
+			not Input.is_action_pressed("movement_left")
+			and not Input.is_action_pressed("movement_right")
+			and not Input.is_action_pressed("movement_up")
+			and not Input.is_action_pressed("movement_down")
+		): movement_intent = Vector2.ZERO
 		action["movement_intent"] = movement_intent
 
 	if "action_direction" in action:

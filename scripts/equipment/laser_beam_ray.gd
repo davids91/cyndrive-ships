@@ -16,18 +16,17 @@ func _ready() -> void:
 
 func shutdown() -> void:
 	current_strength_modifier = warmup_damage_modifier
-
 	# TECHDEBT: In case the laser is released before warmup, the tweens get in conflict, so wait until at least the warmup is finished
-	await get_tree().create_timer(warmup_time_sec).timeout
-	create_tween().tween_method(func(a): $beam_line.self_modulate.a = a, $beam_line.self_modulate.a, 0., shutdown_time_sec)
-	var laser_ray_tween: Tween = create_tween()
-	laser_ray_tween.tween_property($beam_line, "width", ray_full_width * 2., shutdown_time_sec)
-	laser_ray_tween.tween_callback(func() :
-		$beam_line.width = 0.
-		was_shooting = is_shooting
-		is_shooting = false
+	get_tree().create_timer(warmup_time_sec).timeout.connect(func():
+		create_tween().tween_method(func(a): $beam_line.self_modulate.a = a, $beam_line.self_modulate.a, 0., shutdown_time_sec)
+		var laser_ray_tween: Tween = create_tween()
+		laser_ray_tween.tween_property($beam_line, "width", ray_full_width * 2., shutdown_time_sec)
+		laser_ray_tween.tween_callback(func() :
+			$beam_line.width = 0.
+			was_shooting = is_shooting
+			is_shooting = false
+		)
 	)
-	laser_ray_tween.chain()
 
 func reset() -> void:
 	was_shooting = is_shooting

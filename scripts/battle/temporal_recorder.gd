@@ -10,8 +10,8 @@ Requirements for Temporal Record and Playback:
 """
 extends Node2D
 
-var usec_records : Dictionary # key is in usec
-var msec_records : Dictionary # key is in msec
+var usec_records : Dictionary[int, Dictionary] # key is in usec
+var msec_records : Dictionary[float, Dictionary] # key is in msec
 
 @export var triggers_per_second: int = 4
 @export var autostart: bool = false
@@ -37,37 +37,43 @@ func _ready() -> void: if autostart: start_recording()
 
 func _process(_delta: float) -> void:
 	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD:
-		# update stored actions
-		while not usec_records.is_empty() and usec_records.keys().back() > BattleTimeline.instance.time_usec():
+		# Erase "future" usec records when rewinding
+		var usec_keys: Array[int] = usec_records.keys()
+		while not usec_records.is_empty() and usec_keys.back() > BattleTimeline.instance.time_usec():
 			if ( # Correct actions for reversed timeflow and apply them
 				target.has_node("controller")
 				and not (target.has_node("replayer")
 				and target.get_node("replayer").is_within_current_time())
 			):
-				var snapshot_to_apply = usec_records[usec_records.keys().back()]
+				var snapshot_to_apply = usec_records[usec_keys.back()]
 				reverse_action_key_in_snapshot("boost", snapshot_to_apply)
 				reverse_action_key_in_snapshot("action", snapshot_to_apply)
 				target.process_input_action(snapshot_to_apply)
-			usec_records.erase(usec_records.keys().back())
+			usec_records.erase(usec_keys.back())
+			usec_keys.pop_back()
 
-		# update stored msec entries
-		while not msec_records.is_empty() and msec_records.keys().back() > BattleTimeline.instance.time_msec():
-			last_snapshot = { msec_records.keys().back() : msec_records[msec_records.keys().back()]}
-			msec_records.erase(msec_records.keys().back())
+		# Erase "future" msec records when rewinding
+		var msec_keys: Array[float] = msec_records.keys()
+		while not msec_records.is_empty() and msec_keys.back() > BattleTimeline.instance.time_msec():
+			last_snapshot = { msec_keys.back() : msec_records[msec_keys.back()]}
+			msec_records.erase(msec_keys.back())
+			msec_keys.pop_back()
+
+		# Apply msec record if it is close enough
 		if not msec_records.is_empty() or (last_snapshot != null and not last_snapshot.is_empty()):
 			var corrective_snapshot
 			var time_to_snapshot
 			if msec_records.is_empty() and last_snapshot != null:
-				corrective_snapshot = last_snapshot[last_snapshot.keys()[0]]
-				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(last_snapshot.keys()[0]))
+				corrective_snapshot = last_snapshot[msec_keys.back()]
+				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(msec_keys.back()))
 			if not msec_records.is_empty() and last_snapshot == null:
-				corrective_snapshot = msec_records[msec_records.keys().back()]
-				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(msec_records.keys().back()))
+				corrective_snapshot = msec_records[msec_keys.back()]
+				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(msec_keys.back()))
 			if not msec_records.is_empty() and last_snapshot != null:
 				# The current reverse corrected time point is expected to be between the last popped key and the last stored key
 				# --> In this case the earlier motion is selected with the corresponding time to interpolate to it
-				corrective_snapshot = msec_records[msec_records.keys().back()]
-				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(msec_records.keys().back()))
+				corrective_snapshot = msec_records[msec_keys.back()]
+				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(msec_keys.back()))
 			target.correct_temporal_state(corrective_snapshot, time_to_snapshot)
 
 	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.FORWARD \
@@ -76,21 +82,20 @@ func _process(_delta: float) -> void:
 			target.correct_temporal_state(last_snapshot[last_snapshot.keys()[0]])
 	last_time_flow = BattleTimeline.time_flow
 
-var last_triggered = 0. 
-var recording = false
+var last_triggered: float = 0.
+var recording: bool = false
 ## Restarts recording of the target, erasing all previous stored data
 func start_recording() -> void:
-	if !recording:
-		recording = true
-	usec_records = Dictionary()
-	msec_records = Dictionary()
+	if !recording: recording = true
+	usec_records = {}
+	msec_records = {}
 	last_triggered = 0. # Set to 0 to record first frame!
 
 func stop_recording() -> Dictionary:
 	var recorded_actions = usec_records
 	var recorded_motion = msec_records
-	usec_records = Dictionary()
-	msec_records = Dictionary()
+	usec_records = {}
+	msec_records = {}
 	recording = false
 	return { "action" : recorded_actions, "temporal_snapshots" :  recorded_motion }
 
@@ -102,41 +107,43 @@ func process_input_action(action) -> void:
 var marked_usec_index: int = 0
 var marked_msec_index: int = 0
 func mark_current_time() -> void:
-	marked_usec_index = usec_records.keys().size() - 1
-	marked_msec_index = msec_records.keys().size() - 1
+	marked_usec_index = usec_records.size() - 1
+	marked_msec_index = msec_records.size() - 1
 
 func copy_marked_records(last_usec_timestamp: int, last_msec_timestamp: float) -> Dictionary:
 	var recorded_action = {}
 	if not usec_records.is_empty():
+		var usec_keys: Array[int] = usec_records.keys()
 		# rewind marked index values to be inside bounds, pointing after the last stored record in the replayer
-		marked_usec_index = min(marked_usec_index, usec_records.keys().size() - 1)
-		var usec_marker = usec_records.keys()[marked_usec_index]
+		marked_usec_index = min(marked_usec_index, usec_records.size() - 1)
+		var usec_marker = usec_keys[marked_usec_index]
 		while usec_marker > last_usec_timestamp and 0 < usec_marker:
 			marked_usec_index -= 1
-			usec_marker = usec_records.keys()[marked_usec_index]
-		marked_usec_index = min(marked_usec_index + 1, usec_records.keys().size() - 1)
+			usec_marker = usec_keys[marked_usec_index]
+		marked_usec_index = min(marked_usec_index + 1, usec_records.size() - 1)
 
 		# Grab the relevant records
-		if usec_records.keys()[marked_usec_index] > last_usec_timestamp:
-			for index in range(marked_usec_index, usec_records.keys().size()):
-				var key = usec_records.keys()[marked_usec_index]
+		if usec_keys[marked_usec_index] > last_usec_timestamp:
+			for index in range(marked_usec_index, usec_records.size()):
+				var key = usec_keys[marked_usec_index]
 				recorded_action[key] = usec_records[key]
 
 	var recorded_motion = {}
 	if not msec_records.is_empty():
+		var msec_keys: Array[float] = msec_records.keys()
 		# rewind marked index values to be inside bounds, pointing after the last stored record in the replayer
-		marked_msec_index = min(marked_msec_index, msec_records.keys().size() - 1)
-		var msec_marker = msec_records.keys()[marked_msec_index]
+		marked_msec_index = min(marked_msec_index, msec_records.size() - 1)
+		var msec_marker = msec_keys[marked_msec_index]
 		while msec_marker > last_msec_timestamp and 0 < msec_marker:
 			marked_msec_index -= 1
-			msec_marker = msec_records.keys()[marked_msec_index]
-		marked_msec_index = min(marked_msec_index + 1, msec_records.keys().size() - 1)
-
+			msec_marker = msec_keys[marked_msec_index]
+		marked_msec_index = min(marked_msec_index + 1, msec_records.size() - 1)
 		# Grab the relevant records
-		if  msec_records.keys()[marked_msec_index] > last_msec_timestamp:
-			for index in range(marked_msec_index, msec_records.keys().size()):
-				var key = msec_records.keys()[index]
+		if msec_keys[marked_msec_index] > last_msec_timestamp:
+			for index in range(marked_msec_index, msec_records.size()):
+				var key = msec_keys[index]
 				recorded_motion[key] = msec_records[key]
+
 	return { "action" : recorded_action, "temporal_snapshots" :  recorded_motion }
 
 func _physics_process(_delta: float) -> void:

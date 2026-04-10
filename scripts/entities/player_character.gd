@@ -12,7 +12,7 @@ func process_input_action(action: Dictionary) -> void:
 			$target_arrow.global_position = $target_assist.get_current_target_position()
 		%RadarConeVisual.visible = (
 			0. < action["action_direction"].length() and not target_locked
-			and BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.FORWARD
+			and BattleTimeline.time_flow == BattleTimeline.TimeFlow.FORWARD
 		)
 	is_boosting = (
 		(is_boosting and (not "boost_released" in action or not action["boost_released"]))

@@ -2,9 +2,6 @@
 
 [ext_resource type="Script" uid="uid://c8yiqt71414ds" path="res://scripts/battle/level_1.gd" id="1_v8cdc"]
 [ext_resource type="PackedScene" uid="uid://cvwcsmrrpxecn" path="res://scenes/UI/minimap.tscn" id="2_aqxgm"]
-[ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="2_v8cdc"]
-[ext_resource type="AudioStream" uid="uid://0oqoh37hsp4w" path="res://audio/music_big_beat_longer.ogg" id="3_mxreo"]
-[ext_resource type="AudioStream" uid="uid://l8abnhstyv07" path="res://audio/Acid-Theme v1.mp3" id="4_xbv3a"]
 [ext_resource type="Script" uid="uid://do3ik1jop56ta" path="res://scripts/battle/battle_timeline.gd" id="6_h81yr"]
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="7_q5qgv"]
 [ext_resource type="PackedScene" uid="uid://blkx4xohejd2i" path="res://scenes/effects/black_hole.tscn" id="8_4l4jl"]
@@ -19,12 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://bs8ao20cjqgpr" path="res://textures/entities/fighter-ship-accent.png" id="18_35rxa"]
 [ext_resource type="Script" uid="uid://dpky47433cafo" path="res://scripts/equipment/ai_control.gd" id="19_i2fda"]
 [ext_resource type="PackedScene" uid="uid://dwxo210cmq3jj" path="res://scenes/UI/dialogue.tscn" id="22_xbv3a"]
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dxaua"]
-streams_count = 3
-stream_0/stream = ExtResource("2_v8cdc")
-stream_1/stream = ExtResource("3_mxreo")
-stream_2/stream = ExtResource("4_xbv3a")
 
 [sub_resource type="Curve" id="Curve_p2j82"]
 _limits = [1.0, 600.0, 0.0, 1.0]
@@ -57,15 +48,6 @@ script = ExtResource("1_v8cdc")
 [node name="cam" type="Camera2D" parent="." unique_id=624570446]
 position = Vector2(1592, -2689)
 zoom = Vector2(0.5, 0.5)
-
-[node name="background_music" type="AudioStreamPlayer2D" parent="cam" unique_id=1541739517]
-unique_name_in_owner = true
-position = Vector2(-186.94458, -109.09485)
-rotation = -1.570289
-stream = SubResource("AudioStreamRandomizer_dxaua")
-volume_db = -10.0
-autoplay = true
-bus = &"Music"
 
 [node name="level_ui" type="CanvasLayer" parent="." unique_id=264875378]
 

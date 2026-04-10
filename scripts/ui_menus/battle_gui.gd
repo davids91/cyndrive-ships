@@ -84,7 +84,7 @@ func set_weapons_panel_visible(weapons_visible: bool) -> void:
 func _process(_delta: float) -> void:
 	$debug_stats/fps.set_text("%s fps" % Engine.get_frames_per_second())
 	if BattleTimeline.instance: #TechDebt: BattleTimeline may not be
-		if BattleTimeline.instance.time_flow == BattleTimeline.TimeFlow.BACKWARD:
+		if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD:
 			$rewind_effects.material.set_shader_parameter("rewind_amount", BattleTimeline.instance.player_rewind_amount_sec)
 
 func _unhandled_input(event: InputEvent) -> void:

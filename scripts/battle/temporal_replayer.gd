@@ -1,8 +1,8 @@
 extends Node2D
 
 #region init_before_ready: Variables to be set for the recorder before calling ready
-var usec_records: Dictionary # key is in usec
-var msec_records: Dictionary # key is in msec
+var usec_records: Dictionary[int, Dictionary] # key is in usec
+var msec_records: Dictionary[float, Dictionary] # key is in msec
 #endregion
 
 signal temporal_scope_changed(still_relevant: bool)
@@ -24,16 +24,20 @@ func is_within_current_time() -> bool:
 	return (
 		(
 			not msec_records.is_empty()
-			and current_time_msec >= msec_records.keys()[0] and current_time_msec < msec_records.keys().back()
+			and current_time_msec >= msec_keys[0] and current_time_msec < msec_keys[-1]
 		) or (
 			not usec_records.is_empty()
-			and current_time_usec >= usec_records.keys()[0] and current_time_usec < usec_records.keys().back()
+			and current_time_usec >= usec_keys[0] and current_time_usec < usec_keys[-1]
 		)
 	)
 
+var msec_keys: Array[float]
+var usec_keys: Array[int]
 var is_in_scope: bool = true
 func reset() -> void:
-	is_in_scope = true
+	msec_keys = msec_records.keys()
+	usec_keys = usec_records.keys()
+	is_in_scope = is_within_current_time()
 	current_action_key = 0
 	current_msec_records_key = 0
 	last_corrected = BattleTimeline.instance.time_msec()
@@ -63,49 +67,49 @@ func _process(delta: float) -> void:
 		time_since_last_physics_step_sec -= physics_interval_sec
 		corrected_in_this_physics_loop = false
 
-	# Step action pointer to closesr to actual time if needed
-	var delta_to_current_action = INF
-	var current_time_flow = BattleTimeline.time_flow
-	while abs(current_action_key) < usec_records.keys().size():
-		delta_to_current_action = -BattleTimeline.instance.time_since_usec(usec_records.keys()[current_action_key])
+	# Step action pointer to closer to actual time if needed
+	var delta_to_current_action: int = BattleTimeline.instance.time_usec() # max value instead of INF
+	var current_time_flow: BattleTimeline.TimeFlow = BattleTimeline.time_flow
+	while abs(current_action_key) < usec_records.size():
+		delta_to_current_action = -BattleTimeline.instance.time_since_usec(usec_keys[current_action_key])
 		var delta_to_next_action = INF
-		if abs(current_action_key + current_time_flow) < usec_records.keys().size():
-			delta_to_next_action = -BattleTimeline.instance.time_since_usec(usec_records.keys()[current_action_key + current_time_flow])
+		if abs(current_action_key + current_time_flow) < usec_records.size():
+			delta_to_next_action = -BattleTimeline.instance.time_since_usec(usec_keys[current_action_key + current_time_flow])
 
 		# Step the action pointer to the direction of the closest action
 		if 0 < delta_to_current_action and delta_to_next_action < delta_to_current_action:
 			if last_applied_usec_key != current_action_key: # Apply the current action if not applied already
 				last_applied_usec_key = current_action_key
-				ship.process_input_action(usec_records[usec_records.keys()[current_action_key]])
+				ship.process_input_action(usec_records[usec_keys[current_action_key]])
 			current_action_key += current_time_flow
 			delta_to_current_action = delta_to_next_action
 		else: break # Can't step action pointer forward anymore, because it is at the correct spot
 
 	# Apply upcoming action
 	if ( # if there is any action stored for the current time
-		abs(current_action_key) < usec_records.keys().size()
+		abs(current_action_key) < usec_records.size()
 		and( # and if it's within the current estimated frametime
 			delta_to_current_action * current_time_flow < 0.
 			or abs(delta_to_current_action) <= cached_frame_duration_usec
 		)
 	):
 		last_applied_usec_key = current_action_key
-		ship.process_input_action(usec_records[usec_records.keys()[current_action_key]])
+		ship.process_input_action(usec_records[usec_keys[current_action_key]])
 		current_action_key += current_time_flow
 		return # do not correct msec_records when an action was applied
 
 	# Move msec_records pointer to the closest time point
 	var delta_to_current_msec_records = INF
 	var delta_to_next_msec_records = INF
-	if abs(current_msec_records_key) < msec_records.keys().size():
+	if abs(current_msec_records_key) < msec_records.size():
 		delta_to_current_msec_records = ( \
-			-BattleTimeline.instance.time_since_msec(msec_records.keys()[current_msec_records_key]) \
+			-BattleTimeline.instance.time_since_msec(msec_keys[current_msec_records_key]) \
 			* current_time_flow \
 		)
 
-	while abs(current_msec_records_key + current_time_flow) < msec_records.keys().size():
+	while abs(current_msec_records_key + current_time_flow) < msec_records.size():
 		delta_to_next_msec_records = ( \
-			-BattleTimeline.instance.time_since_msec(msec_records.keys()[current_msec_records_key + current_time_flow]) \
+			-BattleTimeline.instance.time_since_msec(msec_keys[current_msec_records_key + current_time_flow]) \
 			* current_time_flow \
 		)
 		if abs(delta_to_next_msec_records) < abs(delta_to_current_msec_records):
@@ -117,14 +121,14 @@ func _process(delta: float) -> void:
 	# Apply temporal state correction
 	if(
 		not corrected_in_this_physics_loop
-		and abs(current_msec_records_key) < msec_records.keys().size()
+		and abs(current_msec_records_key) < msec_records.size()
 		and abs(delta_to_current_msec_records) <= (cached_frame_duration_usec / 1000.)
 		and (
 			BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD
 			or abs(BattleTimeline.instance.time_since_msec(last_corrected)) > (1000. / corrections_per_second)
 		)
 	):
-		var snapshot_to_apply = msec_records[msec_records.keys()[current_msec_records_key]]
+		var snapshot_to_apply = msec_records[msec_keys[current_msec_records_key]]
 		if( # Do not apply health during replays, only when reversing!
 			"health" in snapshot_to_apply
 			and BattleTimeline.time_flow == BattleTimeline.TimeFlow.FORWARD

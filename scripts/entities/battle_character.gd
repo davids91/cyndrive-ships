@@ -184,7 +184,11 @@ func correct_temporal_state(snapshot: Dictionary, over_time_msec: float = 0.001)
 	if "transform" in snapshot: transform = (snapshot["transform"])
 
 	# Add an afterimage of the character if correction moved it from course too much, and erase it short after
-	if approx_size * 2. < correction_length:
+	if(
+		approx_size * 2. < correction_length
+		#TechDebt: Round reset has every character producing an afterimage, which should be fine, but it adds to a performance drop
+		and BattleTimeline.instance.time_msec() < 500.
+	):
 		create_tween().tween_property(self, "transform", snapshot["transform"], tween_length)
 		var clone = $skin.duplicate()
 		clone.set_skins_material(preload("res://resources/implode_effect.tres"))
@@ -229,6 +233,7 @@ func _physics_process(delta: float) -> void:
 
 @export var carrier_ship: BattleCharacter
 @export var docked_radius_percent: float = 0.3
+@export var temporal_memory_when_entangled_sec: float = 1.
 @onready var is_alive: bool = true
 @onready var was_alive: bool = is_alive
 @onready var was_in_battle: bool = in_battle()
@@ -256,6 +261,7 @@ func _process(_delta):
 		ship_explosion.queue_free()
 		ship_explosion = null
 
+	# Handle Visual Indicators
 	if has_node("repair_indicator"):
 		$repair_indicator.set_global_position(get_global_position() - $repair_indicator.size * 0.55)
 		$repair_indicator.set_visible(visible and $skin.visible and is_being_healed)
@@ -264,6 +270,12 @@ func _process(_delta):
 		visible and $skin.visible and 0. < $skin.modulate.a
 		and not state_display_hidden
 	)
+
+	# If both replayer and recorder is present, erase recorder records older than memory
+	if has_node("temporal_recorder") and has_node("replayer") and not $temporal_recorder.msec_records.is_empty():
+		var recorder_first_key: float = $temporal_recorder.msec_records.keys()[0]
+		if abs($replayer.msec_keys[-1] - recorder_first_key) > temporal_memory_when_entangled_sec:
+			$temporal_recorder.msec_records.erase(recorder_first_key)
 
 	# Do not continue if the ship is not in battle
 	if not in_battle(): return
@@ -355,9 +367,10 @@ func respawn():
 		$temporal_recorder.start_recording()
 		if (
 			extend_replayer and has_node("replayer")
-			and not $replayer.usec_records.keys().is_empty()
-			and not $replayer.msec_records.keys().is_empty()
+			and not $replayer.usec_records.is_empty()
+			and not $replayer.msec_records.is_empty()
 		):
+			#TechDebt: Replayer needs to call reset in order to update record start and end time markers
 			var records = $temporal_recorder.copy_marked_records(
 				$replayer.usec_records.keys()[-1],
 				$replayer.msec_records.keys()[-1]
