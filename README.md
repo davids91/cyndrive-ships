@@ -1,11 +1,11 @@
 # Cyndrive Ships: Action/Shoot 'Em Up/Multidirectional shooters
-Humanity is finally exploring the wast universe with the help of the invention of Dr. Ann Stephanie: 
+Humanity is finally exploring the vast universe with the help of the invention of Dr. Ann Stephanie: 
 The Cyndrive engine! A giant spaceship mobilizer that doubles as a time-traveling device.
 It is able to move its surroundings in time, both short and long term with the use of the rare mineral, Laupeerium.
 The engine is also able to generate a paradox suppression field, which makes it possible to intertwine timelines
 to make smaller fighter ships be present multiple times at the same time.
 
-Proper self-driving capabilities could not be delivered to battleships before time travel was invented, so now they send out the same guy over ondf over again to the same battle.
+Proper self-driving capabilities could not be delivered to battleships before time travel was invented, so now they send out the same guy over and over again to the same battle.
 
 # Main Mechanics:
 - Spaceships
@@ -28,7 +28,7 @@ while a new ship is now controlled by the player.
 Time travel complicates who wins the battles, because even after your ship is defeated, there is the possibility to turn back time.
 
 Time travel is bound to a time traveling engine, and powering it requires a TON of energy, 
-time travel can be initiated only through the player carrier ship.
+so time travel can be initiated only through the player carrier ship.
 Time travel is not possible once the player carrier ship is destroyed completely, thus
 the destruction of both the carrier ship and the player controlled battle ship results in losing the game.
 
@@ -54,7 +54,7 @@ The villains are from one of the careless corporations that are trying to take a
 If there are not many levels, we can focus on a main duo of villains who happened to be the ones who found our heroes and try haplessly to stop the player’s team from collecting the Laupeerium. The villain duo use a drone army, and when all of their drones are defeated they loudly escape with declarations of defeating the heroes next time.
 If the game goes longer, there are villains higher up in the organization who can make an appearance. At a minimum, the higher up villains will be referenced to by the villain duo, to imply that the duo has bosses they want to impress.
 The Laupeerium is either mined directly from asteroids and/or it can be found on derelict ancient spaceships from a bygone era. There is a possibility for the player to be able to win each level either by destroying enough drones so the enemies retreat, or if the heroes’ miner/reclamation team manage to get all the Laupeerium, then the heroes escape instead.
-The carrier ship is owned and run by a leader who sees Laupeerium’s potential to wrest control back from the corporations, and stole the time manipulation technology to use I’m this conflict. But because the time travel technology is temperamental, the leader has had to team up with the inventor of the technology, and the inventor fights with him about how the technology should be used (and if it should be used at all).
+The carrier ship is owned and run by a leader who sees Laupeerium’s potential to wrest control back from the corporations, and stole the time manipulation technology to use in this conflict. But because the time travel technology is temperamental, the leader has had to team up with the inventor of the technology, and the inventor fights with him about how the technology should be used (and if it should be used at all).
 The inventor created the technology to try and see her late mother again, but instead it was only useful for recent time travel resets. But the leader saw this technology’s potential to take their limited resources and turn one pilot into an infinite pilot in these wars.
 The proposed ending of the game is her having an invention breakthrough that lets them further the time travel technology and they actually relocate one of the ancients into the present day, where they can help advance Laupeerium-use and shift the balance of power away from the foolish corporations who seek only to consume and control.
 The player is the hot shot pilot who has been hired to fight these battles flying side by side with copies of the pilot, as dictated by the player’s strategies in each battle for when and how to manipulate time. The character of the pilot has not been following the rebellion against corporate galactic control, and will have many questions they need answered, which makes them a good stand-in for the player, as the player will be about as uninformed as the pilot.
@@ -67,16 +67,16 @@ This means that his Chief Advisor must contract hackers to come in and re-gain a
 so the Chief Advisor goes through the arduous process of having the hackers' memories wiped.
 The Chief Advisor has to get a new hacker each time, because the mind-wiping process also scrambles and resets the hackers' skills;
 the hackers are kept in a pen for safe keeping. The Leader managed to sneak in and liberate a bunch of the mind-wiped hackers some years ago,
-and that is where the Miner/Extractors came from. The process of wiping their memories left gaps i their minds that makes them a good candidate for interfacing with Ancient technology,
+and that is where the Miner/Extractors came from. The process of wiping their memories left gaps in their minds that makes them a good candidate for interfacing with Ancient technology,
 because it is so alien to the present-day's sensibilities of how technology should be built.
 This is also why they are a bit weird, and why the Leader will be fiercely protective of them.
 
 ## Inventor
-Inventor has problems with object permanence, often information from another timeline leaks into his current conciousness,
-Main motivation is to get back an important person from the time accident long ago
+Inventor has problems with object permanence, often information from another timeline leaks into his current conciousness.
+Main motivation is to get back an important person from the time accident long ago.
 
 ## Pilot
-blank character, mainly to be easy fror anyone to project themselves to
+Blank character, mainly to be easy for anyone to project themselves to.
 
 ## Leader
-Very self motivated, likes to disregard safety rules, but not not careless: likes shortcuts
+Very self motivated, likes to disregard safety rules, but not not careless: likes shortcuts.
