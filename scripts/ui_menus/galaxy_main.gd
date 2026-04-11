@@ -1,4 +1,5 @@
-extends Control
+class_name MainMenu
+extends Node2D
 
 @export var star_speed: float = 0.005
 
@@ -20,32 +21,14 @@ func _process(delta_time: float) -> void:
 	for s in $scenes.get_children(): if s.has_node("orbitable"):
 		s.get_node("orbitable").angle += star_speed * delta_time / Difficulty.gameplay_speed
 
-func _unhandled_input(event: InputEvent) -> void:
-	var just_pressed = event.is_pressed() and not event.is_echo()
-	if event.is_action_pressed("key_bindings") and just_pressed:
-		GUI.get_node("keybindings_panel").set_visible(not GUI.get_node("keybindings_panel").visible)
-
-@onready var level_container: Node2D = get_node("/root/Main/LevelContainer")
-@onready var player_input: PlayerInput = get_node("/root/Main/player_input")
-@onready var GUI: BattleShipGUI = get_node("/root/Main/GUI")
-func load_level(level_name: String) -> void:
-	for n in level_container.get_children(): n.queue_free()
-	var level = load("res://scenes/battles/" + level_name + ".tscn").instantiate()
-	var player = level.get_node("%character")
-	player_input.time_control_triggered.connect(player.time_control_triggered)
-	GUI.configure(player_input, level, player)
-	player_input.view_control_triggered.connect(level.view_control_triggered)
-	level_container.add_child(level)
-	get_node("/root/Main/background_music").play()
-
 func _on_dev_room_button_scene_selected() -> void:
-	load_level("dev_room_battle")
+	get_node("/root/Main").load_level("dev_room_battle")
 
 func _on_tutorial_level_button_scene_selected() -> void:
-	load_level("tutorial_level")
+	get_node("/root/Main").load_level("tutorial_level")
 
 func _on_mr_mustle_battle_pressed() -> void:
-	load_level("mr_mustle_battle")
+	get_node("/root/Main").load_level("mr_mustle_battle")
 
 func _on_guides_button_pressed() -> void:
 	speed = 0.
@@ -66,12 +49,10 @@ func _on_difficulty_slider_value_changed(value: float) -> void:
 	Difficulty.gameplay_speed = value
 
 func _on_dr_speedo_battle_pressed() -> void:
-	load_level("dr_speedo_battle")
+	get_node("/root/Main").load_level("dr_speedo_battle")
 
 func _on_orange_boss_battle_pressed() -> void:
-	# bugfix(?) nonexistent function - replaced with simpler version below
-	# get_node("/root/Main").load_level("orange_boss_battle")
-	load_level("orange_boss_battle")
+	get_node("/root/Main").load_level("orange_boss_battle")
 
 func _on_level_1_pressed() -> void:
-	load_level("level_1")
+	get_node("/root/Main").load_level("level_1")

@@ -96,15 +96,12 @@ font_color = Color(0, 0.0666666, 1, 1)
 outline_size = 3
 outline_color = Color(1, 0, 0, 1)
 
-[node name="main_menu" type="Control" unique_id=1687943681]
-layout_mode = 3
-anchors_preset = 0
+[node name="main_menu" type="Node2D" unique_id=311950028]
 script = ExtResource("1_m3hme")
 
 [node name="main_cam" type="Camera2D" parent="." unique_id=1839790455]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1413322784]
-layout_mode = 0
 offset_left = 60.0
 offset_top = -263.0
 offset_right = 572.0
@@ -230,7 +227,6 @@ process_material = SubResource("ShaderMaterial_4l82a")
 [node name="black_hole" type="ColorRect" parent="." unique_id=1095594719]
 z_index = -1
 material = SubResource("ShaderMaterial_0u68b")
-layout_mode = 0
 offset_left = -64.0
 offset_top = -64.0
 offset_right = 64.0
@@ -344,7 +340,6 @@ texture = ExtResource("4_tpiep")
 
 [node name="level_select_text" type="Label" parent="." unique_id=1400503002]
 unique_name_in_owner = true
-layout_mode = 0
 offset_left = 44.0
 offset_top = -341.0
 offset_right = 326.0

@@ -35,13 +35,8 @@ func _on_restart_btn_pressed() -> void:
 	battle.reset_game()
 
 func _on_main_menu_btn_pressed() -> void:
-	var GUI: BattleShipGUI = get_node("/root/Main/GUI")
-	var level_container: Node2D = get_node("/root/Main/LevelContainer")
-	var level = load("res://scenes/UI/galaxy.tscn").instantiate()
-	level.get_node("main_cam").make_current()
-	for n in level_container.get_children(): n.queue_free()
-	GUI.set_visible(false)
-	level_container.add_child(level)
+	unpause_game()
+	get_node("/root/Main").load_main_menu()
 
 func _on_options_menu_btn_pressed() -> void:
 	options_page.show()
