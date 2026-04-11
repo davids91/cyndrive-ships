@@ -218,8 +218,7 @@ disabled = true
 
 [node name="controller" type="Node2D" parent="." unique_id=855373956]
 script = ExtResource("5_0y81i")
-handle_rotation = false
-top_speed = 5.0
+top_speed = 0.001
 start_resistance = 5.0
 momentum_dampener = 0.95
 

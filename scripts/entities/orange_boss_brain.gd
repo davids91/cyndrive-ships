@@ -35,7 +35,8 @@ var boss_control_disabled: bool = false
 
 func missile_spam():
 	if randf() < 0.1:
-		$missile_sound.play()
+		# Missles are fired in rapid succession so the sounds is being restarted over and over again
+		if not $missile_sound.playing: $missile_sound.play()
 		if projectile_scene:
 			var miss = projectile_scene.instantiate()
 			get_tree().root.add_child(miss)
@@ -135,7 +136,10 @@ func _process_default_mode(delta: float) -> void:
 		if lost_target:
 			# Search loop is defined both in seconds and angles. A full search circle takes 2*PI seconds!
 			search_loop_progress = (lost_target.get_global_position() - get_global_position()).angle()
-		moving_to = get_global_position() + Vector2(cos(search_loop_progress), sin(search_loop_progress)) * approx_size * 1.5
+
+		# The below makes the Queen move about when there's no target acquired
+		moving_to = get_global_position() + Vector2(cos(search_loop_progress), sin(search_loop_progress)) * approx_size * 0.1
+
 		if not focus_change_from_damage:
 			focusing_at = get_global_position() + Vector2(cos(radar_angle), sin(radar_angle)) * approx_size
 
@@ -158,7 +162,7 @@ func _process_default_mode(delta: float) -> void:
 	else: $controller.process_input_action({"movement_intent": Vector2.ZERO})
 
 func phase_in() -> void:
-	$screaming.play()
+	if not $screaming.playing: $screaming.play()
 	super()
 
 func accept_damage(strength: float, source: Node = null) -> void:
