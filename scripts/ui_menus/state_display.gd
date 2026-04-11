@@ -58,75 +58,89 @@ func shutup() -> void:
 	).finished.connect(func():$speech_bubble.set_visible(false))
 
 @export var angry_distance: float = 5.
-func angry_emote() -> void:
+func angry_emote() -> Tween:
 	$emote.self_modulate.a = 1.
 	$emote.region_rect = emotes[EMOTES.ANGRY]
-	var emote_tween: Tween = create_tween()
-	emote_tween.set_parallel(true)
-	emote_tween.chain().tween_interval(0.1)
-	emote_tween.tween_method(func(w: float):
+	current_emote = create_tween()
+	current_emote.set_parallel(true)
+	current_emote.chain().tween_interval(0.1)
+	current_emote.tween_method(func(w: float):
 		$emote.position =  emote_offset + Vector2(
 			(randf() - 0.5) * 2. * w,
 			(randf() - 0.5) * 2. * w
 		),
 		0., angry_distance, 1.5
 	)
-	emote_tween.tween_callback(func(): $emote.set_visible(true)).set_delay(0.1)
-	emote_tween.tween_property($emote, "position", emote_offset, 0.2).set_delay(1.6)
-	emote_tween.chain().tween_method(func(w: float): $emote.self_modulate.a = w, 1., 0., 0.3)
-	emote_tween.chain().tween_callback(func(): $emote.set_visible(false))
+	current_emote.tween_callback(func(): $emote.set_visible(true)).set_delay(0.1)
+	current_emote.tween_property($emote, "position", emote_offset, 0.2).set_delay(1.6)
+	current_emote.chain().tween_method(func(w: float): $emote.self_modulate.a = w, 1., 0., 0.3)
+	current_emote.chain().tween_callback(func():
+		$emote.set_visible(false)
+		current_emote = null
+	)
+	return current_emote
+
+var current_emote: Tween
+func emote_in_progress() -> bool: return current_emote != null
 
 @export var annoyed_distance: float = 25.
 @export var annoyed_length_sec: float = 2.
-func annoyed_emote() -> void:
+func annoyed_emote() -> Tween:
 	$emote.set_visible(true)
 	$emote.self_modulate.a = 0.2
 	$emote.scale = Vector2(1., 1.5)
 	$emote.region_rect = emotes[EMOTES.ANNOYED]
 	$emote.position = emote_offset + Vector2(0., annoyed_distance)
-	var emote_tween: Tween = create_tween()
-	emote_tween.set_parallel(true)
-	emote_tween.tween_method(
+	if current_emote: current_emote.kill()
+	current_emote = create_tween()
+	current_emote.set_parallel(true)
+	current_emote.tween_method(
 		func(w: float): $emote.position = emote_offset + Vector2(w / 10., w),
 		0., annoyed_distance * 2., annoyed_length_sec
 	)
-	emote_tween.tween_method(
+	current_emote.tween_method(
 		func(w: float): $emote.self_modulate.a = w,
 		0.2, 1., annoyed_length_sec
 	)
-	emote_tween.chain().tween_callback(func():
+	current_emote.chain().tween_callback(func():
 		$emote.set_visible(false)
 		$emote.scale = Vector2(1.5, 1.5)
 		$emote.position = emote_offset
+		current_emote = null
 	)
+	return current_emote
 
 @export var exclaim_appear_length_sec: float = 0.05
 @export var exclaim_show_length_sec: float = 1.
-func exclaim_emote() -> void:
+func exclaim_emote() -> Tween:
 	$emote.set_visible(true)
 	$emote.self_modulate.a = 0.
 	$emote.scale = Vector2(1.5, 1.5)
 	$emote.region_rect = emotes[EMOTES.EXCLAIM]
-	var emote_tween: Tween = create_tween()
-	emote_tween.set_parallel(true)
-	emote_tween.tween_method(
+	current_emote = create_tween()
+	current_emote.set_parallel(true)
+	current_emote.tween_method(
 		func(w: float): $emote.self_modulate.a = w,
 		0., 1., exclaim_appear_length_sec
 	)
-	emote_tween.tween_callback(func(): $emote.set_visible(false)).set_delay(exclaim_appear_length_sec)
-	emote_tween.tween_callback(func(): $emote.set_visible(true)).set_delay(exclaim_appear_length_sec + exclaim_show_length_sec * 0.2)
-	emote_tween.tween_method(
+	current_emote.tween_callback(func(): $emote.set_visible(false)).set_delay(exclaim_appear_length_sec)
+	current_emote.tween_callback(func(): $emote.set_visible(true)).set_delay(exclaim_appear_length_sec + exclaim_show_length_sec * 0.2)
+	current_emote.tween_method(
 		func(w: float): $emote.scale = Vector2(w,w),
 		1.5, 1.8, exclaim_show_length_sec * 0.05
 	).set_delay(exclaim_appear_length_sec + exclaim_show_length_sec * 0.2)
-	emote_tween.tween_callback(func(): $emote.set_visible(false)).set_delay(exclaim_appear_length_sec * 2. + exclaim_show_length_sec)
-	emote_tween.tween_method(
+	current_emote.tween_callback(func(): $emote.set_visible(false)).set_delay(exclaim_appear_length_sec * 2. + exclaim_show_length_sec)
+	current_emote.tween_method(
 		func(w: float):
 			$emote.self_modulate.a = w
 			$emote.position.y -= w * 2.,
 		1., 0., exclaim_appear_length_sec
 	).set_delay(exclaim_show_length_sec)
-	emote_tween.chain().tween_callback(func(): $emote.scale = Vector2(1.5, 1.57))
+	current_emote.chain().tween_callback(func():
+		$emote.scale = Vector2(1.5, 1.57)
+		current_emote = null
+	)
+	return current_emote
 
 func process_input_action(action: Dictionary) -> void:
 	if "emote_1" in action and action["emote_1"]:

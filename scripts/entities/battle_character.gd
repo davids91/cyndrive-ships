@@ -349,6 +349,9 @@ func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 	skin_layers = predecessor.skin_layers # set skin from predecessor(_ready will construct the skin)
 	color = new_color
 
+func timeline_checkpoint() -> void:
+	spawn_snapshot = get_snapshot()
+
 func respawn():
 	if has_node("weapon_slot"): $weapon_slot.select_slot(0)
 	if has_node("shield"): $shield.shutdown()

@@ -62,11 +62,11 @@ offset_top = 191.0
 offset_right = 801.0
 offset_bottom = 732.0
 text = "WASD
+SPACE
 ARROWS
 Q
 1 2 3 4
 E
-Space
 CTRL + R
 (hold)R
 (hold)SHIFT + R
@@ -87,7 +87,7 @@ Boost
 Fire Weapon(target assisted)
 Toggle shield
 Select Weapons
-Equip/Deploy Explosives
+Dock to Carrier/Equip/Deploy Explosives
 Save Round and restart
 Slow down time
 Rewind battle until key released

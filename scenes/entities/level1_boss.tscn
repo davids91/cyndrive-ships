@@ -180,6 +180,10 @@ colors = PackedColorArray(0.61, 0.5693334, 0, 1, 1, 0.61733335, 0.18, 0.16862746
 [sub_resource type="CircleShape2D" id="CircleShape2D_0oxfl"]
 radius = 1000.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x76km"]
+radius = 100.0
+height = 700.0
+
 [node name="boss" type="CharacterBody2D" unique_id=128563897]
 script = ExtResource("1_gr2rq")
 approx_size = 512.0
@@ -195,7 +199,7 @@ blue_curve_phasing = SubResource("Curve_1rdfn")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=841035113]
 rotation = 1.5707964
-polygon = PackedVector2Array(-12, 258, -128, 168, -127, -5, -236, -166, 229, -166, 108, 0, 112, 171)
+polygon = PackedVector2Array(1.1408672e-05, 261, -128, 168, -127, -5, -236, -166, 229, -166, 108, 0, 112, 171)
 
 [node name="controller" type="Node2D" parent="." unique_id=855373956]
 script = ExtResource("5_0oxfl")
@@ -287,12 +291,11 @@ bus = &"Ships"
 [node name="target_arrow" type="Sprite2D" parent="." unique_id=2104382642]
 visible = false
 self_modulate = Color(0.2193, 0.51, 0.28713, 1)
+top_level = true
 position = Vector2(4, 0)
-scale = Vector2(2.96875, 2.96875)
 texture = ExtResource("12_jd4ta")
 
 [node name="state_display" parent="." unique_id=2010139536 instance=ExtResource("13_0oxfl")]
-visible = false
 scale = Vector2(5, 5)
 mini_health_bar_offset = Vector2(-320, 320)
 emote_offset = Vector2(100, -70)
@@ -329,6 +332,7 @@ gradient = SubResource("Gradient_8sms1")
 [node name="zap_aura" type="Area2D" parent="." unique_id=2032168816]
 collision_layer = 0
 collision_mask = 3
+monitorable = false
 script = ExtResource("18_h0o0o")
 zap_occurence_sec = 0.5
 
@@ -341,6 +345,18 @@ shape = SubResource("CircleShape2D_0oxfl")
 script = ExtResource("18_8sms1")
 triggers_per_second = 20
 
+[node name="hit_aura" type="Area2D" parent="." unique_id=916145008]
+collision_layer = 0
+collision_mask = 3
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hit_aura" unique_id=496855969]
+position = Vector2(-200, 0)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_x76km")
+
 [connection signal="health_changed" from="." to="state_display" method="_on_character_health_changed"]
 [connection signal="body_entered" from="zap_aura" to="zap_aura" method="_on_body_entered"]
 [connection signal="body_exited" from="zap_aura" to="zap_aura" method="_on_body_exited"]
+[connection signal="body_entered" from="hit_aura" to="." method="_on_hit_aura_body_entered"]
+[connection signal="body_exited" from="hit_aura" to="." method="_on_hit_aura_body_exited"]

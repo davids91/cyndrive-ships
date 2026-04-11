@@ -115,6 +115,8 @@ func _init() -> void:
 		add_user_signal("dialogue_signal_" + str(sig))
 
 @export var autostart: bool = false
+@export var autofinish: bool = false
+@export var autofinish_time_between_lines_sec: float = 0.5
 func _ready() -> void:
 	if not dialog_lines.is_empty():
 		current_line_text = _parse_line(dialog_lines[0])
@@ -182,9 +184,12 @@ func _process(delta: float) -> void:
 	current_letter += 1
 
 	# Decide the time to wait until the next letter
-	if line_pauses.has(current_letter):
-		delay_remaining = line_pauses[current_letter]
+	if line_pauses.has(current_letter): delay_remaining = line_pauses[current_letter]
 	elif current_letter > current_line_text.length():
 		line_in_progress = false
 		continue_panel.set_visible(true)
+		if autofinish: (
+				get_tree().create_timer(autofinish_time_between_lines_sec)
+				.timeout.connect(func(): start_new_line())
+			)
 	else: delay_remaining = current_tempo

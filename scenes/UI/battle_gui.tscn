@@ -126,6 +126,7 @@ shader_parameter/fade_radius = 4.0
 
 [node name="GUI" type="CanvasLayer" unique_id=34407094]
 script = ExtResource("1_8vxf1")
+metadata/_edit_horizontal_guides_ = [38.0]
 
 [node name="info_highlight" type="TextureRect" parent="." unique_id=494592121]
 modulate = Color(1, 1, 1, 0)
@@ -172,37 +173,38 @@ text = "Objectives:"
 label_settings = ExtResource("1_pgs3n")
 
 [node name="time" type="Label" parent="." unique_id=669570408]
-offset_left = 702.0
-offset_top = 29.0
-offset_right = 923.0
-offset_bottom = 74.0
+offset_left = 920.0
+offset_top = 32.0
+offset_right = 1141.0
+offset_bottom = 77.0
 text = "0xDEAD//BEEF"
 label_settings = ExtResource("1_pgs3n")
 vertical_alignment = 1
+
+[node name="time_label" type="Label" parent="." unique_id=1715204428]
+offset_left = 834.0
+offset_top = 30.0
+offset_right = 1291.0
+offset_bottom = 171.0
+text = "Time:"
+label_settings = ExtResource("3_o14dv")
 
 [node name="objective_panel" type="TileMapLayer" parent="." unique_id=967048435]
 modulate = Color(1, 1, 1, 0.54901963)
 tile_map_data = PackedByteArray("AAAAAAIAAAAAAAAAAAAAAAMAAAADAAIAAAABAAIAAAABAAMAAAAAAAkAAAADAAEAAAAAAAoAAAAAAAMAAAABAAoAAAABAAMAAAAVAAIAAAABAAMAAAAVAAoAAAABAAMAAAAWAAIAAAADAAAAAAAWAAMAAAADAAEAAAAWAAkAAAADAAEAAAAWAAoAAAADAAMAAAA=")
 tile_set = SubResource("TileSet_eivww")
 
-[node name="time_label" type="Label" parent="." unique_id=1715204428]
-offset_left = 604.0
-offset_top = 25.0
-offset_right = 1061.0
-offset_bottom = 166.0
-text = "Time:"
-label_settings = ExtResource("3_o14dv")
-
 [node name="info_label2" type="Label" parent="." unique_id=353632813]
-offset_left = 604.0
-offset_top = 25.0
-offset_right = 876.0
-offset_bottom = 174.0
+offset_left = 547.0
+offset_top = 3.0
+offset_right = 819.0
+offset_bottom = 171.0
 text = "
 Hold R to slow down time
 Shift + R to rewind battle
 Ctrl + R to restart battle
-Press K for keybindings"
+Press K for keybindings
+Press Q For Shield"
 label_settings = SubResource("LabelSettings_ikjs2")
 horizontal_alignment = 2
 vertical_alignment = 2
@@ -233,10 +235,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="status_padding" type="MarginContainer" parent="." unique_id=1109486210]
-offset_left = 366.0
-offset_top = 24.0
-offset_right = 952.0
-offset_bottom = 183.0
+offset_left = 368.0
+offset_top = 32.0
+offset_right = 954.0
+offset_bottom = 191.0
 scale = Vector2(0.825, 0.8)
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 10

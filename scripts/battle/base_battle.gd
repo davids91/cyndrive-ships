@@ -142,6 +142,7 @@ func _ready() -> void:
 		$timeline.connect("round_reset", combatant.respawn)
 		$timeline.connect("rewind_started", combatant.pause_control)
 		$timeline.connect("rewind_stopped", combatant.resume_control)
+		$timeline.connect("checkpoint_triggered", combatant.timeline_checkpoint)
 		combatant.dead.connect(_on_battle_character_dead)
 		combatant.resurrected.connect(_on_battle_character_resurrected)
 

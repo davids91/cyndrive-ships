@@ -21,8 +21,8 @@ noise = SubResource("FastNoiseLite_th4ef")
 shader = ExtResource("2_th4ef")
 shader_parameter/screen_ratio_w_h = 1.7777778
 shader_parameter/noise = SubResource("NoiseTexture2D_1ax27")
-shader_parameter/rewind_amount = 34.66566777265306
-shader_parameter/rewind_intensity = 1.0
+shader_parameter/rewind_amount = 3087.9067144087467
+shader_parameter/rewind_intensity = 0.2
 shader_parameter/circle_centers = PackedVector2Array(0.58, 0.315)
 shader_parameter/circle_radiuses = PackedFloat32Array(0.32)
 shader_parameter/max_rings = 5.0
@@ -142,6 +142,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_um83q")
 text = "Back To Main"
 
 [node name="Quit_btn" type="Button" parent="Panel/VBoxContainer/TabContainer/PausePage" unique_id=789642824]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -152,9 +153,7 @@ text = "Quit Game"
 
 [node name="FeatureFlaggedNode" type="Node" parent="Panel/VBoxContainer/TabContainer/PausePage/Quit_btn" unique_id=17618713]
 script = ExtResource("5_57ju3")
-flag_name = "auto__WEB"
-node_enabled_by_flag = false
-node_removed_by_flag = true
+flag_name = "auto__PC"
 metadata/_custom_type_script = "uid://cdy0wfjq4rl2c"
 
 [node name="OptionsPage" type="VBoxContainer" parent="Panel/VBoxContainer/TabContainer" unique_id=1742230278]

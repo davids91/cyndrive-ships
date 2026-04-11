@@ -2,6 +2,7 @@ class_name DrSpeedo
 extends BattleCharacter
 
 @export var charge_attack_duration_sec: float = 1.
+@export_range(0., 5.) var charge_attack_warning_swiftness: float = 0.8
 @export var attack_swing_duration_sec: float = 0.5
 @export var attack_trail_width_min: float = 0.5
 @export var attack_trail_width_delta: float = 1.0
@@ -57,11 +58,12 @@ var attack_position: Vector2
 var attack_animation_tween: Tween = null
 func _attack_swing(delay: float) -> Tween:
 	if attack_animation_tween: return attack_animation_tween
+	var to_attack_point = (attack_position - global_position)
 	$trail.modulate = Color.WHITE
 	$trail.points[0] = global_position
-	$trail.points[1] = global_position + (attack_position - global_position) * 2.
+	$trail.points[1] = global_position + to_attack_point * 2.
 	attack_animation_tween = create_tween()
-	attack_animation_tween.tween_interval(delay)
+	attack_animation_tween.tween_property(self, "global_rotation", to_attack_point.angle() + PI, delay)
 	attack_animation_tween.tween_callback(func():
 		$trail.visible = true
 		create_tween().tween_property($trail, "modulate", Color.TRANSPARENT, attack_swing_duration_sec).finished.connect(
@@ -72,13 +74,10 @@ func _attack_swing(delay: float) -> Tween:
 		func(w: float): 
 			$trail.width_curve.set_point_value(1, attack_trail_width_min + w * attack_trail_width_delta)
 			$trail.width_curve.set_point_value(0, attack_trail_width_min + attack_trail_width_delta - w * attack_trail_width_delta)
-			global_position = lerp(global_position, attack_position, w)
-			,
+			global_position = lerp(global_position, attack_position, w),
 		0., 1., attack_swing_duration_sec
 	)
-	attack_animation_tween.tween_callback(func():
-		attack_animation_tween = null
-	)
+	attack_animation_tween.tween_callback(func(): attack_animation_tween = null)
 	return attack_animation_tween
 
 func _ready() -> void:
@@ -86,65 +85,65 @@ func _ready() -> void:
 	phase_in()
 	$temporal_recorder.start_recording()
 
+var victims_count: int = 0
+func _process(_delta) -> void:
+	for victim in bodies_hitting:
+		if victim.has_method("accept_damage"):
+			victim.accept_damage(BlackHole.DAMAGE)
+		else: victim.queue_free()
+		victims_count += 1
+
+const HIT_AURA_RADIUS: float = 100.
+
 @export var spin_speed_rad: float = 10.
-@export var recuperate_time_sec: float = 1.
+@export var recuperate_time_sec: float = 3.
 var acquired_target: Node2D = null
 var time_until_next_attack_sec: float = recuperate_time_sec
 var recuperation_time_left_sec: float = phase_in_duration_sec
+var spin_around: bool = true
 func _physics_process(delta: float) -> void:
 	super(delta)
 	current_impulse *= 0.8
 	if current_impulse.length() < 0.1: current_impulse = Vector2.ZERO
-	if(
-		BattleTimeline.time_flow != BattleTimeline.TimeFlow.FORWARD
-		or control_disabled
-	): return
+	velocity += current_impulse
+	if BattleTimeline.time_flow != BattleTimeline.TimeFlow.FORWARD or control_disabled: return
+
 	if acquired_target:
 		if 0. < time_until_next_attack_sec:
 			# have the cross descend on the target
 			$target_arrow.global_position = acquired_target.global_position
-			$target_arrow.scale = Vector2.ONE * 10. * (time_until_next_attack_sec / charge_attack_duration_sec)
+			$target_arrow.scale = Vector2.ONE * max(
+				1., 10. * (time_until_next_attack_sec / (charge_attack_duration_sec * charge_attack_warning_swiftness))
+			)
 			time_until_next_attack_sec -= delta
 		elif 0. >= recuperation_time_left_sec:
-			$target_arrow.visible = false
+			create_tween().tween_property($target_arrow, "self_modulate", Color.TRANSPARENT, 0.5).finished.connect(func():
+				$target_arrow.visible = false
+			)
 			recuperation_time_left_sec = recuperate_time_sec
-			var attack_origin: Vector2 = global_position
 			var attack_vec: Vector2 =  (acquired_target.global_position - global_position)
 			attack_position = (
 				global_position + attack_vec.normalized() * max(
-					approx_size * 5.,
-					attack_vec.length() + min(attack_vec.length() * 0.6, approx_size * 5.)
+					approx_size * 5., attack_vec.length() + min(attack_vec.length() * 0.6, approx_size * 5.)
 				)
 			)
 			_charge_attack()
 			_attack_swing(charge_attack_duration_sec * 0.2).finished.connect(func():
 				acquired_target = null
+				spin_around = false
 			)
-			# !TechDebt: to nail the timing down for the damage this delay is introduced
-			# --> As only _phisics_process can produce reliable shapecasts
-			await get_tree().create_timer(0.1).timeout
-			var shapecast_params: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
-			shapecast_params.exclude = [self.get_rid()]
-			shapecast_params.margin = 250. # To have objects close by destroyed
-			shapecast_params.shape = SegmentShape2D.new()
-			shapecast_params.shape.a = attack_origin
-			shapecast_params.shape.b = attack_position
-			var shapecast_results: Array[Dictionary] = get_world_2d().direct_space_state.intersect_shape(shapecast_params)
-			var victims_count: int = 0
-			for shapecast_result : Dictionary in shapecast_results:
-				if not shapecast_result.has("collider"): continue
-				if shapecast_result.collider.has_method("accept_damage"):
-					shapecast_result.collider.accept_damage(BlackHole.DAMAGE)
-				else: shapecast_result.collider.queue_free()
-				victims_count += 1
-				if 0 == victims_count: $state_display.annoyed_emote()
 		else: recuperation_time_left_sec -= delta
 		return
 
 	# Spin around until target is acquired
-	set_global_rotation(global_rotation + spin_speed_rad * delta)
+	if spin_around: set_global_rotation(global_rotation + spin_speed_rad * delta)
 
 	if 0. < recuperation_time_left_sec:
+		if not spin_around and not $state_display.emote_in_progress():
+			if 0 == victims_count: $state_display.annoyed_emote().finished.connect(func(): spin_around = true)
+			else:
+				victims_count = 0
+				spin_around = true
 		recuperation_time_left_sec -= delta
 		return
 
@@ -166,3 +165,11 @@ func _physics_process(delta: float) -> void:
 			acquired_target = random_target
 			time_until_next_attack_sec = charge_attack_duration_sec
 			$target_arrow.visible = true
+			$target_arrow.self_modulate = Color.WHITE
+
+var bodies_hitting: Dictionary = {}
+func _on_hit_aura_body_entered(body: Node2D) -> void:
+	if body != self: bodies_hitting[body] = BattleTimeline.instance.time_accured_msec
+
+func _on_hit_aura_body_exited(body: Node2D) -> void:
+	bodies_hitting.erase(body)

@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://djk4xx0uhmkfn" path="res://scenes/entities/level1_boss.tscn" id="4_mxww0"]
 [ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="5_0dc3k"]
 [ext_resource type="PackedScene" uid="uid://blkx4xohejd2i" path="res://scenes/effects/black_hole.tscn" id="5_hrh6b"]
-[ext_resource type="Resource" uid="uid://ym7tr32c2fsa" path="res://resources/player_team.tres" id="6_bimru"]
 
 [node name="battle" type="Node2D" unique_id=1944730611]
 script = ExtResource("1_mxww0")
@@ -28,7 +27,6 @@ position = Vector2(-1838, -898)
 [node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("5_0dc3k")]
 unique_name_in_owner = true
 position = Vector2(961, -1972)
-team = ExtResource("6_bimru")
 color = Color(0, 0, 0, 0)
 
 [node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1963758468]

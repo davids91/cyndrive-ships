@@ -52,14 +52,13 @@ zoom = Vector2(0.5, 0.5)
 [node name="level_ui" type="CanvasLayer" parent="." unique_id=264875378]
 
 [node name="minimap" parent="level_ui" unique_id=2003495201 node_paths=PackedStringArray("monitor_nodes") instance=ExtResource("2_aqxgm")]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
+anchors_preset = 0
+anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = -220.0
-offset_right = -220.0
-offset_bottom = 0.0
-grow_horizontal = 0
+offset_left = 140.0
+offset_top = 176.0
+offset_right = 140.0
+offset_bottom = 176.0
 map_extent = Rect2(0, -6000, 5000, 10000)
 monitor_nodes = [NodePath("../../debris"), NodePath("../../combatants")]
 
@@ -139,8 +138,7 @@ skin_idx = 0
 position = Vector2(1675, 1230)
 
 [node name="black_hole" parent="debris" unique_id=1106643319 instance=ExtResource("8_4l4jl")]
-position = Vector2(9134, -3150)
-scale = Vector2(2, 2)
+position = Vector2(3756, -1135)
 
 [node name="combatants" type="Node" parent="." unique_id=477359581]
 
@@ -342,6 +340,8 @@ unskippable_signals = Array[int]([0])
 visible = false
 dialog = "res://dialogues/level_1_heist/02_doors_destroyed.txt"
 unskippable_signals = Array[int]([0])
+autofinish = true
+autofinish_time_between_lines_sec = 2.0
 
 [node name="that_went_well" parent="dialogues" unique_id=413367898 instance=ExtResource("22_xbv3a")]
 visible = false

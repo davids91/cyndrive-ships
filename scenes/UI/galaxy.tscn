@@ -140,7 +140,7 @@ offset_left = 150.0
 offset_top = -162.32
 offset_right = 278.0
 offset_bottom = -34.32
-label_text = "Gym(With Cheats)"
+label_text = "Gym (with Cheats)"
 
 [node name="level_1" parent="scenes" unique_id=75786873 instance=ExtResource("5_fmtwf")]
 anchors_preset = -1
@@ -152,7 +152,7 @@ offset_left = 34.0
 offset_top = -227.32
 offset_right = 162.0
 offset_bottom = -99.32
-label_text = "Laupeerium Heist(Main Level)"
+label_text = "Laupeerium Heist (main level)"
 
 [node name="mr_mustle_battle" parent="scenes" unique_id=1748839115 instance=ExtResource("5_fmtwf")]
 anchors_preset = -1
@@ -202,7 +202,7 @@ offset_right = -1.0
 offset_bottom = -102.0
 grow_horizontal = 1
 grow_vertical = 1
-label_text = "Tutorial(Start Here)"
+label_text = "Tutorial (start here)"
 
 [node name="guides_button" parent="scenes" unique_id=216305623 instance=ExtResource("5_fmtwf")]
 anchors_preset = 0

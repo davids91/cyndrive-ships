@@ -15,6 +15,6 @@ func _on_body_exited(body: Node2D) -> void:
 func _process(delta: float) -> void:
 	for ship in ships_within_aura:
 		if 0. < ships_within_aura[ship]: ships_within_aura[ship] -= delta
-		else: # Let's ZAP the ship
+		elif ship.in_battle(): # Let's ZAP the ship
 			ships_within_aura[ship] = randf() * zap_occurence_sec
 			wielder.process_input_action({"acquired_target": ship})
