@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://b30y7x1oqqj3e"]
+
+[ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="1_2lgad"]
+[ext_resource type="PackedScene" uid="uid://c7kg57ai500kr" path="res://scenes/UI/nameplate.tscn" id="2_21wcu"]
+[ext_resource type="Shader" uid="uid://bk0ed1l3k8lrm" path="res://shaders/credits_nameplate.gdshader" id="2_228wp"]
+
+[sub_resource type="Gradient" id="Gradient_tgap2"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_fh5n5"]
+noise_type = 4
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wga3h"]
+noise = SubResource("FastNoiseLite_fh5n5")
+color_ramp = SubResource("Gradient_tgap2")
+
+[sub_resource type="Gradient" id="Gradient_kdjdm"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7vwwx"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7wkth"]
+noise = SubResource("FastNoiseLite_7vwwx")
+color_ramp = SubResource("Gradient_kdjdm")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tgap2"]
+resource_local_to_scene = false
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_21wcu"]
+resource_local_to_scene = true
+shader = ExtResource("2_228wp")
+shader_parameter/source_image = SubResource("ViewportTexture_tgap2")
+shader_parameter/displacement_length = 0.0
+shader_parameter/distortion_strength_ = SubResource("NoiseTexture2D_7wkth")
+shader_parameter/distortion_direction_ = SubResource("NoiseTexture2D_wga3h")
+shader_parameter/pixellize_size = 1500.0
+
+[node name="credits" type="Node2D" unique_id=1345803200]
+
+[node name="cam" type="Camera2D" parent="." unique_id=1179002599]
+position = Vector2(1602, -2697)
+zoom = Vector2(0.5, 0.5)
+
+[node name="parallax_background" parent="." unique_id=29579511 instance=ExtResource("1_2lgad")]
+
+[node name="Nameplate" parent="." unique_id=818560364 instance=ExtResource("2_21wcu")]
+material = SubResource("ShaderMaterial_21wcu")
+offset_left = 778.0
+offset_top = 424.0
+offset_right = 1888.0
+offset_bottom = 725.0
+
+[node name="Panel" type="Panel" parent="." unique_id=1300087682]
+offset_right = 1913.0
+offset_bottom = 1075.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel" unique_id=764319923]
+layout_mode = 0
+offset_right = 1907.0
+offset_bottom = 1075.0
+text = "Jalent (Jason W): Explosive mine (implementation and visuals, recall support, laser/lightning interaction, explosion scaling, carrier resupply), time travel improvement, pause menu, assorted fixes
+"

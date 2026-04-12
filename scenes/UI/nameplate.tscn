@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://c7kg57ai500kr"]
+
+[ext_resource type="Shader" uid="uid://bk0ed1l3k8lrm" path="res://shaders/credits_nameplate.gdshader" id="1_tgap2"]
+[ext_resource type="Script" uid="uid://c5ri3l3nbh8sa" path="res://scripts/ui_menus/nameplate.gd" id="2_fh5n5"]
+
+[sub_resource type="Gradient" id="Gradient_tgap2"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_fh5n5"]
+noise_type = 4
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wga3h"]
+noise = SubResource("FastNoiseLite_fh5n5")
+color_ramp = SubResource("Gradient_tgap2")
+
+[sub_resource type="Gradient" id="Gradient_kdjdm"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7vwwx"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7wkth"]
+noise = SubResource("FastNoiseLite_7vwwx")
+color_ramp = SubResource("Gradient_kdjdm")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tgap2"]
+resource_local_to_scene = false
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yp6ai"]
+resource_local_to_scene = true
+shader = ExtResource("1_tgap2")
+shader_parameter/source_image = SubResource("ViewportTexture_tgap2")
+shader_parameter/displacement_length = 0.0
+shader_parameter/distortion_strength_ = SubResource("NoiseTexture2D_7wkth")
+shader_parameter/distortion_direction_ = SubResource("NoiseTexture2D_wga3h")
+shader_parameter/pixellize_size = 1500.0
+
+[sub_resource type="Curve" id="Curve_tgap2"]
+_limits = [0.0, 1000.0, 0.0, 1.0]
+_data = [Vector2(0.017821781, 0), 0.0, 0.0, 0, 0, Vector2(0.99996996, 212.70306), 1476.633, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_fh5n5"]
+_limits = [0.0, 0.35, 0.0, 1.0]
+_data = [Vector2(0, 0.35), 0.0, 0.0, 0, 0, Vector2(0.9940594, 0), -0.38646495, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_g3j2f"]
+font_size = 45
+outline_size = 10
+outline_color = Color(1.1936426e-05, 0.918924, 0.8752713, 1)
+shadow_size = 20
+shadow_color = Color(0.050919946, 0.0066999937, 0.67, 0.9411765)
+
+[node name="Nameplate" type="ColorRect" unique_id=818560364]
+material = SubResource("ShaderMaterial_yp6ai")
+offset_right = 1110.0
+offset_bottom = 301.0
+script = ExtResource("2_fh5n5")
+phase_in_pixel_curve = SubResource("Curve_tgap2")
+phase_in_distance_curve = SubResource("Curve_fh5n5")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1925415520]
+transparent_bg = true
+size = Vector2i(1024, 256)
+
+[node name="Name" type="Label" parent="SubViewport" unique_id=2043302161]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -146.5
+offset_top = -89.08
+offset_right = 146.5
+offset_bottom = -26.079971
+grow_horizontal = 2
+grow_vertical = 2
+text = "Szarvas János"
+label_settings = SubResource("LabelSettings_g3j2f")
+
+[node name="Role" type="Label" parent="SubViewport" unique_id=1905870995]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -455.5
+offset_top = -0.98999786
+offset_right = 455.685
+offset_bottom = 62.01007
+grow_horizontal = 2
+grow_vertical = 2
+text = "Lakatos - Zárszakértő; Biztonságtechnikus
+"
+label_settings = SubResource("LabelSettings_g3j2f")
