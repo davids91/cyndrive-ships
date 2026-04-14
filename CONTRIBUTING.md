@@ -18,10 +18,10 @@ You only need to include flags you want to change:
 
 ```json
 {
-    "disable_ai": {
-        "enabled": true,
-        "description": "Disable all enemy AI - useful for testing weapons"
-    }
+	"disable_ai": {
+		"enabled": true,
+		"description": "Disable all enemy AI - useful for testing weapons"
+	}
 }
 ```
 
@@ -29,9 +29,9 @@ You only need to include flags you want to change:
 
 ```gdscript
 if FeatureFlags.is_enabled("new_combat"):
-    _new_combat_logic()
+	_new_combat_logic()
 else:
-    _old_combat_logic()
+	_old_combat_logic()
 ```
 
 ### Usage in Scenes

@@ -197,6 +197,7 @@ animations = [{
 script = ExtResource("1_hci4j")
 projectile_scene = ExtResource("2_wko7g")
 difficulty_sensor_speed = 0.05
+difficulty_moving_speed = 0.25
 difficulty_laser_speed = 0.1
 search_loop_length_sec = 4.0
 whirlwind_speed_rad_per_sec = 3.0
@@ -288,6 +289,7 @@ bus = &"Ships"
 
 [node name="missile_sound" type="AudioStreamPlayer2D" parent="." unique_id=26068947]
 stream = ExtResource("15_vv58x")
+max_distance = 4000.0
 bus = &"Ships"
 
 [node name="target_arrow" type="Sprite2D" parent="." unique_id=2104382642]
@@ -325,6 +327,7 @@ bus = &"Sfx"
 
 [node name="RadarConeVisual" type="AnimatedSprite2D" parent="." unique_id=349978879]
 visible = false
+modulate = Color(1, 1, 1, 0)
 position = Vector2(2354, 0)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_7t5ug")

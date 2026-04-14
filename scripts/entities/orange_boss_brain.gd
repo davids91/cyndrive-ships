@@ -31,12 +31,14 @@ var search_loop_progress: float = 0.
 var time_until_target_drop: float = goldfish_memory_sec
 var whirlwind_duration_left_sec: float = 0.
 var boss_control_disabled: bool = false
+var missile_chance:float = 0.02
 
 
 func missile_spam():
-	if randf() < 0.1:
-		# Missles are fired in rapid succession so the sounds is being restarted over and over again
-		if not $missile_sound.playing: $missile_sound.play()
+	if randf() < missile_chance:
+		# if Missles are fired in rapid succession so the sounds is being restarted over and over again
+		# if not $missile_sound.playing: $missile_sound.play()
+		$missile_sound.play()
 		if projectile_scene:
 			var miss = projectile_scene.instantiate()
 			get_tree().root.add_child(miss)

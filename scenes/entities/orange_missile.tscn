@@ -2,9 +2,17 @@
 
 [ext_resource type="Script" uid="uid://d3kswoj5tfgmm" path="res://scripts/entities/orange_missile.gd" id="1_vavqv"]
 [ext_resource type="Texture2D" uid="uid://csyfxt65bnnax" path="res://textures/entities/orange_missile.png" id="2_26u6e"]
+[ext_resource type="Texture2D" uid="uid://bqnaxfshvpabb" path="res://textures/warmglow64.png" id="3_26u6e"]
 
 [node name="OrangeMissile" type="Node2D" unique_id=1406241596]
 script = ExtResource("1_vavqv")
 
 [node name="missile_sprite" type="Sprite2D" parent="." unique_id=1841789680]
+texture_filter = 1
+scale = Vector2(2, 2)
 texture = ExtResource("2_26u6e")
+
+[node name="glow" type="Sprite2D" parent="." unique_id=892869710]
+modulate = Color(1, 1, 1, 0.48235294)
+position = Vector2(-32, 0)
+texture = ExtResource("3_26u6e")
