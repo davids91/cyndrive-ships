@@ -25,6 +25,12 @@
 [ext_resource type="Texture2D" uid="uid://sfy3jjd0xx7s" path="res://textures/ui/radar_cone_6.png" id="23_8dg4r"]
 [ext_resource type="Texture2D" uid="uid://cgffr4oksq8x5" path="res://textures/ui/radar_cone_7.png" id="24_latyb"]
 
+[sub_resource type="Curve" id="Curve_yn676"]
+
+[sub_resource type="Curve" id="Curve_0yue2"]
+
+[sub_resource type="Curve" id="Curve_vv58x"]
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_it8mc"]
 radius = 100.0
 height = 425.6
@@ -173,10 +179,14 @@ animations = [{
 script = ExtResource("1_hci4j")
 projectile_scene = ExtResource("2_wko7g")
 difficulty_sensor_speed = 0.05
-difficulty_moving_speed = 0.25
-difficulty_laser_speed = 0.1
-search_loop_length_sec = 4.0
+difficulty_moving_speed = 0.05
+difficulty_laser_speed = 0.05
+search_loop_length_sec = 6.28
 whirlwind_speed_rad_per_sec = 3.0
+approx_size = 600.0
+red_curve_phasing = SubResource("Curve_yn676")
+green_curve_phasing = SubResource("Curve_0yue2")
+blue_curve_phasing = SubResource("Curve_vv58x")
 
 [node name="collision_shape" type="CollisionShape2D" parent="." unique_id=2127527192]
 position = Vector2(-32, 0)
@@ -256,6 +266,7 @@ bus = &"Ships"
 [node name="missile_sound" type="AudioStreamPlayer2D" parent="." unique_id=26068947]
 stream = ExtResource("15_vv58x")
 max_distance = 4000.0
+max_polyphony = 8
 bus = &"Ships"
 
 [node name="target_arrow" type="Sprite2D" parent="." unique_id=2104382642]
@@ -270,7 +281,7 @@ scale = Vector2(5, 5)
 mini_health_bar_offset = Vector2(-320, 320)
 emote_offset = Vector2(100, -70)
 
-[node name="(DISABLED)phase_effect" type="ColorRect" parent="." unique_id=696427734]
+[node name="phase_effect" type="ColorRect" parent="." unique_id=696427734]
 visible = false
 material = SubResource("ShaderMaterial_2dggn")
 anchors_preset = 8

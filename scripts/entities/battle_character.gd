@@ -37,7 +37,6 @@ func _ready() -> void:
 		$controller.stop()
 		$controller.start()
 
-# FIXME: where are these edited? can't find them anywhere
 @export var red_curve_phasing: Curve
 @export var green_curve_phasing: Curve
 @export var blue_curve_phasing: Curve
