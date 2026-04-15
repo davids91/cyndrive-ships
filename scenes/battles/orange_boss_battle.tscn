@@ -25,15 +25,13 @@ script = ExtResource("2_gx3na")
 
 [node name="Sprite2D" type="Sprite2D" parent="combatants/orange_boss" unique_id=1971795560]
 z_index = 999
-position = Vector2(-510, -8)
 rotation = -1.5707964
-scale = Vector2(8, 8)
+scale = Vector2(4, 4)
 texture = ExtResource("5_gx3na")
 
 [node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("5_80rpw")]
 unique_name_in_owner = true
 position = Vector2(961, -1972)
-color = Color(0, 0, 0, 0)
 
 [node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1963758468]
 rotation = 1.570289

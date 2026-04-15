@@ -37,6 +37,7 @@ func _ready() -> void:
 		$controller.stop()
 		$controller.start()
 
+# FIXME: where are these edited? can't find them anywhere
 @export var red_curve_phasing: Curve
 @export var green_curve_phasing: Curve
 @export var blue_curve_phasing: Curve
@@ -44,9 +45,15 @@ func _ready() -> void:
 func phase_in() -> void:
 	$skin.set_visible(false)
 	$phasing_in_sound.play(0.15)
+
+	# avoid some null errors on orange boss
+	if !has_node("phase_effect"): return
+	if red_curve_phasing == null: return
+
 	$phase_effect.set_visible(true)
 	create_tween().tween_method(
 		func(w: float):
+			# FIXME: the phasing curve can be null here
 			$phase_effect.get_material().set_shader_parameter(
 				"phase_red", red_curve_phasing.sample(w)
 			),
@@ -91,6 +98,11 @@ func phase_in() -> void:
 
 func phase_out() -> void:
 	$phasing_in_sound.play(0.15)
+
+	# avoid some null errors on orange boss
+	if !has_node("phase_effect"): return
+	if red_curve_phasing == null: return
+
 	$phase_effect.set_visible(true)
 	create_tween().tween_method(
 		func(w: float):

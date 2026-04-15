@@ -1,10 +1,7 @@
 [gd_scene format=3 uid="uid://dirv180mm1eai"]
 
 [ext_resource type="Script" uid="uid://d2hqpg412bwwt" path="res://scripts/entities/orange_boss_brain.gd" id="1_hci4j"]
-[ext_resource type="Resource" uid="uid://dys6782llrpb6" path="res://resources/enemy_team.tres" id="2_4ie31"]
 [ext_resource type="PackedScene" uid="uid://djsjq3xumvdrc" path="res://scenes/entities/orange_missile.tscn" id="2_wko7g"]
-[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="3_0cmmo"]
-[ext_resource type="Texture2D" uid="uid://qnvemx3643ri" path="res://textures/entities/ominous ship.png" id="4_k0o1n"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="5_0y81i"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="6_am5af"]
 [ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="7_0xp6m"]
@@ -27,27 +24,6 @@
 [ext_resource type="Texture2D" uid="uid://drija0tn7letk" path="res://textures/ui/radar_cone_5.png" id="22_e2la0"]
 [ext_resource type="Texture2D" uid="uid://sfy3jjd0xx7s" path="res://textures/ui/radar_cone_6.png" id="23_8dg4r"]
 [ext_resource type="Texture2D" uid="uid://cgffr4oksq8x5" path="res://textures/ui/radar_cone_7.png" id="24_latyb"]
-
-[sub_resource type="Resource" id="Resource_a5rul"]
-script = ExtResource("3_0cmmo")
-texture = ExtResource("4_k0o1n")
-scale = Vector2(4, 4)
-metadata/_custom_type_script = "uid://cud6a5voxneed"
-
-[sub_resource type="Curve" id="Curve_8a2ah"]
-_limits = [1.0, 600.0, 0.0, 1.0]
-_data = [Vector2(0, 8.61438), 0.0, -286.33978, 0, 0, Vector2(0.63893807, 110.13977), 1121.7161, 1121.7161, 0, 0, Vector2(0.8902655, 1), -999.4854, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="Curve" id="Curve_ikjs2"]
-_limits = [1.0, 600.0, 0.0, 1.0]
-_data = [Vector2(0, 56.83893), 0.0, -25.619877, 0, 0, Vector2(0.4814159, 150.74997), 1338.4434, 1338.4434, 0, 0, Vector2(0.95634097, 1), -2265.3918, 198.92365, 0, 0]
-point_count = 3
-
-[sub_resource type="Curve" id="Curve_1rdfn"]
-_limits = [1.0, 600.0, 0.0, 1.0]
-_data = [Vector2(0.39823008, 1), 0.0, -64.04968, 0, 0, Vector2(0.42123893, 110.13977), 0.0, 0.0, 0, 0, Vector2(0.93805313, 1), -184.13016, 0.0, 0, 0]
-point_count = 3
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_it8mc"]
 radius = 100.0
@@ -201,16 +177,6 @@ difficulty_moving_speed = 0.25
 difficulty_laser_speed = 0.1
 search_loop_length_sec = 4.0
 whirlwind_speed_rad_per_sec = 3.0
-approx_size = 512.0
-team = ExtResource("2_4ie31")
-skin_layers = Array[ExtResource("3_0cmmo")]([SubResource("Resource_a5rul")])
-starting_health = 500.0
-max_health = 500.0
-low_health = 25.0
-mass = 500.0
-red_curve_phasing = SubResource("Curve_8a2ah")
-green_curve_phasing = SubResource("Curve_ikjs2")
-blue_curve_phasing = SubResource("Curve_1rdfn")
 
 [node name="collision_shape" type="CollisionShape2D" parent="." unique_id=2127527192]
 position = Vector2(-32, 0)
@@ -304,7 +270,8 @@ scale = Vector2(5, 5)
 mini_health_bar_offset = Vector2(-320, 320)
 emote_offset = Vector2(100, -70)
 
-[node name="phase_effect" type="ColorRect" parent="." unique_id=696427734]
+[node name="(DISABLED)phase_effect" type="ColorRect" parent="." unique_id=696427734]
+visible = false
 material = SubResource("ShaderMaterial_2dggn")
 anchors_preset = 8
 anchor_left = 0.5

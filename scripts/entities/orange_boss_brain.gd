@@ -211,4 +211,5 @@ func pause_control() -> void:
 
 
 func _on_dead(itsme):
+	control_disabled = true # so it stops firing missiles
 	pass # Replace with function body.
