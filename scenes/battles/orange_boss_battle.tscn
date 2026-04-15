@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dirv180mm1eai" path="res://scenes/entities/orange_boss.tscn" id="4_gx3na"]
 [ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="5_80rpw"]
 [ext_resource type="Texture2D" uid="uid://cci36n556vbkt" path="res://textures/entities/Orange ship.png" id="5_gx3na"]
+[ext_resource type="Script" uid="uid://cud6a5voxneed" path="res://scripts/equipment/battle_ship_skin.gd" id="7_gx3na"]
 
 [node name="battle" type="Node2D" unique_id=1944730611]
 script = ExtResource("1_6nn2s")
@@ -22,9 +23,14 @@ script = ExtResource("2_gx3na")
 [node name="combatants" type="Node" parent="." unique_id=1456232303]
 
 [node name="orange_boss" parent="combatants" unique_id=128563897 instance=ExtResource("4_gx3na")]
+approx_size = 100.0
+red_curve_phasing = null
+green_curve_phasing = null
+blue_curve_phasing = null
 
 [node name="Sprite2D" type="Sprite2D" parent="combatants/orange_boss" unique_id=1971795560]
 z_index = 999
+position = Vector2(0, -265)
 rotation = -1.5707964
 scale = Vector2(4, 4)
 texture = ExtResource("5_gx3na")
@@ -32,6 +38,8 @@ texture = ExtResource("5_gx3na")
 [node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("5_80rpw")]
 unique_name_in_owner = true
 position = Vector2(961, -1972)
+skin_layers = Array[ExtResource("7_gx3na")]([])
+mass = 10.0
 
 [node name="cam_remote_transform" type="RemoteTransform2D" parent="combatants/character" unique_id=1963758468]
 rotation = 1.570289

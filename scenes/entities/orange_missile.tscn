@@ -7,9 +7,11 @@
 [ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="4_l7m7q"]
 
 [node name="OrangeMissile" type="Node2D" unique_id=1378005922]
+z_index = 4096
 script = ExtResource("1_vavqv")
 
 [node name="missile_sprite" type="Sprite2D" parent="." unique_id=1841789680]
+z_index = 4096
 texture_filter = 1
 material = ExtResource("2_o1te0")
 scale = Vector2(2, 2)
