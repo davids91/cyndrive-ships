@@ -16,7 +16,7 @@ var msec_records : Dictionary[float, Dictionary] # key is in msec
 @export var triggers_per_second: int = 4
 @export var autostart: bool = false
 
-@onready var target : PhysicsBody2D = get_parent()
+@onready var target : Node2D = get_parent()
 
 var last_time_flow: BattleTimeline.TimeFlow = BattleTimeline.TimeFlow.FORWARD
 var last_snapshot: Dictionary

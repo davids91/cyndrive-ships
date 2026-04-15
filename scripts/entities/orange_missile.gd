@@ -4,40 +4,53 @@ var age = 0
 var lifespan = 10
 var speed = 650
 var trigger_radius = 64
-var p1 = null
 
-const EXPLOSION_FIREY = preload("res://scenes/effects/explosion-firey.tscn")
-# hmm null @onready var level = get_node("/root/Main/LevelContainer/battle")
+const EXPLOSION_FIREY: PackedScene = preload("res://scenes/effects/explosion-firey.tscn")
+@onready var level: Node2D = get_node("/root/Main/LevelContainer/battle")
+@onready var p1: BattleCharacter = level.get_node("%character")
+@onready var spawn_time: float = BattleTimeline.instance.time_msec()
 
-func _ready():
-	# maybe use level.get_node() or that team system array of enemies
-	p1 = get_tree().get_root().find_child("character", true, false)
+func _ready() -> void:
+	$temporal_recorder.start_recording()
 
+func get_snapshot() -> Dictionary:
+	return {
+		"transform": transform,
+		"speed": speed,
+		"is_expired": is_expired,
+		"age": age,
+	}
+
+var debug_color: Color = Color.from_hsv(randf(), 1., 1., 1.)
+func correct_temporal_state(snapshot: Dictionary, _over_time_msec: float = 0.001) -> void:
+	if "transform" in snapshot: transform = snapshot["transform"]
+	if "speed" in snapshot: speed = snapshot["speed"]
+	if "age" in snapshot: age = snapshot["age"]
+	if "is_expired" in snapshot: is_expired = snapshot["is_expired"]
+
+var is_expired: bool = false
+var was_expired: bool = false
 func boom():
-	#print("boom!")
 	explode()
-	queue_free()	
+	is_expired = true
 
 var explosion: Explosion = null
 func explode() -> void:
 	if null == explosion:
 		explosion = EXPLOSION_FIREY.instantiate()
-		explosion.explosion_damage = 15.
+		explosion.explosion_damage = 100.
 		explosion.explosion_length = 3.
 		explosion.explosion_range = 600.
-		explosion.shockwave_strength = 200.
+		explosion.shockwave_strength = 5000.
 		explosion.scale *= 3
-		# this is null... hmmms		
-		#level.get_node("mush").add_child(explosion)
-		get_tree().root.add_child(explosion)
+		level.get_node("mush").add_child(explosion)
 	explosion.global_position = get_global_position()
 	explosion.reinit()
 	# is_exploded = true
 	# correct_temporal_state({"linear_velocity": Vector2.ZERO})
-	# await get_tree().create_timer(.2).timeout # give lightning time to draw
-	
+
 func _process(delta):
-	var forward_dir = Vector2.RIGHT.rotated(rotation)
+	var forward_dir: Vector2 = Vector2.RIGHT.rotated(rotation)
 	position += forward_dir * speed * delta
 	
 	# see if we hit player
@@ -47,5 +60,22 @@ func _process(delta):
 		if d <= trigger_radius: boom()
 	
 	age += delta
-	if age > lifespan:
-		queue_free()
+	if age > lifespan: is_expired = true
+	if BattleTimeline.instance.time_msec() < spawn_time: queue_free()
+
+	if is_expired and not was_expired:
+		create_tween().tween_method(
+			func(w: float):
+				$missile_sprite.get_material().set_shader_parameter("burn_percentage", w)
+				$glow.self_modulate.a = w,
+			0., 1., 0.5
+		)
+	if not is_expired and was_expired:
+		create_tween().tween_method(
+			func(w: float):
+				$missile_sprite.get_material().set_shader_parameter("burn_percentage", w)
+				$glow.self_modulate.a = w,
+			1., 0., 0.5
+		)
+		
+	was_expired = is_expired

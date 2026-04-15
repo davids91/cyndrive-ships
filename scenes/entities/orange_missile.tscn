@@ -2,13 +2,16 @@
 
 [ext_resource type="Script" uid="uid://d3kswoj5tfgmm" path="res://scripts/entities/orange_missile.gd" id="1_vavqv"]
 [ext_resource type="Texture2D" uid="uid://csyfxt65bnnax" path="res://textures/entities/orange_missile.png" id="2_26u6e"]
+[ext_resource type="Material" uid="uid://hwlaracobxoh" path="res://resources/implode_effect.tres" id="2_o1te0"]
 [ext_resource type="Texture2D" uid="uid://bqnaxfshvpabb" path="res://textures/warmglow64.png" id="3_26u6e"]
+[ext_resource type="Script" uid="uid://l6vctxv60i5k" path="res://scripts/battle/temporal_recorder.gd" id="4_l7m7q"]
 
-[node name="OrangeMissile" type="Node2D" unique_id=1406241596]
+[node name="OrangeMissile" type="Node2D" unique_id=1378005922]
 script = ExtResource("1_vavqv")
 
 [node name="missile_sprite" type="Sprite2D" parent="." unique_id=1841789680]
 texture_filter = 1
+material = ExtResource("2_o1te0")
 scale = Vector2(2, 2)
 texture = ExtResource("2_26u6e")
 
@@ -16,3 +19,6 @@ texture = ExtResource("2_26u6e")
 modulate = Color(1, 1, 1, 0.48235294)
 position = Vector2(-32, 0)
 texture = ExtResource("3_26u6e")
+
+[node name="temporal_recorder" type="Node2D" parent="." unique_id=1553433068]
+script = ExtResource("4_l7m7q")

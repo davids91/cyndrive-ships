@@ -45,10 +45,7 @@ func apply_shockwave(delta: float) -> void:
 				or not combatant.has_method("in_battle") or not combatant.in_battle():
 					continue
 			hit_normal = hit_normal.normalized()
-			combatant.apply_impulse(
-				hit_normal * delta
-				* shockwave_strength / combatant.mass
-			)
+			combatant.apply_impulse(hit_normal * shockwave_strength / combatant.mass)
 
 			if combatant.has_method("accept_damage"):
 				combatant.accept_damage(explosion_damage * delta, self)

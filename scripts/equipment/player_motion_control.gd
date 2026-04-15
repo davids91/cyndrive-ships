@@ -64,8 +64,7 @@ func _physics_process(delta: float) -> void:
 			pow(speed_response_fi, 2.) / pow(max_speed_response_fi, 2.)
 		)
 		internal_force = lerp(internal_force, intent_direction, actual_speed_response)
-		if is_boosting:
-			internal_force += intent_direction * booster_strength
+		if is_boosting: internal_force += intent_direction * booster_strength
 	else: speed_response_fi = 0.
 
 	if intent_direction.length() < 0.15:

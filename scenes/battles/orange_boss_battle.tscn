@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bmwn4hdf7xe00" path="res://scenes/entities/player_character.tscn" id="5_80rpw"]
 [ext_resource type="Texture2D" uid="uid://cci36n556vbkt" path="res://textures/entities/Orange ship.png" id="5_gx3na"]
 
-[node name="orange_boss_battle" type="Node2D" unique_id=1944730611]
+[node name="battle" type="Node2D" unique_id=1944730611]
 script = ExtResource("1_6nn2s")
 
 [node name="cam" type="Camera2D" parent="." unique_id=1742123394]

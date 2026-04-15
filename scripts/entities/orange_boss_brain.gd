@@ -50,7 +50,7 @@ func _process(delta: float):
 	super(delta)
 	if boss_control_disabled: return
 
-	missile_spam()	
+	missile_spam()
 	
 	$player_detection.set_global_position(get_global_position())
 	if not change_target_to and 0. < time_until_target_drop:
