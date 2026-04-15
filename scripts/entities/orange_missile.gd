@@ -5,7 +5,7 @@ var lifespan = 10
 var speed = 650
 var trigger_radius = 64
 
-const EXPLOSION_FIREY: PackedScene = preload("res://scenes/effects/explosion-firey.tscn")
+const XPLOSION: PackedScene = preload("res://scenes/effects/explosion-firey.tscn")
 @onready var level: Node2D = get_node("/root/Main/LevelContainer/battle")
 @onready var p1: BattleCharacter = level.get_node("%character")
 @onready var spawn_time: float = BattleTimeline.instance.time_msec()
@@ -37,7 +37,7 @@ func boom():
 var explosion: Explosion = null
 func explode() -> void:
 	if null == explosion:
-		explosion = EXPLOSION_FIREY.instantiate()
+		explosion = XPLOSION.instantiate()
 		explosion.explosion_damage = 100.
 		explosion.explosion_length = 3.
 		explosion.explosion_range = 600.

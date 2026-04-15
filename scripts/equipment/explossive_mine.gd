@@ -103,7 +103,8 @@ func _physics_process(_delta: float) -> void:
 		if mine_pull_vector.length() > mine_drag_length:
 			apply_impulse(mine_pull_vector)
 
-const EXPLOSION_FIREY: PackedScene = preload("res://scenes/effects/explosion-firey.tscn")
+#already declared above
+#const EXPLOSION_FIREY: PackedScene = preload("res://scenes/effects/explosion-firey.tscn")
 var explosion: Explosion = null
 func explode_mine() -> void:
 	if null == explosion:
