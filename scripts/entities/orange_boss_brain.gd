@@ -7,6 +7,7 @@ const gothcha_lines: Array[String] = [
 ]
 
 @export var projectile_scene: PackedScene # missiles
+@export var muzzleflash_scene: PackedScene # shooting fx
 
 @export_range(0., 1.) var difficulty_sensor_speed: float = 0.1
 @export_range(0., 1.) var difficulty_moving_speed: float = 0.1
@@ -44,7 +45,11 @@ func missile_spam():
 			get_tree().root.add_child(miss)
 			miss.rotation = rotation
 			miss.position = position
-			
+		if muzzleflash_scene:
+			var muzz = muzzleflash_scene.instantiate()
+			get_tree().root.add_child(muzz)
+			muzz.rotation = rotation
+			muzz.position = position
 
 func _process(delta: float):
 	super(delta)

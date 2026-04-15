@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://c6fwtsyjiuo5a"]
+
+[ext_resource type="Texture2D" uid="uid://boplpb3vy3e1s" path="res://textures/outer_space/transparent/nebula10.png" id="1_bk7g2"]
+[ext_resource type="Script" uid="uid://goprd1q8igqu" path="res://scripts/effects/emit_wait_destroy.gd" id="2_vgeby"]
+
+[sub_resource type="Curve" id="Curve_vgeby"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.8571429, 0.94573283), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_6d3ib"]
+offsets = PackedFloat32Array(0, 0.1, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+
+[node name="muzzleflash" type="CPUParticles2D" unique_id=702815416]
+z_index = 4096
+emitting = false
+amount = 16
+texture = ExtResource("1_bk7g2")
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 400.0
+angle_max = 360.0
+scale_amount_min = 0.25
+scale_amount_max = 0.5
+scale_amount_curve = SubResource("Curve_vgeby")
+color_ramp = SubResource("Gradient_6d3ib")
+script = ExtResource("2_vgeby")
+remove_delay = 0.5

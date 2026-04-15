@@ -19,6 +19,7 @@ texture = ExtResource("2_26u6e")
 
 [node name="glow" type="Sprite2D" parent="." unique_id=892869710]
 modulate = Color(1, 1, 1, 0.48235294)
+z_index = 4096
 position = Vector2(-32, 0)
 texture = ExtResource("3_26u6e")
 

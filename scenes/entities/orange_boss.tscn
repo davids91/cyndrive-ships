@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d2hqpg412bwwt" path="res://scripts/entities/orange_boss_brain.gd" id="1_hci4j"]
 [ext_resource type="PackedScene" uid="uid://djsjq3xumvdrc" path="res://scenes/entities/orange_missile.tscn" id="2_wko7g"]
+[ext_resource type="PackedScene" uid="uid://c6fwtsyjiuo5a" path="res://scenes/effects/muzzleflash.tscn" id="3_0yue2"]
 [ext_resource type="Script" uid="uid://cevqshtxu2y2l" path="res://scripts/equipment/controllable2d.gd" id="5_0y81i"]
 [ext_resource type="Script" uid="uid://cb5wlskdaf6ig" path="res://scripts/entities/skin.gd" id="6_am5af"]
 [ext_resource type="Script" uid="uid://b8xstfcmfbymf" path="res://scripts/effects/thruster_fx.gd" id="7_0xp6m"]
@@ -178,6 +179,7 @@ animations = [{
 [node name="orange_boss" type="CharacterBody2D" unique_id=128563897]
 script = ExtResource("1_hci4j")
 projectile_scene = ExtResource("2_wko7g")
+muzzleflash_scene = ExtResource("3_0yue2")
 difficulty_sensor_speed = 0.05
 difficulty_moving_speed = 0.05
 difficulty_laser_speed = 0.05
