@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c085tc8npm2p2"]
+[gd_scene format=3 uid="uid://c085tc8npm2p2"]
 
 [ext_resource type="Script" uid="uid://divayv6wey3kx" path="res://scripts/equipment/shield.gd" id="1_lqkp7"]
 [ext_resource type="Shader" uid="uid://dvimhyltktrda" path="res://shaders/sonar.gdshader" id="2_btmqt"]
@@ -32,16 +32,18 @@ shader_parameter/shield_display_alpha = 0.50000002375
 shader_parameter/greeble_strength = 0.2000000095
 shader_parameter/pixel_size = 18.195
 
-[node name="shield" type="Area2D"]
+[node name="shield" type="Area2D" unique_id=407132645]
 top_level = true
 script = ExtResource("1_lqkp7")
+starting_health = 75.0
+health_regen_per_sec = 7.5
 
-[node name="shield_shape" type="CollisionShape2D" parent="."]
+[node name="shield_shape" type="CollisionShape2D" parent="." unique_id=644553299]
 z_index = 10
 position = Vector2(60, 0)
 shape = SubResource("CapsuleShape2D_dd63g")
 
-[node name="display" type="ColorRect" parent="."]
+[node name="display" type="ColorRect" parent="." unique_id=1486686285]
 material = SubResource("ShaderMaterial_lqkp7")
 anchors_preset = 8
 anchor_left = 0.5

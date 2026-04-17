@@ -1,3 +1,4 @@
+class_name BattleShipShield
 extends Area2D
 
 @export_range(0., 1.) var shield_speed: float = 0.3
@@ -5,6 +6,7 @@ extends Area2D
 @export var starting_health: float = 50.
 @export var health_regen_per_sec: float = 4.5
 
+@onready var wielder: Node2D = get_parent()
 @onready var health: float = starting_health
 @onready var original_shield_size: float = $shield_shape.shape.height
 @onready var original_shield_display_range: float = 1.25
@@ -16,10 +18,10 @@ var greeble_position: Vector2 = Vector2(randf(), randf())
 var greeble_target: Vector2 = Vector2(randf(), randf())
 func _process(delta: float) -> void:
 	# Handle positioning
-	set_global_position(get_parent().get_global_position())
+	set_global_position(wielder.get_global_position())
 	set_global_rotation(shield_angle)
 
-	$display.set_visible(shield_active and get_parent().visible)
+	$display.set_visible(shield_active and wielder.visible)
 	$shield_shape.disabled =  not shield_active
 	if shield_active: # Apply shield fluctuation distortions
 		shield_angle = lerp_angle(shield_angle, shield_angle_target, shield_speed)
