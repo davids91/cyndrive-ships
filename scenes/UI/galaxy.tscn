@@ -13,6 +13,11 @@
 [ext_resource type="Texture2D" uid="uid://sd8khq65nsx3" path="res://textures/ui/panels/arrow_left_pressed.png" id="9_8bcf2"]
 [ext_resource type="Texture2D" uid="uid://ds7lgrc5c7dj" path="res://textures/ui/panels/arrow_left_hover.png" id="10_r47se"]
 [ext_resource type="Texture2D" uid="uid://x7exn78klmof" path="res://textures/outer_space/hubble.png" id="13_8bcf2"]
+[ext_resource type="Texture2D" uid="uid://b4x8e550p4y1" path="res://textures/outer_space/transparent/nebula4.png" id="14_at0sp"]
+[ext_resource type="Texture2D" uid="uid://dmroa6uppc1es" path="res://textures/explosions/burst1.png" id="14_b7r86"]
+[ext_resource type="Texture2D" uid="uid://de725ln3wf3lf" path="res://textures/outer_space/transparent/nebula5.png" id="15_b7r86"]
+[ext_resource type="Texture2D" uid="uid://nce2vtjr1ais" path="res://textures/outer_space/transparent/nebula8.png" id="16_s4064"]
+[ext_resource type="Texture2D" uid="uid://c6eunyj4122w3" path="res://textures/explosions/smoke1.png" id="17_ubmey"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_oftex"]
 font_size = 20
@@ -89,6 +94,16 @@ height = 512
 fill = 1
 fill_from = Vector2(0.4957265, 0.5)
 fill_to = Vector2(0, 0)
+
+[sub_resource type="Curve" id="Curve_os3p1"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_jbq6d"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
 
 [sub_resource type="LabelSettings" id="LabelSettings_tpiep"]
 font_size = 50
@@ -337,6 +352,65 @@ texture = ExtResource("13_8bcf2")
 [node name="TitleLogo" type="Sprite2D" parent="." unique_id=805860212]
 position = Vector2(-479, -318)
 texture = ExtResource("4_tpiep")
+
+[node name="logo particle sparky" type="CPUParticles2D" parent="TitleLogo" unique_id=1018809138]
+z_index = -11
+amount = 4
+texture = ExtResource("14_b7r86")
+lifetime = 4.0
+preprocess = 4.0
+gravity = Vector2(0, 0)
+scale_amount_min = 6.0
+scale_amount_max = 6.0
+scale_amount_curve = SubResource("Curve_os3p1")
+color_ramp = SubResource("Gradient_jbq6d")
+
+[node name="logo particle bg" type="CPUParticles2D" parent="TitleLogo" unique_id=1863509862]
+z_index = -10
+texture = ExtResource("14_at0sp")
+lifetime = 4.0
+preprocess = 4.0
+gravity = Vector2(0, 0)
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+scale_amount_curve = SubResource("Curve_os3p1")
+color_ramp = SubResource("Gradient_jbq6d")
+
+[node name="logo particle bg2" type="CPUParticles2D" parent="TitleLogo" unique_id=791789149]
+z_index = -10
+texture = ExtResource("15_b7r86")
+lifetime = 4.0
+preprocess = 4.0
+gravity = Vector2(0, 0)
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+scale_amount_curve = SubResource("Curve_os3p1")
+color_ramp = SubResource("Gradient_jbq6d")
+
+[node name="logo particle bg3" type="CPUParticles2D" parent="TitleLogo" unique_id=1379735008]
+z_index = -10
+texture = ExtResource("16_s4064")
+lifetime = 4.0
+preprocess = 4.0
+gravity = Vector2(0, 0)
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+scale_amount_curve = SubResource("Curve_os3p1")
+color_ramp = SubResource("Gradient_jbq6d")
+
+[node name="logo particle darkener" type="CPUParticles2D" parent="TitleLogo" unique_id=354547905]
+z_index = -10
+amount = 4
+texture = ExtResource("17_ubmey")
+lifetime = 4.0
+preprocess = 4.0
+gravity = Vector2(0, 0)
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+scale_amount_min = 4.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_os3p1")
+color_ramp = SubResource("Gradient_jbq6d")
 
 [node name="level_select_text" type="Label" parent="." unique_id=1400503002]
 unique_name_in_owner = true
