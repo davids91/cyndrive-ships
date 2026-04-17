@@ -60,4 +60,5 @@ script = ExtResource("3_4sgma")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+text = "TEST_LABEL"
 label_settings = SubResource("LabelSettings_4sgma")

@@ -362,6 +362,9 @@ func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 
 func timeline_checkpoint() -> void:
 	spawn_snapshot = get_snapshot()
+	if has_node("temporal_recorder"):
+		$temporal_recorder.msec_records = []
+		$temporal_recorder.usec_records = []
 
 func respawn():
 	if has_node("weapon_slot"): $weapon_slot.select_slot(0)

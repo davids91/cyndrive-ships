@@ -1,7 +1,5 @@
 class_name ExplosiveMine extends BattleDebris
 
-const EXPLOSION_FIREY = preload("res://scenes/effects/explosion-firey.tscn")
-
 @export var mine_drag_strength: float = 50.
 @export var mine_drag_length: float = 25.
 @export var fault_chance: float = 0.005
@@ -103,13 +101,12 @@ func _physics_process(_delta: float) -> void:
 		if mine_pull_vector.length() > mine_drag_length:
 			apply_impulse(mine_pull_vector)
 
-#already declared above
-#const EXPLOSION_FIREY: PackedScene = preload("res://scenes/effects/explosion-firey.tscn")
+const EXPLOSION_FIREY: PackedScene = preload("res://scenes/effects/explosion-firey.tscn")
 var explosion: Explosion = null
 func explode_mine() -> void:
 	if null == explosion:
 		explosion = EXPLOSION_FIREY.instantiate()
-		explosion.explosion_damage = 15.
+		explosion.explosion_damage = 50.
 		explosion.explosion_length = 3.
 		explosion.explosion_range = 600.
 		explosion.shockwave_strength = 200.

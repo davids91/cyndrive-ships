@@ -125,6 +125,7 @@ manually_exclude_from_battle = true
 [node name="player_carrier" parent="combatants" unique_id=1616700583 groups=["complex_collision_shapes"] instance=ExtResource("11_fh4lj")]
 unique_name_in_owner = true
 position = Vector2(1690, -2699)
+sonar_blip_scale = Vector2(0, 0)
 approx_size = 770.0
 color = Color(0, 0, 0, 1)
 starting_health = 500.0
@@ -157,16 +158,17 @@ position = Vector2(1784, 461)
 
 [node name="marker2" parent="markers" unique_id=780099886 instance=ExtResource("18_2soyj")]
 visible = false
-position = Vector2(15072, -5000)
+position = Vector2(16253, 461)
 scale = Vector2(3, 3)
 
 [node name="marker3" parent="markers" unique_id=1489321243 instance=ExtResource("18_2soyj")]
 visible = false
-position = Vector2(10902, -5035)
+position = Vector2(16253, -5035)
+scale = Vector2(3, 3)
 
 [node name="marker4" parent="markers" unique_id=442627443 instance=ExtResource("18_2soyj")]
 visible = false
-position = Vector2(6400, -4198)
+position = Vector2(8789, -4339)
 
 [node name="marker5" parent="markers" unique_id=870472641 instance=ExtResource("18_2soyj")]
 visible = false

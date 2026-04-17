@@ -32,6 +32,12 @@ func _ready() -> void:
 			GUI.set_objective("Lead Dr Speedo into\nthe nearby Black hole")
 			for c in $combatants.get_children(): c.pause_control()
 			$timeline.checkpoint()
+			create_tween().tween_method(
+				func(w: float):
+					player_input.current_zoom_value = w
+					view_control_triggered({"zoom": player_input.current_zoom_value}),
+				player_input.current_zoom_value, 0.2, 1.
+			)
 	)
 
 func _on_player_carrier_phased(phased_in: bool) -> void:

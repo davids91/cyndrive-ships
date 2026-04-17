@@ -3,8 +3,17 @@
 [ext_resource type="Script" uid="uid://hldxmbsg8w6t" path="res://scripts/battle/player_input.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://bj5bqytlmkq8f" path="res://scripts/main.gd" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://c2bembjrgkdwd" path="res://scenes/UI/battle_gui.tscn" id="2_sugp2"]
+[ext_resource type="AudioStream" uid="uid://l8abnhstyv07" path="res://audio/Acid-Theme v1.mp3" id="5_tipki"]
+[ext_resource type="AudioStream" uid="uid://cpylwm3ons7x7" path="res://audio/MusicDubStyle.mp3" id="6_85g3d"]
 [ext_resource type="Script" uid="uid://bht4rdiikubc6" path="res://scripts/effects/background_music.gd" id="7_choun"]
+[ext_resource type="AudioStream" uid="uid://0oqoh37hsp4w" path="res://audio/music_big_beat_longer.ogg" id="7_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://6w1xfuis808w" path="res://scenes/UI/galaxy.tscn" id="9_85g3d"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_eb6dy"]
+streams_count = 3
+stream_0/stream = ExtResource("5_tipki")
+stream_1/stream = ExtResource("6_85g3d")
+stream_2/stream = ExtResource("7_ya4ey")
 
 [node name="Main" type="Node2D" unique_id=1379809644]
 script = ExtResource("1_tbgi4")
@@ -27,6 +36,7 @@ unique_name_in_owner = true
 
 [node name="background_music" type="AudioStreamPlayer" parent="." unique_id=1736179095]
 unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_eb6dy")
 script = ExtResource("7_choun")
 
 [connection signal="finished" from="background_music" to="background_music" method="_on_finished"]

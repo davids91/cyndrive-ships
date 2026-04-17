@@ -49,14 +49,13 @@ metadata/_edit_horizontal_guides_ = [426.0]
 [node name="level_ui" type="CanvasLayer" parent="." unique_id=212346450]
 
 [node name="minimap" parent="level_ui" unique_id=1822664664 node_paths=PackedStringArray("monitor_nodes") instance=ExtResource("2_p41qx")]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
+anchors_preset = 0
+anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = -220.0
-offset_right = -220.0
-offset_bottom = 0.0
-grow_horizontal = 0
+offset_left = 140.0
+offset_top = 176.0
+offset_right = 140.0
+offset_bottom = 176.0
 map_extent = Rect2(-500, -6000, 5000, 7500)
 monitor_nodes = [NodePath("../../debris"), NodePath("../../combatants")]
 
@@ -298,3 +297,4 @@ script = ExtResource("18_54bea")
 [node name="mush" type="Node" parent="." unique_id=737214258]
 
 [connection signal="doors_toggled" from="debris/silo" to="." method="_on_silo_doors_toggled"]
+[connection signal="payload_reached" from="debris/silo" to="." method="_on_silo_payload_reached"]

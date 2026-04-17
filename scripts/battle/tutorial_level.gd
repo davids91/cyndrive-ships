@@ -65,6 +65,7 @@ func _ready():
 	$dialogues/boss_arrives.connect(
 		"dialogue_signal_0",
 		func(): 
+			%player_carrier.sonar_blip_scale = Vector2.ONE
 			var to_player: Vector2 = (%character.get_global_position() - %player_carrier.get_global_position())
 			var boss = preload("res://scenes/entities/tutorial_boss.tscn").instantiate()
 			boss.name = "boss"
@@ -82,6 +83,12 @@ func _ready():
 			boss.phased.connect(func(phased: bool): if not phased: boss.queue_free())
 			$combatants.add_child(boss)
 			GUI.set_objective("New ship\nwho dis?")
+			create_tween().tween_method(
+				func(w: float):
+					player_input.current_zoom_value = w
+					view_control_triggered({"zoom": player_input.current_zoom_value}),
+				player_input.current_zoom_value, 0.2, 1.
+			)
 	)
 
 var currently_failing_at_markers: bool = false
@@ -228,7 +235,7 @@ func _on_destroy_dialouge_finished() -> void:
 	$combatants/disabled_droid/temporal_recorder.start_recording()
 	%character/temporal_recorder.start_recording()
 	$timeline.checkpoint()
-	GUI.set_objective("Destroy the stolen droid.\n Use the Arrow Keys!")
+	GUI.set_objective("Destroy the stolen droid.\nUse the Arrow Keys!\n(not WASD)")
 
 func _on_player_carrier_equipped_ship_with_mine(_ship: BattleCharacter) -> void:
 	$dialogues/slowdown.dialogue_conditionals[0] = true
@@ -245,6 +252,7 @@ func _on_boss_arrives_dialouge_finished() -> void:
 	GUI.set_objective("Try not to die a lot")
 
 func _on_restore_dialouge_finished() -> void:
+	$timeline.set_process(true) # TechDebt: do not accumulate time while the dialouge is ongoing
 	player_input.input_disabled = false
 	%character.resume_control()
 	GUI.set_objective("Hold Shift + R to rewind\n(resurrect stolen droid)")
@@ -259,6 +267,7 @@ func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 		%character.pause_control()
 		%character.velocity = Vector2.ZERO
 		$dialogues/restore.start()
+		create_tween().tween_callback(func(): $timeline.set_process(false)).set_delay(0.2)
 		GUI.set_objective("WHAT HAVE YOU DONE")
 		player_input.input_disabled = true
 	elif(
@@ -302,10 +311,17 @@ func _on_disabled_droid_dead(itsme: BattleCharacter) -> void:
 		$dialogues/boss_arrives.start()
 		if itsme: itsme.queue_free()
 
+var already_did_this_phase: bool = false
 func _on_disabled_droid_resurrected(_itsme: BattleCharacter) -> void:
-	if current_tutorial_phase == TutorialPhases.RESTORE:
-		current_tutorial_phase = TutorialPhases.EXPLODE
-		$dialogues/slowdown.start()
+	if current_tutorial_phase == TutorialPhases.RESTORE and not already_did_this_phase:
+		get_tree().create_timer(0.8).timeout.connect(func():
+			if $combatants/disabled_droid.in_battle():
+				already_did_this_phase = true
+				current_tutorial_phase = TutorialPhases.EXPLODE
+				$dialogues/slowdown.start()
+				player_input.input_disabled = true
+				%character.pause_control()
+		)
 
 func reset_game() -> void:
 	create_tween().tween_method(
@@ -316,6 +332,10 @@ func reset_game() -> void:
 
 @export var respawn_time_sec: float = 1.
 func replay_round(replay_animation: bool = true) -> void:
+	if not (
+		current_tutorial_phase == TutorialPhases.ROUND_RESET
+		or current_tutorial_phase == TutorialPhases.MUSTLE_FIGHT
+	): return
 	super(replay_animation)
 
 	# TechDebt: Await respawn animation
@@ -439,11 +459,13 @@ func _on_player_dies_dialouge_finished() -> void:
 
 func _on_character_resurrected(_itsme: BattleCharacter) -> void:
 	if current_tutorial_phase == TutorialPhases.EXPLODE:
-		GUI.set_objective("E to equip mine\n within carrier;\nE to deploy it!")
+		GUI.set_objective("Press E within carrier\nto equip mine;\nPress E to deploy it!")
 
 func _on_timeline_rewind_started() -> void: pass
 func _on_timeline_rewind_stopped() -> void: pass
 func replay_game() -> void: pass # Dummy function as there is no replay on this level
 
 func _on_slowdown_dialouge_finished() -> void:
-	GUI.set_objective("E to equip mine\n within carrier;\nE to deploy it!")
+	GUI.set_objective("Press E within carrier\nto equip mine;\nPress E to deploy it!")
+	player_input.input_disabled = false
+	%character.resume_control()

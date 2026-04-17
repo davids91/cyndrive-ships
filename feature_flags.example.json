@@ -15,9 +15,5 @@
 	"infinite_boost": {
 		"enabled": true,
 		"description": "Enable infinite boost toggle (F8 key)"
-	},
-	"dev_room": {
-		"enabled": true,
-		"description": "Enable dev room to test weapons and features"
 	}
 }

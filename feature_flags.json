@@ -8,15 +8,11 @@
 		"description": "Disable all enemy AI - useful for testing weapons"
 	},
 	"infinite_ammo": {
-		"enabled": false,
+		"enabled": true,
 		"description": "Enable infinite ammo toggle (F7 key)"
 	},
 	"infinite_boost": {
-		"enabled": false,
+		"enabled": true,
 		"description": "Enable infinite boost toggle (F8 key)"
-	},
-	"dev_room": {
-		"enabled": false,
-		"description": "Enable dev room to test weapons and features"
 	}
 }

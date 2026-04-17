@@ -61,11 +61,11 @@ func _process(_delta: float) -> void:
 
 		# Apply msec record if it is close enough
 		if not msec_records.is_empty() or (last_snapshot != null and not last_snapshot.is_empty()):
-			var corrective_snapshot
-			var time_to_snapshot
+			var corrective_snapshot: Dictionary
+			var time_to_snapshot: float
 			if msec_records.is_empty() and last_snapshot != null:
-				corrective_snapshot = last_snapshot[msec_keys.back()]
-				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(msec_keys.back()))
+				corrective_snapshot = last_snapshot[last_snapshot.keys()[0]]
+				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(last_snapshot.keys()[0]))
 			if not msec_records.is_empty() and last_snapshot == null:
 				corrective_snapshot = msec_records[msec_keys.back()]
 				time_to_snapshot = abs(BattleTimeline.instance.time_since_msec(msec_keys.back()))
@@ -79,6 +79,7 @@ func _process(_delta: float) -> void:
 	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.FORWARD \
 		and last_time_flow == BattleTimeline.TimeFlow.BACKWARD \
 		and last_snapshot != null and not last_snapshot.is_empty():
+			last_snapshot.erase("health") #TechDebt: while motion might need to be restored, health shouldt be restored in this situation
 			target.correct_temporal_state(last_snapshot[last_snapshot.keys()[0]])
 	last_time_flow = BattleTimeline.time_flow
 

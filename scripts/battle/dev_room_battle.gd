@@ -26,8 +26,8 @@ func _ready():
 	for combatant in $combatants.get_children():
 		living_team_members[combatant.team.team_id] += 1
 
-@export var rewind_battle_laupeerium_cost: float = 1.
-@export var slowdown_battle_laupeerium_cost: float = 0.1
+@export var rewind_battle_laupeerium_cost: float = 3.
+@export var slowdown_battle_laupeerium_cost: float = 0.5
 func replay_round(rewind_animation: bool = true) -> void:
 	if current_laupeerium < rewind_battle_laupeerium_cost: return
 
@@ -87,7 +87,7 @@ func _process(delta):
 
 	# Handling Timeline reverse
 	if BattleTimeline.time_flow == BattleTimeline.TimeFlow.BACKWARD:
-		current_laupeerium -= delta
+		current_laupeerium -= delta * rewind_battle_laupeerium_cost
 		_update_laupeerium_bar()
 		GUI.get_node("defeat").set_visible(false)
 		GUI.get_node("victory").set_visible(false)
@@ -102,7 +102,7 @@ func _process(delta):
 		_update_laupeerium_bar()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if is_replay: return
+	if is_replay: return 
 	var just_pressed = event.is_pressed() and not event.is_echo()
 	
 	# Infinite ammo toggle (F7)
@@ -205,15 +205,29 @@ func replay_game() -> void:
 
 func time_control_triggered(action: Dictionary) -> void:
 	if not (
-		"rewind_toggled" in action and 0. >= current_laupeerium
+		"rewind_toggled" in action and action["rewind_toggled"] and 0. >= current_laupeerium
 		or (
 			"checkpoint_reset_triggered" in action and action["checkpoint_reset_triggered"]
 			and rewind_battle_laupeerium_cost >= current_laupeerium
 		)  # There are enough resources to control time!
-	): super(action)
+	):
+		if "checkpoint_reset_triggered" in action: current_laupeerium -= 1.
+		super(action)
 
 func _update_laupeerium_bar() -> void:
 	GUI.set_laupeerium_indicator(round(float(UIEnergyBar.max_bars) * (current_laupeerium / starting_laupeerium)))
 
 func _on_silo_doors_toggled(is_open: bool) -> void:
-	if is_open: %character.explosion_shake(100.)
+	if is_open:
+		%character.explosion_shake(100.)
+		if already_used_laupeerium and $debris/silo/payload_trigger/payload:
+			$debris/silo/payload_trigger/payload.queue_free()
+
+var already_used_laupeerium: bool = false
+func _on_silo_payload_reached() -> void:
+	create_tween().tween_method(func(w: float):
+		current_laupeerium += w
+		_update_laupeerium_bar(),
+		0., 1., 0.5
+	)
+	already_used_laupeerium = true

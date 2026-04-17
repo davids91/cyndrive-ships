@@ -123,11 +123,17 @@ func _ready() -> void:
 	if autostart: start()
 
 @export var skip_line_interval_sec: float = 0.6
-@export var skip_line_count_for_finish: int = 4
+@export var skip_line_count_for_finish: int = 2
 var lines_skipped_quickly: int = 0
 var previous_line_started_at: float = 0.
 func start_new_line() -> void:
 	if not dialogue_in_progress: return
+
+	if current_letter < current_line_text.length():
+		dialogText.text = current_line_text
+		current_letter = current_line_text.length()
+		return
+
 	if abs(Time.get_ticks_msec() - previous_line_started_at)/ 1000. < skip_line_interval_sec:
 		lines_skipped_quickly += 1
 		if lines_skipped_quickly >= skip_line_count_for_finish:

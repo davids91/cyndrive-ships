@@ -33,6 +33,9 @@ func configure(player_input: PlayerInput, level: Node2D, player: BattleCharacter
 	
 	if "GUI" in level: level.GUI = self
 	set_visible("gui_visible" in level and level.gui_visible)
+	$victory.visible = false
+	$defeat.visible = false
+	$restart_round_panel.visible = false
 
 func fade_to(color: Color, duration_sec: float = 0.5) -> PropertyTweener:
 		return (
