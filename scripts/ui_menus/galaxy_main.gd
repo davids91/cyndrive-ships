@@ -5,6 +5,9 @@ extends Node2D
 
 @export var gui_visible: bool = true
 
+func _ready() -> void:
+	Difficulty.gameplay_speed = %difficulty_slider.value
+
 var speed = star_speed
 var angle: float = 0.
 var hubble_angle: float = 0.
@@ -20,15 +23,6 @@ func _process(delta_time: float) -> void:
 	# Update scene selection
 	for s in $scenes.get_children(): if s.has_node("orbitable"):
 		s.get_node("orbitable").angle += star_speed * delta_time / Difficulty.gameplay_speed
-
-func _on_dev_room_button_scene_selected() -> void:
-	get_node("/root/Main").load_level("dev_room_battle")
-
-func _on_tutorial_level_button_scene_selected() -> void:
-	get_node("/root/Main").load_level("tutorial_level")
-
-func _on_mr_mustle_battle_pressed() -> void:
-	get_node("/root/Main").load_level("mr_mustle_battle")
 
 func _on_guides_button_pressed() -> void:
 	speed = 0.
@@ -48,11 +42,10 @@ func _on_next_button_pressed_2() -> void:
 func _on_difficulty_slider_value_changed(value: float) -> void:
 	Difficulty.gameplay_speed = value
 
-func _on_dr_speedo_battle_pressed() -> void:
-	get_node("/root/Main").load_level("dr_speedo_battle")
-
-func _on_orange_boss_battle_pressed() -> void:
-	get_node("/root/Main").load_level("orange_boss_battle")
-
-func _on_level_1_pressed() -> void:
-	get_node("/root/Main").load_level("level_1")
+func _on_dev_room_button_scene_selected() -> void: get_node("/root/Main").load_level("dev_room_battle")
+func _on_tutorial_level_button_scene_selected() -> void: get_node("/root/Main").load_level("tutorial_level")
+func _on_mr_mustle_battle_pressed() -> void: get_node("/root/Main").load_level("mr_mustle_battle")
+func _on_dr_speedo_battle_pressed() -> void: get_node("/root/Main").load_level("dr_speedo_battle")
+func _on_orange_boss_battle_pressed() -> void: get_node("/root/Main").load_level("orange_boss_battle")
+func _on_level_1_pressed() -> void: get_node("/root/Main").load_level("level_1")
+func _on_credits_button_pressed() -> void: get_node("/root/Main").load_menu("credits")

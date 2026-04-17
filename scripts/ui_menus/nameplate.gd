@@ -1,3 +1,4 @@
+class_name CreditsNamePlate
 extends ColorRect
 
 @export var dev_name: String = "Szarvas János"
@@ -12,22 +13,23 @@ func set_nameplate(dev_name_: String, dev_role_: String) -> void:
 	%Name.text = dev_name
 	%Role.text = dev_role
 
+var phased: bool = true
 var phase_tween: Tween
 @export var phase_duration_sec: float = 2.
 @export var phase_in_pixel_curve: Curve
 @export var phase_in_distance_curve: Curve
 func phase_in() -> Tween:
+	phased = true
 	return _phase_internal(0., 1.)
 
 func phase_out() -> Tween:
+	phased = false
 	return _phase_internal(1., 0.)
 
 func _phase_internal(start: float, end: float) -> Tween:
 	if phase_tween: phase_tween.kill()
-	if 2 < phase_in_pixel_curve.point_count: phase_in_pixel_curve.remove_point(1)
-	if 2 < phase_in_distance_curve.point_count: phase_in_distance_curve.remove_point(1)
-	phase_in_pixel_curve.add_point(Vector2(0.5, randf() * 500.))
-	phase_in_distance_curve.add_point(Vector2(0.5, randf() * 0.35))
+	phase_in_pixel_curve.set_point_value(1, randf() * 500.)
+	phase_in_distance_curve.set_point_value(1, randf() * 0.35)
 	phase_tween = create_tween()
 	phase_tween.tween_method(
 		func(w: float):
@@ -36,9 +38,5 @@ func _phase_internal(start: float, end: float) -> Tween:
 		start, end,
 		phase_duration_sec * Difficuilty.gameplay_speed
 	)
-	phase_tween.tween_callback(func():
-		phase_tween = null
-		phase_in_pixel_curve.remove_point(1)
-		phase_in_distance_curve.remove_point(1)
-	)
+	phase_tween.tween_callback(func():phase_tween = null)
 	return phase_tween

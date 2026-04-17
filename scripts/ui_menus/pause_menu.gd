@@ -36,7 +36,7 @@ func _on_restart_btn_pressed() -> void:
 
 func _on_main_menu_btn_pressed() -> void:
 	unpause_game()
-	get_node("/root/Main").load_main_menu()
+	get_node("/root/Main").load_menu("galaxy")
 
 func _on_options_menu_btn_pressed() -> void:
 	options_page.show()

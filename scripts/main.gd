@@ -12,11 +12,12 @@ func load_level(level_name: String) -> void:
 	player_input.view_control_triggered.connect(level.view_control_triggered)
 	level_container.add_child(level)
 	level.get_node("cam").make_current()
-	get_node("/root/Main/background_music").play()
+	$background_music.play()
 
-func load_main_menu() -> void:
-	var level = load("res://scenes/UI/galaxy.tscn").instantiate()
+func load_menu(menu_name: String) -> void:
+	var level = load("res://scenes/UI/" + menu_name + ".tscn").instantiate()
 	level.get_node("main_cam").make_current()
 	for n in level_container.get_children(): n.queue_free()
 	GUI.set_visible(false)
 	level_container.add_child(level)
+	$background_music.stop()

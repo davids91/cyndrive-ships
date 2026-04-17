@@ -22,7 +22,6 @@ noise = SubResource("FastNoiseLite_7vwwx")
 color_ramp = SubResource("Gradient_kdjdm")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_tgap2"]
-resource_local_to_scene = false
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yp6ai"]
@@ -32,17 +31,17 @@ shader_parameter/source_image = SubResource("ViewportTexture_tgap2")
 shader_parameter/displacement_length = 0.0
 shader_parameter/distortion_strength_ = SubResource("NoiseTexture2D_7wkth")
 shader_parameter/distortion_direction_ = SubResource("NoiseTexture2D_wga3h")
-shader_parameter/pixellize_size = 1500.0
+shader_parameter/pixellize_size = 300.0
 
 [sub_resource type="Curve" id="Curve_tgap2"]
 _limits = [0.0, 1000.0, 0.0, 1.0]
-_data = [Vector2(0.017821781, 0), 0.0, 0.0, 0, 0, Vector2(0.99996996, 212.70306), 1476.633, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0.017821781, 0), 0.0, 0.0, 0, 0, Vector2(0.44356436, 212.70306), 0.0, 0.0, 0, 0, Vector2(0.986, 300), 1476.633, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="Curve" id="Curve_fh5n5"]
 _limits = [0.0, 0.35, 0.0, 1.0]
-_data = [Vector2(0, 0.35), 0.0, 0.0, 0, 0, Vector2(0.9940594, 0), -0.38646495, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0.021782175, 0.35), 0.0, 0.0, 0, 0, Vector2(0.52079207, 0.1752585), 0.0, 0.0, 0, 0, Vector2(0.98415846, 0), -0.38646495, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="LabelSettings" id="LabelSettings_g3j2f"]
 font_size = 45
@@ -78,6 +77,8 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Szarvas János"
 label_settings = SubResource("LabelSettings_g3j2f")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Role" type="Label" parent="SubViewport" unique_id=1905870995]
 unique_name_in_owner = true

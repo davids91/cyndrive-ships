@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b30y7x1oqqj3e"]
 
 [ext_resource type="PackedScene" uid="uid://dx5l0c02m750q" path="res://scenes/outer_space.tscn" id="1_2lgad"]
+[ext_resource type="Script" uid="uid://dpuwa2f4togsl" path="res://scripts/ui_menus/credits.gd" id="1_228wp"]
 [ext_resource type="PackedScene" uid="uid://c7kg57ai500kr" path="res://scenes/UI/nameplate.tscn" id="2_21wcu"]
 [ext_resource type="Shader" uid="uid://bk0ed1l3k8lrm" path="res://shaders/credits_nameplate.gdshader" id="2_228wp"]
 
@@ -22,41 +23,135 @@ color_ramp = SubResource("Gradient_tgap2")
 noise = SubResource("FastNoiseLite_7vwwx")
 color_ramp = SubResource("Gradient_kdjdm")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_tgap2"]
-resource_local_to_scene = false
+[sub_resource type="ViewportTexture" id="ViewportTexture_v6dd7"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_21wcu"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g3j2f"]
 resource_local_to_scene = true
 shader = ExtResource("2_228wp")
-shader_parameter/source_image = SubResource("ViewportTexture_tgap2")
+shader_parameter/source_image = SubResource("ViewportTexture_v6dd7")
+shader_parameter/displacement_length = 0.0
+shader_parameter/distortion_strength_ = SubResource("NoiseTexture2D_7wkth")
+shader_parameter/distortion_direction_ = SubResource("NoiseTexture2D_wga3h")
+shader_parameter/pixellize_size = 1500.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_jq8gn"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nioxy"]
+resource_local_to_scene = true
+shader = ExtResource("2_228wp")
+shader_parameter/source_image = SubResource("ViewportTexture_jq8gn")
+shader_parameter/displacement_length = 0.0
+shader_parameter/distortion_strength_ = SubResource("NoiseTexture2D_7wkth")
+shader_parameter/distortion_direction_ = SubResource("NoiseTexture2D_wga3h")
+shader_parameter/pixellize_size = 1500.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_q4wsr"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_83fsw"]
+resource_local_to_scene = true
+shader = ExtResource("2_228wp")
+shader_parameter/source_image = SubResource("ViewportTexture_q4wsr")
+shader_parameter/displacement_length = 0.0
+shader_parameter/distortion_strength_ = SubResource("NoiseTexture2D_7wkth")
+shader_parameter/distortion_direction_ = SubResource("NoiseTexture2D_wga3h")
+shader_parameter/pixellize_size = 1500.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_54wri"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qjoxo"]
+resource_local_to_scene = true
+shader = ExtResource("2_228wp")
+shader_parameter/source_image = SubResource("ViewportTexture_54wri")
 shader_parameter/displacement_length = 0.0
 shader_parameter/distortion_strength_ = SubResource("NoiseTexture2D_7wkth")
 shader_parameter/distortion_direction_ = SubResource("NoiseTexture2D_wga3h")
 shader_parameter/pixellize_size = 1500.0
 
 [node name="credits" type="Node2D" unique_id=1345803200]
+script = ExtResource("1_228wp")
 
-[node name="cam" type="Camera2D" parent="." unique_id=1179002599]
-position = Vector2(1602, -2697)
-zoom = Vector2(0.5, 0.5)
+[node name="main_cam" type="Camera2D" parent="." unique_id=1179002599]
 
 [node name="parallax_background" parent="." unique_id=29579511 instance=ExtResource("1_2lgad")]
 
-[node name="Nameplate" parent="." unique_id=818560364 instance=ExtResource("2_21wcu")]
-material = SubResource("ShaderMaterial_21wcu")
-offset_left = 778.0
-offset_top = 424.0
-offset_right = 1888.0
-offset_bottom = 725.0
+[node name="nameplates" type="Node" parent="." unique_id=590735083]
+
+[node name="Nameplate" parent="nameplates" unique_id=818560364 instance=ExtResource("2_21wcu")]
+material = SubResource("ShaderMaterial_g3j2f")
+offset_left = -150.0
+offset_top = 552.0
+offset_right = 960.0
+offset_bottom = 853.0
+phase_duration_sec = 1.0
+
+[node name="Nameplate2" parent="nameplates" unique_id=1785235432 instance=ExtResource("2_21wcu")]
+material = SubResource("ShaderMaterial_nioxy")
+offset_left = -150.0
+offset_top = 840.0
+offset_right = 960.0
+offset_bottom = 1141.0
+phase_duration_sec = 1.0
+
+[node name="Nameplate3" parent="nameplates" unique_id=1637910465 instance=ExtResource("2_21wcu")]
+material = SubResource("ShaderMaterial_83fsw")
+offset_left = -150.0
+offset_top = 1078.0
+offset_right = 960.0
+offset_bottom = 1379.0
+phase_duration_sec = 1.0
+
+[node name="Nameplate4" parent="nameplates" unique_id=2092082251 instance=ExtResource("2_21wcu")]
+material = SubResource("ShaderMaterial_qjoxo")
+offset_left = -150.0
+offset_top = 1362.0
+offset_right = 960.0
+offset_bottom = 1663.0
+phase_duration_sec = 1.0
 
 [node name="Panel" type="Panel" parent="." unique_id=1300087682]
-offset_right = 1913.0
-offset_bottom = 1075.0
+anchors_preset = -1
+anchor_bottom = 0.5
+offset_left = -873.0
+offset_top = -489.0
+offset_right = 15.0
+offset_bottom = 517.0
+grow_vertical = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Panel" unique_id=764319923]
 layout_mode = 0
-offset_right = 1907.0
-offset_bottom = 1075.0
-text = "Jalent (Jason W): Explosive mine (implementation and visuals, recall support, laser/lightning interaction, explosion scaling, carrier resupply), time travel improvement, pause menu, assorted fixes
-"
+offset_left = 19.0
+offset_top = 21.0
+offset_right = 878.0
+offset_bottom = 992.0
+text = "Davids91(Dávid Tóth):  Project lead, core gameplay, time travel system, ship physics, controls, main enemy/boss AI behaviors, main story and dialog, weapons systems, black hole, minimap, main menu(galaxy and buttons), in-game UI, scenario design, lasers, tutorial and guide, sounds (lasers, thrusters, explosions, UI sounds), assorted bug fixes, optimizations
+
+McFunkyPants(Christer Kaitila): Rewindable explosions with particles, dubstep style music track, star nebulae background elements in startfield, main menu particls effects, dialouge system iteration with scrolling text, ship thruster particle effects, Orange Queen boss, bugfixes, optimizations
+
+snowfrogdev (Philippe Vaillancourt): Feature system, 90s Big Beat Music inspired background track, chain lightning with bouncing electric attack, focused detailed and thorough pre-release playtesting with recorded videos, raw pre-alpha version playtest with recorded videos, god mode cheat, bugfixes
+
+Noah Wizard: Lore and story, character art, game icon, time slower, difficuilty concept, initial character dialouge, 3d model of player carrier ship, Mr Mustle radar cone
+
+Jalent (Jason W): Explosive mine (implementation and visuals, recall support, laser/lightning interaction), time travel improvement, pause menu, raw pre-alpha version playtest, assorted fixes
+
+dgf179(Drew Finstrom): Enemy droid skin and voxel model, ship booster effect and sound, sonar radar blips and radar system refactor, weapon energy system, bugfixes
+
+Crimsongod(Leo of the black):  Mr Mustle ship art, Dr Speedo Ship art, Orange Queen Ship art, Ancient Time traveling race color palette
+
+TarnishedMoth(Michael Avrie): Gorgeous volume settings in pause menu, raw pre-alpha version playtest
+
+Attila Bányai@Black Cathedral(UK): Acid style music track
+Rybar(Ryan Malm): Dynamic starfield shader for space background
+Gresi17(Grestyák Dominik): Asteroid models
+lunaquarius: Level 1 dialouge, tutorial dialouge extension with time slowing mechanic explanations
+Chris Deleon: Detailed pre-release playtesting, lots of guidance and support
+LenWinkler(LenWinkler):  Infinite ammo cheat, infinite boost cheats
+Jpmckeown(J Patrick McKeown): Raw pre-alpha version playtest, pre-release version playtest, typos in readme
+Barnettet31(Travis Barnette): Dialouge system UI base and structures
+ArtyT: pre-release version playtest
+Dragon: raw pre-alpha version playtest
+Zoli: raw pre-alpha version playtest
+Dorka: raw pre-alpha version playtest"
