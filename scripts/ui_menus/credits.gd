@@ -11,6 +11,7 @@ extends Node2D
 	"Michael Avrie - TarnishedMoth",
 	"Attila Bányai",
 	"Ryan Malm - Rybar",
+	"Tim Ruswick",
 	"Grestyák Dominik - Gresi17",
 	"lunaquarius",
 	"Chris Deleon",

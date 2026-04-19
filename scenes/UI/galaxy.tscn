@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://wt4f85n5mn7s" path="res://scripts/ui_menus/galaxy_main.gd" id="1_m3hme"]
 [ext_resource type="Shader" uid="uid://beksqhxqmaqvw" path="res://shaders/galaxy.gdshader" id="2_i4jmc"]
 [ext_resource type="Texture2D" uid="uid://cgjeow13rx32e" path="res://textures/outer_space/star-4.png" id="3_3adoa"]
-[ext_resource type="Texture2D" uid="uid://bk6uvrlmtg4aa" path="res://textures/title_logo.png" id="4_tpiep"]
 [ext_resource type="Shader" uid="uid://d00l3njhymirf" path="res://shaders/blackhole.gdshader" id="4_x6ffi"]
 [ext_resource type="PackedScene" uid="uid://d4ak0rrpifxgt" path="res://scenes/UI/level_select_button.tscn" id="5_fmtwf"]
 [ext_resource type="Texture2D" uid="uid://d3obqqch3a2aj" path="res://textures/guides/movement.png" id="7_lwv00"]
@@ -13,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://sd8khq65nsx3" path="res://textures/ui/panels/arrow_left_pressed.png" id="9_8bcf2"]
 [ext_resource type="Texture2D" uid="uid://ds7lgrc5c7dj" path="res://textures/ui/panels/arrow_left_hover.png" id="10_r47se"]
 [ext_resource type="Texture2D" uid="uid://x7exn78klmof" path="res://textures/outer_space/hubble.png" id="13_8bcf2"]
+[ext_resource type="Texture2D" uid="uid://bjiga5ecl4ohr" path="res://textures/cyndrive-itch-logo.png" id="13_b7r86"]
 [ext_resource type="Texture2D" uid="uid://b4x8e550p4y1" path="res://textures/outer_space/transparent/nebula4.png" id="14_at0sp"]
 [ext_resource type="Texture2D" uid="uid://dmroa6uppc1es" path="res://textures/explosions/burst1.png" id="14_b7r86"]
 [ext_resource type="Texture2D" uid="uid://de725ln3wf3lf" path="res://textures/outer_space/transparent/nebula5.png" id="15_b7r86"]
@@ -377,8 +377,9 @@ scale = Vector2(1.205, 1.205)
 texture = ExtResource("13_8bcf2")
 
 [node name="TitleLogo" type="Sprite2D" parent="." unique_id=805860212]
-position = Vector2(-479, -318)
-texture = ExtResource("4_tpiep")
+position = Vector2(-419, -295)
+scale = Vector2(1.8972603, 1.8972603)
+texture = ExtResource("13_b7r86")
 
 [node name="logo particle sparky" type="CPUParticles2D" parent="TitleLogo" unique_id=1018809138]
 z_index = -11
