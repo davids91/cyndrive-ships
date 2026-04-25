@@ -45,7 +45,9 @@ func _on_player_carrier_phased(phased_in: bool) -> void:
 
 func _on_intro_dialouge_finished() -> void:
 	player_input.input_disabled = false
+	$timeline.checkpoint()
 
+var summoning_dr_speedo: bool = false
 func _on_silo_payload_reached() -> void:
 	$debris/silo.sonar_blip_lifetime = 1.
 	$debris/silo.sonar_blip_scale = Vector2(1.0, 1.0)
@@ -55,17 +57,22 @@ func _on_silo_payload_reached() -> void:
 	).set_ease(Tween.EASE_OUT)
 	get_tree().create_timer(5.).timeout.connect( func():
 		if %character.in_battle():
-			$dialogues/bang.finish()
+			summoning_dr_speedo = true
 			$dialogues/that_went_well.start()
 			for c in $combatants.get_children():
 				c.pause_control()
 				c.velocity = Vector2.ZERO
 	)
 
+func time_control_triggered(action: Dictionary) -> void:
+	if not summoning_dr_speedo:	super(action)
+
 func _on_that_went_well_dialouge_finished() -> void:
 	for c in $combatants.get_children(): c.resume_control()
+	summoning_dr_speedo = false
 
 func _on_boss_death(_boss: BattleCharacter) -> void:
+	for c in $combatants.get_children(): c.pause_control()
 	$dialogues/scurry.start()
 
 func _on_scurry_dialouge_finished() -> void:
@@ -85,5 +92,4 @@ func _on_scurry_dialouge_finished() -> void:
 var already_triggered: bool = false
 func _on_silo_doors_toggled(is_open: bool) -> void:
 	if is_open and not already_triggered:
-		$dialogues/bang.start()
 		already_triggered = true

@@ -1,2 +1,0 @@
-#[c2]Okay, the door's open!
-#[c0]Nice work! Get that Laupeerium and return to base!

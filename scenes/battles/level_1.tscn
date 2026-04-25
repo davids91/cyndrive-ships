@@ -336,13 +336,6 @@ visible = false
 dialog = "res://dialogues/level_1_heist/01_lets_go.txt"
 unskippable_signals = Array[int]([0])
 
-[node name="bang" parent="dialogues" unique_id=446461769 instance=ExtResource("22_xbv3a")]
-visible = false
-dialog = "res://dialogues/level_1_heist/02_doors_destroyed.txt"
-unskippable_signals = Array[int]([0])
-autofinish = true
-autofinish_time_between_lines_sec = 2.0
-
 [node name="that_went_well" parent="dialogues" unique_id=413367898 instance=ExtResource("22_xbv3a")]
 visible = false
 dialog = "res://dialogues/level_1_heist/02.5_return_to_base.txt"

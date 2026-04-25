@@ -23,6 +23,7 @@ script = ExtResource("2_mxww0")
 
 [node name="boss" parent="combatants" unique_id=128563897 instance=ExtResource("4_mxww0")]
 position = Vector2(-1838, -898)
+control_disabled = true
 
 [node name="character" parent="combatants" unique_id=138634092 instance=ExtResource("5_0dc3k")]
 unique_name_in_owner = true

@@ -355,6 +355,7 @@ func accept_healing(strength: float, _source: BattleCharacter = null) -> void:
 
 func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 	ship_explosion = null
+	carrier_ship = predecessor.carrier_ship
 	team = predecessor.team.duplicate()
 	team.color = new_color
 	skin_layers = predecessor.skin_layers # set skin from predecessor(_ready will construct the skin)
@@ -363,8 +364,8 @@ func init_clone(predecessor: BattleCharacter, new_color: Color) -> void:
 func timeline_checkpoint() -> void:
 	spawn_snapshot = get_snapshot()
 	if has_node("temporal_recorder"):
-		$temporal_recorder.msec_records = []
-		$temporal_recorder.usec_records = []
+		$temporal_recorder.msec_records.clear()
+		$temporal_recorder.usec_records.clear()
 
 func respawn():
 	if has_node("weapon_slot"): $weapon_slot.select_slot(0)
@@ -410,7 +411,7 @@ func respawn():
 	was_alive = true
 	$skin.set_burn_percentage(0.)
 
-var control_disabled: bool = false
+@export var control_disabled: bool = false
 func pause_control() -> void:
 	control_disabled = true
 	$controller.stop()
@@ -432,6 +433,8 @@ var needs_docking_support: bool = false
 var held_mine: ExplosiveMine = null
 var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
+	if "deploy_mine" in action: print(self)
+	
 	if not in_battle() or control_disabled: return # cannot process any action while not in battle
 
 	if "weapon_slot" in action and has_node("weapon_slot"):

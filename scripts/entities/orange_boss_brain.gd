@@ -42,12 +42,12 @@ func missile_spam():
 		$missile_sound.play()
 		if projectile_scene:
 			var miss = projectile_scene.instantiate()
-			get_tree().root.add_child(miss)
+			get_node("/root/Main/LevelContainer/battle/mush").add_child(miss)
 			miss.rotation = rotation
 			miss.position = position
 		if muzzleflash_scene:
 			var muzz = muzzleflash_scene.instantiate()
-			get_tree().root.add_child(muzz)
+			get_node("/root/Main/LevelContainer/battle/mush").add_child(muzz)
 			muzz.rotation = rotation
 			muzz.position = position
 
