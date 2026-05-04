@@ -62,7 +62,7 @@ func process_input_action(action: Dictionary) -> void:
 				and 0. < action["action_direction"].length()
 			)
 		)
-	if "action_released" in action and action["action_released"]: is_shooting = false
+	if "action_toggled" in action and not action["action_toggled"]: is_shooting = false
 	if is_shooting:
 		$sound.play()
 		if not was_shooting: # Laser alpha and width animation

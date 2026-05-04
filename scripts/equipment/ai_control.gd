@@ -165,14 +165,13 @@ func _physics_process(delta: float) -> void:
 		)
 	else: target_is_acquired = false
 
-	if target_is_acquired and not target_was_acquired: action["action_initiated"] = true
-	elif(
+	if(
 		not target_is_acquired and target_was_acquired
 		or (
-			not target_is_acquired and not "action_released" in action
+			not target_is_acquired and (not "action_toggled" in action or not action["action_toggled"])
 			and character.has_node("weapon_slot") and character.get_node("weapon_slot").is_shooting
 		)
-	): action["action_released"] = true
+	): action["action_toggled"] = true
 	if target_is_acquired and target_is_alive:
 		if (target_moving_avg - chosen_target.get_global_position()).length() < target_clamp_distance:
 			action["acquired_target_position"] = chosen_target.get_global_position()
@@ -188,7 +187,7 @@ func _physics_process(delta: float) -> void:
 		and null != get_parent().body_in_contact and get_parent().contact_time > stuck_sec_threshold
 	):
 		action["movement_intent"] = (character.get_global_position() - get_parent().body_in_contact.get_global_position()).normalized()
-		action["boost_initiated"] = true
+		action["boost_toggled"] = true
 		seconds_left_to_boost = seconds_of_bossting_after_stuck
 		boost_direction = action["movement_intent"]
 
@@ -221,7 +220,7 @@ func _physics_process(delta: float) -> void:
 			action["emote_3"] = true
 	if 0 < seconds_left_to_boost:
 		seconds_left_to_boost -= delta
-		if 0 < seconds_left_to_boost: action["boost_released"] = true
+		if 0 < seconds_left_to_boost: action["boost_toggled"] = false
 		else: action["movement_intent"] = boost_direction
 
 	if 0 == action["movement_intent"].length(): action.erase("movement_intent")

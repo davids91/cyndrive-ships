@@ -55,12 +55,10 @@ func process_input_action(action: Dictionary) -> void:
 		intent_direction = Vector2(sign(action["movement_intent"].x), sign(action["movement_intent"].y))
 		if 0. < action["movement_intent"].length():
 			last_intent = intent_direction
-	var was_boosting = is_boosting
-	is_boosting = (
-		(is_boosting and (not "boost_released" in action or not action["boost_released"]))
-		or ("boost_initiated" in action and action["boost_initiated"])
-	)
-	if was_boosting != is_boosting: boosting.emit(is_boosting)
+	if "boost_toggled" in action:
+		var was_boosting = is_boosting
+		is_boosting = action["boost_toggled"]
+		if was_boosting != is_boosting: boosting.emit(is_boosting)
 
 func calculate_rotation() -> float:
 	var calculated_rotation: float

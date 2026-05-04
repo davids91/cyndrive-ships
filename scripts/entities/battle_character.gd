@@ -433,8 +433,6 @@ var needs_docking_support: bool = false
 var held_mine: ExplosiveMine = null
 var current_action_direction: Vector2 = Vector2()
 func process_input_action(action: Dictionary) -> void:
-	if "deploy_mine" in action: print(self)
-	
 	if not in_battle() or control_disabled: return # cannot process any action while not in battle
 
 	if "weapon_slot" in action and has_node("weapon_slot"):
@@ -442,7 +440,7 @@ func process_input_action(action: Dictionary) -> void:
 			action.erase("weapon_slot") # Do not switch weapon if it's disabled
 		else:
 			$weapon_slot.select_slot(action["weapon_slot"])
-			action["action_released"] = true
+			action["action_toggled"] = false
 
 	if "action_direction" in action and 0. < action["action_direction"].length() and has_node("shield"):
 		current_action_direction = action["action_direction"]
@@ -459,9 +457,11 @@ func process_input_action(action: Dictionary) -> void:
 	else: ready_to_receive_mine = false
 
 	if has_node("energy_systems"):
-		if "boost_initiated" in action and not $energy_systems.has_boost_energy():
-			if not _infinite_boost_enabled():
-				action.erase("boost_initiated")
+		if (
+			("boost_toggled" in action and action["boost_toggled"])
+			and not $energy_systems.has_boost_energy()
+			and not _infinite_boost_enabled()
+		): action.erase("boost_toggled")
 		if(
 			("action_direction" in action or "acquired_target_position" in action)
 			and not $energy_systems.has_weapon_energy()
@@ -469,7 +469,7 @@ func process_input_action(action: Dictionary) -> void:
 		):
 			action.erase("action_direction")
 			action.erase("acquired_target_position")
-			action["action_released"] = true
+			action["action_toggled"] = false
 
 	# move camera lightly on boost
 	if "boost_initiated" in action: $booster_sound.play()

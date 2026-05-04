@@ -56,7 +56,6 @@ func _process(delta):
 	# see if we hit player
 	if p1 != null:
 		var d = global_position.distance_to(p1.global_position)
-		# print("dist: "+str(d))
 		if d <= trigger_radius: boom()
 	
 	age += delta

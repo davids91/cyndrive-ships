@@ -46,12 +46,10 @@ func process_input_action(action: Dictionary) -> void:
 			var new_angle = lerp_angle(intent_direction.angle(), action["movement_intent"].angle(), angle_response)
 			intent_direction = Vector2(cos(new_angle), sin(new_angle))
 			last_intent = intent_direction
-	var was_boosting = is_boosting
-	is_boosting = (
-		(is_boosting and (not "boost_released" in action or not action["boost_released"]))
-		or ("boost_initiated" in action and action["boost_initiated"])
-	)
-	if was_boosting != is_boosting: boosting.emit(is_boosting)
+	if "boost_toggled" in action:
+		var was_boosting = is_boosting
+		is_boosting = action["boost_toggled"]
+		if was_boosting != is_boosting: boosting.emit(is_boosting)
 
 @onready var last_position = get_global_position()
 var actual_speed_response: float = speed_response

@@ -44,11 +44,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	var just_pressed = event.is_pressed() and not event.is_echo()
 	var was_shooting = is_shooting
 
-	is_boosting = (
-		(is_boosting and (not "boost_released" in action or not action["boost_released"]))
-		or ("boost_initiated" in action and action["boost_initiated"])
-	)
-
+	if "boost_toggled" in action: is_boosting = action["boost_toggled"]
 	if "movement_intent" in action:
 		movement_intent += action["movement_intent"]
 		if (
@@ -75,11 +71,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			current_action_direction = Vector2.ZERO
 		is_shooting = 0 < action["action_direction"].length()
 
-	if was_shooting and not is_shooting:
-		action["action_released"] = true
-
-	if not was_shooting and is_shooting:
-		action["action_initiated"] = true
+	if was_shooting != is_shooting:
+		action["action_toggled"] = is_shooting
 
 	if event.is_action_pressed("slowdown") and just_pressed:
 		slowdown_being_held = true
@@ -176,11 +169,9 @@ Output format is the following:
 	action["movement_intent"]: vector: intent of user control in 2D space (up, down, left right). Vector values are either -1, 0 or 1
 	action["action_direction"]: vector: direction of weapon action in 2D space (up, down, left right). Vector values are either -1, 0 or 1
 	action["acquired_target_position"]: vector: weapon target position in 2D space
-	action["boost_initiated"]: boolean value for the activation of the ships booster
-	action["boost_released"]: boolean value for the de-activation of the ships booster ( not stored in temporal records )
+	action["boost_toggled"]: boolean value for the activation/activation of the ships booster
 	action["switch_shield"]: boolean value for shield activation(when active, action direction is used to set shield position instead of weapon aim)
-	action["action_initiated"]: boolean value for weapon activation
-	action["action_released"]: boolean value for weapon deactivation
+	action["action_toggled"]: boolean value for weapon activation-deactivation
 	action["acquired_target"]: the target object to which the laser is supposed to be fired
 	action["deploy_mine"]: activate and release the attached mine ( if any )
 	action["zoom"]: set camera zoom level(not stored in temporal records)
@@ -212,10 +203,10 @@ func get_action(input_event: InputEvent) -> Dictionary:
 	action["action_direction"] = action_direction
 
 	if input_event.is_action_pressed("boost"):
-		action["boost_initiated"] = true
+		action["boost_toggled"] = true
 
 	if input_event.is_action_released("boost"):
-		action["boost_released"] = true
+		action["boost_toggled"] = false
 
 	if input_event.is_action_pressed("deploy_mine"):
 		action["deploy_mine"] = true
