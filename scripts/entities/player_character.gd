@@ -73,6 +73,8 @@ func explosion_shake_smooth(intensity: float = 30.0, duration: float = 0.5) -> T
 	tween.tween_property($cam_remote_transform, "position", Vector2.ZERO, 0.1)
 	return tween
 
+@export var target_camera_radius: float = 750.
+@export var world_covered_in_screen: float = 1500.
 func _process(delta: float) -> void:
 	super(delta)
 	if $slowdown_effect.is_active != PlayerInput.instance.slowdown_being_held:
@@ -80,6 +82,14 @@ func _process(delta: float) -> void:
 
 	if target_locked and $target_assist.is_target_locked():
 		$target_arrow.set_visible(true)
+		$target_bubble.set_visible(true)
+		var target_pos: Vector2 = $target_assist.get_current_target().global_position
+		var to_target: Vector2 = (target_pos - global_position)
+		if to_target.length() > world_covered_in_screen:
+			$target_viewport/target_camera.global_position = target_pos
+			$target_bubble.global_position = global_position + to_target.normalized() * target_camera_radius
+			$target_bubble.get_material().set_shader_parameter("arrow_angle_rad", to_target.angle() - PI)
+		else: $target_bubble.set_visible(false)
 		$target_arrow.global_position = lerp(
 			$target_arrow.global_position,
 			$target_assist.get_current_target_position(),
@@ -87,4 +97,6 @@ func _process(delta: float) -> void:
 		)
 		if "approx_size" in $target_assist.get_current_target():
 			$target_arrow.scale = Vector2.ONE * ($target_assist.get_current_target().approx_size / approx_size)
-	else: $target_arrow.set_visible(false)
+	else:
+		$target_arrow.set_visible(false)
+		$target_bubble.set_visible(false)

@@ -17,6 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://sfy3jjd0xx7s" path="res://textures/ui/radar_cone_6.png" id="10_3ymhi"]
 [ext_resource type="Script" uid="uid://bs6b1t8t8865p" path="res://scripts/effects/slowdown_effect.gd" id="10_47atm"]
 [ext_resource type="Texture2D" uid="uid://cgffr4oksq8x5" path="res://textures/ui/radar_cone_7.png" id="11_fkulu"]
+[ext_resource type="Script" uid="uid://0028c626vlnq" path="res://scripts/equipment/target_viewport.gd" id="18_1p3yf"]
+[ext_resource type="Shader" uid="uid://wdk8n8jvd8m3" path="res://shaders/bubble_texture.gdshader" id="18_qhxie"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_us3k5"]
 points = PackedVector2Array(0, 50, 0, -50, 1000000, -5000, 1000000, 5000)
@@ -74,8 +76,23 @@ shader_parameter/short_leg_angle_ = -2.389022274794371
 shader_parameter/pixellize_size = 20.0
 shader_parameter/pixel_continuity = 0.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qhxie"]
+shader = ExtResource("18_qhxie")
+shader_parameter/border_color = Color(0.6944441, 1, 0.9995616, 1)
+shader_parameter/bubble_radius = 0.775
+shader_parameter/bubble_edge = 0.585
+shader_parameter/arrow_angle_diff_rad = 1.5150000000000001
+shader_parameter/arrow_angle_rad = 0.275
+shader_parameter/arrow_bluntness = 0.0
+shader_parameter/pixellize_size = 25.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qhxie"]
+viewport_path = NodePath("target_viewport")
+
 [node name="character" unique_id=138634092 instance=ExtResource("1_y5ukg")]
 script = ExtResource("2_y5ukg")
+target_camera_radius = 750.0
+world_covered_in_screen = 1500.0
 color = null
 starting_health = 10.0
 max_health = 12.0
@@ -146,3 +163,16 @@ offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("10_47atm")
+
+[node name="target_bubble" type="Sprite2D" parent="." index="23" unique_id=94239876]
+top_level = true
+material = SubResource("ShaderMaterial_qhxie")
+texture = SubResource("ViewportTexture_qhxie")
+
+[node name="target_viewport" type="SubViewport" parent="." index="24" unique_id=104807506]
+transparent_bg = true
+size = Vector2i(256, 256)
+size_2d_override_stretch = true
+script = ExtResource("18_1p3yf")
+
+[node name="target_camera" type="Camera2D" parent="target_viewport" index="0" unique_id=1145290659]
