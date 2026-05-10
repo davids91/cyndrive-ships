@@ -234,6 +234,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="status_padding" type="MarginContainer" parent="." unique_id=1109486210]
 offset_left = 368.0

@@ -36,7 +36,11 @@ var accumulated_slowdown_value_sec: float = 0.
 @export var zoom_center: float = 0.4
 var current_zoom_value: float = zoom_center
 var is_boosting: bool = false
+var is_mouse_pressed: bool = false
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		is_mouse_pressed = event.is_pressed()
+
 	if DialoguePanel.active_dialogue and DialoguePanel.active_dialogue.is_dialogue_active:
 		return # Do not accept user input while a dialouge is in progress
 
@@ -192,15 +196,18 @@ func get_action(input_event: InputEvent) -> Dictionary:
 	if input_event.is_action_released("movement_up"): intent_direction.y += 1
 	action["movement_intent"] = intent_direction
 
-	if input_event.is_action_pressed("action_left"): action_direction.x = -1
-	if input_event.is_action_pressed("action_right"): action_direction.x = 1
-	if input_event.is_action_pressed("action_down"): action_direction.y = 1
-	if input_event.is_action_pressed("action_up"): action_direction.y = -1
-	if input_event.is_action_released("action_left"): action_direction.x += 1
-	if input_event.is_action_released("action_right"): action_direction.x += -1
-	if input_event.is_action_released("action_down"): action_direction.y += -1
-	if input_event.is_action_released("action_up"): action_direction.y += 1
-	action["action_direction"] = action_direction
+	if is_mouse_pressed:
+		action["acquired_target_position"] = xform(get_viewport().get_canvas_transform().affine_inverse(), get_viewport().get_mouse_position())
+	else:
+		if input_event.is_action_pressed("action_left"): action_direction.x = -1
+		if input_event.is_action_pressed("action_right"): action_direction.x = 1
+		if input_event.is_action_pressed("action_down"): action_direction.y = 1
+		if input_event.is_action_pressed("action_up"): action_direction.y = -1
+		if input_event.is_action_released("action_left"): action_direction.x += 1
+		if input_event.is_action_released("action_right"): action_direction.x += -1
+		if input_event.is_action_released("action_down"): action_direction.y += -1
+		if input_event.is_action_released("action_up"): action_direction.y += 1
+		action["action_direction"] = action_direction
 
 	if input_event.is_action_pressed("boost"):
 		action["boost_toggled"] = true

@@ -4,7 +4,11 @@ extends BattleCharacter
 var is_boosting: bool = false
 var target_locked: bool = false
 func process_input_action(action: Dictionary) -> void:
-	if"action_direction" in action:
+	if not "action_direction" in action and "acquired_target_position" in action:
+		var to_target: Vector2 = (action["acquired_target_position"] - global_position)
+		action["action_direction"] = to_target.normalized()
+	if "action_direction" in action:
+		$target_assist.global_rotation = action["action_direction"].angle()
 		target_locked = $target_assist.is_target_locked()
 		if target_locked:
 			action["acquired_target_position"] = $target_assist.get_current_target_position()

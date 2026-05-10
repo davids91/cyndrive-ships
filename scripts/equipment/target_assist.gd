@@ -31,7 +31,7 @@ func _physics_process(delta: float) -> void:
 
 	# Position target assist to align with player control
 	set_global_position(character.get_global_position())
-	set_global_rotation(PlayerInput.instance.current_action_direction.angle())
+	#set_global_rotation(PlayerInput.instance.current_action_direction.angle())
 
 	# Reset target if the ship is not attacking
 	if 0. == PlayerInput.instance.current_action_direction.length():
